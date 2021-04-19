@@ -29,18 +29,32 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: ThemeData(
-          //brightness overwrite primarySwatch and background
-          brightness: Brightness.light,
-          primaryColor: HexColor('#05dbf2'),
-          //if dont define what color using, automatically use this
+        //brightness overwrite primarySwatch and background
+        brightness: Brightness.light,
+        primaryColor: HexColor('#05dbf2'),
+        //if dont define what color using, automatically use this
 
-          //backbuffer color :v just scroll out a list
-          // accentColor: HexColor('#b3ecf2'),
-          buttonColor: HexColor('#f2b3e1'),
-          // indicatorColor: HexColor('#f2b3e1'),
+        //backbuffer color :v just scroll out a list
+        // accentColor: HexColor('#b3ecf2'),
+        buttonColor: HexColor('#f2b3e1'),
+        // indicatorColor: HexColor('#f2b3e1'),
 
-          backgroundColor: HexColor('#b3ecf2'),
-          cardColor: HexColor('#f2bdcb')),
+        backgroundColor: HexColor('#b3ecf2'),
+        cardColor: HexColor('#f2bdcb'),
+        fontFamily: 'Avo',
+
+        textTheme: TextTheme(
+          button: TextStyle(
+            fontSize: 14.0,
+            color: Color.fromRGBO(255, 255, 255, 1),
+            fontWeight: FontWeight.bold,
+          ),
+          bodyText1: TextStyle(
+            fontSize: 14.0,
+            color: Color.fromRGBO(0, 0, 0, .5),
+          ),
+        ),
+      ),
 
       //routes as shortcuts for Navigator
       routes: {
