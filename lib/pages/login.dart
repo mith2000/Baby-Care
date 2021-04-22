@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:scoped_model/scoped_model.dart';
-import 'package:hexcolor/hexcolor.dart';
-import 'package:flutter_svg/avd.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+
+import '../UI widgets/gradient-bg.dart';
+import '../pages/create-account pages/cr-acc-name.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -152,23 +153,6 @@ class _LoginPageState extends State<LoginPage> {
           style: Theme.of(context).textTheme.button,
         ),
         onPressed: () => _authenticationLogin(), //model.authenticate),
-        style: ButtonStyle(
-          backgroundColor:
-              MaterialStateProperty.all<Color>(Theme.of(context).buttonColor),
-          shape: MaterialStateProperty.all<OutlinedBorder>(
-            RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(45),
-            ),
-          ),
-          elevation: MaterialStateProperty.resolveWith<double>(
-            (Set<MaterialState> states) {
-              if (states.contains(MaterialState.pressed)) {
-                return 0;
-              }
-              return 10;
-            },
-          ),
-        ),
       ),
     );
     // return ScopedModelDescendant<MainModel>(
@@ -226,7 +210,12 @@ class _LoginPageState extends State<LoginPage> {
           'Create New Account',
           style: Theme.of(context).textTheme.bodyText1,
         ),
-        onPressed: () {}, //model.authenticate),
+        onPressed: () => Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (BuildContext context) => CreateAccountName(),
+          ),
+        ), //model.authenticate),
         style: ButtonStyle(
           backgroundColor: MaterialStateProperty.all<Color>(
             Color.fromRGBO(255, 255, 255, .50),
@@ -246,45 +235,23 @@ class _LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     final double deviceWidth = MediaQuery.of(context).size.width;
     final double inputFieldWidth = deviceWidth > 550 ? 450 : deviceWidth * 0.8;
-    return Scaffold(
-      body: Center(
-        child: Container(
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              begin: Alignment.topRight,
-              end: Alignment.bottomLeft,
-              colors: [
-                Theme.of(context).cardColor,
-                Theme.of(context).backgroundColor,
-              ],
-            ),
-          ),
-          child: Form(
-            key: _formKey,
-            child: Container(
-              padding: EdgeInsets.fromLTRB(57, 68, 57, 0),
-              child: Column(
-                children: [
-                  _buildUsernameInput(),
-                  SizedBox(height: 20),
-                  _buildPasswordInput(),
-                  SizedBox(height: 40),
-                  _buildLoginButton(),
-                  SizedBox(height: 20),
-                  _buildForgetPasswordButton(),
-                  Expanded(
-                    child: Align(
-                      alignment: Alignment.bottomCenter,
-                      child: _buildCreateAccountButton(),
-                    ),
-                  ),
-                  SizedBox(height: 20),
-                ],
-              ),
-            ),
-          ),
+    final List<Widget> _widgets = [
+      _buildUsernameInput(),
+      SizedBox(height: 20),
+      _buildPasswordInput(),
+      SizedBox(height: 40),
+      _buildLoginButton(),
+      SizedBox(height: 20),
+      _buildForgetPasswordButton(),
+      Expanded(
+        child: Align(
+          alignment: Alignment.bottomCenter,
+          child: _buildCreateAccountButton(),
         ),
       ),
-    );
+      SizedBox(height: 20),
+    ];
+
+    return GradientBackground(_formKey, _widgets, context);
   }
 }

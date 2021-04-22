@@ -37,12 +37,31 @@ class _MyAppState extends State<MyApp> {
         //backbuffer color :v just scroll out a list
         // accentColor: HexColor('#b3ecf2'),
         buttonColor: HexColor('#f2b3e1'),
+        elevatedButtonTheme: ElevatedButtonThemeData(
+          style: ButtonStyle(
+            backgroundColor:
+                MaterialStateProperty.all<Color>(HexColor('#f2b3e1')),
+            shape: MaterialStateProperty.all<OutlinedBorder>(
+              RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(45),
+              ),
+            ),
+            elevation: MaterialStateProperty.resolveWith<double>(
+              (Set<MaterialState> states) {
+                if (states.contains(MaterialState.pressed)) {
+                  return 0;
+                }
+                return 10;
+              },
+            ),
+          ),
+        ),
         // indicatorColor: HexColor('#f2b3e1'),
 
         backgroundColor: HexColor('#b3ecf2'),
         cardColor: HexColor('#f2bdcb'),
-        fontFamily: 'Avo',
 
+        fontFamily: 'Avo',
         textTheme: TextTheme(
           button: TextStyle(
             fontSize: 14.0,
@@ -53,6 +72,12 @@ class _MyAppState extends State<MyApp> {
             fontSize: 14.0,
             color: Color.fromRGBO(0, 0, 0, .5),
           ),
+        ),
+
+        dividerTheme: DividerThemeData(
+          space: 30,
+          thickness: 0.3,
+          color: HexColor('#505050'),
         ),
       ),
 
