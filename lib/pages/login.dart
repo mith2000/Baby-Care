@@ -142,36 +142,34 @@ class _LoginPageState extends State<LoginPage> {
     // }
   }
 
-  Widget _buildLoginButton(double inputFieldWidth) {
+  Widget _buildLoginButton() {
     return Container(
       width: 300,
       height: 65,
       child: ElevatedButton(
-          child: Text(
-            'LOGIN',
-            style: Theme.of(context).textTheme.button,
+        child: Text(
+          'LOGIN',
+          style: Theme.of(context).textTheme.button,
+        ),
+        onPressed: () => _authenticationLogin(), //model.authenticate),
+        style: ButtonStyle(
+          backgroundColor:
+              MaterialStateProperty.all<Color>(Theme.of(context).buttonColor),
+          shape: MaterialStateProperty.all<OutlinedBorder>(
+            RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(45),
+            ),
           ),
-          onPressed: () => _authenticationLogin(), //model.authenticate),
-          style: ButtonStyle(
-              backgroundColor: MaterialStateProperty.all<Color>(
-                  Theme.of(context).buttonColor),
-              shape: MaterialStateProperty.all<OutlinedBorder>(
-                RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(45),
-                  side: BorderSide(
-                    width: 0,
-                    style: BorderStyle.none,
-                  ),
-                ),
-              ),
-              elevation: MaterialStateProperty.resolveWith<double>(
-                (Set<MaterialState> states) {
-                  if (states.contains(MaterialState.pressed)) {
-                    return 0;
-                  }
-                  return 10;
-                },
-              ))),
+          elevation: MaterialStateProperty.resolveWith<double>(
+            (Set<MaterialState> states) {
+              if (states.contains(MaterialState.pressed)) {
+                return 0;
+              }
+              return 10;
+            },
+          ),
+        ),
+      ),
     );
     // return ScopedModelDescendant<MainModel>(
     //     builder: (BuildContext context, Widget child, MainModel model) {
@@ -198,6 +196,52 @@ class _LoginPageState extends State<LoginPage> {
     // });
   }
 
+  Widget _buildForgetPasswordButton() {
+    return Container(
+      width: 200,
+      height: 45,
+      child: TextButton(
+        child: Text(
+          'Forget Password?',
+          style: Theme.of(context).textTheme.bodyText1,
+        ),
+        onPressed: () {},
+        style: ButtonStyle(
+          shape: MaterialStateProperty.all<OutlinedBorder>(
+            RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(45),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildCreateAccountButton() {
+    return Container(
+      width: 300,
+      height: 65,
+      child: ElevatedButton(
+        child: Text(
+          'Create New Account',
+          style: Theme.of(context).textTheme.bodyText1,
+        ),
+        onPressed: () {}, //model.authenticate),
+        style: ButtonStyle(
+          backgroundColor: MaterialStateProperty.all<Color>(
+            Color.fromRGBO(255, 255, 255, .50),
+          ),
+          shape: MaterialStateProperty.all<OutlinedBorder>(
+            RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(15),
+            ),
+          ),
+          elevation: MaterialStateProperty.all<double>(0),
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final double deviceWidth = MediaQuery.of(context).size.width;
@@ -219,13 +263,22 @@ class _LoginPageState extends State<LoginPage> {
             key: _formKey,
             child: Container(
               padding: EdgeInsets.fromLTRB(57, 68, 57, 0),
-              child: ListView(
+              child: Column(
                 children: [
                   _buildUsernameInput(),
                   SizedBox(height: 20),
                   _buildPasswordInput(),
                   SizedBox(height: 40),
-                  _buildLoginButton(inputFieldWidth),
+                  _buildLoginButton(),
+                  SizedBox(height: 20),
+                  _buildForgetPasswordButton(),
+                  Expanded(
+                    child: Align(
+                      alignment: Alignment.bottomCenter,
+                      child: _buildCreateAccountButton(),
+                    ),
+                  ),
+                  SizedBox(height: 20),
                 ],
               ),
             ),
