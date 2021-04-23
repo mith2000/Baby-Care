@@ -1,24 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
 
-import 'cr-acc-email.dart';
+import 'cr-acc-pw.dart';
 import '../../UI widgets/gradient-bg.dart';
 import '../../UI widgets/cr-acc-appbar.dart';
 
-class CreateAccountName extends StatefulWidget {
+class CreateAccountEmail extends StatefulWidget {
   @override
-  _CreateAccountNameState createState() => _CreateAccountNameState();
+  _CreateAccountEmailState createState() => _CreateAccountEmailState();
 }
 
-class _CreateAccountNameState extends State<CreateAccountName> {
+class _CreateAccountEmailState extends State<CreateAccountEmail> {
   final Map<String, dynamic> _formData = {
-    'username': null,
+    'email': null,
   };
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   Widget _buildHeading() {
     return Text(
-      'What can we call you?',
+      'Add your Email',
       textAlign: TextAlign.center,
       style: Theme.of(context).textTheme.headline1,
     );
@@ -28,18 +28,18 @@ class _CreateAccountNameState extends State<CreateAccountName> {
     return Container(
       height: 100,
       child: Text(
-        'Enter the name we should call you.',
+        'Enter an email to Sign In and helps you keep your account secure.',
         style: Theme.of(context).textTheme.bodyText2,
         maxLines: 3,
       ),
     );
   }
 
-  Widget _buildUsernameInput() {
+  Widget _buildEmailInput() {
     return TextFormField(
       style: Theme.of(context).textTheme.bodyText1,
       decoration: InputDecoration(
-        hintText: "Username",
+        hintText: "Email",
         hintStyle: Theme.of(context).textTheme.bodyText1,
         prefixIcon: Container(
           width: 10,
@@ -56,12 +56,12 @@ class _CreateAccountNameState extends State<CreateAccountName> {
       ),
       validator: (String value) {
         if (value.isEmpty) {
-          return 'Your name is not correct.';
+          return 'Your email is not correct.';
         }
         return null;
       },
       onSaved: (String value) {
-        _formData['username'] = value;
+        _formData['email'] = value;
       },
     );
   }
@@ -88,7 +88,7 @@ class _CreateAccountNameState extends State<CreateAccountName> {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (BuildContext context) => CreateAccountEmail(),
+        builder: (BuildContext context) => CreateAccountPassword(),
       ),
     );
   }
@@ -101,13 +101,13 @@ class _CreateAccountNameState extends State<CreateAccountName> {
       SizedBox(height: 10),
       _buildBodyText(),
       SizedBox(height: 10),
-      _buildUsernameInput(),
+      _buildEmailInput(),
       SizedBox(height: 20),
       _buildNextButton(),
     ];
     final PreferredSize _appBar = PreferredSize(
       preferredSize: Size.fromHeight(65),
-      child: CAAppBar('Name'),
+      child: CAAppBar('Email Address'),
     );
 
     return GradientBackground(_formKey, _widgets, context, _appBar);

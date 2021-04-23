@@ -4,7 +4,6 @@ import 'package:scoped_model/scoped_model.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 import '../UI widgets/gradient-bg.dart';
-import '../pages/create-account pages/cr-acc-name.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -17,7 +16,6 @@ class _LoginPageState extends State<LoginPage> {
   final Map<String, dynamic> _formData = {
     'username': null,
     'password': null,
-    'savePassword': false
   };
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final TextEditingController _passwordTxtCtrl = TextEditingController();
@@ -210,12 +208,8 @@ class _LoginPageState extends State<LoginPage> {
           'Create New Account',
           style: Theme.of(context).textTheme.bodyText1,
         ),
-        onPressed: () => Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (BuildContext context) => CreateAccountName(),
-          ),
-        ), //model.authenticate),
+        onPressed: () => Navigator.pushNamed(
+            context, '/create_account'), //model.authenticate),
         style: ButtonStyle(
           backgroundColor: MaterialStateProperty.all<Color>(
             Color.fromRGBO(255, 255, 255, .50),
@@ -236,6 +230,7 @@ class _LoginPageState extends State<LoginPage> {
     final double deviceWidth = MediaQuery.of(context).size.width;
     final double inputFieldWidth = deviceWidth > 550 ? 450 : deviceWidth * 0.8;
     final List<Widget> _widgets = [
+      SizedBox(height: 68),
       _buildUsernameInput(),
       SizedBox(height: 20),
       _buildPasswordInput(),

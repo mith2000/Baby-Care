@@ -9,9 +9,11 @@ class CAAppBar extends PreferredSize {
   Widget build(BuildContext context) {
     return AppBar(
       title: Container(
-        margin: EdgeInsets.only(left: 80),
-        child: Text(
-          _text,
+        margin: EdgeInsets.only(right: 40),
+        child: Center(
+          child: Text(
+            _text,
+          ),
         ),
       ),
       backgroundColor: Colors.transparent,

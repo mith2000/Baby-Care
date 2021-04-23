@@ -30,8 +30,8 @@ class GradientBackground extends StatelessWidget {
           child: Form(
             key: _formKey,
             child: Container(
-              margin: EdgeInsets.fromLTRB(57, 68, 57, 0),
-              child: Column(
+              margin: EdgeInsets.fromLTRB(57, 0, 57, 0),
+              child: ListView(
                 children: _widgets,
               ),
             ),
