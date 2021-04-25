@@ -36,6 +36,7 @@ dependencies:
   url_launcher: ^6.0.3
   flutter_svg: ^0.21.0+1
   hexcolor: ^2.0.3
+  curved_navigation_bar: ^0.3.7
 
 dev_dependencies:
   flutter_test:
@@ -59,6 +60,10 @@ flutter:
     - assets/icon/open_eye.svg
     - assets/icon/correct.svg
     - assets/icon/uncorrect.svg
+    - assets/icon/home.svg
+    - assets/icon/carriage.svg
+    - assets/icon/vaccine.svg
+    - assets/icon/user_circle.svg
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

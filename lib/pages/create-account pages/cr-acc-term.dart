@@ -46,12 +46,7 @@ class _CreateAccountTermState extends State<CreateAccountTerm> {
   }
 
   void _submitForm() {
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (BuildContext context) => CreateAccountTerm(),
-      ),
-    );
+    Navigator.pushReplacementNamed(context, '/home');
   }
 
   @override

@@ -115,6 +115,7 @@ class _LoginPageState extends State<LoginPage> {
       return;
     }
     _formKey.currentState.save();
+    Navigator.pushReplacementNamed(context, '/home');
     // Map<String, dynamic> successInformation = await authenticate(
     //     _formData['username'], _formData['password'], _authMode);
 

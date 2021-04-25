@@ -5,6 +5,7 @@ import 'package:hexcolor/hexcolor.dart';
 
 import 'pages/login.dart';
 import 'pages/create-account pages/cr-acc-name.dart';
+import 'pages/home.dart';
 
 void main() {
   //debugPaintSizeEnabled = true;
@@ -61,6 +62,7 @@ class _MyAppState extends State<MyApp> {
 
         backgroundColor: HexColor('#b3ecf2'),
         cardColor: HexColor('#f2bdcb'),
+        scaffoldBackgroundColor: Colors.white,
 
         fontFamily: 'Avo',
         textTheme: TextTheme(
@@ -88,12 +90,14 @@ class _MyAppState extends State<MyApp> {
           thickness: 0.3,
           color: HexColor('#505050'),
         ),
+        visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
 
       //routes as shortcuts for Navigator
       routes: {
         '/': (BuildContext context) => LoginPage(),
         '/create_account': (BuildContext context) => CreateAccountName(),
+        '/home': (BuildContext context) => HomePage(),
       },
     );
   }
