@@ -1,7 +1,11 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:hexcolor/hexcolor.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:glass_kit/glass_kit.dart';
 
 import '../UI widgets/gradient-bg.dart';
 
@@ -22,7 +26,9 @@ class _LoginPageState extends State<LoginPage> {
 
   final Map<String, String> _icons = {
     'user': 'assets/icon/user.svg',
-    'password': 'assets/icon/password.svg'
+    'password': 'assets/icon/password.svg',
+    'facebook': 'assets/icon/facebook.svg',
+    'google': 'assets/icon/google.svg',
   };
 
   Widget _buildUsernameInput() {
@@ -116,30 +122,6 @@ class _LoginPageState extends State<LoginPage> {
     }
     _formKey.currentState.save();
     Navigator.pushReplacementNamed(context, '/home');
-    // Map<String, dynamic> successInformation = await authenticate(
-    //     _formData['username'], _formData['password'], _authMode);
-
-    // if (successInformation['success']) {
-    //   Navigator.pushReplacementNamed(context, '/');
-    // } else {
-    //   showDialog(
-    //     context: context,
-    //     builder: (BuildContext context) {
-    //       return AlertDialog(
-    //         title: Text('An Error Occurred'),
-    //         content: Text(successInformation['MESSAGE']),
-    //         actions: [
-    //           FlatButton(
-    //             child: Text('OK'),
-    //             onPressed: () {
-    //               Navigator.of(context).pop();
-    //             },
-    //           )
-    //         ],
-    //       );
-    //     },
-    //   );
-    // }
   }
 
   Widget _buildLoginButton() {
@@ -154,29 +136,6 @@ class _LoginPageState extends State<LoginPage> {
         onPressed: () => _authenticationLogin(), //model.authenticate),
       ),
     );
-    // return ScopedModelDescendant<MainModel>(
-    //     builder: (BuildContext context, Widget child, MainModel model) {
-    //   return model.isLoading
-    //       ? CircularProgressIndicator()
-    //       : Container(
-    //           width: inputFieldWidth,
-    //           height: 50,
-    //           child: RaisedButton(
-    //             child: Text(
-    //               _authMode == AuthMode.Login ? 'LOGIN' : 'SIGNUP',
-    //               style: TextStyle(color: Colors.white),
-    //             ),
-    //             onPressed: () => _authenticationLogin(model.authenticate),
-    //             shape: RoundedRectangleBorder(
-    //               borderRadius: BorderRadius.circular(25),
-    //               side: BorderSide(
-    //                 width: 0,
-    //                 style: BorderStyle.none,
-    //               ),
-    //             ),
-    //           ),
-    //         );
-    // });
   }
 
   Widget _buildForgetPasswordButton() {
@@ -200,6 +159,30 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
+  Widget _buildOtherAccountButtons() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        ClipOval(
+          child: TextButton(
+            child: SvgPicture.asset(
+              _icons['facebook'],
+            ),
+            onPressed: () {},
+          ),
+        ),
+        ClipOval(
+          child: TextButton(
+            child: SvgPicture.asset(
+              _icons['google'],
+            ),
+            onPressed: () {},
+          ),
+        ),
+      ],
+    );
+  }
+
   Widget _buildCreateAccountButton() {
     return Container(
       width: 300,
@@ -217,7 +200,7 @@ class _LoginPageState extends State<LoginPage> {
           ),
           shape: MaterialStateProperty.all<OutlinedBorder>(
             RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(15),
+              borderRadius: BorderRadius.circular(32),
             ),
           ),
           elevation: MaterialStateProperty.all<double>(0),
@@ -229,9 +212,8 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     final double deviceWidth = MediaQuery.of(context).size.width;
-    final double inputFieldWidth = deviceWidth > 550 ? 450 : deviceWidth * 0.8;
+    final double inputFieldWidth = deviceWidth * 0.9;
     final List<Widget> _widgets = [
-      SizedBox(height: 68),
       _buildUsernameInput(),
       SizedBox(height: 20),
       _buildPasswordInput(),
@@ -239,15 +221,141 @@ class _LoginPageState extends State<LoginPage> {
       _buildLoginButton(),
       SizedBox(height: 20),
       _buildForgetPasswordButton(),
-      Expanded(
-        child: Align(
-          alignment: Alignment.bottomCenter,
-          child: _buildCreateAccountButton(),
-        ),
-      ),
-      SizedBox(height: 20),
     ];
 
-    return GradientBackground(_formKey, _widgets, context);
+    return Scaffold(
+      body: Center(
+        child: GestureDetector(
+          onTap: () {
+            //tap out of container will close the keyboard
+            FocusScope.of(context).requestFocus(FocusNode());
+          },
+          child: Container(
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.topRight,
+                end: Alignment.bottomLeft,
+                colors: [
+                  Theme.of(context).cardColor,
+                  Theme.of(context).backgroundColor,
+                ],
+              ),
+            ),
+            child: Form(
+              key: _formKey,
+              child: Container(
+                child: ListView(
+                  children: [
+                    Stack(
+                      children: [
+                        Container(
+                          width: 80,
+                          height: 80,
+                          margin: EdgeInsets.only(left: 280),
+                          decoration: BoxDecoration(
+                            gradient: LinearGradient(
+                              colors: [
+                                Colors.white,
+                                HexColor('#EEBCCB'),
+                              ],
+                              begin: Alignment.topLeft,
+                              end: Alignment.bottomRight,
+                            ),
+                            shape: BoxShape.circle,
+                          ),
+                        ),
+                        Container(
+                          width: 50,
+                          height: 50,
+                          margin: EdgeInsets.only(top: 10, left: 75),
+                          decoration: BoxDecoration(
+                            gradient: LinearGradient(
+                              colors: [
+                                Colors.white,
+                                HexColor('#EEBCCB'),
+                              ],
+                              begin: Alignment.topLeft,
+                              end: Alignment.bottomRight,
+                            ),
+                            shape: BoxShape.circle,
+                          ),
+                        ),
+                        Container(
+                          width: 130,
+                          height: 130,
+                          margin: EdgeInsets.only(top: 250),
+                          decoration: BoxDecoration(
+                            gradient: LinearGradient(
+                              colors: [
+                                Colors.white,
+                                HexColor('#EEBCCB'),
+                              ],
+                              begin: Alignment.topLeft,
+                              end: Alignment.bottomRight,
+                            ),
+                            shape: BoxShape.circle,
+                          ),
+                        ),
+                        Container(
+                          margin: EdgeInsets.fromLTRB(47, 30, 47, 0),
+                          alignment: Alignment.topCenter,
+                          child: Container(
+                            height: 378,
+                            child: GlassContainer(
+                              height: 378,
+                              width: inputFieldWidth,
+                              gradient: new RadialGradient(
+                                colors: [
+                                  Colors.white.withOpacity(.42),
+                                  Colors.white.withOpacity(.06),
+                                ],
+                                radius: 1,
+                                center: Alignment(-0.66, -0.66),
+                              ),
+                              blur: 12,
+                              borderColor: Colors.white.withOpacity(.3),
+                              borderRadius: BorderRadius.circular(32.0),
+                              borderWidth: 1.0,
+                              elevation: 10.0,
+                              child: ListView(
+                                children: _widgets,
+                              ),
+                            ),
+                          ),
+                        ),
+                        Container(
+                          width: 80,
+                          height: 80,
+                          margin: EdgeInsets.only(top: 320, left: 300),
+                          decoration: BoxDecoration(
+                            gradient: LinearGradient(
+                              colors: [
+                                Colors.white,
+                                HexColor('#EEBCCB'),
+                              ],
+                              begin: Alignment.topLeft,
+                              end: Alignment.bottomRight,
+                            ),
+                            shape: BoxShape.circle,
+                          ),
+                        ),
+                      ],
+                    ),
+                    Expanded(
+                      child: Align(
+                        alignment: Alignment.bottomCenter,
+                        child: _buildOtherAccountButtons(),
+                      ),
+                    ),
+                    _buildCreateAccountButton(),
+                    SizedBox(height: 20),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
   }
 }

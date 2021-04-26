@@ -37,6 +37,7 @@ dependencies:
   flutter_svg: ^0.21.0+1
   hexcolor: ^2.0.3
   curved_navigation_bar: ^0.3.7
+  glass_kit: ^2.0.0
 
 dev_dependencies:
   flutter_test:
@@ -64,6 +65,8 @@ flutter:
     - assets/icon/carriage.svg
     - assets/icon/vaccine.svg
     - assets/icon/user_circle.svg
+    - assets/icon/facebook.svg
+    - assets/icon/google.svg
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
