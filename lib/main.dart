@@ -66,24 +66,30 @@ class _MyAppState extends State<MyApp> {
 
         fontFamily: 'Avo',
         textTheme: TextTheme(
-            button: TextStyle(
-              fontSize: 14.0,
-              color: Color.fromRGBO(255, 255, 255, 1),
-              fontWeight: FontWeight.bold,
-            ),
-            bodyText1: TextStyle(
-              fontSize: 14.0,
-              color: Color.fromRGBO(0, 0, 0, .5),
-            ),
-            bodyText2: TextStyle(
-              fontSize: 11.0,
-              color: Color.fromRGBO(0, 0, 0, 1),
-            ),
-            headline1: TextStyle(
-              fontSize: 16.0,
-              fontWeight: FontWeight.bold,
-              color: Color.fromRGBO(0, 0, 0, 1),
-            )),
+          button: TextStyle(
+            fontSize: 14.0,
+            color: Color.fromRGBO(255, 255, 255, 1),
+            fontWeight: FontWeight.bold,
+          ),
+          bodyText1: TextStyle(
+            fontSize: 14.0,
+            color: Color.fromRGBO(0, 0, 0, .5),
+          ),
+          bodyText2: TextStyle(
+            fontSize: 11.0,
+            color: Color.fromRGBO(0, 0, 0, 1),
+          ),
+          headline1: TextStyle(
+            fontSize: 16.0,
+            fontWeight: FontWeight.bold,
+            color: Color.fromRGBO(0, 0, 0, 1),
+          ),
+          headline2: TextStyle(
+            fontSize: 14.0,
+            fontWeight: FontWeight.bold,
+            color: Color.fromRGBO(0, 0, 0, .7),
+          ),
+        ),
 
         dividerTheme: DividerThemeData(
           space: 30,
