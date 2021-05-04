@@ -10,8 +10,6 @@ class CreateAccountTerm extends StatefulWidget {
 }
 
 class _CreateAccountTermState extends State<CreateAccountTerm> {
-  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-
   Widget _buildHeading() {
     return Text(
       'Finish Signing Up',
@@ -45,12 +43,11 @@ class _CreateAccountTermState extends State<CreateAccountTerm> {
     );
   }
 
-  void _submitForm() {
+  void _submitForm() async {
     Navigator.pushReplacementNamed(context, '/home');
   }
 
-  @override
-  Widget build(BuildContext context) {
+  Widget _buildBodyWidget() {
     final List<Widget> _widgets = [
       SizedBox(height: 20),
       _buildHeading(),
@@ -59,11 +56,21 @@ class _CreateAccountTermState extends State<CreateAccountTerm> {
       SizedBox(height: 20),
       _buildNextButton(),
     ];
+    return Container(
+      margin: EdgeInsets.fromLTRB(57, 0, 57, 0),
+      child: ListView(
+        children: _widgets,
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final PreferredSize _appBar = PreferredSize(
       preferredSize: Size.fromHeight(65),
-      child: CAAppBar('Terms & Privacy'),
+      child: CAAppBar('Terms & Policy'),
     );
 
-    return GradientBackground(_formKey, _widgets, context, _appBar);
+    return GradientBackground(_buildBodyWidget(), context, _appBar);
   }
 }

@@ -120,9 +120,9 @@ class _LoginPageState extends State<LoginPage> {
 
   void _authenticationLogin(//Function authenticate
       ) async {
-    if (!_formKey.currentState.validate()) {
-      return;
-    }
+    // if (!_formKey.currentState.validate()) {
+    //   return;
+    // }
     _formKey.currentState.save();
     Navigator.pushReplacementNamed(context, '/home');
   }
@@ -213,8 +213,7 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  @override
-  Widget build(BuildContext context) {
+  Widget _buildBodyWidget() {
     final double deviceWidth = MediaQuery.of(context).size.width;
     final double inputFieldWidth = deviceWidth * 0.9;
     final List<Widget> _inGlassWidgets = [
@@ -226,139 +225,120 @@ class _LoginPageState extends State<LoginPage> {
       SizedBox(height: 20),
       _buildForgetPasswordButton(),
     ];
-
-    return Scaffold(
-      resizeToAvoidBottomInset: false,
-      body: Center(
-        child: GestureDetector(
-          onTap: () {
-            //tap out of container will close the keyboard
-            FocusScope.of(context).requestFocus(FocusNode());
-          },
-          child: Container(
+    return Form(
+      key: _formKey,
+      child: Stack(
+        children: [
+          Container(
+            width: 80,
+            height: 80,
+            margin: EdgeInsets.only(left: 280),
             decoration: BoxDecoration(
               gradient: LinearGradient(
-                begin: Alignment.topRight,
-                end: Alignment.bottomLeft,
                 colors: [
-                  Theme.of(context).cardColor,
-                  Theme.of(context).backgroundColor,
+                  Colors.white,
+                  HexColor('#EEBCCB'),
                 ],
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
               ),
+              shape: BoxShape.circle,
             ),
-            child: Form(
-              key: _formKey,
-              child: Stack(
-                children: [
-                  Container(
-                    width: 80,
-                    height: 80,
-                    margin: EdgeInsets.only(left: 280),
-                    decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                        colors: [
-                          Colors.white,
-                          HexColor('#EEBCCB'),
-                        ],
-                        begin: Alignment.topLeft,
-                        end: Alignment.bottomRight,
-                      ),
-                      shape: BoxShape.circle,
-                    ),
-                  ),
-                  Container(
-                    width: 50,
-                    height: 50,
-                    margin: EdgeInsets.only(top: 10, left: 75),
-                    decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                        colors: [
-                          Colors.white,
-                          HexColor('#EEBCCB'),
-                        ],
-                        begin: Alignment.topLeft,
-                        end: Alignment.bottomRight,
-                      ),
-                      shape: BoxShape.circle,
-                    ),
-                  ),
-                  Container(
-                    width: 130,
-                    height: 130,
-                    margin: EdgeInsets.only(top: 250),
-                    decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                        colors: [
-                          Colors.white,
-                          HexColor('#EEBCCB'),
-                        ],
-                        begin: Alignment.topLeft,
-                        end: Alignment.bottomRight,
-                      ),
-                      shape: BoxShape.circle,
-                    ),
-                  ),
-                  Container(
-                    margin: EdgeInsets.fromLTRB(47, 30, 47, 0),
-                    alignment: Alignment.topCenter,
-                    child: Container(
-                      height: 430,
-                      child: GlassContainer(
-                        height: 430,
-                        width: inputFieldWidth,
-                        gradient: new RadialGradient(
-                          colors: [
-                            Colors.white.withOpacity(.42),
-                            Colors.white.withOpacity(.06),
-                          ],
-                          radius: 1,
-                          center: Alignment(-0.66, -0.66),
-                        ),
-                        blur: 12,
-                        borderColor: Colors.white.withOpacity(.3),
-                        borderRadius: BorderRadius.circular(32.0),
-                        borderWidth: 1.0,
-                        elevation: 10.0,
-                        child: Column(
-                          mainAxisSize: MainAxisSize.max,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: _inGlassWidgets,
-                        ),
-                      ),
-                    ),
-                  ),
-                  Container(
-                    width: 80,
-                    height: 80,
-                    margin: EdgeInsets.only(top: 320, left: 300),
-                    decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                        colors: [
-                          Colors.white,
-                          HexColor('#EEBCCB'),
-                        ],
-                        begin: Alignment.topLeft,
-                        end: Alignment.bottomRight,
-                      ),
-                      shape: BoxShape.circle,
-                    ),
-                  ),
-                  Column(
-                    mainAxisSize: MainAxisSize.max,
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      _buildOtherAccountButtons(),
-                      SizedBox(height: 20),
-                      _buildCreateAccountButton(),
-                      SizedBox(height: 20),
-                    ],
-                  ),
+          ),
+          Container(
+            width: 50,
+            height: 50,
+            margin: EdgeInsets.only(top: 10, left: 75),
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                colors: [
+                  Colors.white,
+                  HexColor('#EEBCCB'),
                 ],
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+              ),
+              shape: BoxShape.circle,
+            ),
+          ),
+          Container(
+            width: 130,
+            height: 130,
+            margin: EdgeInsets.only(top: 250),
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                colors: [
+                  Colors.white,
+                  HexColor('#EEBCCB'),
+                ],
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+              ),
+              shape: BoxShape.circle,
+            ),
+          ),
+          Container(
+            margin: EdgeInsets.fromLTRB(47, 30, 47, 0),
+            alignment: Alignment.topCenter,
+            child: Container(
+              height: 430,
+              child: GlassContainer(
+                height: 430,
+                width: inputFieldWidth,
+                gradient: new RadialGradient(
+                  colors: [
+                    Colors.white.withOpacity(.42),
+                    Colors.white.withOpacity(.06),
+                  ],
+                  radius: 1,
+                  center: Alignment(-0.66, -0.66),
+                ),
+                blur: 12,
+                borderColor: Colors.white.withOpacity(.3),
+                borderRadius: BorderRadius.circular(32.0),
+                borderWidth: 1.0,
+                elevation: 10.0,
+                child: Column(
+                  mainAxisSize: MainAxisSize.max,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: _inGlassWidgets,
+                ),
               ),
             ),
           ),
-        ),
+          Container(
+            width: 80,
+            height: 80,
+            margin: EdgeInsets.only(top: 320, left: 300),
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                colors: [
+                  Colors.white,
+                  HexColor('#EEBCCB'),
+                ],
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+              ),
+              shape: BoxShape.circle,
+            ),
+          ),
+          Column(
+            mainAxisSize: MainAxisSize.max,
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              _buildOtherAccountButtons(),
+              SizedBox(height: 20),
+              _buildCreateAccountButton(),
+              SizedBox(height: 20),
+            ],
+          ),
+        ],
       ),
     );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return GradientBackground(_buildBodyWidget(), context);
   }
 }
