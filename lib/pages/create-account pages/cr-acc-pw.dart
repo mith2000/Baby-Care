@@ -87,7 +87,7 @@ class _CreateAccountPasswordState extends State<CreateAccountPassword> {
         ),
         suffixIcon: _buildToggleObscurePasswordButton(),
         filled: true,
-        fillColor: Colors.white,
+        fillColor: Colors.white.withOpacity(.3),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(45),
           borderSide: BorderSide(
@@ -149,7 +149,7 @@ class _CreateAccountPasswordState extends State<CreateAccountPassword> {
           ),
         ),
         filled: true,
-        fillColor: Colors.white,
+        fillColor: Colors.white.withOpacity(.3),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(45),
           borderSide: BorderSide(
@@ -209,8 +209,7 @@ class _CreateAccountPasswordState extends State<CreateAccountPassword> {
     );
   }
 
-  @override
-  Widget build(BuildContext context) {
+  Widget _buildBodyWidget() {
     final List<Widget> _widgets = [
       SizedBox(height: 20),
       _buildHeading(),
@@ -223,11 +222,24 @@ class _CreateAccountPasswordState extends State<CreateAccountPassword> {
       SizedBox(height: 40),
       _buildNextButton(),
     ];
+    return Form(
+      key: _formKey,
+      child: Container(
+        margin: EdgeInsets.fromLTRB(57, 0, 57, 0),
+        child: ListView(
+          children: _widgets,
+        ),
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final PreferredSize _appBar = PreferredSize(
       preferredSize: Size.fromHeight(65),
       child: CAAppBar('Password'),
     );
 
-    return GradientBackground(_formKey, _widgets, context, _appBar);
+    return GradientBackground(_buildBodyWidget(), context, _appBar);
   }
 }

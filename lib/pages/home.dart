@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
+import '../UI widgets/gradient-bg.dart';
 import 'baby-detail/baby-detail.dart';
 import 'catalog.dart';
 import 'user-management/user.dart';
@@ -30,7 +31,6 @@ class _HomePageState extends State<HomePage> {
   Widget _buildBottomTabBar(BuildContext context) {
     return CurvedNavigationBar(
       backgroundColor: Theme.of(context).backgroundColor,
-      buttonBackgroundColor: Colors.white,
       items: [
         Tab(
           icon: SvgPicture.asset(
@@ -67,16 +67,24 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
+    final PreferredSize _appBar = PreferredSize(
+      preferredSize: Size.fromHeight(65),
+      child: AppBar(
         title: Text(
-          'Manage Product',
-          style: TextStyle(color: Colors.white),
+          'Baby Care',
+          style: TextStyle(
+            fontSize: 26.0,
+            fontWeight: FontWeight.bold,
+            color: Color.fromRGBO(255, 255, 255, 1),
+          ),
         ),
         iconTheme: IconThemeData(color: Colors.white),
+        backgroundColor: Colors.transparent,
+        elevation: 0,
       ),
-      bottomNavigationBar: _buildBottomTabBar(context),
-      body: screen[selectedIndex],
     );
+
+    return GradientBackground(
+        screen[selectedIndex], context, _appBar, _buildBottomTabBar(context));
   }
 }

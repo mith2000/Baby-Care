@@ -45,7 +45,7 @@ class _CreateAccountNameState extends State<CreateAccountName> {
           width: 10,
         ),
         filled: true,
-        fillColor: Colors.white,
+        fillColor: Colors.white.withOpacity(.3),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(45),
           borderSide: BorderSide(
@@ -93,8 +93,7 @@ class _CreateAccountNameState extends State<CreateAccountName> {
     );
   }
 
-  @override
-  Widget build(BuildContext context) {
+  Widget _buildBodyWidget() {
     final List<Widget> _widgets = [
       SizedBox(height: 20),
       _buildHeading(),
@@ -105,11 +104,24 @@ class _CreateAccountNameState extends State<CreateAccountName> {
       SizedBox(height: 20),
       _buildNextButton(),
     ];
+    return Form(
+      key: _formKey,
+      child: Container(
+        margin: EdgeInsets.fromLTRB(57, 0, 57, 0),
+        child: ListView(
+          children: _widgets,
+        ),
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final PreferredSize _appBar = PreferredSize(
       preferredSize: Size.fromHeight(65),
       child: CAAppBar('Name'),
     );
 
-    return GradientBackground(_formKey, _widgets, context, _appBar);
+    return GradientBackground(_buildBodyWidget(), context, _appBar);
   }
 }
