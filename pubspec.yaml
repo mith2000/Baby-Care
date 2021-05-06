@@ -70,6 +70,9 @@ flutter:
     - assets/icon/google.svg
     - assets/icon/notify.svg
     - assets/icon/threedot.svg
+    - assets/image/baby_default.jpg
+    - assets/image/baby2_default.jpg
+    - assets/image/baby3_default.jpg
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
