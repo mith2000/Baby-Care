@@ -26,6 +26,8 @@ class _HomePageState extends State<HomePage> {
     'baby-health': 'assets/icon/carriage.svg',
     'vaccine': 'assets/icon/vaccine.svg',
     'user': 'assets/icon/user_circle.svg',
+    'notify': 'assets/icon/notify.svg',
+    'threedot': 'assets/icon/threedot.svg',
   };
 
   Widget _buildBottomTabBar(BuildContext context) {
@@ -70,14 +72,36 @@ class _HomePageState extends State<HomePage> {
     final PreferredSize _appBar = PreferredSize(
       preferredSize: Size.fromHeight(65),
       child: AppBar(
-        title: Text(
-          'Baby Care',
-          style: TextStyle(
-            fontSize: 26.0,
-            fontWeight: FontWeight.bold,
-            color: Color.fromRGBO(255, 255, 255, 1),
+        title: Container(
+          margin: EdgeInsets.only(left: 15),
+          child: Text(
+            'Baby Care',
+            style: TextStyle(
+              fontFamily: 'Dosis',
+              fontSize: 26.0,
+              fontWeight: FontWeight.bold,
+              color: Color.fromRGBO(255, 255, 255, 1),
+            ),
           ),
         ),
+        actions: [
+          IconButton(
+            icon: SvgPicture.asset(
+              _icons['notify'],
+              color: Colors.white,
+            ),
+            iconSize: 30,
+            onPressed: () {},
+          ),
+          IconButton(
+            icon: SvgPicture.asset(
+              _icons['threedot'],
+              color: Colors.white,
+            ),
+            iconSize: 30,
+            onPressed: () {},
+          ),
+        ],
         iconTheme: IconThemeData(color: Colors.white),
         backgroundColor: Colors.transparent,
         elevation: 0,
