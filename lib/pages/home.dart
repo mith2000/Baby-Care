@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:hexcolor/hexcolor.dart';
 
 import '../UI widgets/gradient-bg.dart';
-import 'baby-detail/baby-detail.dart';
+import 'carriage/carriage.dart';
 import 'catalog.dart';
 import 'user-management/user.dart';
 import 'vaccine/vaccine.dart';
@@ -17,7 +18,7 @@ class _HomePageState extends State<HomePage> {
   int selectedIndex = 0;
   final screen = [
     CatalogPage(),
-    BabyDetailPage(),
+    CarriagePage(),
     VaccinePage(),
     UserPage(),
   ];
@@ -80,7 +81,7 @@ class _HomePageState extends State<HomePage> {
               fontFamily: 'Dosis',
               fontSize: 26.0,
               fontWeight: FontWeight.bold,
-              color: Color.fromRGBO(255, 255, 255, 1),
+              color: HexColor('#bd88f2'),
             ),
           ),
         ),
@@ -88,7 +89,7 @@ class _HomePageState extends State<HomePage> {
           IconButton(
             icon: SvgPicture.asset(
               _icons['notify'],
-              color: Colors.white,
+              color: HexColor('#505050'),
             ),
             iconSize: 30,
             onPressed: () {},
@@ -96,14 +97,14 @@ class _HomePageState extends State<HomePage> {
           IconButton(
             icon: SvgPicture.asset(
               _icons['threedot'],
-              color: Colors.white,
+              color: HexColor('#505050'),
             ),
             iconSize: 30,
             onPressed: () {},
           ),
         ],
         iconTheme: IconThemeData(color: Colors.white),
-        backgroundColor: Colors.transparent,
+        backgroundColor: Colors.white,
         elevation: 0,
       ),
     );
