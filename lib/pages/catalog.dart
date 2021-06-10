@@ -8,18 +8,11 @@ class CatalogPage extends StatelessWidget {
       child: GlassContainer(
         height: 80,
         width: deviceWidth * 0.8,
-        gradient: new RadialGradient(
-          colors: [
-            Colors.white.withOpacity(.42),
-            Colors.white.withOpacity(.06),
-          ],
-          radius: 3,
-          center: Alignment(-0.66, -0.66),
-        ),
+        color: Colors.white.withOpacity(0.33),
         blur: 12,
-        borderColor: Colors.white.withOpacity(.3),
+        borderColor: Colors.white,
         borderRadius: BorderRadius.circular(32.0),
-        borderWidth: 1.0,
+        borderWidth: 1.5,
         elevation: 10.0,
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
@@ -35,87 +28,71 @@ class CatalogPage extends StatelessWidget {
   }
 
   Widget _buildCatalogBody(double deviceWidth, BuildContext context) {
-    final Map<String, double> heights = {
-      '1children': 722,
-      '2children': 880,
-      '3children': 1038,
-    };
-    return Container(
-      child: GlassContainer(
-        height: heights['1children'],
-        width: deviceWidth,
-        gradient: new RadialGradient(
-          colors: [
-            Colors.white.withOpacity(.42),
-            Colors.white.withOpacity(.06),
-          ],
-          radius: 1,
-          center: Alignment(-0.66, -0.66),
+    return Column(
+      mainAxisSize: MainAxisSize.max,
+      mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: const EdgeInsets.only(left: 30, top: 10),
+          child: Text(
+            'Hi Username!',
+            style: TextStyle(
+              fontSize: 14.0,
+              color: HexColor('#505050'),
+              fontWeight: FontWeight.bold,
+            ),
+          ),
         ),
-        blur: 12,
-        borderColor: Colors.white.withOpacity(.3),
-        borderRadius: BorderRadius.circular(32.0),
-        borderWidth: 1.0,
-        elevation: 10.0,
-        child: Column(
-          mainAxisSize: MainAxisSize.max,
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
+        Padding(
+          padding: const EdgeInsets.only(left: 30),
+          child: Text(
+            'Hope your angels are well',
+            style: TextStyle(
+              fontSize: 14.0,
+              color: HexColor('#505050'),
+              fontWeight: FontWeight.bold,
+            ),
+            overflow: TextOverflow.ellipsis,
+          ),
+        ),
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Padding(
-              padding: const EdgeInsets.only(left: 30, top: 10),
-              child: Text(
-                'Hi Username!',
-                style: Theme.of(context).textTheme.button,
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(left: 30),
-              child: Text(
-                'Hope your angels are well',
-                style: Theme.of(context).textTheme.button,
-                overflow: TextOverflow.ellipsis,
-              ),
-            ),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Row(),
-                _buildOption(
-                    'Baby Health', 'Checking the health status of your baby',
-                    () {
-                  print('Baby Health');
-                }, AssetImage('assets/image/baby_default.jpg'), [
-                  HexColor('#7ed1f2'),
-                  HexColor('#bd88f2'),
-                ]),
-                _buildOption('Menu Suggestions',
-                    'Get to know what your baby needs for the coming week', () {
-                  print('Menu Suggestions');
-                }, AssetImage('assets/image/baby_default.jpg'), [
-                  HexColor('#ffda8f'),
-                  HexColor('#fc9495'),
-                ]),
-                _buildOption('Vaccine Reminder',
-                    'The following vaccination suggestions are very important for your kid',
-                    () {
-                  print('Vaccine Reminder');
-                }, AssetImage('assets/image/baby_default.jpg'), [
-                  HexColor('#7ed1f2'),
-                  HexColor('#bd88f2'),
-                ]),
-                _buildOption('Vaccination history',
-                    'Store vaccination information for your baby', () {
-                  print('Vaccination history');
-                }, AssetImage('assets/image/baby_default.jpg'), [
-                  HexColor('#ffda8f'),
-                  HexColor('#fc9495'),
-                ]),
-              ],
-            ),
+            Row(),
+            _buildOption(
+                'Baby Health', 'Checking the health status of your baby', () {
+              print('Baby Health');
+            }, AssetImage('assets/image/baby_default.jpg'), [
+              HexColor('#7ed1f2'),
+              HexColor('#bd88f2'),
+            ]),
+            _buildOption('Menu Suggestions',
+                'Get to know what your baby needs for the coming week', () {
+              print('Menu Suggestions');
+            }, AssetImage('assets/image/baby_default.jpg'), [
+              HexColor('#ffda8f'),
+              HexColor('#fc9495'),
+            ]),
+            _buildOption('Vaccine Reminder',
+                'The following vaccination suggestions are very important for your kid',
+                () {
+              print('Vaccine Reminder');
+            }, AssetImage('assets/image/baby_default.jpg'), [
+              HexColor('#7ed1f2'),
+              HexColor('#bd88f2'),
+            ]),
+            _buildOption('Vaccination history',
+                'Store vaccination information for your baby', () {
+              print('Vaccination history');
+            }, AssetImage('assets/image/baby_default.jpg'), [
+              HexColor('#ffda8f'),
+              HexColor('#fc9495'),
+            ]),
+            SizedBox(height: 20),
           ],
         ),
-      ),
+      ],
     );
   }
 
@@ -142,34 +119,6 @@ class CatalogPage extends StatelessWidget {
         ),
         child: Row(
           children: [
-            // SizedBox(width: 20),
-            // Column(
-            //   crossAxisAlignment: CrossAxisAlignment.start,
-            //   children: [
-            //     Container(
-            //       width: 148,
-            //       margin: EdgeInsets.only(top: 5),
-            //       child: Text(
-            //         headerText,
-            //         style: TextStyle(
-            //           fontSize: 10.0,
-            //           color: Color.fromRGBO(255, 255, 255, 1),
-            //           fontWeight: FontWeight.bold,
-            //         ),
-            //       ),
-            //     ),
-            //     Container(
-            //       width: 124,
-            //       child: Text(
-            //         bodyText,
-            //         style: TextStyle(
-            //           fontSize: 8.0,
-            //           color: Color.fromRGBO(255, 255, 255, .8),
-            //         ),
-            //       ),
-            //     ),
-            //   ],
-            // ),
             Container(
               width: 148,
               margin: EdgeInsets.only(left: 20, top: 5),
@@ -204,16 +153,32 @@ class CatalogPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final double deviceWidth = MediaQuery.of(context).size.width;
+    final Map<String, double> heights = {
+      '1children': 722,
+      '2children': 880,
+      '3children': 1038,
+    };
 
     return Container(
-      margin: EdgeInsets.only(top: 20, left: 10, right: 10),
-      child: SafeArea(
-        child: ListView(
-          children: [
-            _buildTipLabel(deviceWidth),
-            SizedBox(height: 20),
-            _buildCatalogBody(deviceWidth, context),
-          ],
+      child: GlassContainer(
+        height: 1038,
+        width: deviceWidth,
+        color: Colors.white.withOpacity(.7),
+        blur: 12,
+        borderColor: Colors.white,
+        borderWidth: 0,
+        elevation: 10.0,
+        child: Container(
+          margin: EdgeInsets.only(top: 20, left: 10, right: 10),
+          child: SafeArea(
+            child: ListView(
+              children: [
+                _buildTipLabel(deviceWidth),
+                SizedBox(height: 20),
+                _buildCatalogBody(deviceWidth, context),
+              ],
+            ),
+          ),
         ),
       ),
     );
