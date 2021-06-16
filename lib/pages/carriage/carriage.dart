@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:glass_kit/glass_kit.dart';
 import 'package:hexcolor/hexcolor.dart';
 
+import 'create-baby/cr-baby-gender.dart';
+
 class CarriagePage extends StatelessWidget {
   Widget _buildBabyButton(BuildContext context, String headerText,
       String bodyText, Function todo, ImageProvider<Object> imageDes) {
@@ -18,9 +20,9 @@ class CarriagePage extends StatelessWidget {
           boxShadow: [
             BoxShadow(
               color: HexColor('#bd88f2').withOpacity(0.5),
-              spreadRadius: 4,
+              spreadRadius: 0,
               blurRadius: 8,
-              offset: Offset(-4, 8),
+              offset: Offset(0, 8),
             ),
           ],
         ),
@@ -99,6 +101,24 @@ class CarriagePage extends StatelessWidget {
     );
   }
 
+  Widget _buildCreateBabyButton(BuildContext context) {
+    return IconButton(
+      icon: Icon(
+        Icons.add_circle,
+        size: 56,
+        color: Theme.of(context).buttonColor,
+      ),
+      onPressed: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (BuildContext context) => CreateBabyGender(),
+          ),
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final double deviceWidth = MediaQuery.of(context).size.width;
@@ -124,6 +144,8 @@ class CarriagePage extends StatelessWidget {
                 _buildBabyButton(context, 'Name', '15', () {
                   print('Baby Health');
                 }, AssetImage('assets/image/baby_default.jpg')),
+                SizedBox(height: 20),
+                _buildCreateBabyButton(context),
               ],
             ),
           ),
