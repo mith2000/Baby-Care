@@ -134,7 +134,9 @@ class _CreateBabyNIState extends State<CreateBabyNI> {
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(
-        builder: (BuildContext context) => HomePage(),
+        builder: (BuildContext context) => HomePage(
+          selectedIndex: 0,
+        ),
       ),
     );
   }

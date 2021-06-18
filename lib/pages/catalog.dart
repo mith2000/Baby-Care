@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:glass_kit/glass_kit.dart';
 import 'package:hexcolor/hexcolor.dart';
 
+import 'carriage/baby-health/baby-health.dart';
+
 class CatalogPage extends StatelessWidget {
   Widget _buildTipLabel(double deviceWidth) {
     return Container(
@@ -62,7 +64,12 @@ class CatalogPage extends StatelessWidget {
             Row(),
             _buildOption(
                 'Baby Health', 'Checking the health status of your baby', () {
-              print('Baby Health');
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (BuildContext context) => BabyHealthPage(),
+                ),
+              );
             }, AssetImage('assets/image/baby_default.jpg'), [
               HexColor('#7ed1f2'),
               HexColor('#bd88f2'),

@@ -10,12 +10,16 @@ import 'user-management/user.dart';
 import 'vaccine/vaccine.dart';
 
 class HomePage extends StatefulWidget {
+  int selectedIndex = 0;
+
+  HomePage({this.selectedIndex = 0});
+
   @override
   _HomePageState createState() => _HomePageState();
 }
 
 class _HomePageState extends State<HomePage> {
-  int selectedIndex = 0;
+  GlobalKey _bottomNavigationKey = GlobalKey();
   final screen = [
     CatalogPage(),
     CarriagePage(),
@@ -31,8 +35,9 @@ class _HomePageState extends State<HomePage> {
     'threedot': 'assets/icon/threedot.svg',
   };
 
-  Widget _buildBottomTabBar(BuildContext context) {
+  Widget _buildBottomTabBar() {
     return CurvedNavigationBar(
+      key: _bottomNavigationKey,
       backgroundColor: Theme.of(context).backgroundColor,
       items: [
         Tab(
@@ -62,7 +67,7 @@ class _HomePageState extends State<HomePage> {
       ],
       onTap: (index) {
         setState(() {
-          selectedIndex = index;
+          widget.selectedIndex = index;
         });
       },
     );
@@ -110,6 +115,6 @@ class _HomePageState extends State<HomePage> {
     );
 
     return GradientBackground(
-        screen[selectedIndex], context, _appBar, _buildBottomTabBar(context));
+        screen[widget.selectedIndex], context, _appBar, _buildBottomTabBar());
   }
 }

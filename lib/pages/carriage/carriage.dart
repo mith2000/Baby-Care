@@ -60,26 +60,27 @@ class CarriagePage extends StatelessWidget {
                           ),
                         ),
                       ),
+                      VerticalDivider(
+                        width: 10,
+                        thickness: 0.3,
+                        indent: 10,
+                        endIndent: 10,
+                      ),
                       Container(
                         width: 32,
                         height: 32,
                         alignment: Alignment.center,
-                        margin: EdgeInsets.only(left: 5, right: 5),
                         decoration: BoxDecoration(
                           color: Theme.of(context).buttonColor,
                           borderRadius: BorderRadius.circular(10.0),
                         ),
                         child: Text(
                           bodyText,
-                          style: TextStyle(
-                            fontSize: 14.0,
-                            color: Color.fromRGBO(255, 255, 255, 1),
-                            fontWeight: FontWeight.bold,
-                          ),
+                          style: Theme.of(context).textTheme.button,
                         ),
                       ),
                       Text(
-                        'month',
+                        ' month',
                         style: TextStyle(
                           fontSize: 9.0,
                           color: Color.fromRGBO(255, 255, 255, 1),
