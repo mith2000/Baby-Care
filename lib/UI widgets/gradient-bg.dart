@@ -19,18 +19,15 @@ class GradientBackground extends StatelessWidget {
         child: Container(
           decoration: BoxDecoration(
             gradient: LinearGradient(
-                begin: Alignment.topRight,
-                end: Alignment.bottomLeft,
-                colors: [
-                  Theme.of(_context).cardColor,
-                  Theme.of(_context).backgroundColor,
-                  Theme.of(_context).backgroundColor,
-                ],
-                stops: [
-                  0.3,
-                  0.8,
-                  1
-                ]),
+              begin: Alignment.topRight,
+              end: Alignment.bottomLeft,
+              colors: [
+                Theme.of(_context).cardColor,
+                Theme.of(_context).backgroundColor,
+                Theme.of(_context).backgroundColor,
+              ],
+              stops: [0.3, 0.8, 1],
+            ),
           ),
           child: _widget,
         ),

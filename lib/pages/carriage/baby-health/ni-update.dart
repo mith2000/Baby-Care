@@ -299,7 +299,7 @@ class _NIUpdatePageState extends State<NIUpdatePage> {
         centerTitle: true,
         title: Container(
           child: Text(
-            'BMI Update',
+            'NI Update',
             style: TextStyle(
               fontFamily: 'Dosis',
               fontSize: 26.0,

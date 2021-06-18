@@ -3,6 +3,7 @@ import 'package:glass_kit/glass_kit.dart';
 import 'package:hexcolor/hexcolor.dart';
 
 import 'carriage/baby-health/baby-health.dart';
+import 'menu-suggest/menu-suggest.dart';
 
 class CatalogPage extends StatelessWidget {
   Widget _buildTipLabel(double deviceWidth) {
@@ -26,80 +27,6 @@ class CatalogPage extends StatelessWidget {
           ),
         ),
       ),
-    );
-  }
-
-  Widget _buildCatalogBody(double deviceWidth, BuildContext context) {
-    return Column(
-      mainAxisSize: MainAxisSize.max,
-      mainAxisAlignment: MainAxisAlignment.start,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Padding(
-          padding: const EdgeInsets.only(left: 30, top: 10),
-          child: Text(
-            'Hi Username!',
-            style: TextStyle(
-              fontSize: 14.0,
-              color: HexColor('#505050'),
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-        ),
-        Padding(
-          padding: const EdgeInsets.only(left: 30),
-          child: Text(
-            'Hope your angels are well',
-            style: TextStyle(
-              fontSize: 14.0,
-              color: HexColor('#505050'),
-              fontWeight: FontWeight.bold,
-            ),
-            overflow: TextOverflow.ellipsis,
-          ),
-        ),
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Row(),
-            _buildOption(
-                'Baby Health', 'Checking the health status of your baby', () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (BuildContext context) => BabyHealthPage(),
-                ),
-              );
-            }, AssetImage('assets/image/baby_default.jpg'), [
-              HexColor('#7ed1f2'),
-              HexColor('#bd88f2'),
-            ]),
-            _buildOption('Menu Suggestions',
-                'Get to know what your baby needs for the coming week', () {
-              print('Menu Suggestions');
-            }, AssetImage('assets/image/baby_default.jpg'), [
-              HexColor('#ffda8f'),
-              HexColor('#fc9495'),
-            ]),
-            _buildOption('Vaccine Reminder',
-                'The following vaccination suggestions are very important for your kid',
-                () {
-              print('Vaccine Reminder');
-            }, AssetImage('assets/image/baby_default.jpg'), [
-              HexColor('#7ed1f2'),
-              HexColor('#bd88f2'),
-            ]),
-            _buildOption('Vaccination history',
-                'Store vaccination information for your baby', () {
-              print('Vaccination history');
-            }, AssetImage('assets/image/baby_default.jpg'), [
-              HexColor('#ffda8f'),
-              HexColor('#fc9495'),
-            ]),
-            SizedBox(height: 20),
-          ],
-        ),
-      ],
     );
   }
 
@@ -154,6 +81,85 @@ class CatalogPage extends StatelessWidget {
         ),
       ),
       onTap: todo,
+    );
+  }
+
+  Widget _buildCatalogBody(double deviceWidth, BuildContext context) {
+    return Column(
+      mainAxisSize: MainAxisSize.max,
+      mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: const EdgeInsets.only(left: 30, top: 10),
+          child: Text(
+            'Hi Username!',
+            style: TextStyle(
+              fontSize: 14.0,
+              color: HexColor('#505050'),
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.only(left: 30),
+          child: Text(
+            'Hope your angels are well',
+            style: TextStyle(
+              fontSize: 14.0,
+              color: HexColor('#505050'),
+              fontWeight: FontWeight.bold,
+            ),
+            overflow: TextOverflow.ellipsis,
+          ),
+        ),
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Row(),
+            _buildOption(
+                'Baby Health', 'Checking the health status of your baby', () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (BuildContext context) => BabyHealthPage(),
+                ),
+              );
+            }, AssetImage('assets/image/baby_default.jpg'), [
+              HexColor('#7ed1f2'),
+              HexColor('#bd88f2'),
+            ]),
+            _buildOption('Menu Suggestions',
+                'Get to know what your baby needs for the coming week', () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (BuildContext context) => MenuSuggestPage(),
+                ),
+              );
+            }, AssetImage('assets/image/baby_default.jpg'), [
+              HexColor('#ffda8f'),
+              HexColor('#fc9495'),
+            ]),
+            _buildOption('Vaccine Reminder',
+                'The following vaccination suggestions are very important for your kid',
+                () {
+              print('Vaccine Reminder');
+            }, AssetImage('assets/image/baby_default.jpg'), [
+              HexColor('#7ed1f2'),
+              HexColor('#bd88f2'),
+            ]),
+            _buildOption('Vaccination history',
+                'Store vaccination information for your baby', () {
+              print('Vaccination history');
+            }, AssetImage('assets/image/baby_default.jpg'), [
+              HexColor('#ffda8f'),
+              HexColor('#fc9495'),
+            ]),
+            SizedBox(height: 20),
+          ],
+        ),
+      ],
     );
   }
 
