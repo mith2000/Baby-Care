@@ -11,34 +11,41 @@ class CreateAccountTerm extends StatefulWidget {
 
 class _CreateAccountTermState extends State<CreateAccountTerm> {
   Widget _buildHeading() {
-    return Text(
-      'Finish Signing Up',
-      textAlign: TextAlign.center,
-      style: Theme.of(context).textTheme.headline1,
+    return Center(
+      child: Text(
+        'Finish Signing Up',
+        textAlign: TextAlign.center,
+        style: Theme.of(context).textTheme.headline1,
+      ),
     );
   }
 
   Widget _buildBodyText() {
-    return Container(
-      height: 120,
-      child: Text(
-        'By tapping Sign Up, you agree to our Terms, Data Policy and Cookies Policy. You may receive SMS notifications from us and can opt out any time.',
-        style: Theme.of(context).textTheme.bodyText2,
-        maxLines: 5,
+    return Center(
+      child: Container(
+        height: 120,
+        width: 300,
+        child: Text(
+          'By tapping Sign Up, you agree to our Terms, Data Policy and Cookies Policy. You may receive SMS notifications from us and can opt out any time.',
+          style: Theme.of(context).textTheme.bodyText2,
+          maxLines: 5,
+        ),
       ),
     );
   }
 
   Widget _buildNextButton() {
-    return Container(
-      width: 300,
-      height: 65,
-      child: ElevatedButton(
-        child: Text(
-          'Sign Up',
-          style: Theme.of(context).textTheme.button,
+    return Center(
+      child: Container(
+        width: 300,
+        height: 65,
+        child: ElevatedButton(
+          child: Text(
+            'Sign Up',
+            style: Theme.of(context).textTheme.button,
+          ),
+          onPressed: () => _submitForm(), //model.authenticate),
         ),
-        onPressed: () => _submitForm(), //model.authenticate),
       ),
     );
   }
@@ -57,7 +64,6 @@ class _CreateAccountTermState extends State<CreateAccountTerm> {
       _buildNextButton(),
     ];
     return Container(
-      margin: EdgeInsets.fromLTRB(57, 0, 57, 0),
       child: ListView(
         children: _widgets,
       ),

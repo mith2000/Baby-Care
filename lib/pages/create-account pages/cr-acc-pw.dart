@@ -28,39 +28,39 @@ class _CreateAccountPasswordState extends State<CreateAccountPassword> {
   bool _isCorrectPasswordConfirm = false;
 
   Widget _buildHeading() {
-    return Text(
-      'Choose a Password',
-      textAlign: TextAlign.center,
-      style: Theme.of(context).textTheme.headline1,
+    return Center(
+      child: Text(
+        'Choose a Password',
+        textAlign: TextAlign.center,
+        style: Theme.of(context).textTheme.headline1,
+      ),
     );
   }
 
   Widget _buildBodyText() {
-    return Container(
-      height: 100,
-      child: Text(
-        'Create a password with 6 numbers. It should be something other couldn\'t guest.',
-        style: Theme.of(context).textTheme.bodyText2,
-        maxLines: 3,
+    return Center(
+      child: Container(
+        height: 100,
+        width: 300,
+        child: Text(
+          'Create a password with 6 numbers. It should be something other couldn\'t guest.',
+          style: Theme.of(context).textTheme.bodyText2,
+          maxLines: 3,
+        ),
       ),
     );
   }
 
   Widget _buildToggleObscurePasswordButton() {
     return Container(
-      child: TextButton(
+      margin: EdgeInsets.only(right: 5),
+      child: IconButton(
         onPressed: _toggleObscurePw,
-        child: SvgPicture.asset(
+        icon: SvgPicture.asset(
           _icons['eye'],
           color: Theme.of(context).backgroundColor,
         ),
-        style: ButtonStyle(
-          shape: MaterialStateProperty.all<OutlinedBorder>(
-            RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(45),
-            ),
-          ),
-        ),
+        iconSize: 40,
       ),
     );
   }
@@ -72,126 +72,138 @@ class _CreateAccountPasswordState extends State<CreateAccountPassword> {
   }
 
   Widget _buildPasswordInput() {
-    return TextFormField(
-      style: Theme.of(context).textTheme.bodyText1,
-      decoration: InputDecoration(
-        hintText: "●●●●●●",
-        //counterText: "",
-        counterStyle: TextStyle(
-          fontSize: 10.0,
-          color: Color.fromRGBO(0, 0, 0, .5),
-        ),
-        hintStyle: Theme.of(context).textTheme.bodyText1,
-        prefixIcon: Container(
-          width: 10,
-        ),
-        suffixIcon: _buildToggleObscurePasswordButton(),
-        filled: true,
-        fillColor: Colors.white.withOpacity(.3),
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(45),
-          borderSide: BorderSide(
-            width: 0,
-            style: BorderStyle.none,
+    return Center(
+      child: Container(
+        width: 300,
+        child: TextFormField(
+          style: Theme.of(context).textTheme.bodyText1,
+          decoration: InputDecoration(
+            hintText: "●●●●●●",
+            //counterText: "",
+            counterStyle: TextStyle(
+              fontSize: 10.0,
+              color: Color.fromRGBO(0, 0, 0, .5),
+            ),
+            hintStyle: Theme.of(context).textTheme.bodyText1,
+            prefixIcon: Container(
+              width: 10,
+            ),
+            suffixIcon: _buildToggleObscurePasswordButton(),
+            filled: true,
+            fillColor: Colors.white.withOpacity(.3),
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(45),
+              borderSide: BorderSide(
+                width: 0,
+                style: BorderStyle.none,
+              ),
+            ),
           ),
+          keyboardType: TextInputType.number,
+          inputFormatters: [
+            LengthLimitingTextInputFormatter(6),
+          ],
+          obscureText: _obscure,
+          controller: _passwordTxtCtrl,
+          validator: (String value) {
+            if (value.isEmpty ||
+                value.trim().length < 6 ||
+                //value must be a number
+                !RegExp(r'^(?:[1-9]\d*|0)?$').hasMatch(value)) {
+              return 'Password is not correct.';
+            }
+            return null;
+          },
+          onSaved: (String value) {
+            _formData['password'] = value;
+          },
+          onChanged: (String value) {
+            setState(() {
+              if (value != _cfPasswordTxtCtrl.text) {
+                _isCorrectPasswordConfirm = false;
+              } else {
+                _isCorrectPasswordConfirm = true;
+              }
+            });
+          },
         ),
       ),
-      keyboardType: TextInputType.number,
-      inputFormatters: [
-        LengthLimitingTextInputFormatter(6),
-      ],
-      obscureText: _obscure,
-      controller: _passwordTxtCtrl,
-      validator: (String value) {
-        if (value.isEmpty ||
-            value.trim().length < 6 ||
-            //value must be a number
-            !RegExp(r'^(?:[1-9]\d*|0)?$').hasMatch(value)) {
-          return 'Password is not correct.';
-        }
-        return null;
-      },
-      onSaved: (String value) {
-        _formData['password'] = value;
-      },
-      onChanged: (String value) {
-        setState(() {
-          if (value != _cfPasswordTxtCtrl.text) {
-            _isCorrectPasswordConfirm = false;
-          } else {
-            _isCorrectPasswordConfirm = true;
-          }
-        });
-      },
     );
   }
 
   Widget _buildConfirmPasswordInput() {
-    return TextFormField(
-      style: Theme.of(context).textTheme.bodyText1,
-      decoration: InputDecoration(
-        hintText: "●●●●●●",
-        //counterText: "",
-        counterStyle: TextStyle(
-          fontSize: 10.0,
-          color: Color.fromRGBO(0, 0, 0, .5),
-        ),
-        hintStyle: Theme.of(context).textTheme.bodyText1,
-        prefixIcon: Container(
-          width: 10,
-        ),
-        suffixIcon: Container(
-          margin: EdgeInsets.only(right: 10),
-          child: SvgPicture.asset(
-            _isCorrectPasswordConfirm == false
-                ? _icons['uncorrect']
-                : _icons['correct'],
+    return Center(
+      child: Container(
+        width: 300,
+        child: TextFormField(
+          style: Theme.of(context).textTheme.bodyText1,
+          decoration: InputDecoration(
+            hintText: "●●●●●●",
+            //counterText: "",
+            counterStyle: TextStyle(
+              fontSize: 10.0,
+              color: Color.fromRGBO(0, 0, 0, .5),
+            ),
+            hintStyle: Theme.of(context).textTheme.bodyText1,
+            prefixIcon: Container(
+              width: 10,
+            ),
+            suffixIcon: Container(
+              margin: EdgeInsets.only(right: 10),
+              child: SvgPicture.asset(
+                _isCorrectPasswordConfirm == false
+                    ? _icons['uncorrect']
+                    : _icons['correct'],
+              ),
+            ),
+            filled: true,
+            fillColor: Colors.white.withOpacity(.3),
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(45),
+              borderSide: BorderSide(
+                width: 0,
+                style: BorderStyle.none,
+              ),
+            ),
           ),
-        ),
-        filled: true,
-        fillColor: Colors.white.withOpacity(.3),
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(45),
-          borderSide: BorderSide(
-            width: 0,
-            style: BorderStyle.none,
-          ),
+          keyboardType: TextInputType.number,
+          inputFormatters: [
+            LengthLimitingTextInputFormatter(6),
+          ],
+          obscureText: _obscure,
+          controller: _cfPasswordTxtCtrl,
+          validator: (String value) {
+            if (value != _passwordTxtCtrl.text) {
+              return 'Password do not match.';
+            }
+            return null;
+          },
+          onChanged: (String value) {
+            setState(() {
+              if (value != _passwordTxtCtrl.text) {
+                _isCorrectPasswordConfirm = false;
+              } else {
+                _isCorrectPasswordConfirm = true;
+              }
+            });
+          },
         ),
       ),
-      keyboardType: TextInputType.number,
-      inputFormatters: [
-        LengthLimitingTextInputFormatter(6),
-      ],
-      obscureText: _obscure,
-      controller: _cfPasswordTxtCtrl,
-      validator: (String value) {
-        if (value != _passwordTxtCtrl.text) {
-          return 'Password do not match.';
-        }
-        return null;
-      },
-      onChanged: (String value) {
-        setState(() {
-          if (value != _passwordTxtCtrl.text) {
-            _isCorrectPasswordConfirm = false;
-          } else {
-            _isCorrectPasswordConfirm = true;
-          }
-        });
-      },
     );
   }
 
   Widget _buildNextButton() {
-    return Container(
-      width: 300,
-      height: 65,
-      child: ElevatedButton(
-        child: Text(
-          'Next',
-          style: Theme.of(context).textTheme.button,
+    return Center(
+      child: Container(
+        width: 300,
+        height: 65,
+        child: ElevatedButton(
+          child: Text(
+            'Next',
+            style: Theme.of(context).textTheme.button,
+          ),
+          onPressed: () => _submitForm(), //model.authenticate),
         ),
-        onPressed: () => _submitForm(), //model.authenticate),
       ),
     );
   }
@@ -225,7 +237,6 @@ class _CreateAccountPasswordState extends State<CreateAccountPassword> {
     return Form(
       key: _formKey,
       child: Container(
-        margin: EdgeInsets.fromLTRB(57, 0, 57, 0),
         child: ListView(
           children: _widgets,
         ),
