@@ -7,6 +7,133 @@ import 'last-week.dart';
 import 'next-week.dart';
 
 class MenuSuggestPage extends StatelessWidget {
+  Widget _buildNutriWidget(BuildContext context, String nutriName) {
+    return Container(
+      width: 110,
+      height: 32,
+      margin: EdgeInsets.only(bottom: 10),
+      decoration: BoxDecoration(
+        color: HexColor('#A79BF2'),
+        borderRadius: BorderRadius.circular(10.0),
+      ),
+      alignment: Alignment.center,
+      child: Text(
+        nutriName,
+        style: Theme.of(context).textTheme.button,
+      ),
+    );
+  }
+
+  Widget _buildNoticeWidget(BuildContext context, double deviceWidth) {
+    return Center(
+      child: Container(
+        width: deviceWidth * 0.85,
+        height: 220,
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(32.0),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.25),
+              spreadRadius: 0,
+              blurRadius: 8,
+              offset: Offset(0, 8),
+            ),
+          ],
+        ),
+        alignment: Alignment.center,
+        child: Column(
+          mainAxisSize: MainAxisSize.max,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Container(
+              alignment: Alignment.center,
+              height: 40,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    'His vitamin B index: ',
+                    style: Theme.of(context).textTheme.bodyText1,
+                  ),
+                  Container(
+                    width: 72,
+                    height: 32,
+                    decoration: BoxDecoration(
+                      color: HexColor('#FF4A05'),
+                      borderRadius: BorderRadius.circular(10.0),
+                    ),
+                    alignment: Alignment.center,
+                    child: Text(
+                      '50/100',
+                      style: Theme.of(context).textTheme.button,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            SizedBox(height: 16),
+            Container(
+              width: 300,
+              height: 30,
+              decoration: BoxDecoration(
+                color: HexColor('#05C7F2'),
+                border: Border.all(
+                  width: 1.0,
+                  color: HexColor('#05C7F2'),
+                ),
+                borderRadius: BorderRadius.circular(32),
+              ),
+            ),
+            SizedBox(height: 16),
+            Container(
+              height: 40,
+              alignment: Alignment.center,
+              child: Text(
+                'He needs more',
+                style: Theme.of(context).textTheme.bodyText1,
+              ),
+            ),
+            Container(
+              height: 40,
+              alignment: Alignment.center,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(
+                    Icons.emoji_food_beverage,
+                    size: 40,
+                    color: Colors.pink[200],
+                  ),
+                  Icon(
+                    Icons.emoji_food_beverage,
+                    size: 40,
+                    color: Colors.pink[200],
+                  ),
+                  Icon(
+                    Icons.emoji_food_beverage,
+                    size: 40,
+                    color: Colors.pink[200],
+                  ),
+                  Icon(
+                    Icons.emoji_food_beverage,
+                    size: 40,
+                    color: Colors.pink[200],
+                  ),
+                  Icon(
+                    Icons.emoji_food_beverage,
+                    size: 40,
+                    color: Colors.pink[200],
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
   Widget _buildLastWeekButton(BuildContext context, double deviceWidth) {
     return GestureDetector(
       child: Container(
@@ -124,383 +251,31 @@ class MenuSuggestPage extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text(
-              'Your baby is deficient in ',
-              style: Theme.of(context).textTheme.bodyText1,
+            Column(
+              children: [
+                Text(
+                  'Your baby is deficient in ',
+                  style: Theme.of(context).textTheme.bodyText1,
+                ),
+                SizedBox(height: 90),
+              ],
             ),
             Column(
               children: [
-                Container(
-                  width: 110,
-                  height: 32,
-                  margin: EdgeInsets.only(bottom: 10),
-                  decoration: BoxDecoration(
-                    color: HexColor('#A79BF2'),
-                    borderRadius: BorderRadius.circular(10.0),
-                  ),
-                  alignment: Alignment.center,
-                  child: Text(
-                    'Carbs',
-                    style: Theme.of(context).textTheme.button,
-                  ),
-                ),
-                Container(
-                  width: 110,
-                  height: 32,
-                  margin: EdgeInsets.only(bottom: 10),
-                  decoration: BoxDecoration(
-                    color: HexColor('#A79BF2'),
-                    borderRadius: BorderRadius.circular(10.0),
-                  ),
-                  alignment: Alignment.center,
-                  child: Text(
-                    'Protein',
-                    style: Theme.of(context).textTheme.button,
-                  ),
-                ),
-                Container(
-                  width: 110,
-                  height: 32,
-                  margin: EdgeInsets.only(bottom: 10),
-                  decoration: BoxDecoration(
-                    color: HexColor('#A79BF2'),
-                    borderRadius: BorderRadius.circular(10.0),
-                  ),
-                  alignment: Alignment.center,
-                  child: Text(
-                    'Vitamin B',
-                    style: Theme.of(context).textTheme.button,
-                  ),
-                ),
+                _buildNutriWidget(context, 'Carbs'),
+                _buildNutriWidget(context, 'Protein'),
+                _buildNutriWidget(context, 'Vitamin B'),
               ],
             )
           ],
         ),
       ),
       SizedBox(height: 20),
-      Center(
-        child: Container(
-          width: deviceWidth * 0.85,
-          height: 220,
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(32.0),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black.withOpacity(0.25),
-                spreadRadius: 0,
-                blurRadius: 8,
-                offset: Offset(0, 8),
-              ),
-            ],
-          ),
-          alignment: Alignment.center,
-          child: Column(
-            mainAxisSize: MainAxisSize.max,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Container(
-                alignment: Alignment.center,
-                height: 40,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      'His vitamin B index: ',
-                      style: Theme.of(context).textTheme.bodyText1,
-                    ),
-                    Container(
-                      width: 72,
-                      height: 32,
-                      decoration: BoxDecoration(
-                        color: HexColor('#FF4A05'),
-                        borderRadius: BorderRadius.circular(10.0),
-                      ),
-                      alignment: Alignment.center,
-                      child: Text(
-                        '50/100',
-                        style: Theme.of(context).textTheme.button,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              SizedBox(height: 16),
-              Container(
-                width: 300,
-                height: 30,
-                decoration: BoxDecoration(
-                  color: HexColor('#05C7F2'),
-                  border: Border.all(
-                    width: 1.0,
-                    color: HexColor('#05C7F2'),
-                  ),
-                  borderRadius: BorderRadius.circular(32),
-                ),
-              ),
-              SizedBox(height: 16),
-              Container(
-                height: 40,
-                alignment: Alignment.center,
-                child: Text(
-                  'He needs more',
-                  style: Theme.of(context).textTheme.bodyText1,
-                ),
-              ),
-              Container(
-                height: 40,
-                alignment: Alignment.center,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(
-                      Icons.emoji_food_beverage,
-                      size: 40,
-                      color: Colors.pink[200],
-                    ),
-                    Icon(
-                      Icons.emoji_food_beverage,
-                      size: 40,
-                      color: Colors.pink[200],
-                    ),
-                    Icon(
-                      Icons.emoji_food_beverage,
-                      size: 40,
-                      color: Colors.pink[200],
-                    ),
-                    Icon(
-                      Icons.emoji_food_beverage,
-                      size: 40,
-                      color: Colors.pink[200],
-                    ),
-                    Icon(
-                      Icons.emoji_food_beverage,
-                      size: 40,
-                      color: Colors.pink[200],
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
+      _buildNoticeWidget(context, deviceWidth),
       SizedBox(height: 20),
-      Center(
-        child: Container(
-          width: deviceWidth * 0.85,
-          height: 220,
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(32.0),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black.withOpacity(0.25),
-                spreadRadius: 0,
-                blurRadius: 8,
-                offset: Offset(0, 8),
-              ),
-            ],
-          ),
-          alignment: Alignment.center,
-          child: Column(
-            mainAxisSize: MainAxisSize.max,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Container(
-                alignment: Alignment.center,
-                height: 40,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      'His vitamin B index: ',
-                      style: Theme.of(context).textTheme.bodyText1,
-                    ),
-                    Container(
-                      width: 72,
-                      height: 32,
-                      decoration: BoxDecoration(
-                        color: HexColor('#FF4A05'),
-                        borderRadius: BorderRadius.circular(10.0),
-                      ),
-                      alignment: Alignment.center,
-                      child: Text(
-                        '50/100',
-                        style: Theme.of(context).textTheme.button,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              SizedBox(height: 16),
-              Container(
-                width: 300,
-                height: 30,
-                decoration: BoxDecoration(
-                  color: HexColor('#05C7F2'),
-                  border: Border.all(
-                    width: 1.0,
-                    color: HexColor('#05C7F2'),
-                  ),
-                  borderRadius: BorderRadius.circular(32),
-                ),
-              ),
-              SizedBox(height: 16),
-              Container(
-                height: 40,
-                alignment: Alignment.center,
-                child: Text(
-                  'He needs more',
-                  style: Theme.of(context).textTheme.bodyText1,
-                ),
-              ),
-              Container(
-                height: 40,
-                alignment: Alignment.center,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(
-                      Icons.emoji_food_beverage,
-                      size: 40,
-                      color: Colors.pink[200],
-                    ),
-                    Icon(
-                      Icons.emoji_food_beverage,
-                      size: 40,
-                      color: Colors.pink[200],
-                    ),
-                    Icon(
-                      Icons.emoji_food_beverage,
-                      size: 40,
-                      color: Colors.pink[200],
-                    ),
-                    Icon(
-                      Icons.emoji_food_beverage,
-                      size: 40,
-                      color: Colors.pink[200],
-                    ),
-                    Icon(
-                      Icons.emoji_food_beverage,
-                      size: 40,
-                      color: Colors.pink[200],
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
+      _buildNoticeWidget(context, deviceWidth),
       SizedBox(height: 20),
-      Center(
-        child: Container(
-          width: deviceWidth * 0.85,
-          height: 220,
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(32.0),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black.withOpacity(0.25),
-                spreadRadius: 0,
-                blurRadius: 8,
-                offset: Offset(0, 8),
-              ),
-            ],
-          ),
-          alignment: Alignment.center,
-          child: Column(
-            mainAxisSize: MainAxisSize.max,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Container(
-                alignment: Alignment.center,
-                height: 40,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      'His vitamin B index: ',
-                      style: Theme.of(context).textTheme.bodyText1,
-                    ),
-                    Container(
-                      width: 72,
-                      height: 32,
-                      decoration: BoxDecoration(
-                        color: HexColor('#FF4A05'),
-                        borderRadius: BorderRadius.circular(10.0),
-                      ),
-                      alignment: Alignment.center,
-                      child: Text(
-                        '50/100',
-                        style: Theme.of(context).textTheme.button,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              SizedBox(height: 16),
-              Container(
-                width: 300,
-                height: 30,
-                decoration: BoxDecoration(
-                  color: HexColor('#05C7F2'),
-                  border: Border.all(
-                    width: 1.0,
-                    color: HexColor('#05C7F2'),
-                  ),
-                  borderRadius: BorderRadius.circular(32),
-                ),
-              ),
-              SizedBox(height: 16),
-              Container(
-                height: 40,
-                alignment: Alignment.center,
-                child: Text(
-                  'He needs more',
-                  style: Theme.of(context).textTheme.bodyText1,
-                ),
-              ),
-              Container(
-                height: 40,
-                alignment: Alignment.center,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(
-                      Icons.emoji_food_beverage,
-                      size: 40,
-                      color: Colors.pink[200],
-                    ),
-                    Icon(
-                      Icons.emoji_food_beverage,
-                      size: 40,
-                      color: Colors.pink[200],
-                    ),
-                    Icon(
-                      Icons.emoji_food_beverage,
-                      size: 40,
-                      color: Colors.pink[200],
-                    ),
-                    Icon(
-                      Icons.emoji_food_beverage,
-                      size: 40,
-                      color: Colors.pink[200],
-                    ),
-                    Icon(
-                      Icons.emoji_food_beverage,
-                      size: 40,
-                      color: Colors.pink[200],
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
+      _buildNoticeWidget(context, deviceWidth),
       SizedBox(height: 95),
     ];
     return Container(

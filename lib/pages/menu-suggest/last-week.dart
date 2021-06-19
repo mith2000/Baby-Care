@@ -7,6 +7,110 @@ import 'menu-suggest.dart';
 import 'next-week.dart';
 
 class LastWeekPage extends StatelessWidget {
+  Widget _buildFoodDetailIcon() {
+    return Container(
+      margin: EdgeInsets.only(left: 5),
+      child: Row(
+        children: [
+          Icon(
+            Icons.emoji_food_beverage,
+            size: 40,
+            color: Colors.pink[200],
+          ),
+          Text(
+            ' 999g',
+            style: TextStyle(
+              fontSize: 11.0,
+              color: Color.fromRGBO(0, 0, 0, .5),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildDateProfile(BuildContext context, int date) {
+    return Container(
+      child: GlassContainer(
+        height: 130,
+        width: 370,
+        color: Colors.white.withOpacity(0.8),
+        blur: 12,
+        borderColor: Colors.white.withOpacity(.3),
+        borderRadius: BorderRadius.circular(15.0),
+        borderWidth: 1.0,
+        elevation: 10.0,
+        child: Column(
+          children: [
+            Container(
+              height: 35,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  SizedBox(width: 16),
+                  Container(
+                    width: 24,
+                    height: 24,
+                    decoration: BoxDecoration(
+                      color: HexColor('#85B4F2'),
+                      borderRadius: BorderRadius.circular(5.0),
+                    ),
+                    alignment: Alignment.center,
+                    child: Text(
+                      date.toString(),
+                      style: Theme.of(context).textTheme.button,
+                    ),
+                  ),
+                  Text(
+                    ' days ago',
+                    style: TextStyle(
+                      fontSize: 14.0,
+                      color: Color.fromRGBO(0, 0, 0, .5),
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  Expanded(child: Container()),
+                  Text(
+                    '20/5/2021',
+                    style: Theme.of(context).textTheme.bodyText1,
+                  ),
+                  SizedBox(width: 30),
+                ],
+              ),
+            ),
+            Divider(
+              height: .5,
+              thickness: .5,
+            ),
+            Container(
+              margin: EdgeInsets.only(top: 5),
+              child: Row(
+                mainAxisSize: MainAxisSize.max,
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  _buildFoodDetailIcon(),
+                  _buildFoodDetailIcon(),
+                  _buildFoodDetailIcon(),
+                  _buildFoodDetailIcon(),
+                ],
+              ),
+            ),
+            Container(
+              margin: EdgeInsets.only(top: 5),
+              child: Row(
+                mainAxisSize: MainAxisSize.max,
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  _buildFoodDetailIcon(),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
   Widget _buildLastWeekButton(BuildContext context, double deviceWidth) {
     return GestureDetector(
       child: Container(
@@ -83,345 +187,9 @@ class LastWeekPage extends StatelessWidget {
 
     final List<Widget> _widgets = [
       SizedBox(height: 30),
-      Container(
-        child: GlassContainer(
-          height: 130,
-          width: 370,
-          color: Colors.white.withOpacity(0.8),
-          blur: 12,
-          borderColor: Colors.white.withOpacity(.3),
-          borderRadius: BorderRadius.circular(15.0),
-          borderWidth: 1.0,
-          elevation: 10.0,
-          child: Column(
-            children: [
-              Container(
-                height: 35,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    SizedBox(width: 16),
-                    Container(
-                      width: 24,
-                      height: 24,
-                      decoration: BoxDecoration(
-                        color: HexColor('#85B4F2'),
-                        borderRadius: BorderRadius.circular(5.0),
-                      ),
-                      alignment: Alignment.center,
-                      child: Text(
-                        '7',
-                        style: Theme.of(context).textTheme.button,
-                      ),
-                    ),
-                    Text(
-                      ' days ago',
-                      style: TextStyle(
-                        fontSize: 14.0,
-                        color: Color.fromRGBO(0, 0, 0, .5),
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    Expanded(child: Container()),
-                    Text(
-                      '20/5/2021',
-                      style: Theme.of(context).textTheme.bodyText1,
-                    ),
-                    SizedBox(width: 30),
-                  ],
-                ),
-              ),
-              Divider(
-                height: .5,
-                thickness: .5,
-              ),
-              Container(
-                margin: EdgeInsets.only(top: 5),
-                child: Row(
-                  mainAxisSize: MainAxisSize.max,
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Container(
-                      margin: EdgeInsets.only(left: 5),
-                      child: Row(
-                        children: [
-                          Icon(
-                            Icons.emoji_food_beverage,
-                            size: 40,
-                            color: Colors.pink[200],
-                          ),
-                          Text(
-                            ' 999g',
-                            style: TextStyle(
-                              fontSize: 11.0,
-                              color: Color.fromRGBO(0, 0, 0, .5),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    Container(
-                      margin: EdgeInsets.only(left: 5),
-                      child: Row(
-                        children: [
-                          Icon(
-                            Icons.emoji_food_beverage,
-                            size: 40,
-                            color: Colors.pink[200],
-                          ),
-                          Text(
-                            ' 999g',
-                            style: TextStyle(
-                              fontSize: 11.0,
-                              color: Color.fromRGBO(0, 0, 0, .5),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    Container(
-                      margin: EdgeInsets.only(left: 5),
-                      child: Row(
-                        children: [
-                          Icon(
-                            Icons.emoji_food_beverage,
-                            size: 40,
-                            color: Colors.pink[200],
-                          ),
-                          Text(
-                            ' 999g',
-                            style: TextStyle(
-                              fontSize: 11.0,
-                              color: Color.fromRGBO(0, 0, 0, .5),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    Container(
-                      margin: EdgeInsets.only(left: 5),
-                      child: Row(
-                        children: [
-                          Icon(
-                            Icons.emoji_food_beverage,
-                            size: 40,
-                            color: Colors.pink[200],
-                          ),
-                          Text(
-                            ' 999g',
-                            style: TextStyle(
-                              fontSize: 11.0,
-                              color: Color.fromRGBO(0, 0, 0, .5),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              Container(
-                margin: EdgeInsets.only(top: 5),
-                child: Row(
-                  mainAxisSize: MainAxisSize.max,
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Container(
-                      margin: EdgeInsets.only(left: 5),
-                      child: Row(
-                        children: [
-                          Icon(
-                            Icons.emoji_food_beverage,
-                            size: 40,
-                            color: Colors.pink[200],
-                          ),
-                          Text(
-                            ' 999g',
-                            style: TextStyle(
-                              fontSize: 11.0,
-                              color: Color.fromRGBO(0, 0, 0, .5),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
+      _buildDateProfile(context, 7),
       SizedBox(height: 30),
-      Container(
-        child: GlassContainer(
-          height: 130,
-          width: 370,
-          color: Colors.white.withOpacity(0.8),
-          blur: 12,
-          borderColor: Colors.white.withOpacity(.3),
-          borderRadius: BorderRadius.circular(15.0),
-          borderWidth: 1.0,
-          elevation: 10.0,
-          child: Column(
-            children: [
-              Container(
-                height: 35,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    SizedBox(width: 16),
-                    Container(
-                      width: 24,
-                      height: 24,
-                      decoration: BoxDecoration(
-                        color: HexColor('#85B4F2'),
-                        borderRadius: BorderRadius.circular(5.0),
-                      ),
-                      alignment: Alignment.center,
-                      child: Text(
-                        '7',
-                        style: Theme.of(context).textTheme.button,
-                      ),
-                    ),
-                    Text(
-                      ' days ago',
-                      style: TextStyle(
-                        fontSize: 14.0,
-                        color: Color.fromRGBO(0, 0, 0, .5),
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    Expanded(child: Container()),
-                    Text(
-                      '20/5/2021',
-                      style: Theme.of(context).textTheme.bodyText1,
-                    ),
-                    SizedBox(width: 30),
-                  ],
-                ),
-              ),
-              Divider(
-                height: .5,
-                thickness: .5,
-              ),
-              Container(
-                margin: EdgeInsets.only(top: 5),
-                child: Row(
-                  mainAxisSize: MainAxisSize.max,
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Container(
-                      margin: EdgeInsets.only(left: 5),
-                      child: Row(
-                        children: [
-                          Icon(
-                            Icons.emoji_food_beverage,
-                            size: 40,
-                            color: Colors.pink[200],
-                          ),
-                          Text(
-                            ' 999g',
-                            style: TextStyle(
-                              fontSize: 11.0,
-                              color: Color.fromRGBO(0, 0, 0, .5),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    Container(
-                      margin: EdgeInsets.only(left: 5),
-                      child: Row(
-                        children: [
-                          Icon(
-                            Icons.emoji_food_beverage,
-                            size: 40,
-                            color: Colors.pink[200],
-                          ),
-                          Text(
-                            ' 999g',
-                            style: TextStyle(
-                              fontSize: 11.0,
-                              color: Color.fromRGBO(0, 0, 0, .5),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    Container(
-                      margin: EdgeInsets.only(left: 5),
-                      child: Row(
-                        children: [
-                          Icon(
-                            Icons.emoji_food_beverage,
-                            size: 40,
-                            color: Colors.pink[200],
-                          ),
-                          Text(
-                            ' 999g',
-                            style: TextStyle(
-                              fontSize: 11.0,
-                              color: Color.fromRGBO(0, 0, 0, .5),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    Container(
-                      margin: EdgeInsets.only(left: 5),
-                      child: Row(
-                        children: [
-                          Icon(
-                            Icons.emoji_food_beverage,
-                            size: 40,
-                            color: Colors.pink[200],
-                          ),
-                          Text(
-                            ' 999g',
-                            style: TextStyle(
-                              fontSize: 11.0,
-                              color: Color.fromRGBO(0, 0, 0, .5),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              Container(
-                margin: EdgeInsets.only(top: 5),
-                child: Row(
-                  mainAxisSize: MainAxisSize.max,
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Container(
-                      margin: EdgeInsets.only(left: 5),
-                      child: Row(
-                        children: [
-                          Icon(
-                            Icons.emoji_food_beverage,
-                            size: 40,
-                            color: Colors.pink[200],
-                          ),
-                          Text(
-                            ' 999g',
-                            style: TextStyle(
-                              fontSize: 11.0,
-                              color: Color.fromRGBO(0, 0, 0, .5),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
+      _buildDateProfile(context, 3),
       SizedBox(height: 95),
     ];
     return Container(

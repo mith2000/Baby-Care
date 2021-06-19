@@ -48,6 +48,168 @@ class BabyHealthPage extends StatelessWidget {
     );
   }
 
+  Widget _buildBodyMassWidget(
+      BuildContext context, double deviceWidth, String name, int value) {
+    return Container(
+      alignment: Alignment.center,
+      width: deviceWidth * 0.85,
+      height: 50,
+      decoration: BoxDecoration(
+        color: HexColor('#7ED1F2'),
+        borderRadius: BorderRadius.circular(15.0),
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          Container(
+            width: 40,
+            child: Icon(
+              Icons.arrow_circle_up_rounded,
+              size: 40,
+              color: HexColor('#A79BF2'),
+            ),
+          ),
+          Container(
+            width: 140,
+            alignment: Alignment.center,
+            child: Text(
+              'Current $name: ',
+              style: TextStyle(
+                fontSize: 12.0,
+                color: Color.fromRGBO(0, 0, 0, .5),
+              ),
+            ),
+          ),
+          Container(
+            width: 80,
+            height: 32,
+            decoration: BoxDecoration(
+              color: HexColor('#A79BF2'),
+              borderRadius: BorderRadius.circular(10.0),
+            ),
+            alignment: Alignment.center,
+            child: Text(
+              name == 'height' ? '$value' + 'cm' : '$value' + 'g',
+              style: Theme.of(context).textTheme.button,
+            ),
+          ),
+          Expanded(child: Container()),
+          Icon(
+            Icons.face_retouching_natural,
+            size: 32,
+            color: Colors.pink[200],
+          ),
+          SizedBox(width: 5),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildNutriWidget(BuildContext context, String nutriName) {
+    return Container(
+      width: 140,
+      decoration: BoxDecoration(
+        color: HexColor('#7ED1F2'),
+        borderRadius: BorderRadius.circular(15.0),
+      ),
+      child: Column(
+        mainAxisSize: MainAxisSize.max,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Icon(
+            Icons.fastfood,
+            size: 40,
+            color: Colors.brown,
+          ),
+          Container(
+            width: 140,
+            margin: EdgeInsets.only(top: 5, bottom: 15),
+            alignment: Alignment.center,
+            child: Text(
+              nutriName,
+              style: TextStyle(
+                fontSize: 12.0,
+                color: Color.fromRGBO(0, 0, 0, .5),
+              ),
+            ),
+          ),
+          Icon(
+            Icons.face_retouching_natural,
+            size: 50,
+            color: Colors.pink[200],
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildPairOfNutriWidget(
+      BuildContext context, String nutriName1, String nutriName2) {
+    return Container(
+      height: 180,
+      margin: EdgeInsets.only(bottom: 15),
+      child: Row(
+        mainAxisSize: MainAxisSize.max,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          _buildNutriWidget(context, nutriName1),
+          SizedBox(width: 40),
+          _buildNutriWidget(context, nutriName2)
+        ],
+      ),
+    );
+  }
+
+  Widget _buildUpdateBMIButton(BuildContext context) {
+    return Align(
+      alignment: Alignment.centerRight,
+      child: Container(
+        width: 150,
+        height: 65,
+        margin: EdgeInsets.only(right: 20),
+        child: ElevatedButton(
+          child: Text(
+            'Update',
+            style: Theme.of(context).textTheme.button,
+          ),
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (BuildContext context) => BMIUpdatePage(),
+              ),
+            );
+          }, //model.authenticate),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildUpdateNIButton(BuildContext context) {
+    return Align(
+      alignment: Alignment.centerRight,
+      child: Container(
+        width: 150,
+        height: 65,
+        margin: EdgeInsets.only(right: 20),
+        child: ElevatedButton(
+          child: Text(
+            'Update',
+            style: Theme.of(context).textTheme.button,
+          ),
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (BuildContext context) => NIUpdatePage(),
+              ),
+            );
+          }, //model.authenticate),
+        ),
+      ),
+    );
+  }
+
   Widget _buildBMIButton(BuildContext context, double deviceWidth) {
     return GestureDetector(
       child: Container(
@@ -377,129 +539,11 @@ class BabyHealthPage extends StatelessWidget {
               ),
             ),
             SizedBox(height: 5),
-            Container(
-              alignment: Alignment.center,
-              width: deviceWidth * 0.85,
-              height: 50,
-              decoration: BoxDecoration(
-                color: HexColor('#7ED1F2'),
-                borderRadius: BorderRadius.circular(15.0),
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Container(
-                    width: 40,
-                    child: Icon(
-                      Icons.arrow_circle_up_rounded,
-                      size: 40,
-                      color: HexColor('#A79BF2'),
-                    ),
-                  ),
-                  Container(
-                    width: 140,
-                    alignment: Alignment.center,
-                    child: Text(
-                      'Current height: ',
-                      style: TextStyle(
-                        fontSize: 12.0,
-                        color: Color.fromRGBO(0, 0, 0, .5),
-                      ),
-                    ),
-                  ),
-                  Container(
-                    width: 80,
-                    height: 32,
-                    decoration: BoxDecoration(
-                      color: HexColor('#A79BF2'),
-                      borderRadius: BorderRadius.circular(10.0),
-                    ),
-                    alignment: Alignment.center,
-                    child: Text(
-                      '999cm',
-                      style: Theme.of(context).textTheme.button,
-                    ),
-                  ),
-                  Expanded(child: Container()),
-                  Icon(
-                    Icons.face_retouching_natural,
-                    size: 32,
-                    color: Colors.pink[200],
-                  ),
-                  SizedBox(width: 5),
-                ],
-              ),
-            ),
+            _buildBodyMassWidget(context, deviceWidth, 'height', 999),
             SizedBox(height: 10),
-            Container(
-              alignment: Alignment.center,
-              width: deviceWidth * 0.85,
-              height: 50,
-              decoration: BoxDecoration(
-                color: HexColor('#7ED1F2'),
-                borderRadius: BorderRadius.circular(15.0),
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Container(
-                    width: 40,
-                    child: Icon(
-                      Icons.arrow_circle_up_rounded,
-                      size: 40,
-                      color: HexColor('#A79BF2'),
-                    ),
-                  ),
-                  Container(
-                    width: 140,
-                    alignment: Alignment.center,
-                    child: Text(
-                      'Current weight: ',
-                      style: TextStyle(
-                        fontSize: 12.0,
-                        color: Color.fromRGBO(0, 0, 0, .5),
-                      ),
-                    ),
-                  ),
-                  Container(
-                    width: 80,
-                    height: 32,
-                    decoration: BoxDecoration(
-                      color: HexColor('#A79BF2'),
-                      borderRadius: BorderRadius.circular(10.0),
-                    ),
-                    alignment: Alignment.center,
-                    child: Text(
-                      '4000g',
-                      style: Theme.of(context).textTheme.button,
-                    ),
-                  ),
-                  Expanded(child: Container()),
-                  Icon(
-                    Icons.face_retouching_natural,
-                    size: 32,
-                    color: Colors.pink[200],
-                  ),
-                  SizedBox(width: 5),
-                ],
-              ),
-            ),
+            _buildBodyMassWidget(context, deviceWidth, 'weight', 4005),
             SizedBox(height: 20),
-            Align(
-              alignment: Alignment.centerRight,
-              child: Container(
-                width: 150,
-                height: 65,
-                margin: EdgeInsets.only(right: 20),
-                child: ElevatedButton(
-                  child: Text(
-                    'Update',
-                    style: Theme.of(context).textTheme.button,
-                  ),
-                  onPressed: () {}, //model.authenticate),
-                ),
-              ),
-            )
+            _buildUpdateBMIButton(context),
           ],
         ),
       ),
@@ -533,427 +577,13 @@ class BabyHealthPage extends StatelessWidget {
               ),
             ),
             SizedBox(height: 20),
-            Container(
-              height: 180,
-              margin: EdgeInsets.only(bottom: 15),
-              child: Row(
-                mainAxisSize: MainAxisSize.max,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Container(
-                    width: 140,
-                    decoration: BoxDecoration(
-                      color: HexColor('#7ED1F2'),
-                      borderRadius: BorderRadius.circular(15.0),
-                    ),
-                    child: Column(
-                      mainAxisSize: MainAxisSize.max,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(
-                          Icons.fastfood,
-                          size: 40,
-                          color: Colors.brown,
-                        ),
-                        Container(
-                          width: 140,
-                          margin: EdgeInsets.only(top: 5, bottom: 15),
-                          alignment: Alignment.center,
-                          child: Text(
-                            'Carbohydrate',
-                            style: TextStyle(
-                              fontSize: 12.0,
-                              color: Color.fromRGBO(0, 0, 0, .5),
-                            ),
-                          ),
-                        ),
-                        Icon(
-                          Icons.face_retouching_natural,
-                          size: 50,
-                          color: Colors.pink[200],
-                        ),
-                      ],
-                    ),
-                  ),
-                  SizedBox(width: 40),
-                  Container(
-                    width: 140,
-                    decoration: BoxDecoration(
-                      color: HexColor('#7ED1F2'),
-                      borderRadius: BorderRadius.circular(15.0),
-                    ),
-                    child: Column(
-                      mainAxisSize: MainAxisSize.max,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(
-                          Icons.fastfood,
-                          size: 40,
-                          color: Colors.brown,
-                        ),
-                        Container(
-                          width: 140,
-                          margin: EdgeInsets.only(top: 5, bottom: 15),
-                          alignment: Alignment.center,
-                          child: Text(
-                            'Carbohydrate',
-                            style: TextStyle(
-                              fontSize: 12.0,
-                              color: Color.fromRGBO(0, 0, 0, .5),
-                            ),
-                          ),
-                        ),
-                        Icon(
-                          Icons.face_retouching_natural,
-                          size: 50,
-                          color: Colors.pink[200],
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            Container(
-              height: 180,
-              margin: EdgeInsets.only(bottom: 15),
-              child: Row(
-                mainAxisSize: MainAxisSize.max,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Container(
-                    width: 140,
-                    decoration: BoxDecoration(
-                      color: HexColor('#7ED1F2'),
-                      borderRadius: BorderRadius.circular(15.0),
-                    ),
-                    child: Column(
-                      mainAxisSize: MainAxisSize.max,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(
-                          Icons.fastfood,
-                          size: 40,
-                          color: Colors.brown,
-                        ),
-                        Container(
-                          width: 140,
-                          margin: EdgeInsets.only(top: 5, bottom: 15),
-                          alignment: Alignment.center,
-                          child: Text(
-                            'Carbohydrate',
-                            style: TextStyle(
-                              fontSize: 12.0,
-                              color: Color.fromRGBO(0, 0, 0, .5),
-                            ),
-                          ),
-                        ),
-                        Icon(
-                          Icons.face_retouching_natural,
-                          size: 50,
-                          color: Colors.pink[200],
-                        ),
-                      ],
-                    ),
-                  ),
-                  SizedBox(width: 40),
-                  Container(
-                    width: 140,
-                    decoration: BoxDecoration(
-                      color: HexColor('#7ED1F2'),
-                      borderRadius: BorderRadius.circular(15.0),
-                    ),
-                    child: Column(
-                      mainAxisSize: MainAxisSize.max,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(
-                          Icons.fastfood,
-                          size: 40,
-                          color: Colors.brown,
-                        ),
-                        Container(
-                          width: 140,
-                          margin: EdgeInsets.only(top: 5, bottom: 15),
-                          alignment: Alignment.center,
-                          child: Text(
-                            'Carbohydrate',
-                            style: TextStyle(
-                              fontSize: 12.0,
-                              color: Color.fromRGBO(0, 0, 0, .5),
-                            ),
-                          ),
-                        ),
-                        Icon(
-                          Icons.face_retouching_natural,
-                          size: 50,
-                          color: Colors.pink[200],
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            Container(
-              height: 180,
-              margin: EdgeInsets.only(bottom: 15),
-              child: Row(
-                mainAxisSize: MainAxisSize.max,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Container(
-                    width: 140,
-                    decoration: BoxDecoration(
-                      color: HexColor('#7ED1F2'),
-                      borderRadius: BorderRadius.circular(15.0),
-                    ),
-                    child: Column(
-                      mainAxisSize: MainAxisSize.max,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(
-                          Icons.fastfood,
-                          size: 40,
-                          color: Colors.brown,
-                        ),
-                        Container(
-                          width: 140,
-                          margin: EdgeInsets.only(top: 5, bottom: 15),
-                          alignment: Alignment.center,
-                          child: Text(
-                            'Carbohydrate',
-                            style: TextStyle(
-                              fontSize: 12.0,
-                              color: Color.fromRGBO(0, 0, 0, .5),
-                            ),
-                          ),
-                        ),
-                        Icon(
-                          Icons.face_retouching_natural,
-                          size: 50,
-                          color: Colors.pink[200],
-                        ),
-                      ],
-                    ),
-                  ),
-                  SizedBox(width: 40),
-                  Container(
-                    width: 140,
-                    decoration: BoxDecoration(
-                      color: HexColor('#7ED1F2'),
-                      borderRadius: BorderRadius.circular(15.0),
-                    ),
-                    child: Column(
-                      mainAxisSize: MainAxisSize.max,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(
-                          Icons.fastfood,
-                          size: 40,
-                          color: Colors.brown,
-                        ),
-                        Container(
-                          width: 140,
-                          margin: EdgeInsets.only(top: 5, bottom: 15),
-                          alignment: Alignment.center,
-                          child: Text(
-                            'Carbohydrate',
-                            style: TextStyle(
-                              fontSize: 12.0,
-                              color: Color.fromRGBO(0, 0, 0, .5),
-                            ),
-                          ),
-                        ),
-                        Icon(
-                          Icons.face_retouching_natural,
-                          size: 50,
-                          color: Colors.pink[200],
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            Container(
-              height: 180,
-              margin: EdgeInsets.only(bottom: 15),
-              child: Row(
-                mainAxisSize: MainAxisSize.max,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Container(
-                    width: 140,
-                    decoration: BoxDecoration(
-                      color: HexColor('#7ED1F2'),
-                      borderRadius: BorderRadius.circular(15.0),
-                    ),
-                    child: Column(
-                      mainAxisSize: MainAxisSize.max,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(
-                          Icons.fastfood,
-                          size: 40,
-                          color: Colors.brown,
-                        ),
-                        Container(
-                          width: 140,
-                          margin: EdgeInsets.only(top: 5, bottom: 15),
-                          alignment: Alignment.center,
-                          child: Text(
-                            'Carbohydrate',
-                            style: TextStyle(
-                              fontSize: 12.0,
-                              color: Color.fromRGBO(0, 0, 0, .5),
-                            ),
-                          ),
-                        ),
-                        Icon(
-                          Icons.face_retouching_natural,
-                          size: 50,
-                          color: Colors.pink[200],
-                        ),
-                      ],
-                    ),
-                  ),
-                  SizedBox(width: 40),
-                  Container(
-                    width: 140,
-                    decoration: BoxDecoration(
-                      color: HexColor('#7ED1F2'),
-                      borderRadius: BorderRadius.circular(15.0),
-                    ),
-                    child: Column(
-                      mainAxisSize: MainAxisSize.max,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(
-                          Icons.fastfood,
-                          size: 40,
-                          color: Colors.brown,
-                        ),
-                        Container(
-                          width: 140,
-                          margin: EdgeInsets.only(top: 5, bottom: 15),
-                          alignment: Alignment.center,
-                          child: Text(
-                            'Carbohydrate',
-                            style: TextStyle(
-                              fontSize: 12.0,
-                              color: Color.fromRGBO(0, 0, 0, .5),
-                            ),
-                          ),
-                        ),
-                        Icon(
-                          Icons.face_retouching_natural,
-                          size: 50,
-                          color: Colors.pink[200],
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            Container(
-              height: 180,
-              margin: EdgeInsets.only(bottom: 15),
-              child: Row(
-                mainAxisSize: MainAxisSize.max,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Container(
-                    width: 140,
-                    decoration: BoxDecoration(
-                      color: HexColor('#7ED1F2'),
-                      borderRadius: BorderRadius.circular(15.0),
-                    ),
-                    child: Column(
-                      mainAxisSize: MainAxisSize.max,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(
-                          Icons.fastfood,
-                          size: 40,
-                          color: Colors.brown,
-                        ),
-                        Container(
-                          width: 140,
-                          margin: EdgeInsets.only(top: 5, bottom: 15),
-                          alignment: Alignment.center,
-                          child: Text(
-                            'Carbohydrate',
-                            style: TextStyle(
-                              fontSize: 12.0,
-                              color: Color.fromRGBO(0, 0, 0, .5),
-                            ),
-                          ),
-                        ),
-                        Icon(
-                          Icons.face_retouching_natural,
-                          size: 50,
-                          color: Colors.pink[200],
-                        ),
-                      ],
-                    ),
-                  ),
-                  SizedBox(width: 40),
-                  Container(
-                    width: 140,
-                    decoration: BoxDecoration(
-                      color: HexColor('#7ED1F2'),
-                      borderRadius: BorderRadius.circular(15.0),
-                    ),
-                    child: Column(
-                      mainAxisSize: MainAxisSize.max,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(
-                          Icons.fastfood,
-                          size: 40,
-                          color: Colors.brown,
-                        ),
-                        Container(
-                          width: 140,
-                          margin: EdgeInsets.only(top: 5, bottom: 15),
-                          alignment: Alignment.center,
-                          child: Text(
-                            'Carbohydrate',
-                            style: TextStyle(
-                              fontSize: 12.0,
-                              color: Color.fromRGBO(0, 0, 0, .5),
-                            ),
-                          ),
-                        ),
-                        Icon(
-                          Icons.face_retouching_natural,
-                          size: 50,
-                          color: Colors.pink[200],
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            ),
+            _buildPairOfNutriWidget(context, 'Carbohydrate', 'Fat'),
+            _buildPairOfNutriWidget(context, 'Protein', 'Vitamin A'),
+            _buildPairOfNutriWidget(context, 'Vitamin B', 'Vitamin C'),
+            _buildPairOfNutriWidget(context, 'Vitamin D', 'Iron'),
+            _buildPairOfNutriWidget(context, 'Calcium', 'Iodine'),
             SizedBox(height: 5),
-            Align(
-              alignment: Alignment.centerRight,
-              child: Container(
-                width: 150,
-                height: 65,
-                margin: EdgeInsets.only(right: 20),
-                child: ElevatedButton(
-                  child: Text(
-                    'Update',
-                    style: Theme.of(context).textTheme.button,
-                  ),
-                  onPressed: () {}, //model.authenticate),
-                ),
-              ),
-            )
+            _buildUpdateNIButton(context),
           ],
         ),
       ),
