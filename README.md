@@ -1,16 +1,33 @@
-# flutter_babycare
+# Baby Care
+Đồ án của 2 sinh viên UIT cho môn Đồ án 1 - Ứng dụng Hỗ trợ Chăm sóc Em bé Baby Care
 
-A new Flutter project.
+## Giảng viên hướng dẫn
+Cô **Thái Thị Hàn Uyển**
 
-## Getting Started
+# Các chức năng chính
+- Tạo bản sao chỉ số em bé
+- Theo dõi chỉ số BMI của bé
+- Theo dõi, cập nhật liên tục chỉ số dinh dưỡng cho trẻ
+- Đưa ra gợi ý thực đơn hàng tuần
+- Theo dõi chỉ số dinh dưỡng qua thức ăn của tuần trước
+- Cung cấp mẹo hữu ích về kiến thức chăm sóc trẻ
 
-This project is a starting point for a Flutter application.
+# Các chức năng dự kiến trong tương lai
+- **Giả lập xây dựng em bé ảo** - Mang đến cho người dùng trải nghiệm chăm sóc em bé thật nhất
+- Hệ thống AR tăng trải nghiệm người dùng
+- Thông báo nhắc nhở cho người dùng về thay đổi cần thiết cho trẻ
+- Đưa ra gợi ý vaccine cần tiêm cho trẻ ở từng thời kỳ
+- Gợi ý về địa điểm tiêm phòng phù hợp
+- Lưu lại lịch sử tiêm phòng vaccine
 
-A few resources to get you started if this is your first Flutter project:
+# Công nghệ sử dụng
+- Dart / Flutter (2.0.4)
+- Android SDK (30.0.3)
+- Android Studio (4.1.0)
+- Visual Studio Code
+- Figma
+- Github
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
-
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+# Tác giả
+-  **Nguyễn Minh Thắng** - erastnguyen@gmail.com - 0836469040
+-  **Bùi Trọng Khánh Duy** - khanhduyvt0101@gmail.com - 0908423067
