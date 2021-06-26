@@ -85,10 +85,13 @@ class BabyProfileHeaderPage extends StatelessWidget {
                           color: Color.fromRGBO(0, 0, 0, .5),
                         ),
                       ),
-                      Icon(
-                        Icons.face_retouching_natural,
-                        size: 32,
-                        color: Colors.pink[200],
+                      FadeInImage(
+                        placeholder:
+                            AssetImage('assets/image/EmojiHeartEye.png'),
+                        height: 32,
+                        width: 32,
+                        fit: BoxFit.cover,
+                        image: AssetImage('assets/image/EmojiHeartEye.png'),
                       ),
                     ],
                   ),

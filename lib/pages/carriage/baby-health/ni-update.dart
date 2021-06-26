@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:glass_kit/glass_kit.dart';
 import 'package:hexcolor/hexcolor.dart';
 
@@ -15,16 +16,26 @@ class _NIUpdatePageState extends State<NIUpdatePage> {
     'username': null,
   };
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  final Map<String, String> _icons = {
+    'Porridge': 'assets/icon/porridge.svg',
+    'Milk': 'assets/icon/milk.svg',
+    'Meat': 'assets/icon/beef.svg',
+    'Fish': 'assets/icon/vitamin_d.svg',
+    'Egg': 'assets/icon/egg.svg',
+    'Green Vegets': 'assets/icon/salad.svg',
+    'Red Vegets': 'assets/icon/carrot.svg',
+    'Citrus fruit': 'assets/icon/orange.svg',
+  };
 
-  Widget _buildSliderInput() {
+  Widget _buildSliderInput(String name) {
     return Row(
       mainAxisSize: MainAxisSize.max,
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Icon(
-          Icons.add_photo_alternate,
-          color: Theme.of(context).backgroundColor,
-          size: 40.0,
+        SvgPicture.asset(
+          _icons[name],
+          width: 40,
+          height: 40,
         ),
         SizedBox(width: 10),
         Container(
@@ -158,21 +169,21 @@ class _NIUpdatePageState extends State<NIUpdatePage> {
                 ),
               ),
               SizedBox(height: 20),
-              _buildSliderInput(),
+              _buildSliderInput('Porridge'),
               SizedBox(height: 10),
-              _buildSliderInput(),
+              _buildSliderInput('Milk'),
               SizedBox(height: 10),
-              _buildSliderInput(),
+              _buildSliderInput('Meat'),
               SizedBox(height: 10),
-              _buildSliderInput(),
+              _buildSliderInput('Fish'),
               SizedBox(height: 10),
-              _buildSliderInput(),
+              _buildSliderInput('Egg'),
               SizedBox(height: 10),
-              _buildSliderInput(),
+              _buildSliderInput('Green Vegets'),
               SizedBox(height: 10),
-              _buildSliderInput(),
+              _buildSliderInput('Red Vegets'),
               SizedBox(height: 10),
-              _buildSliderInput(),
+              _buildSliderInput('Citrus fruit'),
               SizedBox(height: 20),
             ],
           ),

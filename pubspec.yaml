@@ -70,9 +70,40 @@ flutter:
     - assets/icon/google.svg
     - assets/icon/notify.svg
     - assets/icon/threedot.svg
+    - assets/icon/beef.svg
+    - assets/icon/bread.svg
+    - assets/icon/crown.svg
+    - assets/icon/fat.svg
+    - assets/icon/height.svg
+    - assets/icon/images_outlined.svg
+    - assets/icon/milk.svg
+    - assets/icon/protein.svg
+    - assets/icon/seafood.svg
+    - assets/icon/vitamin_a.svg
+    - assets/icon/vitamin_b.svg
+    - assets/icon/vitamin_c.svg
+    - assets/icon/vitamin_d.svg
+    - assets/icon/warn.svg
+    - assets/icon/weight.svg
+    - assets/icon/carrot.svg
+    - assets/icon/egg.svg
+    - assets/icon/orange.svg
+    - assets/icon/porridge.svg
+    - assets/icon/salad.svg
+    - assets/icon/boy.svg
+    - assets/icon/girl.svg
+    - assets/icon/ages.svg
     - assets/image/baby_default.jpg
     - assets/image/baby2_default.jpg
     - assets/image/baby3_default.jpg
+    - assets/image/food.jpg
+    - assets/image/healthcare.jpg
+    - assets/image/note.jpg
+    - assets/image/EmojiHeartEye.png
+    - assets/image/EmojiHappy.png
+    - assets/image/EmojiSmile.png
+    - assets/image/EmojiSad.png
+    - assets/image/EmojiCry.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
