@@ -6,7 +6,7 @@ import 'create-baby/cr-baby-gender.dart';
 
 class CarriagePage extends StatelessWidget {
   Widget _buildBabyButton(BuildContext context, String headerText,
-      String bodyText, Function todo, ImageProvider<Object> imageDes) {
+      String bodyText, Function todo, String image, String status) {
     return GestureDetector(
       child: Container(
         height: 178,
@@ -36,11 +36,12 @@ class CarriagePage extends StatelessWidget {
                 height: 168,
                 width: 168,
                 fit: BoxFit.cover,
-                image: imageDes,
+                image: AssetImage(image),
               ),
             ),
             Expanded(child: Container()),
             Column(
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Container(
                   margin: EdgeInsets.only(top: 10),
@@ -89,10 +90,13 @@ class CarriagePage extends StatelessWidget {
                     ],
                   ),
                 ),
-                Container(
-                  height: 60,
-                  width: 170,
-                )
+                FadeInImage(
+                  placeholder: AssetImage('assets/image/EmojiHeartEye.png'),
+                  height: 64,
+                  width: 64,
+                  fit: BoxFit.cover,
+                  image: AssetImage('assets/image/Emoji$status.png'),
+                ),
               ],
             )
           ],
@@ -141,10 +145,10 @@ class CarriagePage extends StatelessWidget {
                 SizedBox(height: 35),
                 _buildBabyButton(context, 'Name', '15', () {
                   print('Baby Health');
-                }, AssetImage('assets/image/baby_default.jpg')),
+                }, 'assets/image/baby_default.jpg', 'HeartEye'),
                 _buildBabyButton(context, 'Name', '15', () {
                   print('Baby Health');
-                }, AssetImage('assets/image/baby_default.jpg')),
+                }, 'assets/image/baby2_default.jpg', 'Happy'),
                 SizedBox(height: 20),
                 _buildCreateBabyButton(context),
               ],

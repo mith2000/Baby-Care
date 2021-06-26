@@ -17,9 +17,8 @@ class _CreateBabyGenderState extends State<CreateBabyGender> {
   };
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final Map<String, String> _icons = {
-    'eye': 'assets/icon/open_eye.svg',
-    'correct': 'assets/icon/correct.svg',
-    'uncorrect': 'assets/icon/uncorrect.svg',
+    'boy': 'assets/icon/boy.svg',
+    'girl': 'assets/icon/girl.svg',
   };
 
   Widget _buildHeading() {
@@ -38,20 +37,14 @@ class _CreateBabyGenderState extends State<CreateBabyGender> {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         IconButton(
-          icon: Icon(
-            Icons.arrow_circle_up,
-            color: Theme.of(context).backgroundColor,
-          ),
+          icon: SvgPicture.asset(_icons['boy']),
           iconSize: 100,
           onPressed: () {
             print('male');
           },
         ),
         IconButton(
-          icon: Icon(
-            Icons.arrow_circle_up,
-            color: Theme.of(context).backgroundColor,
-          ),
+          icon: SvgPicture.asset(_icons['girl']),
           iconSize: 100,
           onPressed: () {
             print('female');

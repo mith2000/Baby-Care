@@ -118,44 +118,63 @@ class CatalogPage extends StatelessWidget {
           children: [
             Row(),
             _buildOption(
-                'Baby Health', 'Checking the health status of your baby', () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (BuildContext context) => BabyHealthPage(),
-                ),
-              );
-            }, AssetImage('assets/image/baby_default.jpg'), [
-              HexColor('#7ed1f2'),
-              HexColor('#bd88f2'),
-            ]),
-            _buildOption('Menu Suggestions',
-                'Get to know what your baby needs for the coming week', () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (BuildContext context) => MenuSuggestPage(),
-                ),
-              );
-            }, AssetImage('assets/image/baby_default.jpg'), [
-              HexColor('#ffda8f'),
-              HexColor('#fc9495'),
-            ]),
-            _buildOption('Vaccine Reminder',
-                'The following vaccination suggestions are very important for your kid',
-                () {
-              print('Vaccine Reminder');
-            }, AssetImage('assets/image/baby_default.jpg'), [
-              HexColor('#7ed1f2'),
-              HexColor('#bd88f2'),
-            ]),
-            _buildOption('Vaccination history',
-                'Store vaccination information for your baby', () {
-              print('Vaccination history');
-            }, AssetImage('assets/image/baby_default.jpg'), [
-              HexColor('#ffda8f'),
-              HexColor('#fc9495'),
-            ]),
+              'Baby Health',
+              'Checking the health status of your baby',
+              () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (BuildContext context) => BabyHealthPage(),
+                  ),
+                );
+              },
+              AssetImage('assets/image/baby_default.jpg'),
+              [
+                HexColor('#7ed1f2'),
+                HexColor('#bd88f2'),
+              ],
+            ),
+            _buildOption(
+              'Menu Suggestions',
+              'Get to know what your baby needs for the coming week',
+              () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (BuildContext context) => MenuSuggestPage(),
+                  ),
+                );
+              },
+              AssetImage('assets/image/food.jpg'),
+              [
+                HexColor('#ffda8f'),
+                HexColor('#fc9495'),
+              ],
+            ),
+            _buildOption(
+              'Vaccine Reminder',
+              'The following vaccination suggestions are very important for your kid',
+              () {
+                print('Vaccine Reminder');
+              },
+              AssetImage('assets/image/healthcare.jpg'),
+              [
+                HexColor('#7ed1f2'),
+                HexColor('#bd88f2'),
+              ],
+            ),
+            _buildOption(
+              'Vaccination history',
+              'Store vaccination information for your baby',
+              () {
+                print('Vaccination history');
+              },
+              AssetImage('assets/image/note.jpg'),
+              [
+                HexColor('#ffda8f'),
+                HexColor('#fc9495'),
+              ],
+            ),
             SizedBox(height: 20),
           ],
         ),

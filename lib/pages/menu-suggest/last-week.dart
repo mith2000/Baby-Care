@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:glass_kit/glass_kit.dart';
 import 'package:hexcolor/hexcolor.dart';
 
@@ -7,15 +8,26 @@ import 'menu-suggest.dart';
 import 'next-week.dart';
 
 class LastWeekPage extends StatelessWidget {
-  Widget _buildFoodDetailIcon() {
+  final Map<String, String> _icons = {
+    'Porridge': 'assets/icon/porridge.svg',
+    'Milk': 'assets/icon/milk.svg',
+    'Meat': 'assets/icon/beef.svg',
+    'Fish': 'assets/icon/vitamin_d.svg',
+    'Egg': 'assets/icon/egg.svg',
+    'Green Vegets': 'assets/icon/salad.svg',
+    'Red Vegets': 'assets/icon/carrot.svg',
+    'Citrus fruit': 'assets/icon/orange.svg',
+  };
+
+  Widget _buildFoodDetailIcon(String name) {
     return Container(
       margin: EdgeInsets.only(left: 5),
       child: Row(
         children: [
-          Icon(
-            Icons.emoji_food_beverage,
-            size: 40,
-            color: Colors.pink[200],
+          SvgPicture.asset(
+            _icons[name],
+            width: 40,
+            height: 40,
           ),
           Text(
             ' 999g',
@@ -88,10 +100,10 @@ class LastWeekPage extends StatelessWidget {
                 mainAxisSize: MainAxisSize.max,
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  _buildFoodDetailIcon(),
-                  _buildFoodDetailIcon(),
-                  _buildFoodDetailIcon(),
-                  _buildFoodDetailIcon(),
+                  _buildFoodDetailIcon('Porridge'),
+                  _buildFoodDetailIcon('Meat'),
+                  _buildFoodDetailIcon('Fish'),
+                  _buildFoodDetailIcon('Green Vegets'),
                 ],
               ),
             ),
@@ -101,7 +113,7 @@ class LastWeekPage extends StatelessWidget {
                 mainAxisSize: MainAxisSize.max,
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  _buildFoodDetailIcon(),
+                  _buildFoodDetailIcon('Citrus fruit'),
                 ],
               ),
             ),

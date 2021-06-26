@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:glass_kit/glass_kit.dart';
 import 'package:hexcolor/hexcolor.dart';
 
@@ -7,6 +8,17 @@ import 'last-week.dart';
 import 'next-week.dart';
 
 class MenuSuggestPage extends StatelessWidget {
+  final Map<String, String> _icons = {
+    'Porridge': 'assets/icon/porridge.svg',
+    'Milk': 'assets/icon/milk.svg',
+    'Meat': 'assets/icon/beef.svg',
+    'Fish': 'assets/icon/vitamin_d.svg',
+    'Egg': 'assets/icon/egg.svg',
+    'Green Vegets': 'assets/icon/salad.svg',
+    'Red Vegets': 'assets/icon/carrot.svg',
+    'Citrus fruit': 'assets/icon/orange.svg',
+  };
+
   Widget _buildNutriWidget(BuildContext context, String nutriName) {
     return Container(
       width: 110,
@@ -100,30 +112,34 @@ class MenuSuggestPage extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Icon(
-                    Icons.emoji_food_beverage,
-                    size: 40,
-                    color: Colors.pink[200],
+                  SvgPicture.asset(
+                    _icons['Fish'],
+                    width: 40,
+                    height: 40,
                   ),
-                  Icon(
-                    Icons.emoji_food_beverage,
-                    size: 40,
-                    color: Colors.pink[200],
+                  SizedBox(width: 5),
+                  SvgPicture.asset(
+                    _icons['Egg'],
+                    width: 40,
+                    height: 40,
                   ),
-                  Icon(
-                    Icons.emoji_food_beverage,
-                    size: 40,
-                    color: Colors.pink[200],
+                  SizedBox(width: 5),
+                  SvgPicture.asset(
+                    _icons['Milk'],
+                    width: 40,
+                    height: 40,
                   ),
-                  Icon(
-                    Icons.emoji_food_beverage,
-                    size: 40,
-                    color: Colors.pink[200],
+                  SizedBox(width: 5),
+                  SvgPicture.asset(
+                    _icons['Meat'],
+                    width: 40,
+                    height: 40,
                   ),
-                  Icon(
-                    Icons.emoji_food_beverage,
-                    size: 40,
-                    color: Colors.pink[200],
+                  SizedBox(width: 5),
+                  SvgPicture.asset(
+                    _icons['Green Vegets'],
+                    width: 40,
+                    height: 40,
                   ),
                 ],
               ),

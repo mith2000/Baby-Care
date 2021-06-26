@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:glass_kit/glass_kit.dart';
 import 'package:hexcolor/hexcolor.dart';
 
@@ -7,6 +8,24 @@ import 'bmi-update.dart';
 import 'ni-update.dart';
 
 class BabyHealthPage extends StatelessWidget {
+  final Map<String, String> _icons = {
+    'images': 'assets/icon/images_outlined.svg',
+    'crown': 'assets/icon/crown.svg',
+    'warn': 'assets/icon/warn.svg',
+    'height': 'assets/icon/height.svg',
+    'weight': 'assets/icon/weight.svg',
+    'Carbohydrate': 'assets/icon/bread.svg',
+    'Fat': 'assets/icon/fat.svg',
+    'Protein': 'assets/icon/protein.svg',
+    'Vitamin A': 'assets/icon/vitamin_a.svg',
+    'Vitamin B': 'assets/icon/vitamin_b.svg',
+    'Vitamin C': 'assets/icon/vitamin_c.svg',
+    'Vitamin D': 'assets/icon/vitamin_d.svg',
+    'Iron': 'assets/icon/beef.svg',
+    'Calcium': 'assets/icon/milk.svg',
+    'Iodine': 'assets/icon/seafood.svg',
+  };
+
   Widget _buildImages(double width) {
     return FadeInImage(
       placeholder: AssetImage('assets/image/baby_default.jpg'),
@@ -38,18 +57,20 @@ class BabyHealthPage extends StatelessWidget {
       alignment: Alignment.topRight,
       margin: EdgeInsets.only(right: 15, top: 64),
       child: IconButton(
-        icon: Icon(
-          Icons.photo_library,
-          color: Colors.black,
-          size: 40,
+        icon: SvgPicture.asset(
+          _icons['images'],
+          width: 40,
+          height: 40,
         ),
-        onPressed: () {},
+        onPressed: () {
+          print('choose image');
+        },
       ),
     );
   }
 
-  Widget _buildBodyMassWidget(
-      BuildContext context, double deviceWidth, String name, int value) {
+  Widget _buildBodyMassWidget(BuildContext context, double deviceWidth,
+      String name, int value, String status) {
     return Container(
       alignment: Alignment.center,
       width: deviceWidth * 0.85,
@@ -61,13 +82,11 @@ class BabyHealthPage extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          Container(
+          SizedBox(width: 5),
+          SvgPicture.asset(
+            _icons[name],
             width: 40,
-            child: Icon(
-              Icons.arrow_circle_up_rounded,
-              size: 40,
-              color: HexColor('#A79BF2'),
-            ),
+            height: 40,
           ),
           Container(
             width: 140,
@@ -94,10 +113,12 @@ class BabyHealthPage extends StatelessWidget {
             ),
           ),
           Expanded(child: Container()),
-          Icon(
-            Icons.face_retouching_natural,
-            size: 32,
-            color: Colors.pink[200],
+          FadeInImage(
+            placeholder: AssetImage('assets/image/EmojiHeartEye.png'),
+            height: 32,
+            width: 32,
+            fit: BoxFit.cover,
+            image: AssetImage('assets/image/Emoji$status.png'),
           ),
           SizedBox(width: 5),
         ],
@@ -105,7 +126,8 @@ class BabyHealthPage extends StatelessWidget {
     );
   }
 
-  Widget _buildNutriWidget(BuildContext context, String nutriName) {
+  Widget _buildNutriWidget(
+      BuildContext context, String nutriName, String status) {
     return Container(
       width: 140,
       decoration: BoxDecoration(
@@ -116,10 +138,10 @@ class BabyHealthPage extends StatelessWidget {
         mainAxisSize: MainAxisSize.max,
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Icon(
-            Icons.fastfood,
-            size: 40,
-            color: Colors.brown,
+          SvgPicture.asset(
+            _icons[nutriName],
+            width: 40,
+            height: 40,
           ),
           Container(
             width: 140,
@@ -133,18 +155,20 @@ class BabyHealthPage extends StatelessWidget {
               ),
             ),
           ),
-          Icon(
-            Icons.face_retouching_natural,
-            size: 50,
-            color: Colors.pink[200],
+          FadeInImage(
+            placeholder: AssetImage('assets/image/EmojiHeartEye.png'),
+            height: 50,
+            width: 50,
+            fit: BoxFit.cover,
+            image: AssetImage('assets/image/Emoji$status.png'),
           ),
         ],
       ),
     );
   }
 
-  Widget _buildPairOfNutriWidget(
-      BuildContext context, String nutriName1, String nutriName2) {
+  Widget _buildPairOfNutriWidget(BuildContext context, String nutriName1,
+      String nutriName2, String status1, String status2) {
     return Container(
       height: 180,
       margin: EdgeInsets.only(bottom: 15),
@@ -152,9 +176,9 @@ class BabyHealthPage extends StatelessWidget {
         mainAxisSize: MainAxisSize.max,
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          _buildNutriWidget(context, nutriName1),
+          _buildNutriWidget(context, nutriName1, status1),
           SizedBox(width: 40),
-          _buildNutriWidget(context, nutriName2)
+          _buildNutriWidget(context, nutriName2, status2),
         ],
       ),
     );
@@ -218,10 +242,26 @@ class BabyHealthPage extends StatelessWidget {
         decoration: BoxDecoration(
           color: Theme.of(context).cardColor,
         ),
-        child: Icon(
-          Icons.line_weight_rounded,
-          size: 40,
-          color: Colors.white,
+        child: Center(
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              SvgPicture.asset(
+                _icons['height'],
+                width: 40,
+                height: 40,
+                color: Colors.white,
+              ),
+              SizedBox(width: 10),
+              Text(
+                'BMI',
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                ),
+              )
+            ],
+          ),
         ),
       ),
       onTap: () {
@@ -243,10 +283,25 @@ class BabyHealthPage extends StatelessWidget {
         decoration: BoxDecoration(
           color: Theme.of(context).buttonColor,
         ),
-        child: Icon(
-          Icons.fastfood,
-          size: 40,
-          color: Colors.white,
+        child: Center(
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              SvgPicture.asset(
+                _icons['Calcium'],
+                width: 40,
+                height: 40,
+              ),
+              SizedBox(width: 10),
+              Text(
+                'NI',
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                ),
+              )
+            ],
+          ),
         ),
       ),
       onTap: () {
@@ -312,10 +367,12 @@ class BabyHealthPage extends StatelessWidget {
               'Status ',
               style: Theme.of(context).textTheme.bodyText1,
             ),
-            Icon(
-              Icons.face_retouching_natural,
-              size: 32,
-              color: Colors.pink[200],
+            FadeInImage(
+              placeholder: AssetImage('assets/image/EmojiHeartEye.png'),
+              height: 32,
+              width: 32,
+              fit: BoxFit.cover,
+              image: AssetImage('assets/image/EmojiHeartEye.png'),
             ),
           ],
         ),
@@ -357,10 +414,10 @@ class BabyHealthPage extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(
-              Icons.highlight,
-              size: 40,
-              color: HexColor('#ffff90'),
+            SvgPicture.asset(
+              _icons['crown'],
+              width: 32,
+              height: 32,
             ),
             Container(
               width: 180,
@@ -412,13 +469,10 @@ class BabyHealthPage extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Container(
+            SvgPicture.asset(
+              _icons['warn'],
               width: 40,
-              child: Icon(
-                Icons.warning_rounded,
-                size: 40,
-                color: HexColor('#FF4A05'),
-              ),
+              height: 40,
             ),
             Container(
               width: 80,
@@ -539,9 +593,9 @@ class BabyHealthPage extends StatelessWidget {
               ),
             ),
             SizedBox(height: 5),
-            _buildBodyMassWidget(context, deviceWidth, 'height', 999),
+            _buildBodyMassWidget(context, deviceWidth, 'height', 999, 'Smile'),
             SizedBox(height: 10),
-            _buildBodyMassWidget(context, deviceWidth, 'weight', 4005),
+            _buildBodyMassWidget(context, deviceWidth, 'weight', 4005, 'Sad'),
             SizedBox(height: 20),
             _buildUpdateBMIButton(context),
           ],
@@ -577,11 +631,15 @@ class BabyHealthPage extends StatelessWidget {
               ),
             ),
             SizedBox(height: 20),
-            _buildPairOfNutriWidget(context, 'Carbohydrate', 'Fat'),
-            _buildPairOfNutriWidget(context, 'Protein', 'Vitamin A'),
-            _buildPairOfNutriWidget(context, 'Vitamin B', 'Vitamin C'),
-            _buildPairOfNutriWidget(context, 'Vitamin D', 'Iron'),
-            _buildPairOfNutriWidget(context, 'Calcium', 'Iodine'),
+            _buildPairOfNutriWidget(
+                context, 'Carbohydrate', 'Fat', 'HeartEye', 'Happy'),
+            _buildPairOfNutriWidget(
+                context, 'Protein', 'Vitamin A', 'Happy', 'Happy'),
+            _buildPairOfNutriWidget(
+                context, 'Vitamin B', 'Vitamin C', 'Sad', 'Smile'),
+            _buildPairOfNutriWidget(context, 'Vitamin D', 'Iron', 'Sad', 'Cry'),
+            _buildPairOfNutriWidget(
+                context, 'Calcium', 'Iodine', 'Cry', 'HeartEye'),
             SizedBox(height: 5),
             _buildUpdateNIButton(context),
           ],

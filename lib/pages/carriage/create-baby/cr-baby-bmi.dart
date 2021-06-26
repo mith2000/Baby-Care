@@ -17,9 +17,9 @@ class _CreateBabyBMIState extends State<CreateBabyBMI> {
   };
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final Map<String, String> _icons = {
-    'eye': 'assets/icon/open_eye.svg',
-    'correct': 'assets/icon/correct.svg',
-    'uncorrect': 'assets/icon/uncorrect.svg',
+    'ages': 'assets/icon/ages.svg',
+    'height': 'assets/icon/height.svg',
+    'weight': 'assets/icon/weight.svg',
   };
 
   Widget _buildHeading() {
@@ -41,6 +41,16 @@ class _CreateBabyBMIState extends State<CreateBabyBMI> {
             Border.all(width: 1.0, color: Theme.of(context).backgroundColor),
         borderRadius: BorderRadius.circular(32),
       ),
+      child: Row(
+        children: [
+          SizedBox(width: 5),
+          SvgPicture.asset(
+            _icons['ages'],
+            width: 40,
+            height: 40,
+          ),
+        ],
+      ),
     );
   }
 
@@ -53,6 +63,16 @@ class _CreateBabyBMIState extends State<CreateBabyBMI> {
             Border.all(width: 1.0, color: Theme.of(context).backgroundColor),
         borderRadius: BorderRadius.circular(32),
       ),
+      child: Row(
+        children: [
+          SizedBox(width: 15),
+          SvgPicture.asset(
+            _icons['height'],
+            width: 40,
+            height: 40,
+          ),
+        ],
+      ),
     );
   }
 
@@ -64,6 +84,16 @@ class _CreateBabyBMIState extends State<CreateBabyBMI> {
         border:
             Border.all(width: 1.0, color: Theme.of(context).backgroundColor),
         borderRadius: BorderRadius.circular(32),
+      ),
+      child: Row(
+        children: [
+          SizedBox(width: 15),
+          SvgPicture.asset(
+            _icons['weight'],
+            width: 40,
+            height: 40,
+          ),
+        ],
       ),
     );
   }
