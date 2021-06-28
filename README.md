@@ -28,6 +28,9 @@ Cô **Thái Thị Hàn Uyển**
 - Figma
 - Github
 
+# Thiết kế hiện tại trên Figma
+- https://www.figma.com/file/cN3PIMcaM9optmsiz620lE/Baby-Care-Simulator?node-id=0%3A1
+
 # Tác giả
 -  **Nguyễn Minh Thắng** - erastnguyen@gmail.com - 0836469040
 -  **Bùi Trọng Khánh Duy** - khanhduyvt0101@gmail.com - 0908423067
