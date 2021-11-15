@@ -119,7 +119,7 @@ flutter:
   fonts:
      - family: Avo
        fonts:
-         - asset: assets\font\UTM Avo.ttf
+         - asset: assets/font/UTM Avo.ttf
            weight: 700
   #   - family: Trajan Pro
   #     fonts:
