@@ -1,24 +1,28 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
-//import 'package:flutter/rendering.dart';
-import 'package:scoped_model/scoped_model.dart';
-import 'package:hexcolor/hexcolor.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_babycare/module/sample/view/sample_view.dart';
+import 'package:flutter_babycare/utils/app_colors.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import 'pages/login.dart';
-import 'pages/create-account pages/cr-acc-name.dart';
-import 'pages/home.dart';
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
 
-void main() {
-  //debugPaintSizeEnabled = true;
-  //debugPaintBaselinesEnabled = true;
-  //debugPaintPointersEnabled = true;
+  HttpOverrides.global = MyHttpOverrides();
+
+  // vertical only
+  await SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp,
+    DeviceOrientation.portraitDown,
+  ]);
   runApp(MyApp());
 }
 
 class MyApp extends StatefulWidget {
+  const MyApp();
   @override
-  State<StatefulWidget> createState() {
-    return _MyAppState();
-  }
+  _MyAppState createState() => _MyAppState();
 }
 
 class _MyAppState extends State<MyApp> {
@@ -29,97 +33,50 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      theme: ThemeData(
-        //brightness overwrite primarySwatch and background
-        brightness: Brightness.dark,
-        primaryColor: HexColor('#05dbf2'),
-        //if dont define what color using, automatically use this
+    return ScreenUtilInit(
+        designSize: Size(375, 812),
+        builder: () => MaterialApp(
+              supportedLocales: [
+                const Locale.fromSubtags(languageCode: 'vi'),
+                const Locale.fromSubtags(languageCode: 'en'),
+              ],
+              locale: const Locale('vi', 'VN'),
+              debugShowCheckedModeBanner: false,
+              title: 'Baby Care',
+              theme: ThemeData(
+                  brightness: Brightness.light,
+                  dialogTheme: DialogTheme(
+                      titleTextStyle: TextStyle(color: AppColors.appBlue)),
+                  appBarTheme: Theme.of(context).appBarTheme.copyWith(
+                      brightness: Brightness.light,
+                      actionsIconTheme: IconThemeData(color: Colors.white),
+                      iconTheme: IconThemeData(color: Colors.white)),
+                  primarySwatch: Colors.blue,
+                  primaryColor: Colors.white),
 
-        //backbuffer color :v just scroll out a list
-        // accentColor: HexColor('#b3ecf2'),
-        buttonColor: HexColor('#fc9495'),
-        elevatedButtonTheme: ElevatedButtonThemeData(
-          style: ButtonStyle(
-            backgroundColor:
-                MaterialStateProperty.all<Color>(HexColor('#fc9495')),
-            shape: MaterialStateProperty.all<OutlinedBorder>(
-              RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(45),
-              ),
-            ),
-            elevation: MaterialStateProperty.resolveWith<double>(
-              (Set<MaterialState> states) {
-                if (states.contains(MaterialState.pressed)) {
-                  return 0;
-                }
-                return 10;
+              builder: (context, widget) {
+                return MediaQuery(
+                  data: MediaQuery.of(context).copyWith(textScaleFactor: 1),
+                  child: widget,
+                );
               },
-            ),
-          ),
-        ),
-        // indicatorColor: HexColor('#f2b3e1'),
+              initialRoute: '/',
 
-        backgroundColor: HexColor('#91f2e9'),
-        cardColor: HexColor('#bd88f2'),
-        scaffoldBackgroundColor: Colors.white,
+              //routes as shortcuts for Navigator
+              routes: {
+                '/': (BuildContext context) => SampleView(),
+                '/home': (BuildContext context) => SampleView(),
+              },
+            ));
+  }
+}
 
-        fontFamily: 'Avo',
-        textTheme: TextTheme(
-          button: TextStyle(
-            fontSize: 14.0,
-            color: Color.fromRGBO(255, 255, 255, 1),
-            fontWeight: FontWeight.bold,
-          ),
-          bodyText1: TextStyle(
-            fontSize: 14.0,
-            color: Color.fromRGBO(0, 0, 0, .5),
-          ),
-          bodyText2: TextStyle(
-            fontSize: 11.0,
-            color: Color.fromRGBO(255, 255, 255, 1),
-          ),
-          headline1: TextStyle(
-            fontSize: 16.0,
-            fontWeight: FontWeight.bold,
-            color: Color.fromRGBO(255, 255, 255, 1),
-          ),
-          headline2: TextStyle(
-            fontSize: 14.0,
-            fontWeight: FontWeight.bold,
-            color: Color.fromRGBO(255, 255, 255, .7),
-          ),
-          headline3: TextStyle(
-            fontSize: 14.0,
-            fontWeight: FontWeight.bold,
-            color: Color.fromRGBO(0, 0, 0, 1),
-          ),
-          headline4: TextStyle(
-            fontSize: 20.0,
-            fontWeight: FontWeight.bold,
-            color: Color.fromRGBO(0, 0, 0, 1),
-          ),
-          headline5: TextStyle(
-            fontSize: 16.0,
-            fontWeight: FontWeight.bold,
-            color: Color.fromRGBO(0, 0, 0, 1),
-          ),
-        ),
-
-        dividerTheme: DividerThemeData(
-          space: 30,
-          thickness: 0.3,
-          color: HexColor('#505050'),
-        ),
-        visualDensity: VisualDensity.adaptivePlatformDensity,
-      ),
-
-      //routes as shortcuts for Navigator
-      routes: {
-        '/': (BuildContext context) => LoginPage(),
-        '/create_account': (BuildContext context) => CreateAccountName(),
-        '/home': (BuildContext context) => HomePage(),
-      },
-    );
+//Accept HTTPS://Host:Port without a trusted certificate
+class MyHttpOverrides extends HttpOverrides {
+  @override
+  HttpClient createHttpClient(SecurityContext context) {
+    return super.createHttpClient(context)
+      ..badCertificateCallback =
+          (X509Certificate cert, String host, int port) => true;
   }
 }

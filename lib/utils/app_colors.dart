@@ -1,0 +1,64 @@
+import 'package:flutter/material.dart';
+
+class AppColors {
+  static const Color appBlue = Color(0xff34499D);
+  static const Color darkBlue = Color(0xff00104F);
+  static const Color white = Color(0xFFF7FCFE);
+  static const Color blackSubTitle = Color(0xFF5F5F5F);
+  static const Color blackTitle = Color(0xFF424242);
+  static const Color textLightGrey = Color(0xFFC9C9C9);
+  static Color lineLight = Colors.black.withOpacity(0.2);
+  static const Color lighLine = Color(0xFFF2F2F2);
+  static const Color checkoutColor = Color(0xFF0FBC34);
+  static const Color text_sublineD8 = Color(0xFFD8D8D8);
+  static const Color text_sublineB5 = Color(0xFFB5B5B5);
+  static const Color text_sublineC4 = Color(0xFFC4C4C4);
+  static const Color text_42 = Color(0xFF424242);
+  static const Color bg_EF = Color(0xFFEFEFEF);
+  static const Color bg_FA = Color(0xFFFAFAFA);
+  static const Color bg_F4 = Color(0xFFF4F4F4);
+  static const Color bg_2F4858 = Color(0xFF2F4858);
+  static const Color bgLightChat = Color(0xFFFAFAFC);
+  static const Color line_F2 = Color(0xFFF2F2F2);
+  static const Color BGSelected = Color(0xFFF2F3F7);
+  static const Color lighOrange = Color(0xFFD9A23D);
+  static const Color addOrange = Color(0xFFF1E096);
+  static const Color bgElementPrize = Color(0xFFF6EAA5);
+  static const Color orangePrize = Color(0xFFD8A13B);
+  static const Color skyBlue = Color(0xFFE9EFF9);
+  static const Color text_FFE094 = Color(0xFFFFE094);
+  static const Color text_676869 = Color(0xFF676869);
+  static const Color text_D0D0D0 = Color(0xFFD0D0D0);
+  static const Color text_8E8E8E = Color(0xFF8E8E8E);
+  static const Color lineInProfile = Color(0xFFC9C2C2);
+  static const Color lightBackground = Color(0xFFFAFAFA);
+  static const Color textTitleTextField = Color(0xFF8E8E8E);
+  static const Color texInputTextField = Color(0xFF424242);
+}
+
+const Color appBlue = Color(0xff34499D);
+const Color appBarColor = Color(0xff34499D);
+const Color checkoutColor = Color(0xFF0FBC34);
+const Color textButonColor = Color(0xff00104F);
+const Color checkinColor = Color(0xff34499D);
+const Color textCalendar = Color(0xFF424242);
+const Color disbleButton = Color(0xFFF2F3F7);
+const Color historyListBG = Color(0xFFF7FCFE);
+const Color historyTitleColor = Color(0xFF424242);
+const Color historySubtitleColor = Color(0xFF5F5F5F);
+const Color primaryColor = Color(0xFF34499D);
+const Color lightText = Color(0xFFEEE9E9);
+const Color linearFrom = Color(0xFF2A42A7);
+const Color lineInformation = Color(0xFFF2F2F2);
+const Color bgSearch = Color(0xFFF7FCFE);
+const Color bgLight = Color(0xFFF2F3F7);
+const Color textLightGrey = Color(0xFFC9C9C9);
+const Color bgLightChat = Color(0xFFFAFAFC);
+const Color blackTitle = Color(0xFF424242);
+const Color blackSubTitle = Color(0xFF5F5F5F);
+const Color lineLight = Color(0xFFF2F2F2);
+
+Color lightBlackText = Color(0xFF5F5F5F);
+Color titleBlackText = Color(0xFF424242);
+Color lightLine = Color(0xFFF2F2F2);
+Color lightBackground = Color(0xFFFAFAFA);
