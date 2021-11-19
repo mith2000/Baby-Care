@@ -8,6 +8,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import 'module/home/view/home_view.dart';
+import 'module/login/view/login_view.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -71,6 +72,11 @@ class _MyAppState extends State<MyApp> {
                       fontSize: 14.sp,
                       color: AppColors.text,
                     ),
+                    button: TextStyle(
+                      fontWeight: FontWeight.w600,
+                      fontSize: 22.sp,
+                      color: AppColors.whiteBackground,
+                    ),
                   ),
                 ),
               ),
@@ -85,8 +91,8 @@ class _MyAppState extends State<MyApp> {
 
               //routes as shortcuts for Navigator
               routes: {
-                '/': (BuildContext context) => HomeView(),
-                '/home': (BuildContext context) => SampleView(),
+                '/': (BuildContext context) => LoginView(),
+                '/home': (BuildContext context) => HomeView(),
               },
             ));
   }

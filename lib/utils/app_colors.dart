@@ -11,4 +11,6 @@ class AppColors {
   static const Color secondary = Color(0xff91F2E9);
   static const Color highlighter = Color(0xffFFDA8F);
   static const Color embrace = Color(0xffFFFF64);
+  static const Color solidButtonPress = Color(0xff5383C0);
+  static const Color lineButtonPress = Color(0xffD5E7F2);
 }

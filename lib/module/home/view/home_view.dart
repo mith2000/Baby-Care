@@ -17,14 +17,14 @@ class HomeView extends StatefulWidget {
 }
 
 class _HomeViewState extends State<HomeView> {
-  GlobalKey _bottomNavigationKey = GlobalKey();
-  final screens = [
+  var _bottomNavigationKey = GlobalKey();
+  var screens = [
     HomeBodyView(),
     SampleView(),
     SampleView(),
     SampleView(),
   ];
-  final Map<String, String> _icons = {
+  var _icons = {
     'home': 'assets/icon/home.svg',
     'notify': 'assets/icon/notify.svg',
     'chat': 'assets/icon/chat.svg',
