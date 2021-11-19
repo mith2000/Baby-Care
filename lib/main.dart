@@ -1,14 +1,20 @@
 import 'dart:io';
 
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_babycare/module/sample/view/sample_view.dart';
 import 'package:flutter_babycare/utils/app_colors.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import 'data/source/user_repository.dart';
+import 'module/authentication/authentication_bloc/authentication_bloc.dart';
+import 'module/authentication/authentication_bloc/authentication_event.dart';
+import 'module/authentication/authentication_bloc/authentication_state.dart';
+import 'module/authentication/simple_bloc_observer.dart';
 import 'module/home/view/home_view.dart';
-import 'module/login/view/login_view.dart';
+import 'module/login/view/testLogin.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -20,11 +26,26 @@ void main() async {
     DeviceOrientation.portraitUp,
     DeviceOrientation.portraitDown,
   ]);
-  runApp(MyApp());
+  await Firebase.initializeApp();
+  Bloc.observer = SimpleBlocObserver();
+  final UserRepository userRepository = UserRepository();
+  runApp(
+    BlocProvider(
+      create: (context) => AuthenticationBloc(
+        userRepository: userRepository,
+      )..add(AuthenticationStarted()),
+      child: MyApp(
+        userRepository: userRepository,
+      ),
+    ),
+  );
 }
 
 class MyApp extends StatefulWidget {
-  const MyApp();
+  final UserRepository _userRepository;
+
+  MyApp({UserRepository userRepository}) : _userRepository = userRepository;
+
   @override
   _MyAppState createState() => _MyAppState();
 }
@@ -91,7 +112,48 @@ class _MyAppState extends State<MyApp> {
 
               //routes as shortcuts for Navigator
               routes: {
-                '/': (BuildContext context) => LoginView(),
+                '/': (BuildContext context) =>
+                    BlocBuilder<AuthenticationBloc, AuthenticationState>(
+                      builder: (context, state) {
+                        if (state is AuthenticationFailure) {
+                          return LoginScreen(
+                            userRepository: widget._userRepository,
+                          );
+                        }
+
+                        if (state is AuthenticationSuccess) {
+                          return Scaffold(
+                            appBar: AppBar(
+                              title: Text('Home'),
+                              actions: <Widget>[
+                                IconButton(
+                                  icon: Icon(Icons.exit_to_app),
+                                  onPressed: () {
+                                    BlocProvider.of<AuthenticationBloc>(context)
+                                        .add(AuthenticationLoggedOut());
+                                  },
+                                )
+                              ],
+                            ),
+                            body: Column(
+                              children: <Widget>[
+                                Center(
+                                  child:
+                                      Text("Hello, ${widget._userRepository}"),
+                                ),
+                              ],
+                            ),
+                          );
+                        }
+
+                        return Scaffold(
+                          appBar: AppBar(),
+                          body: Container(
+                            child: Center(child: Text("Loading")),
+                          ),
+                        );
+                      },
+                    ),
                 '/home': (BuildContext context) => HomeView(),
               },
             ));

@@ -1,7 +1,8 @@
 import 'package:flutter_babycare/data/source/user_repository.dart';
-import 'package:flutter_babycare/module/login/authentication_bloc/login_event.dart';
-import 'package:flutter_babycare/module/login/authentication_bloc/login_state.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
+import 'authentication_event.dart';
+import 'authentication_state.dart';
 
 class AuthenticationBloc
     extends Bloc<AuthenticationEvent, AuthenticationState> {
