@@ -1,0 +1,54 @@
+{
+  "project_info": {
+    "project_number": "603507004223",
+    "project_id": "baby-care-69c67",
+    "storage_bucket": "baby-care-69c67.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:603507004223:android:5ce607f5e8e9123e7d798a",
+        "android_client_info": {
+          "package_name": "com.example.flutter_babycare"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "603507004223-cj0gsdacblmme4guv50pg0l80mucesjf.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.flutter_babycare",
+            "certificate_hash": "ec225dab9f9ada4c5038634fc2d4f4fde8d2d1ee"
+          }
+        },
+        {
+          "client_id": "603507004223-sbhlpm7ih3hhshquphp1kmj8niqt89d2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAxU6UkiufrU7W2Oi3pz_9L3yBwQ0ls23E"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "603507004223-sbhlpm7ih3hhshquphp1kmj8niqt89d2.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "603507004223-17p3fmb0e41mdk8676sljvld2fj3akb8.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.flutterBabycare"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
