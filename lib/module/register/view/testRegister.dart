@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_babycare/data/source/user_repository.dart';
 import 'package:flutter_babycare/module/register/bloc/register_bloc.dart';
@@ -15,7 +14,6 @@ class RegisterScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      extendBodyBehindAppBar: true,
       appBar: AppBar(
         elevation: 0,
         backgroundColor: Colors.transparent,
@@ -25,9 +23,7 @@ class RegisterScreen extends StatelessWidget {
       ),
       body: BlocProvider<RegisterBloc>(
         create: (context) => RegisterBloc(userRepository: _userRepository),
-        child: SingleChildScrollView(
-          child: RegisterForm()
-        ),
+        child: SingleChildScrollView(child: RegisterForm()),
       ),
     );
   }

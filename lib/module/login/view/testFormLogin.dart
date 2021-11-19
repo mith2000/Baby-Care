@@ -89,8 +89,13 @@ class _LoginFormState extends State<LoginForm> {
                     height: 10,
                   ),
                   InkWell(
-                    onTap: () => RegisterScreen(
-                      userRepository: widget._userRepository,
+                    onTap: () => Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => RegisterScreen(
+                          userRepository: widget._userRepository,
+                        ),
+                      ),
                     ),
                     child: Text("Register"),
                   ),
