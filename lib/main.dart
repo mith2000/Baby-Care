@@ -5,6 +5,10 @@ import 'package:flutter/services.dart';
 import 'package:flutter_babycare/module/sample/view/sample_view.dart';
 import 'package:flutter_babycare/utils/app_colors.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:google_fonts/google_fonts.dart';
+
+import 'module/home/view/home_view.dart';
+import 'module/login/view/login_view.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -34,25 +38,48 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return ScreenUtilInit(
-        designSize: Size(375, 812),
+        designSize: Size(414, 736),
         builder: () => MaterialApp(
-              supportedLocales: [
-                const Locale.fromSubtags(languageCode: 'vi'),
-                const Locale.fromSubtags(languageCode: 'en'),
-              ],
-              locale: const Locale('vi', 'VN'),
               debugShowCheckedModeBanner: false,
               title: 'Baby Care',
               theme: ThemeData(
-                  brightness: Brightness.light,
-                  dialogTheme: DialogTheme(
-                      titleTextStyle: TextStyle(color: AppColors.appBlue)),
-                  appBarTheme: Theme.of(context).appBarTheme.copyWith(
-                      brightness: Brightness.light,
-                      actionsIconTheme: IconThemeData(color: Colors.white),
-                      iconTheme: IconThemeData(color: Colors.white)),
-                  primarySwatch: Colors.blue,
-                  primaryColor: Colors.white),
+                brightness: Brightness.light,
+                primaryColor: AppColors.primary,
+                textTheme: GoogleFonts.dosisTextTheme(
+                  TextTheme(
+                    caption: TextStyle(
+                      fontWeight: FontWeight.w700,
+                      fontSize: 24.sp,
+                      color: AppColors.text,
+                    ),
+                    headline1: TextStyle(
+                      fontWeight: FontWeight.w600,
+                      fontSize: 22.sp,
+                      color: AppColors.text,
+                    ),
+                    headline2: TextStyle(
+                      fontWeight: FontWeight.w600,
+                      fontSize: 18.sp,
+                      color: AppColors.text,
+                    ),
+                    bodyText1: TextStyle(
+                      fontWeight: FontWeight.w400,
+                      fontSize: 16.sp,
+                      color: AppColors.text,
+                    ),
+                    bodyText2: TextStyle(
+                      fontWeight: FontWeight.w400,
+                      fontSize: 14.sp,
+                      color: AppColors.text,
+                    ),
+                    button: TextStyle(
+                      fontWeight: FontWeight.w600,
+                      fontSize: 22.sp,
+                      color: AppColors.whiteBackground,
+                    ),
+                  ),
+                ),
+              ),
 
               builder: (context, widget) {
                 return MediaQuery(
@@ -64,8 +91,8 @@ class _MyAppState extends State<MyApp> {
 
               //routes as shortcuts for Navigator
               routes: {
-                '/': (BuildContext context) => SampleView(),
-                '/home': (BuildContext context) => SampleView(),
+                '/': (BuildContext context) => LoginView(),
+                '/home': (BuildContext context) => HomeView(),
               },
             ));
   }
