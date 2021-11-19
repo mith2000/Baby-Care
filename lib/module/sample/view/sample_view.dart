@@ -11,8 +11,6 @@ class SampleView extends StatefulWidget {
 class _SampleViewState extends State<SampleView> {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      color: AppColors.appBlue,
-    );
+    return Container(color: AppColors.background);
   }
 }
