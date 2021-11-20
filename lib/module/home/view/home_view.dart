@@ -1,16 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter_babycare/constants/app_constants.dart';
+import 'package:flutter_babycare/data/source/user_repository.dart';
+import 'package:flutter_babycare/module/authentication/authentication_bloc/authentication_bloc.dart';
+import 'package:flutter_babycare/module/authentication/authentication_bloc/authentication_event.dart';
 import 'package:flutter_babycare/module/sample/view/sample_view.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_babycare/utils/app_colors.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class HomeView extends StatefulWidget {
+  final UserRepository _userRepository;
   int selectedIndex = 0;
 
-  HomeView({Key key, this.selectedIndex = 0}) : super(key: key);
+  HomeView(UserRepository userRepository, {Key key, this.selectedIndex = 0})
+      : _userRepository = userRepository,
+        super(key: key);
 
   @override
   _HomeViewState createState() => _HomeViewState();
@@ -18,18 +25,62 @@ class HomeView extends StatefulWidget {
 
 class _HomeViewState extends State<HomeView> {
   var _bottomNavigationKey = GlobalKey();
-  var screens = [
-    HomeBodyView(),
-    SampleView(),
-    SampleView(),
-    SampleView(),
-  ];
+  List<Widget> screens;
   var _icons = {
     'home': 'assets/icon/home.svg',
     'notify': 'assets/icon/notify.svg',
     'chat': 'assets/icon/chat.svg',
     'user': 'assets/icon/user.svg',
   };
+
+  @override
+  void initState() {
+    super.initState();
+    screens = [
+      HomeBodyView(widget._userRepository),
+      SampleView(),
+      SampleView(),
+      SampleView(),
+    ];
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: PreferredSize(
+        preferredSize: Size.fromHeight(
+            AppConstants.paddingAppH + AppConstants.paddingSuperLargeH),
+        child: AppBar(
+          title: Container(
+            height: 32.h,
+            alignment: Alignment.bottomLeft,
+            margin: EdgeInsets.only(left: AppConstants.paddingAppW),
+            child: Text(
+              'Baby Care',
+              style: GoogleFonts.dosis(
+                fontWeight: FontWeight.w700,
+                fontSize: 24.sp,
+                color: Colors.white,
+              ),
+            ),
+          ),
+          backgroundColor: AppColors.primary,
+          elevation: 0,
+          actions: <Widget>[
+            IconButton(
+              icon: Icon(Icons.exit_to_app),
+              onPressed: () {
+                BlocProvider.of<AuthenticationBloc>(context)
+                    .add(AuthenticationLoggedOut());
+              },
+            )
+          ],
+        ),
+      ),
+      body: screens[widget.selectedIndex],
+      bottomNavigationBar: _buildBottomTabBar(),
+    );
+  }
 
   Widget _buildBottomTabBar() {
     return CurvedNavigationBar(
@@ -68,39 +119,13 @@ class _HomeViewState extends State<HomeView> {
       },
     );
   }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: PreferredSize(
-        preferredSize: Size.fromHeight(
-            AppConstants.paddingAppH + AppConstants.paddingSuperLargeH),
-        child: AppBar(
-          title: Container(
-            height: 32.h,
-            alignment: Alignment.bottomLeft,
-            margin: EdgeInsets.only(left: AppConstants.paddingAppW),
-            child: Text(
-              'Baby Care',
-              style: GoogleFonts.dosis(
-                fontWeight: FontWeight.w700,
-                fontSize: 24.sp,
-                color: Colors.white,
-              ),
-            ),
-          ),
-          backgroundColor: AppColors.primary,
-          elevation: 0,
-        ),
-      ),
-      body: screens[widget.selectedIndex],
-      bottomNavigationBar: _buildBottomTabBar(),
-    );
-  }
 }
 
 class HomeBodyView extends StatelessWidget {
-  const HomeBodyView({Key key}) : super(key: key);
+  final UserRepository _userRepository;
+  const HomeBodyView(UserRepository userRepository, {Key key})
+      : _userRepository = userRepository,
+        super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -114,7 +139,7 @@ class HomeBodyView extends StatelessWidget {
         children: [
           _buildTipView(context),
           SizedBox(height: AppConstants.paddingLargeH),
-          _buildWelcomeUser(context, 'us'),
+          _buildWelcomeUser(context, _userRepository.getUser().toString()),
           SizedBox(height: AppConstants.paddingLargeH),
         ],
       ),
