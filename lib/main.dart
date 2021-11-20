@@ -14,7 +14,8 @@ import 'module/authentication/authentication_bloc/authentication_event.dart';
 import 'module/authentication/authentication_bloc/authentication_state.dart';
 import 'module/authentication/simple_bloc_observer.dart';
 import 'module/home/view/home_view.dart';
-import 'module/login/view/testLogin.dart';
+import 'module/login/bloc/login_bloc.dart';
+import 'module/login/view/login_view.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -116,8 +117,10 @@ class _MyAppState extends State<MyApp> {
                     BlocBuilder<AuthenticationBloc, AuthenticationState>(
                       builder: (context, state) {
                         if (state is AuthenticationFailure) {
-                          return LoginScreen(
-                            userRepository: widget._userRepository,
+                          return BlocProvider<LoginBloc>(
+                            create: (context) => LoginBloc(
+                                userRepository: widget._userRepository),
+                            child: LoginView(widget._userRepository),
                           );
                         }
 
