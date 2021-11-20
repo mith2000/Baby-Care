@@ -6,7 +6,9 @@ import 'package:flutter_babycare/module/authentication/authentication_bloc/authe
 import 'package:flutter_babycare/module/register/bloc/register_bloc.dart';
 import 'package:flutter_babycare/module/register/bloc/register_event.dart';
 import 'package:flutter_babycare/module/register/bloc/register_state.dart';
+import 'package:flutter_babycare/utils/UI_components/custom_dialog.dart';
 import 'package:flutter_babycare/utils/UI_components/icon_button.dart';
+import 'package:flutter_babycare/utils/UI_components/loading_widget.dart';
 import 'package:flutter_babycare/utils/UI_components/mini_line_button.dart';
 import 'package:flutter_babycare/utils/UI_components/mini_solid_button.dart';
 import 'package:flutter_babycare/utils/app_colors.dart';
@@ -67,11 +69,15 @@ class _RegisterViewState extends State<RegisterView> {
       body: BlocListener<RegisterBloc, RegisterState>(
         listener: (context, state) {
           if (state.isFailure) {
-            Scaffold(body: Text('Register Failure'));
-          }
-
-          if (state.isSubmitting) {
-            Scaffold(body: Text('Registering In...'));
+            showDialog(
+              context: context,
+              builder: (_) => CustomDialog(
+                title: 'Register failed',
+                content: 'Your email is used',
+                ok: 'Ok',
+                onOk: () => Navigator.pop(context),
+              ),
+            );
           }
 
           if (state.isSuccess) {
@@ -83,6 +89,10 @@ class _RegisterViewState extends State<RegisterView> {
         },
         child: BlocBuilder<RegisterBloc, RegisterState>(
           builder: (context, state) {
+            if (state.isSubmitting) {
+              return CustomLoadingWidget();
+            }
+
             return SafeArea(
               child: Center(
                 child: GestureDetector(

@@ -6,7 +6,9 @@ import 'package:flutter_babycare/module/authentication/authentication_bloc/authe
 import 'package:flutter_babycare/module/login/bloc/login_bloc.dart';
 import 'package:flutter_babycare/module/login/bloc/login_event.dart';
 import 'package:flutter_babycare/module/login/bloc/login_state.dart';
+import 'package:flutter_babycare/utils/UI_components/custom_dialog.dart';
 import 'package:flutter_babycare/utils/UI_components/icon_button.dart';
+import 'package:flutter_babycare/utils/UI_components/loading_widget.dart';
 import 'package:flutter_babycare/utils/UI_components/mini_line_button.dart';
 import 'package:flutter_babycare/utils/UI_components/mini_solid_button.dart';
 import 'package:flutter_babycare/utils/app_colors.dart';
@@ -61,11 +63,15 @@ class _LoginViewState extends State<LoginView> {
       body: BlocListener<LoginBloc, LoginState>(
         listener: (context, state) {
           if (state.isFailure) {
-            Scaffold(body: Text('Login Failure'));
-          }
-
-          if (state.isSubmitting) {
-            Scaffold(body: Text('Logging In...'));
+            showDialog(
+              context: context,
+              builder: (_) => CustomDialog(
+                title: 'Login failed',
+                content: 'Incorrect email or password',
+                ok: 'Ok',
+                onOk: () => Navigator.pop(context),
+              ),
+            );
           }
 
           if (state.isSuccess) {
@@ -76,6 +82,10 @@ class _LoginViewState extends State<LoginView> {
         },
         child: BlocBuilder<LoginBloc, LoginState>(
           builder: (context, state) {
+            if (state.isSubmitting) {
+              return CustomLoadingWidget();
+            }
+
             return SafeArea(
               child: Center(
                 child: GestureDetector(
