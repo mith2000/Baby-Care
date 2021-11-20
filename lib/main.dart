@@ -125,39 +125,19 @@ class _MyAppState extends State<MyApp> {
                         }
 
                         if (state is AuthenticationSuccess) {
-                          return Scaffold(
-                            appBar: AppBar(
-                              title: Text('Home'),
-                              actions: <Widget>[
-                                IconButton(
-                                  icon: Icon(Icons.exit_to_app),
-                                  onPressed: () {
-                                    BlocProvider.of<AuthenticationBloc>(context)
-                                        .add(AuthenticationLoggedOut());
-                                  },
-                                )
-                              ],
-                            ),
-                            body: Column(
-                              children: <Widget>[
-                                Center(
-                                  child:
-                                      Text("Hello, ${widget._userRepository}"),
-                                ),
-                              ],
-                            ),
-                          );
+                          return HomeView(widget._userRepository);
                         }
 
                         return Scaffold(
                           appBar: AppBar(),
                           body: Container(
-                            child: Center(child: Text("Loading")),
+                            child: Center(child: Text("Loading...")),
                           ),
                         );
                       },
                     ),
-                '/home': (BuildContext context) => HomeView(),
+                '/home': (BuildContext context) =>
+                    HomeView(widget._userRepository),
               },
             ));
   }
