@@ -1,15 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_babycare/constants/app_constants.dart';
+import 'package:flutter_babycare/data/source/user_repository.dart';
+import 'package:flutter_babycare/module/authentication/authentication_bloc/authentication_bloc.dart';
+import 'package:flutter_babycare/module/authentication/authentication_bloc/authentication_event.dart';
+import 'package:flutter_babycare/module/login/bloc/login_bloc.dart';
+import 'package:flutter_babycare/module/login/bloc/login_event.dart';
+import 'package:flutter_babycare/module/login/bloc/login_state.dart';
+import 'package:flutter_babycare/module/register/view/testRegister.dart';
 import 'package:flutter_babycare/utils/UI_components/icon_button.dart';
 import 'package:flutter_babycare/utils/UI_components/mini_line_button.dart';
 import 'package:flutter_babycare/utils/UI_components/mini_solid_button.dart';
 import 'package:flutter_babycare/utils/app_colors.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 
 class LoginView extends StatefulWidget {
-  const LoginView({Key key}) : super(key: key);
+  final UserRepository _userRepository;
+  const LoginView(UserRepository userRepository, {Key key})
+      : _userRepository = userRepository,
+        super(key: key);
 
   @override
   _LoginViewState createState() => _LoginViewState();
@@ -23,8 +34,8 @@ class _LoginViewState extends State<LoginView> {
   var _formKey = GlobalKey<FormState>();
   var _emailController = TextEditingController();
   var _passwordController = TextEditingController();
-  String _emailErrorNotify;
-  String _passwordErrorNotify;
+
+  LoginBloc _loginBloc;
 
   var _icons = {
     'user': 'assets/icon/login_user.svg',
@@ -34,52 +45,88 @@ class _LoginViewState extends State<LoginView> {
   };
 
   @override
+  void initState() {
+    super.initState();
+    _loginBloc = BlocProvider.of<LoginBloc>(context);
+    _emailController.addListener(_onEmailChange);
+    _passwordController.addListener(_onPasswordChange);
+  }
+
+  @override
+  void dispose() {
+    _emailController.dispose();
+    _passwordController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      body: SafeArea(
-        child: Center(
-          child: GestureDetector(
-            onTap: () {
-              FocusScope.of(context).requestFocus(FocusNode());
-            },
-            child: Container(
-              color: AppColors.background,
-              padding: EdgeInsets.symmetric(
-                horizontal: AppConstants.paddingAppW,
-                vertical: AppConstants.paddingAppH,
-              ),
-              child: Form(
-                key: _formKey,
-                child: Stack(
-                  children: [
-                    Column(
-                      children: [
-                        _buildEmailInput(),
-                        _buildPasswordInput(),
-                        _buildForgetPasswordButton(),
-                      ],
+      body: BlocListener<LoginBloc, LoginState>(
+        listener: (context, state) {
+          if (state.isFailure) {
+            Scaffold(body: Text('Login Failure'));
+          }
+
+          if (state.isSubmitting) {
+            Scaffold(body: Text('Logging In...'));
+          }
+
+          if (state.isSuccess) {
+            BlocProvider.of<AuthenticationBloc>(context).add(
+              AuthenticationLoggedIn(),
+            );
+          }
+        },
+        child: BlocBuilder<LoginBloc, LoginState>(
+          builder: (context, state) {
+            return SafeArea(
+              child: Center(
+                child: GestureDetector(
+                  onTap: () {
+                    FocusScope.of(context).requestFocus(FocusNode());
+                  },
+                  child: Container(
+                    color: AppColors.background,
+                    padding: EdgeInsets.symmetric(
+                      horizontal: AppConstants.paddingAppW,
+                      vertical: AppConstants.paddingAppH,
                     ),
-                    Column(
-                      mainAxisSize: MainAxisSize.max,
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        _buildOtherAccountButtons(),
-                        SizedBox(height: AppConstants.paddingLargeH),
-                        _buildMainButtons(),
-                      ],
-                    )
-                  ],
+                    child: Form(
+                      key: _formKey,
+                      child: Stack(
+                        children: [
+                          Column(
+                            children: [
+                              _buildEmailInput(state),
+                              _buildPasswordInput(state),
+                              _buildForgetPasswordButton(),
+                            ],
+                          ),
+                          Column(
+                            mainAxisSize: MainAxisSize.max,
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              _buildOtherAccountButtons(),
+                              SizedBox(height: AppConstants.paddingLargeH),
+                              _buildMainButtons(),
+                            ],
+                          )
+                        ],
+                      ),
+                    ),
+                  ),
                 ),
               ),
-            ),
-          ),
+            );
+          },
         ),
       ),
     );
   }
 
-  Widget _buildEmailInput() {
+  Widget _buildEmailInput(LoginState state) {
     return Container(
       margin: EdgeInsets.only(
         left: AppConstants.paddingSuperLargeW,
@@ -92,7 +139,6 @@ class _LoginViewState extends State<LoginView> {
         decoration: InputDecoration(
           hintText: "Email",
           hintStyle: Theme.of(context).textTheme.headline1,
-          errorText: _emailErrorNotify,
           errorStyle: TextStyle(
             fontWeight: FontWeight.w400,
             fontSize: 16.sp,
@@ -142,13 +188,11 @@ class _LoginViewState extends State<LoginView> {
         onSaved: (String value) {
           _formData['email'] = value;
         },
-        validator: (String value) {
+        validator: (value) {
           if (value.length < 1)
             return "Required";
-          else if (!RegExp(
-                  r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
-              .hasMatch(value))
-            return "Must be an email";
+          else if (!state.isEmailValid)
+            return "Invalid Email";
           else
             return null;
         },
@@ -159,7 +203,7 @@ class _LoginViewState extends State<LoginView> {
     );
   }
 
-  Widget _buildPasswordInput() {
+  Widget _buildPasswordInput(LoginState state) {
     return Container(
       margin: EdgeInsets.only(
         left: AppConstants.paddingSuperLargeW,
@@ -172,7 +216,6 @@ class _LoginViewState extends State<LoginView> {
         decoration: InputDecoration(
           hintText: "●●●●●●",
           hintStyle: Theme.of(context).textTheme.headline1,
-          errorText: _passwordErrorNotify,
           errorStyle: TextStyle(
             fontWeight: FontWeight.w400,
             fontSize: 16.sp,
@@ -229,6 +272,8 @@ class _LoginViewState extends State<LoginView> {
         validator: (String value) {
           if (value.length < 6)
             return "Enter at least 6 chars";
+          else if (!state.isPasswordValid)
+            return "Number only";
           else
             return null;
         },
@@ -279,24 +324,41 @@ class _LoginViewState extends State<LoginView> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        MiniLineButton('Login', _login),
+        MiniLineButton('Login', _onLoginPressed),
         SizedBox(width: AppConstants.paddingLargeW),
-        MiniSolidButton('Create New Account', () {
-          print('success');
-        }),
+        MiniSolidButton('Create New Account', _onCreateAccountPressed),
       ],
     );
   }
 
-  void _login() {
+  void _onEmailChange() {
+    _loginBloc.add(LoginEmailChange(email: _emailController.text));
+  }
+
+  void _onPasswordChange() {
+    _loginBloc.add(LoginPasswordChanged(password: _passwordController.text));
+  }
+
+  void _onLoginPressed() {
     setState(() {
       if (!_formKey.currentState.validate()) {
         return;
       }
       _formKey.currentState.save();
-      print('Email: ' + _formData['email']);
-      print('Password: ' + _formData['password']);
-      // Call LoginAPI and navigate home if success
+
+      _loginBloc.add(LoginWithCredentialsPressed(
+          email: _emailController.text, password: _passwordController.text));
     });
+  }
+
+  void _onCreateAccountPressed() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => RegisterScreen(
+          userRepository: widget._userRepository,
+        ),
+      ),
+    );
   }
 }
