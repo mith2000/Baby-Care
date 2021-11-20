@@ -16,6 +16,8 @@ import 'module/authentication/simple_bloc_observer.dart';
 import 'module/home/view/home_view.dart';
 import 'module/login/bloc/login_bloc.dart';
 import 'module/login/view/login_view.dart';
+import 'module/register/bloc/register_bloc.dart';
+import 'module/register/view/register_view.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -120,7 +122,7 @@ class _MyAppState extends State<MyApp> {
                           return BlocProvider<LoginBloc>(
                             create: (context) => LoginBloc(
                                 userRepository: widget._userRepository),
-                            child: LoginView(widget._userRepository),
+                            child: LoginView(),
                           );
                         }
 
@@ -138,6 +140,12 @@ class _MyAppState extends State<MyApp> {
                     ),
                 '/home': (BuildContext context) =>
                     HomeView(widget._userRepository),
+                '/register': (BuildContext context) =>
+                    BlocProvider<RegisterBloc>(
+                      create: (context) =>
+                          RegisterBloc(userRepository: widget._userRepository),
+                      child: RegisterView(),
+                    ),
               },
             ));
   }

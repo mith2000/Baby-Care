@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_babycare/constants/app_constants.dart';
-import 'package:flutter_babycare/data/source/user_repository.dart';
 import 'package:flutter_babycare/module/authentication/authentication_bloc/authentication_bloc.dart';
 import 'package:flutter_babycare/module/authentication/authentication_bloc/authentication_event.dart';
 import 'package:flutter_babycare/module/login/bloc/login_bloc.dart';
 import 'package:flutter_babycare/module/login/bloc/login_event.dart';
 import 'package:flutter_babycare/module/login/bloc/login_state.dart';
-import 'package:flutter_babycare/module/register/view/testRegister.dart';
 import 'package:flutter_babycare/utils/UI_components/icon_button.dart';
 import 'package:flutter_babycare/utils/UI_components/mini_line_button.dart';
 import 'package:flutter_babycare/utils/UI_components/mini_solid_button.dart';
@@ -17,10 +15,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 
 class LoginView extends StatefulWidget {
-  final UserRepository _userRepository;
-  const LoginView(UserRepository userRepository, {Key key})
-      : _userRepository = userRepository,
-        super(key: key);
+  const LoginView({Key key}) : super(key: key);
 
   @override
   _LoginViewState createState() => _LoginViewState();
@@ -352,13 +347,9 @@ class _LoginViewState extends State<LoginView> {
   }
 
   void _onCreateAccountPressed() {
-    Navigator.push(
+    Navigator.pushNamed(
       context,
-      MaterialPageRoute(
-        builder: (context) => RegisterScreen(
-          userRepository: widget._userRepository,
-        ),
-      ),
+      '/register',
     );
   }
 }

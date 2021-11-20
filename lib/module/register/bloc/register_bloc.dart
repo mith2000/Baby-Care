@@ -13,14 +13,23 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
 
   @override
   Stream<RegisterState> mapEventToState(RegisterEvent event) async* {
-    if (event is RegisterEmailChanged) {
+    if (event is RegisterUsernameChanged) {
+      yield* _mapRegisterUsernameChangeToState(event.username);
+    } else if (event is RegisterEmailChanged) {
       yield* _mapRegisterEmailChangeToState(event.email);
     } else if (event is RegisterPasswordChanged) {
       yield* _mapRegisterPasswordChangeToState(event.password);
     } else if (event is RegisterSubmitted) {
       yield* _mapRegisterSubmittedToState(
-          email: event.email, password: event.password);
+          username: event.username,
+          email: event.email,
+          password: event.password);
     }
+  }
+
+  Stream<RegisterState> _mapRegisterUsernameChangeToState(
+      String username) async* {
+    yield state.update(isUsernameValid: Validators.isValidUsername(username));
   }
 
   Stream<RegisterState> _mapRegisterEmailChangeToState(String email) async* {
@@ -33,7 +42,7 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
   }
 
   Stream<RegisterState> _mapRegisterSubmittedToState(
-      {String email, String password}) async* {
+      {String username, String email, String password}) async* {
     yield RegisterState.loading();
     try {
       await _userRepository.signUp(email, password);
