@@ -1,14 +1,16 @@
 class RegisterState {
+  final bool isUsernameValid;
   final bool isEmailValid;
   final bool isPasswordValid;
   final bool isSubmitting;
   final bool isSuccess;
   final bool isFailure;
 
-  bool get isFormValid => isEmailValid && isPasswordValid;
+  bool get isFormValid => isUsernameValid && isEmailValid && isPasswordValid;
 
   RegisterState(
-      {this.isEmailValid,
+      {this.isUsernameValid,
+      this.isEmailValid,
       this.isPasswordValid,
       this.isSubmitting,
       this.isSuccess,
@@ -16,6 +18,7 @@ class RegisterState {
 
   factory RegisterState.initial() {
     return RegisterState(
+      isUsernameValid: true,
       isEmailValid: true,
       isPasswordValid: true,
       isSubmitting: false,
@@ -26,6 +29,7 @@ class RegisterState {
 
   factory RegisterState.loading() {
     return RegisterState(
+      isUsernameValid: true,
       isEmailValid: true,
       isPasswordValid: true,
       isSubmitting: true,
@@ -36,6 +40,7 @@ class RegisterState {
 
   factory RegisterState.failure() {
     return RegisterState(
+      isUsernameValid: true,
       isEmailValid: true,
       isPasswordValid: true,
       isSubmitting: false,
@@ -46,6 +51,7 @@ class RegisterState {
 
   factory RegisterState.success() {
     return RegisterState(
+      isUsernameValid: true,
       isEmailValid: true,
       isPasswordValid: true,
       isSubmitting: false,
@@ -55,10 +61,12 @@ class RegisterState {
   }
 
   RegisterState update({
+    bool isUsernameValid,
     bool isEmailValid,
     bool isPasswordValid,
   }) {
     return copyWith(
+      isUsernameValid: isUsernameValid,
       isEmailValid: isEmailValid,
       isPasswordValid: isPasswordValid,
       isSubmitting: false,
@@ -68,6 +76,7 @@ class RegisterState {
   }
 
   RegisterState copyWith({
+    bool isUsernameValid,
     bool isEmailValid,
     bool isPasswordValid,
     bool isSubmitting,
@@ -75,6 +84,7 @@ class RegisterState {
     bool isFailure,
   }) {
     return RegisterState(
+      isUsernameValid: isUsernameValid ?? this.isUsernameValid,
       isEmailValid: isEmailValid ?? this.isEmailValid,
       isPasswordValid: isPasswordValid ?? this.isPasswordValid,
       isSubmitting: isSubmitting ?? this.isSubmitting,
