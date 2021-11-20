@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_babycare/utils/UI_components/loading_widget.dart';
 import 'package:flutter_babycare/utils/app_colors.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -130,12 +131,7 @@ class _MyAppState extends State<MyApp> {
                           return HomeView(widget._userRepository);
                         }
 
-                        return Scaffold(
-                          appBar: AppBar(),
-                          body: Container(
-                            child: Center(child: Text("Loading...")),
-                          ),
-                        );
+                        return Scaffold(body: CustomLoadingWidget());
                       },
                     ),
                 '/home': (BuildContext context) =>
