@@ -74,6 +74,13 @@ flutter:
     - assets/icon/true.svg
     - assets/icon/unobscure.svg
 
+    - assets/image/default_baby.png
+    - assets/image/EmojiLove_1.png
+    - assets/image/EmojiHappy_2.png
+    - assets/image/EmojiSmile_3.png
+    - assets/image/EmojiSad_4.png
+    - assets/image/EmojiCry_5.png
+
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
 

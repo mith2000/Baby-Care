@@ -1,9 +1,10 @@
 import 'dart:async';
 
 import 'package:flutter_babycare/data/source/baby_repository.dart';
-import 'package:flutter_babycare/module/baby/bloc/baby_event.dart';
-import 'package:flutter_babycare/module/baby/bloc/baby_state.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
+import 'baby_event.dart';
+import 'baby_state.dart';
 
 class BabyBloc extends Bloc<BabyEvent, BabyState> {
   final BabyRepository babyRepository;
@@ -12,7 +13,6 @@ class BabyBloc extends Bloc<BabyEvent, BabyState> {
   BabyBloc({BabyRepository babyRepository})
       : this.babyRepository = babyRepository,
         super(BabyLoading());
-
 
   @override
   Stream<BabyState> mapEventToState(BabyEvent event) async* {
