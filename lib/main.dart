@@ -3,12 +3,14 @@ import 'dart:io';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_babycare/module/home/bloc/baby_event.dart';
 import 'package:flutter_babycare/utils/UI_components/loading_widget.dart';
 import 'package:flutter_babycare/utils/app_colors.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import 'data/model/baby_model.dart';
 import 'data/source/baby_repository.dart';
 import 'data/source/user_repository.dart';
 import 'module/authentication/authentication_bloc/authentication_bloc.dart';
@@ -80,8 +82,14 @@ class _MyAppState extends State<MyApp> {
         ),
         BlocProvider(
           create: (_) => BabyBloc(
-            babyRepository: BabyRepository(),
-          ),
+              babyRepository: BabyRepository(),
+              babyModel: BabyModel(
+                  name: "Thang",
+                  idAccount: "Kte6OtBPpAOgJZzCNCWYKaz9bGp1",
+                  birth: 10,
+                  image:
+                      "https://img.freepik.com/free-photo/happy-smiling-baby-towel-after-bathing_106368-652.jpg?size=626&ext=jpg"))
+            ..add(AddedBaby(BabyModel())),
         ),
       ],
       child: ScreenUtilInit(

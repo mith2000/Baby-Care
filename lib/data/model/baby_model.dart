@@ -26,4 +26,13 @@ class BabyModel extends Equatable {
         birth,
         image,
       ];
+
+  Map<String, Object> toJson() {
+    return {
+      "name": name,
+      "idAccount": idAccount,
+      "birth": birth,
+      "image": image,
+    };
+  }
 }

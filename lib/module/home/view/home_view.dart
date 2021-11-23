@@ -1,5 +1,5 @@
-import 'package:flutter/material.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_babycare/constants/app_constants.dart';
 import 'package:flutter_babycare/data/source/user_repository.dart';
 import 'package:flutter_babycare/module/authentication/authentication_bloc/authentication_bloc.dart';
@@ -9,10 +9,10 @@ import 'package:flutter_babycare/module/home/bloc/baby_event.dart';
 import 'package:flutter_babycare/module/home/bloc/baby_state.dart';
 import 'package:flutter_babycare/module/sample/view/sample_view.dart';
 import 'package:flutter_babycare/utils/UI_components/loading_widget.dart';
+import 'package:flutter_babycare/utils/app_colors.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:flutter_babycare/utils/app_colors.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class HomeView extends StatefulWidget {
@@ -144,6 +144,16 @@ class _HomeBodyViewState extends State<HomeBodyView> {
     super.initState();
     babyBloc = BlocProvider.of<BabyBloc>(context);
     babyBloc.add(LoadBaby());
+    //babyBloc.add(AddedBaby()); // nếu bật dòng này thì nó sẽ ghi nhớ user này
+    // có bloc add baby này lun, và nó sẽ tạo ra liên tục các baby cho đến khi
+    // tắt app. Rất nguy hiểm. Đăng xuất ra và đăng nhập lại account này thì nó
+    // vẫn add baby típ
+  }
+
+  @override
+  void dispose() {
+    babyBloc.close();
+    super.dispose();
   }
 
   @override
@@ -166,7 +176,6 @@ class _HomeBodyViewState extends State<HomeBodyView> {
               if (state is BabyLoading) {
                 return CustomLoadingWidget();
               }
-
               if (state is BabyLoaded) {
                 return ListView.builder(
                   shrinkWrap: true,

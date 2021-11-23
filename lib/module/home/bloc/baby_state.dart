@@ -13,8 +13,13 @@ class BabyLoading extends BabyState {}
 class BabyLoaded extends BabyState {
   final List<BabyModel> listBaby;
 
-  BabyLoaded({this.listBaby = const <BabyModel>[]});
+  BabyLoaded([this.listBaby = const []]);
 
   @override
   List<Object> get props => [listBaby];
+
+  @override
+  String toString() => 'ListBabyLoadSuccess { ListBaby: $listBaby }';
 }
+
+class BabyLoadFailure extends BabyState {}
