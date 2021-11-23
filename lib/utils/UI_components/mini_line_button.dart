@@ -39,6 +39,15 @@ class MiniLineButton extends StatelessWidget {
           ),
         ),
       ),
+      decoration: BoxDecoration(
+        boxShadow: [
+          BoxShadow(
+            color: AppColors.shadow,
+            blurRadius: 4,
+            offset: Offset(0, 4), // changes position of shadow
+          ),
+        ],
+      ),
     );
   }
 }

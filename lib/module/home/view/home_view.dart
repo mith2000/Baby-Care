@@ -4,7 +4,11 @@ import 'package:flutter_babycare/constants/app_constants.dart';
 import 'package:flutter_babycare/data/source/user_repository.dart';
 import 'package:flutter_babycare/module/authentication/authentication_bloc/authentication_bloc.dart';
 import 'package:flutter_babycare/module/authentication/authentication_bloc/authentication_event.dart';
+import 'package:flutter_babycare/module/home/bloc/baby_bloc.dart';
+import 'package:flutter_babycare/module/home/bloc/baby_event.dart';
+import 'package:flutter_babycare/module/home/bloc/baby_state.dart';
 import 'package:flutter_babycare/module/sample/view/sample_view.dart';
+import 'package:flutter_babycare/utils/UI_components/loading_widget.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -121,11 +125,26 @@ class _HomeViewState extends State<HomeView> {
   }
 }
 
-class HomeBodyView extends StatelessWidget {
+class HomeBodyView extends StatefulWidget {
   final UserRepository _userRepository;
-  const HomeBodyView(UserRepository userRepository, {Key key})
+
+  HomeBodyView(UserRepository userRepository, {Key key})
       : _userRepository = userRepository,
         super(key: key);
+
+  @override
+  _HomeBodyViewState createState() => _HomeBodyViewState();
+}
+
+class _HomeBodyViewState extends State<HomeBodyView> {
+  BabyBloc babyBloc;
+
+  @override
+  void initState() {
+    super.initState();
+    babyBloc = BlocProvider.of<BabyBloc>(context);
+    babyBloc.add(LoadBaby());
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -137,16 +156,46 @@ class HomeBodyView extends StatelessWidget {
       color: AppColors.background,
       child: ListView(
         children: [
-          _buildTipView(context),
+          _buildTipView(),
           SizedBox(height: AppConstants.paddingLargeH),
-          _buildWelcomeUser(context, _userRepository.getUser().toString()),
+          _buildWelcomeUser(widget._userRepository.getUser().toString()),
+          SizedBox(height: AppConstants.paddingNormalH),
+          BlocBuilder<BabyBloc, BabyState>(
+            bloc: babyBloc,
+            builder: (context, state) {
+              if (state is BabyLoading) {
+                return CustomLoadingWidget();
+              }
+
+              if (state is BabyLoaded) {
+                return ListView.builder(
+                  shrinkWrap: true,
+                  physics: ScrollPhysics(),
+                  itemCount: state.listBaby.length,
+                  itemBuilder: (context, index) {
+                    return _buildBabyInterfaceButton(
+                      babyName: state.listBaby[index].name,
+                      babyYearOld: state.listBaby[index].birth,
+                      imageUrl: state.listBaby[index].image,
+                      status: 'Love_1',
+                      action: () {
+                        print('Baby Health');
+                      },
+                    );
+                  },
+                );
+              } else {
+                return Text('Error');
+              }
+            },
+          ),
           SizedBox(height: AppConstants.paddingLargeH),
         ],
       ),
     );
   }
 
-  Widget _buildTipView(BuildContext context) {
+  Widget _buildTipView() {
     return Container(
       height: 80.h,
       alignment: Alignment.centerLeft,
@@ -175,7 +224,7 @@ class HomeBodyView extends StatelessWidget {
     );
   }
 
-  Widget _buildWelcomeUser(BuildContext context, String username) {
+  Widget _buildWelcomeUser(String username) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -188,6 +237,135 @@ class HomeBodyView extends StatelessWidget {
           style: Theme.of(context).textTheme.headline2,
         ),
       ],
+    );
+  }
+
+  Widget _buildBabyInterfaceButton(
+      {String babyName,
+      double babyYearOld,
+      Function action,
+      String imageUrl,
+      String status}) {
+    return Container(
+      height: 168.h,
+      margin: EdgeInsets.symmetric(vertical: AppConstants.paddingNormalH),
+      child: ElevatedButton(
+        onPressed: action,
+        child: Container(
+          child: Row(
+            children: [
+              SizedBox(width: 4.w),
+              ClipRRect(
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(AppConstants.cornerRadiusFrame),
+                  bottomLeft: Radius.circular(AppConstants.cornerRadiusFrame),
+                ),
+                child: FadeInImage.assetNetwork(
+                  placeholder: 'assets/image/default_baby.png',
+                  height: 160.h,
+                  width: 160.w,
+                  fit: BoxFit.cover,
+                  image: imageUrl,
+                ),
+              ),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Container(
+                      margin: EdgeInsets.symmetric(
+                          vertical: AppConstants.paddingLargeH),
+                      height: 40.h,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Container(
+                            width: 75.w,
+                            child: SingleChildScrollView(
+                              child: Text(
+                                babyName,
+                                style: TextStyle(
+                                  fontWeight: FontWeight.w700,
+                                  fontSize: 24.sp,
+                                  color: AppColors.whiteBackground,
+                                ),
+                              ),
+                            ),
+                          ),
+                          VerticalDivider(
+                            width: 20.w,
+                            thickness: 1.w,
+                            color: AppColors.whiteBackground,
+                          ),
+                          Container(
+                            alignment: Alignment.center,
+                            height: 32.h,
+                            width: 32.w,
+                            decoration: BoxDecoration(
+                              color: AppColors.danger,
+                              borderRadius: BorderRadius.circular(
+                                  AppConstants.cornerRadiusHighlightBox),
+                            ),
+                            child: Text(
+                              babyYearOld.toInt().toString(),
+                              style: TextStyle(
+                                fontWeight: FontWeight.w700,
+                                fontSize: 24.sp,
+                                color: AppColors.whiteBackground,
+                              ),
+                            ),
+                          ),
+                          Text(
+                            ' month',
+                            style: TextStyle(
+                              fontWeight: FontWeight.w700,
+                              fontSize: 24.sp,
+                              color: AppColors.whiteBackground,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    FadeInImage(
+                      placeholder: AssetImage('assets/image/EmojiLove_1.png'),
+                      height: 80.h,
+                      width: 80.w,
+                      image: AssetImage('assets/image/Emoji$status.png'),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: [
+                AppColors.primary,
+                AppColors.secondary,
+              ],
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+            ),
+            borderRadius: BorderRadius.circular(AppConstants.cornerRadiusFrame),
+            boxShadow: [
+              BoxShadow(
+                color: AppColors.shadow,
+                blurRadius: 4,
+                offset: Offset(0, 4), // changes position of shadow
+              ),
+            ],
+          ),
+        ),
+        style: ElevatedButton.styleFrom(
+          minimumSize: Size.zero,
+          padding: EdgeInsets.zero,
+          primary: AppColors.primary,
+          onPrimary: AppColors.solidButtonPress,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(AppConstants.cornerRadiusFrame),
+          ),
+        ),
+      ),
     );
   }
 }
