@@ -173,14 +173,6 @@ class _HomeBodyViewState extends State<HomeBodyView> {
                 return CustomLoadingWidget();
               }
               if (state is BabyLoaded) {
-                // babyBloc.add(UpdateBaby(
-                //     babyModel: BabyModel(
-                //         name: "Thang gay lo",
-                //         idAccount: "Kte6OtBPpAOgJZzCNCWYKaz9bGp1",
-                //         birth: 100,
-                //         image:
-                //         "https://img.freepik.com/free-photo/shot-cute-baby-girl-looking-camera_329181-19580.jpg?size=626&ext=jpg"),
-                //     idBaby: state.listBaby[0].id));
                 return ListView.builder(
                   shrinkWrap: true,
                   physics: ScrollPhysics(),
@@ -278,85 +270,107 @@ class _HomeBodyViewState extends State<HomeBodyView> {
       child: ElevatedButton(
         onPressed: action,
         child: Container(
+          padding: EdgeInsets.symmetric(
+              vertical: AppConstants.paddingSlightH,
+              horizontal: AppConstants.paddingSlightW),
           child: Row(
             children: [
-              SizedBox(width: 4.w),
-              ClipRRect(
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(AppConstants.cornerRadiusFrame),
-                  bottomLeft: Radius.circular(AppConstants.cornerRadiusFrame),
-                ),
-                child: FadeInImage.assetNetwork(
-                  placeholder: 'assets/image/default_baby.png',
-                  height: 160.h,
-                  width: 160.w,
-                  fit: BoxFit.cover,
-                  image: imageUrl,
+              Container(
+                height: double.infinity,
+                margin: EdgeInsets.only(right: AppConstants.paddingSlightW),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(AppConstants.cornerRadiusFrame),
+                    bottomLeft: Radius.circular(AppConstants.cornerRadiusFrame),
+                  ),
+                  child: FadeInImage.assetNetwork(
+                    placeholder: 'assets/image/default_baby.png',
+                    width: 160.w,
+                    fit: BoxFit.cover,
+                    image: imageUrl,
+                  ),
                 ),
               ),
               Expanded(
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Container(
-                      margin: EdgeInsets.symmetric(
-                          vertical: AppConstants.paddingLargeH),
-                      height: 40.h,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Container(
-                            width: 75.w,
-                            child: SingleChildScrollView(
-                              child: Text(
-                                babyName,
-                                style: TextStyle(
-                                  fontWeight: FontWeight.w700,
-                                  fontSize: 24.sp,
-                                  color: AppColors.whiteBackground,
-                                ),
-                              ),
-                            ),
-                          ),
-                          VerticalDivider(
-                            width: 20.w,
-                            thickness: 1.w,
+                      margin: EdgeInsets.only(top: AppConstants.paddingNormalH),
+                      height: 64.h,
+                      child: Center(
+                        child: Text(
+                          babyName,
+                          style: TextStyle(
+                            fontWeight: FontWeight.w700,
+                            fontSize: 24.sp,
                             color: AppColors.whiteBackground,
                           ),
-                          Container(
-                            alignment: Alignment.center,
-                            height: 32.h,
-                            width: 32.w,
-                            decoration: BoxDecoration(
-                              color: AppColors.danger,
-                              borderRadius: BorderRadius.circular(
-                                  AppConstants.cornerRadiusHighlightBox),
-                            ),
-                            child: Text(
-                              babyYearOld.toInt().toString(),
-                              style: TextStyle(
-                                fontWeight: FontWeight.w700,
-                                fontSize: 24.sp,
-                                color: AppColors.whiteBackground,
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                    ),
+                    Expanded(child: Container()),
+                    Container(
+                      margin:
+                          EdgeInsets.only(bottom: AppConstants.paddingNormalH),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: [
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Column(
+                                children: [
+                                  Container(
+                                    alignment: Alignment.center,
+                                    height: 32.h,
+                                    width: 32.w,
+                                    decoration: BoxDecoration(
+                                      color: AppColors.danger,
+                                      borderRadius: BorderRadius.circular(
+                                          AppConstants
+                                              .cornerRadiusHighlightBox),
+                                    ),
+                                    child: Text(
+                                      babyYearOld.toInt().toString(),
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.w700,
+                                        fontSize: 24.sp,
+                                        color: AppColors.whiteBackground,
+                                      ),
+                                    ),
+                                  ),
+                                  Text(
+                                    ' month',
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.w700,
+                                      fontSize: 24.sp,
+                                      color: AppColors.whiteBackground,
+                                    ),
+                                  ),
+                                ],
                               ),
-                            ),
+                              Container(
+                                width: 1.w,
+                                height: 40.h,
+                                margin: EdgeInsets.symmetric(
+                                    horizontal: AppConstants.paddingLargeW),
+                                color: AppColors.stroke,
+                              ),
+                            ],
                           ),
-                          Text(
-                            ' month',
-                            style: TextStyle(
-                              fontWeight: FontWeight.w700,
-                              fontSize: 24.sp,
-                              color: AppColors.whiteBackground,
-                            ),
+                          FadeInImage(
+                            placeholder:
+                                AssetImage('assets/image/EmojiLove_1.png'),
+                            height: 80.h,
+                            width: 80.w,
+                            image: AssetImage('assets/image/Emoji$status.png'),
                           ),
                         ],
                       ),
-                    ),
-                    FadeInImage(
-                      placeholder: AssetImage('assets/image/EmojiLove_1.png'),
-                      height: 80.h,
-                      width: 80.w,
-                      image: AssetImage('assets/image/Emoji$status.png'),
                     ),
                   ],
                 ),

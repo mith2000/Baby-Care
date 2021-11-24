@@ -3,6 +3,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 class AppConstants {
   static final double paddingAppW = 16.w;
   static final double paddingAppH = 16.h;
+  static final double paddingSlightW = 4.w;
+  static final double paddingSlightH = 4.h;
   static final double paddingNormalW = 8.w;
   static final double paddingNormalH = 8.h;
   static final double paddingLargeW = 16.w;
