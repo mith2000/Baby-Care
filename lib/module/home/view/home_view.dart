@@ -2,6 +2,7 @@ import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_babycare/constants/app_constants.dart';
+import 'package:flutter_babycare/data/model/baby_model.dart';
 import 'package:flutter_babycare/module/authentication/authentication_bloc/authentication_bloc.dart';
 import 'package:flutter_babycare/module/authentication/authentication_bloc/authentication_event.dart';
 import 'package:flutter_babycare/module/home/bloc/baby_bloc.dart';
@@ -143,7 +144,15 @@ class _HomeBodyViewState extends State<HomeBodyView> {
   void initState() {
     super.initState();
     babyBloc = BlocProvider.of<BabyBloc>(context);
-    babyBloc.add(LoadBaby());
+    babyBloc.add(LoadBaby(userId: widget._user.uid));
+    babyBloc.add(AddedBaby(
+        babyModel: BabyModel(
+            name: "Thang gay lo",
+            idAccount: widget._user.uid,
+            birth: 100,
+            image:
+                "https://img.freepik.com/free-photo/shot-cute-baby-girl-looking-camera_329181-19580.jpg?size=626&ext=jpg"),
+        userId: widget._user.uid));
   }
 
   @override

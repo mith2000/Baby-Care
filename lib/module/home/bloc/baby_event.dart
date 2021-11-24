@@ -8,12 +8,20 @@ abstract class BabyEvent extends Equatable {
   List<Object> get props => [];
 }
 
-class LoadBaby extends BabyEvent {}
+class LoadBaby extends BabyEvent {
+  final String userId;
+
+  LoadBaby({this.userId});
+
+  @override
+  List<Object> get props => [userId];
+}
 
 class AddedBaby extends BabyEvent {
   final BabyModel babyModel;
+  final String userId;
 
-  const AddedBaby(this.babyModel);
+  const AddedBaby({this.babyModel, this.userId});
 
   @override
   List<Object> get props => [this.babyModel];
@@ -43,7 +51,7 @@ class UpdateListBaby extends BabyEvent {
   String toString() => 'listBabyUpdated { updatedListBaby: $listBaby }';
 }
 
-class UpdateBaby extends BabyEvent{
+class UpdateBaby extends BabyEvent {
   final BabyModel babyModel;
 
   UpdateBaby({this.babyModel});

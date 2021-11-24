@@ -81,7 +81,7 @@ class _MyAppState extends State<MyApp> {
         ),
         BlocProvider(
           create: (_) => BabyBloc(
-            babyRepository: BabyRepository(),
+            babyRepository: BabyRepository()
           ),
         ),
       ],
