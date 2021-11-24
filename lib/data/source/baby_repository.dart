@@ -27,4 +27,16 @@ class BabyRepository {
       return snapshot.docs.map((doc) => BabyModel.fromSnapshot(doc)).toList();
     });
   }
+
+  Stream<void> updateBaby({String docId, BabyModel babyModel}) {
+    DocumentReference documentReferencer =
+        firebaseFirestore.collection('baby').doc(docId);
+    documentReferencer
+        .update(babyModel.toJson())
+        .whenComplete(() => print("Baby updated in the database"))
+        .catchError((e) => print(e));
+    return firebaseFirestore.collection('baby').snapshots().map((snapshot) {
+      return snapshot.docs.map((doc) => BabyModel.fromSnapshot(doc)).toList();
+    });
+  }
 }

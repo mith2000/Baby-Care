@@ -173,6 +173,14 @@ class _HomeBodyViewState extends State<HomeBodyView> {
                 return CustomLoadingWidget();
               }
               if (state is BabyLoaded) {
+                // babyBloc.add(UpdateBaby(
+                //     babyModel: BabyModel(
+                //         name: "Thang gay lo",
+                //         idAccount: "Kte6OtBPpAOgJZzCNCWYKaz9bGp1",
+                //         birth: 100,
+                //         image:
+                //         "https://img.freepik.com/free-photo/shot-cute-baby-girl-looking-camera_329181-19580.jpg?size=626&ext=jpg"),
+                //     idBaby: state.listBaby[0].id));
                 return ListView.builder(
                   shrinkWrap: true,
                   physics: ScrollPhysics(),
