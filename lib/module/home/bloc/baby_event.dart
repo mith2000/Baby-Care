@@ -31,14 +31,26 @@ class DeletedBaby extends BabyEvent {
   String toString() => 'BabyDeleted { baby: $babyModel }';
 }
 
-class UpdateBaby extends BabyEvent {
+class UpdateListBaby extends BabyEvent {
   final List<BabyModel> listBaby;
 
-  UpdateBaby({this.listBaby});
+  UpdateListBaby({this.listBaby});
 
   @override
   List<Object> get props => [listBaby];
 
   @override
   String toString() => 'listBabyUpdated { updatedListBaby: $listBaby }';
+}
+
+class UpdateBaby extends BabyEvent{
+  final BabyModel babyModel;
+
+  UpdateBaby({this.babyModel});
+
+  @override
+  List<Object> get props => [babyModel];
+
+  @override
+  String toString() => 'babyUpdated { updatedBaby: $babyModel }';
 }

@@ -1,6 +1,7 @@
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_babycare/constants/app_constants.dart';
+import 'package:flutter_babycare/data/model/baby_model.dart';
 import 'package:flutter_babycare/data/source/user_repository.dart';
 import 'package:flutter_babycare/module/authentication/authentication_bloc/authentication_bloc.dart';
 import 'package:flutter_babycare/module/authentication/authentication_bloc/authentication_event.dart';
@@ -148,6 +149,7 @@ class _HomeBodyViewState extends State<HomeBodyView> {
     // có bloc add baby này lun, và nó sẽ tạo ra liên tục các baby cho đến khi
     // tắt app. Rất nguy hiểm. Đăng xuất ra và đăng nhập lại account này thì nó
     // vẫn add baby típ
+
   }
 
   @override
@@ -177,6 +179,14 @@ class _HomeBodyViewState extends State<HomeBodyView> {
                 return CustomLoadingWidget();
               }
               if (state is BabyLoaded) {
+                // babyBloc.add(UpdateBaby(
+                //     babyModel: BabyModel(
+                //         name: "Thang gay lo",
+                //         idAccount: "Kte6OtBPpAOgJZzCNCWYKaz9bGp1",
+                //         birth: 100,
+                //         image:
+                //         "https://img.freepik.com/free-photo/shot-cute-baby-girl-looking-camera_329181-19580.jpg?size=626&ext=jpg"),
+                //     idBaby: state.listBaby[0].id));
                 return ListView.builder(
                   shrinkWrap: true,
                   physics: ScrollPhysics(),

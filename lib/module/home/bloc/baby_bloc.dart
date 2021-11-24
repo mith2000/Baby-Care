@@ -11,10 +11,12 @@ class BabyBloc extends Bloc<BabyEvent, BabyState> {
   final BabyRepository babyRepository;
   StreamSubscription babySubscription;
   final BabyModel babyModel;
+  final String idBaby;
 
-  BabyBloc({BabyRepository babyRepository, BabyModel babyModel})
+  BabyBloc({BabyRepository babyRepository, BabyModel babyModel, String idBaby})
       : this.babyRepository = babyRepository,
         this.babyModel = babyModel,
+        this.idBaby = idBaby,
         super(BabyLoading());
 
   @override
@@ -25,24 +27,34 @@ class BabyBloc extends Bloc<BabyEvent, BabyState> {
     if (event is AddedBaby) {
       yield* mapBabyAddedToState(babyModel);
     }
-    if (event is UpdateBaby) {
-      yield* mapUpdateBabyToState(event);
+    if (event is UpdateListBaby) {
+      yield* mapUpdateListBabyToState(event);
+    }
+    if (event is UpdateBaby){
+      //yield* mapUpdateBabyToState();
     }
   }
+
+  Stream<BabyState> mapUpdateBabyToState(BabyModel model, String idBaby) async* {
+    babySubscription = babyRepository
+        .updateBaby(babyModel: model, docId: idBaby)
+        .listen((baby) => add(UpdateListBaby()));
+  }
+
 
   Stream<BabyState> mapBabyAddedToState(BabyModel model) async* {
     babySubscription = babyRepository
         .addItem(babyModel: model)
-        .listen((baby) => add(UpdateBaby()));
+        .listen((baby) => add(AddedBaby(babyModel)));
   }
 
   Stream<BabyState> mapBabyLoadedToState() async* {
     babySubscription = babyRepository.getAllBaby().listen((baby) => add(
-          UpdateBaby(listBaby: baby),
+      UpdateListBaby(listBaby: baby),
         ));
   }
 
-  Stream<BabyState> mapUpdateBabyToState(UpdateBaby event) async* {
+  Stream<BabyState> mapUpdateListBabyToState(UpdateListBaby event) async* {
     yield BabyLoaded(event.listBaby);
   }
 }
