@@ -194,6 +194,7 @@ class _HomeBodyViewState extends State<HomeBodyView> {
               }
             },
           ),
+          _buildCreateBabyButton(),
           SizedBox(height: AppConstants.paddingLargeH),
         ],
       ),
@@ -406,6 +407,42 @@ class _HomeBodyViewState extends State<HomeBodyView> {
           ),
         ),
       ),
+    );
+  }
+
+  Widget _buildCreateBabyButton() {
+    return Wrap(
+      alignment: WrapAlignment.center,
+      children: [
+        TextButton(
+          onPressed: () {
+            Navigator.pushNamed(
+              context,
+              '/create-baby',
+            );
+          },
+          child: Container(
+            child: SvgPicture.asset('assets/icon/add.svg'),
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              boxShadow: [
+                BoxShadow(
+                  color: AppColors.shadow,
+                  blurRadius: 8,
+                  offset: Offset(-2, 4), // changes position of shadow
+                ),
+              ],
+            ),
+          ),
+          style: TextButton.styleFrom(
+            minimumSize: Size.zero,
+            padding: EdgeInsets.zero,
+            primary: Colors.transparent,
+            fixedSize: Size(80, 80),
+            shape: CircleBorder(),
+          ),
+        ),
+      ],
     );
   }
 }

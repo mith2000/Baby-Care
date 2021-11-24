@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_babycare/module/baby/create/view/create_view.dart';
 import 'package:flutter_babycare/utils/UI_components/loading_widget.dart';
 import 'package:flutter_babycare/utils/app_colors.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -156,6 +157,7 @@ class _MyAppState extends State<MyApp> {
                   '/home': (BuildContext context) =>
                       HomeView(widget._userRepository.firebaseAuth.currentUser),
                   '/register': (BuildContext context) => RegisterView(),
+                  '/create-baby': (BuildContext context) => CreateBabyView(),
                 },
               )),
     );
