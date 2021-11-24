@@ -10,14 +10,11 @@ import 'baby_state.dart';
 class BabyBloc extends Bloc<BabyEvent, BabyState> {
   final BabyRepository babyRepository;
   StreamSubscription babySubscription;
-  final BabyModel babyModel;
-  final String userId;
+  List<BabyModel> listBabyModel;
 
   BabyBloc(
       {BabyRepository babyRepository, BabyModel babyModel, String idBaby, String userId})
       : this.babyRepository = babyRepository,
-        this.babyModel = babyModel,
-        this.userId = userId,
         super(BabyLoading());
 
   @override
@@ -26,7 +23,7 @@ class BabyBloc extends Bloc<BabyEvent, BabyState> {
       yield* mapBabyLoadedToState(event);
     }
     if (event is AddedBaby) {
-      yield* mapBabyAddedToState(babyModel);
+      yield* mapBabyAddedToState(event);
     }
     if (event is UpdateListBaby) {
       yield* mapUpdateListBabyToState(event);
@@ -44,10 +41,15 @@ class BabyBloc extends Bloc<BabyEvent, BabyState> {
   }
 
 
-  Stream<BabyState> mapBabyAddedToState(BabyModel model) async* {
+  Stream<BabyState> mapBabyAddedToState(AddedBaby event) async* {
     babySubscription = babyRepository
-        .addItem(babyModel: model)
-        .listen((baby) => add(AddedBaby(babyModel)));
+        .addItem(babyModel: event.babyModel)
+        .listen((baby) => add(UpdateListBaby()));
+    babySubscription =
+        babyRepository.getAllBaby(event.userId).listen((baby) =>
+            add(
+              UpdateListBaby(listBaby: baby),
+            ));
   }
 
   Stream<BabyState> mapBabyLoadedToState(LoadBaby event) async* {

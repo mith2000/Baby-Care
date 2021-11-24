@@ -146,11 +146,13 @@ class _HomeBodyViewState extends State<HomeBodyView> {
     super.initState();
     babyBloc = BlocProvider.of<BabyBloc>(context);
     babyBloc.add(LoadBaby(userId: widget._userRepository.firebaseAuth.currentUser.uid));
-    //babyBloc.add(AddedBaby()); // nếu bật dòng này thì nó sẽ ghi nhớ user này
-    // có bloc add baby này lun, và nó sẽ tạo ra liên tục các baby cho đến khi
-    // tắt app. Rất nguy hiểm. Đăng xuất ra và đăng nhập lại account này thì nó
-    // vẫn add baby típ
-
+    babyBloc.add(AddedBaby(babyModel: BabyModel(
+        name: "Thang gay lo",
+        idAccount: widget._userRepository.firebaseAuth.currentUser.uid,
+        birth: 100,
+        image:
+        "https://img.freepik.com/free-photo/shot-cute-baby-girl-looking-camera_329181-19580.jpg?size=626&ext=jpg"),
+     userId: widget._userRepository.firebaseAuth.currentUser.uid));
   }
 
   @override
@@ -180,14 +182,7 @@ class _HomeBodyViewState extends State<HomeBodyView> {
                 return CustomLoadingWidget();
               }
               if (state is BabyLoaded) {
-                // babyBloc.add(UpdateBaby(
-                //     babyModel: BabyModel(
-                //         name: "Thang gay lo",
-                //         idAccount: "Kte6OtBPpAOgJZzCNCWYKaz9bGp1",
-                //         birth: 100,
-                //         image:
-                //         "https://img.freepik.com/free-photo/shot-cute-baby-girl-looking-camera_329181-19580.jpg?size=626&ext=jpg"),
-                //     idBaby: state.listBaby[0].id));
+
                 return ListView.builder(
                   shrinkWrap: true,
                   physics: ScrollPhysics(),
