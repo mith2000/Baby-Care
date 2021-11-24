@@ -1,7 +1,7 @@
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_babycare/constants/app_constants.dart';
-import 'package:flutter_babycare/data/source/user_repository.dart';
 import 'package:flutter_babycare/module/authentication/authentication_bloc/authentication_bloc.dart';
 import 'package:flutter_babycare/module/authentication/authentication_bloc/authentication_event.dart';
 import 'package:flutter_babycare/module/home/bloc/baby_bloc.dart';
@@ -16,11 +16,11 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class HomeView extends StatefulWidget {
-  final UserRepository _userRepository;
+  final User _user;
   int selectedIndex = 0;
 
-  HomeView(UserRepository userRepository, {Key key, this.selectedIndex = 0})
-      : _userRepository = userRepository,
+  HomeView(User user, {Key key, this.selectedIndex = 0})
+      : _user = user,
         super(key: key);
 
   @override
@@ -41,7 +41,7 @@ class _HomeViewState extends State<HomeView> {
   void initState() {
     super.initState();
     screens = [
-      HomeBodyView(widget._userRepository),
+      HomeBodyView(widget._user),
       SampleView(),
       SampleView(),
       SampleView(),
@@ -126,10 +126,10 @@ class _HomeViewState extends State<HomeView> {
 }
 
 class HomeBodyView extends StatefulWidget {
-  final UserRepository _userRepository;
+  final User _user;
 
-  HomeBodyView(UserRepository userRepository, {Key key})
-      : _userRepository = userRepository,
+  HomeBodyView(User user, {Key key})
+      : _user = user,
         super(key: key);
 
   @override
@@ -144,10 +144,6 @@ class _HomeBodyViewState extends State<HomeBodyView> {
     super.initState();
     babyBloc = BlocProvider.of<BabyBloc>(context);
     babyBloc.add(LoadBaby());
-    //babyBloc.add(AddedBaby()); // nếu bật dòng này thì nó sẽ ghi nhớ user này
-    // có bloc add baby này lun, và nó sẽ tạo ra liên tục các baby cho đến khi
-    // tắt app. Rất nguy hiểm. Đăng xuất ra và đăng nhập lại account này thì nó
-    // vẫn add baby típ
   }
 
   @override
@@ -168,7 +164,7 @@ class _HomeBodyViewState extends State<HomeBodyView> {
         children: [
           _buildTipView(),
           SizedBox(height: AppConstants.paddingLargeH),
-          _buildWelcomeUser(widget._userRepository.getUser().toString()),
+          _buildWelcomeUser(widget._user.displayName),
           SizedBox(height: AppConstants.paddingNormalH),
           BlocBuilder<BabyBloc, BabyState>(
             bloc: babyBloc,
@@ -237,9 +233,22 @@ class _HomeBodyViewState extends State<HomeBodyView> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          'Hi ' + username + '!',
-          style: Theme.of(context).textTheme.headline2,
+        RichText(
+          text: new TextSpan(
+            style: Theme.of(context).textTheme.headline2,
+            children: <TextSpan>[
+              new TextSpan(text: 'Hi '),
+              new TextSpan(
+                text: username,
+                style: new TextStyle(
+                  fontWeight: FontWeight.w600,
+                  fontSize: 18.sp,
+                  color: AppColors.primary,
+                ),
+              ),
+              new TextSpan(text: '!'),
+            ],
+          ),
         ),
         Text(
           'Hope your angels are well',

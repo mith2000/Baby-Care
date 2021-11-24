@@ -154,14 +154,15 @@ class _MyAppState extends State<MyApp> {
                           }
 
                           if (state is AuthenticationSuccess) {
-                            return HomeView(widget._userRepository);
+                            return HomeView(widget
+                                ._userRepository.firebaseAuth.currentUser);
                           }
 
                           return Scaffold(body: CustomLoadingWidget());
                         },
                       ),
                   '/home': (BuildContext context) =>
-                      HomeView(widget._userRepository),
+                      HomeView(widget._userRepository.firebaseAuth.currentUser),
                   '/register': (BuildContext context) => RegisterView(),
                 },
               )),
