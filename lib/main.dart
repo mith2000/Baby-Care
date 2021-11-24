@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_babycare/module/baby/create/view/create_gender_view.dart';
 import 'package:flutter_babycare/utils/UI_components/loading_widget.dart';
 import 'package:flutter_babycare/utils/app_colors.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -15,6 +16,7 @@ import 'module/authentication/authentication_bloc/authentication_bloc.dart';
 import 'module/authentication/authentication_bloc/authentication_event.dart';
 import 'module/authentication/authentication_bloc/authentication_state.dart';
 import 'module/authentication/simple_bloc_observer.dart';
+import 'module/baby/create/view/create_info_view.dart';
 import 'module/home/bloc/baby_bloc.dart';
 import 'module/home/view/home_view.dart';
 import 'module/login/bloc/login_bloc.dart';
@@ -79,9 +81,7 @@ class _MyAppState extends State<MyApp> {
           ),
         ),
         BlocProvider(
-          create: (_) => BabyBloc(
-            babyRepository: BabyRepository()
-          ),
+          create: (_) => BabyBloc(babyRepository: BabyRepository()),
         ),
       ],
       child: ScreenUtilInit(
@@ -146,15 +146,21 @@ class _MyAppState extends State<MyApp> {
                           }
 
                           if (state is AuthenticationSuccess) {
-                            return HomeView(widget._userRepository);
+                            return HomeView(widget
+                                ._userRepository.firebaseAuth.currentUser);
                           }
 
                           return Scaffold(body: CustomLoadingWidget());
                         },
                       ),
-                  '/home': (BuildContext context) =>
-                      HomeView(widget._userRepository),
-                  '/register': (BuildContext context) => RegisterView(),
+                  HomeView.routeName: (BuildContext context) =>
+                      HomeView(widget._userRepository.firebaseAuth.currentUser),
+                  RegisterView.routeName: (BuildContext context) =>
+                      RegisterView(),
+                  CreateBabyGenderView.routeName: (BuildContext context) =>
+                      CreateBabyGenderView(),
+                  CreateBabyInfoView.routeName: (BuildContext context) =>
+                      CreateBabyInfoView(),
                 },
               )),
     );

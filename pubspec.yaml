@@ -73,6 +73,9 @@ flutter:
     - assets/icon/false.svg
     - assets/icon/true.svg
     - assets/icon/unobscure.svg
+    - assets/icon/add.svg
+    - assets/icon/gender_boy.svg
+    - assets/icon/gender_girl.svg
 
     - assets/image/default_baby.png
     - assets/image/EmojiLove_1.png

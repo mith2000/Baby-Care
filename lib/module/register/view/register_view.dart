@@ -17,6 +17,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 
 class RegisterView extends StatefulWidget {
+  static const routeName = '/register';
+
   const RegisterView({Key key}) : super(key: key);
 
   @override
