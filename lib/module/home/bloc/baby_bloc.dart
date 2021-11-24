@@ -11,18 +11,19 @@ class BabyBloc extends Bloc<BabyEvent, BabyState> {
   final BabyRepository babyRepository;
   StreamSubscription babySubscription;
   final BabyModel babyModel;
-  final String idBaby;
+  final String userId;
 
-  BabyBloc({BabyRepository babyRepository, BabyModel babyModel, String idBaby})
+  BabyBloc(
+      {BabyRepository babyRepository, BabyModel babyModel, String idBaby, String userId})
       : this.babyRepository = babyRepository,
         this.babyModel = babyModel,
-        this.idBaby = idBaby,
+        this.userId = userId,
         super(BabyLoading());
 
   @override
   Stream<BabyState> mapEventToState(BabyEvent event) async* {
     if (event is LoadBaby) {
-      yield* mapBabyLoadedToState();
+      yield* mapBabyLoadedToState(event);
     }
     if (event is AddedBaby) {
       yield* mapBabyAddedToState(babyModel);
@@ -30,12 +31,13 @@ class BabyBloc extends Bloc<BabyEvent, BabyState> {
     if (event is UpdateListBaby) {
       yield* mapUpdateListBabyToState(event);
     }
-    if (event is UpdateBaby){
+    if (event is UpdateBaby) {
       //yield* mapUpdateBabyToState();
     }
   }
 
-  Stream<BabyState> mapUpdateBabyToState(BabyModel model, String idBaby) async* {
+  Stream<BabyState> mapUpdateBabyToState(BabyModel model,
+      String idBaby) async* {
     babySubscription = babyRepository
         .updateBaby(babyModel: model, docId: idBaby)
         .listen((baby) => add(UpdateListBaby()));
@@ -48,10 +50,12 @@ class BabyBloc extends Bloc<BabyEvent, BabyState> {
         .listen((baby) => add(AddedBaby(babyModel)));
   }
 
-  Stream<BabyState> mapBabyLoadedToState() async* {
-    babySubscription = babyRepository.getAllBaby().listen((baby) => add(
-      UpdateListBaby(listBaby: baby),
-        ));
+  Stream<BabyState> mapBabyLoadedToState(LoadBaby event) async* {
+    babySubscription =
+        babyRepository.getAllBaby(event.userId).listen((baby) =>
+            add(
+              UpdateListBaby(listBaby: baby),
+            ));
   }
 
   Stream<BabyState> mapUpdateListBabyToState(UpdateListBaby event) async* {

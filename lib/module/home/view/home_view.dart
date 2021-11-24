@@ -2,6 +2,7 @@ import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_babycare/constants/app_constants.dart';
 import 'package:flutter_babycare/data/model/baby_model.dart';
+import 'package:flutter_babycare/data/source/baby_repository.dart';
 import 'package:flutter_babycare/data/source/user_repository.dart';
 import 'package:flutter_babycare/module/authentication/authentication_bloc/authentication_bloc.dart';
 import 'package:flutter_babycare/module/authentication/authentication_bloc/authentication_event.dart';
@@ -144,7 +145,7 @@ class _HomeBodyViewState extends State<HomeBodyView> {
   void initState() {
     super.initState();
     babyBloc = BlocProvider.of<BabyBloc>(context);
-    babyBloc.add(LoadBaby());
+    babyBloc.add(LoadBaby(userId: widget._userRepository.firebaseAuth.currentUser.uid));
     //babyBloc.add(AddedBaby()); // nếu bật dòng này thì nó sẽ ghi nhớ user này
     // có bloc add baby này lun, và nó sẽ tạo ra liên tục các baby cho đến khi
     // tắt app. Rất nguy hiểm. Đăng xuất ra và đăng nhập lại account này thì nó

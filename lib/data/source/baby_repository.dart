@@ -8,8 +8,8 @@ class BabyRepository {
       : this.firebaseFirestore =
             firebaseFirestore ?? FirebaseFirestore.instance;
 
-  Stream<List<BabyModel>> getAllBaby() {
-    return firebaseFirestore.collection('baby').snapshots().map((snapshot) {
+  Stream<List<BabyModel>> getAllBaby(String userId) {
+    return firebaseFirestore.collection('baby').where('idAccount', isEqualTo: userId).snapshots().map((snapshot) {
       return snapshot.docs.map((doc) => BabyModel.fromSnapshot(doc)).toList();
     });
   }
