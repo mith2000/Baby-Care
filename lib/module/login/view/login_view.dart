@@ -6,6 +6,7 @@ import 'package:flutter_babycare/module/authentication/authentication_bloc/authe
 import 'package:flutter_babycare/module/login/bloc/login_bloc.dart';
 import 'package:flutter_babycare/module/login/bloc/login_event.dart';
 import 'package:flutter_babycare/module/login/bloc/login_state.dart';
+import 'package:flutter_babycare/module/register/view/register_view.dart';
 import 'package:flutter_babycare/utils/UI_components/custom_dialog.dart';
 import 'package:flutter_babycare/utils/UI_components/icon_button.dart';
 import 'package:flutter_babycare/utils/UI_components/loading_widget.dart';
@@ -359,7 +360,7 @@ class _LoginViewState extends State<LoginView> {
   void _onCreateAccountPressed() {
     Navigator.pushNamed(
       context,
-      '/register',
+      RegisterView.routeName,
     );
   }
 }

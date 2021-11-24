@@ -15,3 +15,9 @@ class AppConstants {
   static final double cornerRadiusFrame = 16.w;
   static final double cornerRadiusHighlightBox = 10.w;
 }
+
+enum GenderPick {
+  Unpicked,
+  Boy,
+  Girl,
+}

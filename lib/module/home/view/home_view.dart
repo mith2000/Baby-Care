@@ -5,10 +5,12 @@ import 'package:flutter_babycare/constants/app_constants.dart';
 import 'package:flutter_babycare/data/model/baby_model.dart';
 import 'package:flutter_babycare/module/authentication/authentication_bloc/authentication_bloc.dart';
 import 'package:flutter_babycare/module/authentication/authentication_bloc/authentication_event.dart';
+import 'package:flutter_babycare/module/baby/create/view/create_gender_view.dart';
 import 'package:flutter_babycare/module/home/bloc/baby_bloc.dart';
 import 'package:flutter_babycare/module/home/bloc/baby_event.dart';
 import 'package:flutter_babycare/module/home/bloc/baby_state.dart';
 import 'package:flutter_babycare/module/sample/view/sample_view.dart';
+import 'package:flutter_babycare/utils/UI_components/icon_button.dart';
 import 'package:flutter_babycare/utils/UI_components/loading_widget.dart';
 import 'package:flutter_babycare/utils/app_colors.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -17,6 +19,8 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class HomeView extends StatefulWidget {
+  static const routeName = '/home';
+
   final User _user;
   int selectedIndex = 0;
 
@@ -145,14 +149,6 @@ class _HomeBodyViewState extends State<HomeBodyView> {
     super.initState();
     babyBloc = BlocProvider.of<BabyBloc>(context);
     babyBloc.add(LoadBaby(userId: widget._user.uid));
-    babyBloc.add(AddedBaby(
-        babyModel: BabyModel(
-            name: "Thang gay lo",
-            idAccount: widget._user.uid,
-            birth: 100,
-            image:
-                "https://img.freepik.com/free-photo/shot-cute-baby-girl-looking-camera_329181-19580.jpg?size=626&ext=jpg"),
-        userId: widget._user.uid));
   }
 
   @override
@@ -182,6 +178,9 @@ class _HomeBodyViewState extends State<HomeBodyView> {
                 return CustomLoadingWidget();
               }
               if (state is BabyLoaded) {
+                if (state.listBaby == null) {
+                  return Text('No baby available now');
+                }
                 return ListView.builder(
                   shrinkWrap: true,
                   physics: ScrollPhysics(),
@@ -420,38 +419,15 @@ class _HomeBodyViewState extends State<HomeBodyView> {
   }
 
   Widget _buildCreateBabyButton() {
-    return Wrap(
-      alignment: WrapAlignment.center,
-      children: [
-        TextButton(
-          onPressed: () {
-            Navigator.pushNamed(
-              context,
-              '/create-baby',
-            );
-          },
-          child: Container(
-            child: SvgPicture.asset('assets/icon/add.svg'),
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              boxShadow: [
-                BoxShadow(
-                  color: AppColors.shadow,
-                  blurRadius: 8,
-                  offset: Offset(-2, 4), // changes position of shadow
-                ),
-              ],
-            ),
-          ),
-          style: TextButton.styleFrom(
-            minimumSize: Size.zero,
-            padding: EdgeInsets.zero,
-            primary: Colors.transparent,
-            fixedSize: Size(80, 80),
-            shape: CircleBorder(),
-          ),
-        ),
-      ],
+    return CircleIconButton(
+      SvgPicture.asset('assets/icon/add.svg'),
+      () {
+        Navigator.pushNamed(
+          context,
+          CreateBabyGenderView.routeName,
+          arguments: CreateBabyGenderViewArguments(widget._user.uid),
+        );
+      },
     );
   }
 }
