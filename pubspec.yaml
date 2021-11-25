@@ -43,6 +43,7 @@ dependencies:
   cloud_firestore: ^3.1.0
   equatable: ^2.0.3
   syncfusion_flutter_datepicker: ^19.3.55
+  image_picker: ^0.8.4+4
 
 dev_dependencies:
   flutter_test:
@@ -76,6 +77,8 @@ flutter:
     - assets/icon/add.svg
     - assets/icon/gender_boy.svg
     - assets/icon/gender_girl.svg
+    - assets/icon/date.svg
+    - assets/icon/person.svg
 
     - assets/image/default_baby.png
     - assets/image/EmojiLove_1.png

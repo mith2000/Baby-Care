@@ -1,12 +1,19 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:flutter_babycare/constants/app_constants.dart';
 import 'package:flutter_babycare/module/home/bloc/baby_bloc.dart';
 import 'package:flutter_babycare/module/home/bloc/baby_state.dart';
+import 'package:flutter_babycare/utils/UI_components/icon_button.dart';
 import 'package:flutter_babycare/utils/UI_components/mini_line_button.dart';
 import 'package:flutter_babycare/utils/UI_components/title_label.dart';
 import 'package:flutter_babycare/utils/app_colors.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/svg.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 
 class CreateBabyInfoViewArguments {
   final GenderPick genderPicked;
@@ -25,21 +32,25 @@ class CreateBabyInfoView extends StatefulWidget {
 }
 
 class _CreateBabyInfoViewState extends State<CreateBabyInfoView> {
-  Map<String, String> _formData = {
+  Map<String, dynamic> _formData = {
     'name': null,
     'birth': null,
+    'imageDestination': null,
+    'imageFile': null,
   };
   var _formKey = GlobalKey<FormState>();
   var _nameController = TextEditingController();
   var _birthController = TextEditingController();
+  var _datePickerController = DateRangePickerController();
+  final ImagePicker _imagePicker = ImagePicker();
+  XFile _imagePicked;
+  bool _isNotifyMust2PickImage = false;
 
   BabyBloc babyBloc;
 
   var _icons = {
-    'user': 'assets/icon/login_user.svg',
-    'password': 'assets/icon/login_password.svg',
-    'facebook': 'assets/icon/facebook.svg',
-    'google': 'assets/icon/google.svg',
+    'date': 'assets/icon/date.svg',
+    'person': 'assets/icon/person.svg',
   };
 
   @override
@@ -55,6 +66,7 @@ class _CreateBabyInfoViewState extends State<CreateBabyInfoView> {
     babyBloc.close();
     _nameController.dispose();
     _birthController.dispose();
+    _datePickerController.dispose();
     super.dispose();
   }
 
@@ -94,6 +106,11 @@ class _CreateBabyInfoViewState extends State<CreateBabyInfoView> {
                                   _buildNameInput(state),
                                   SizedBox(height: AppConstants.paddingLargeH),
                                   _buildBirthInput(state),
+                                  SizedBox(height: AppConstants.paddingLargeH),
+                                  _buildImagePicker(),
+                                  _isNotifyMust2PickImage
+                                      ? _buildNotifyLable()
+                                      : Container()
                                 ],
                               ),
                               margin: EdgeInsets.symmetric(
@@ -211,6 +228,17 @@ class _CreateBabyInfoViewState extends State<CreateBabyInfoView> {
           fontSize: 16.sp,
           color: AppColors.danger,
         ),
+        suffixIcon: Container(
+          padding: EdgeInsets.symmetric(
+            horizontal: AppConstants.paddingLargeW,
+          ),
+          child: CircleIconButton(
+            SvgPicture.asset(
+              _icons['date'],
+            ),
+            _showDatePicker,
+          ),
+        ),
         filled: true,
         fillColor: AppColors.whiteBackground,
         focusedBorder: OutlineInputBorder(
@@ -254,6 +282,112 @@ class _CreateBabyInfoViewState extends State<CreateBabyInfoView> {
         else
           return null;
       },
+    );
+  }
+
+  void _showDatePicker() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) => Center(
+        child: Wrap(
+          children: [
+            Container(
+              child: SfDateRangePicker(
+                controller: _datePickerController,
+                selectionShape: DateRangePickerSelectionShape.rectangle,
+                selectionColor: AppColors.primary,
+                minDate: DateTime.now().add(const Duration(days: -365 * 6)),
+                maxDate: DateTime.now(),
+                headerStyle: DateRangePickerHeaderStyle(
+                  textAlign: TextAlign.center,
+                  textStyle: TextStyle(
+                    fontWeight: FontWeight.w600,
+                    fontSize: 22.sp,
+                    color: AppColors.primary,
+                  ),
+                ),
+                showNavigationArrow: true,
+                todayHighlightColor: AppColors.primary,
+                monthViewSettings: DateRangePickerMonthViewSettings(
+                  firstDayOfWeek: 1,
+                  viewHeaderStyle: DateRangePickerViewHeaderStyle(
+                    textStyle: TextStyle(
+                      fontWeight: FontWeight.w400,
+                      fontSize: 16.sp,
+                      color: AppColors.text,
+                    ),
+                  ),
+                  dayFormat: 'EEE',
+                ),
+                showTodayButton: true,
+                showActionButtons: true,
+                onSubmit: (Object val) {
+                  String datePicked = DateFormat('dd/MM/yyyy').format(val);
+                  _birthController.text = datePicked;
+                  _datePickerController.selectedDate = null;
+                  Navigator.pop(context);
+                },
+                onCancel: () {
+                  _datePickerController.selectedDate = null;
+                  Navigator.pop(context);
+                },
+              ),
+              color: AppColors.whiteBackground,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildImagePicker() {
+    return Column(
+      children: [
+        CircleIconButton(
+          SvgPicture.asset(_icons['person']),
+          () async {
+            _imagePicked =
+                await _imagePicker.pickImage(source: ImageSource.gallery);
+
+            if (_imagePicked == null) return;
+
+            setState(() {
+              _isNotifyMust2PickImage = false;
+            });
+
+            final imageName = _imagePicked.name;
+            _formData['imageDestination'] = 'files/$imageName';
+            _formData['imageFile'] = File(_imagePicked.path);
+          },
+        ),
+        _formData['imageFile'] != null
+            ? Center(
+                child: Text(
+                  'Image picked',
+                  style: TextStyle(
+                    fontWeight: FontWeight.w400,
+                    fontSize: 16.sp,
+                    color: AppColors.primary,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+              )
+            : Container(),
+      ],
+    );
+  }
+
+  Widget _buildNotifyLable() {
+    return Center(
+      child: Text(
+        'Must to pick your baby\'s image',
+        style: TextStyle(
+          fontWeight: FontWeight.w400,
+          fontSize: 16.sp,
+          color: AppColors.danger,
+        ),
+        textAlign: TextAlign.center,
+      ),
     );
   }
 
@@ -318,6 +452,11 @@ class _CreateBabyInfoViewState extends State<CreateBabyInfoView> {
   void _onNextPressed(args) {
     setState(() {
       if (!_formKey.currentState.validate()) {
+        if (_formData['imageFile'] == null) {
+          setState(() {
+            _isNotifyMust2PickImage = true;
+          });
+        }
         return;
       }
       _formKey.currentState.save();
