@@ -4,6 +4,7 @@ import 'package:flutter_babycare/data/model/baby_model.dart';
 abstract class BabyEvent extends Equatable {
   final BabyModel babyModel;
   final String userId;
+
   const BabyEvent({this.babyModel, this.userId});
 
   @override
@@ -13,7 +14,7 @@ abstract class BabyEvent extends Equatable {
 class LoadBaby extends BabyEvent {
   final String userId;
 
-  LoadBaby({this.userId}):super();
+  LoadBaby({this.userId}) : super();
 
   @override
   List<Object> get props => [userId];
@@ -22,28 +23,29 @@ class LoadBaby extends BabyEvent {
 class AddedBaby extends BabyEvent {
   final BabyModel babyModel;
   final String userId;
-  const AddedBaby({this.babyModel, this.userId}):super();
+
+  const AddedBaby({this.babyModel, this.userId}) : super();
 
   @override
   List<Object> get props => [this.babyModel];
 }
 
 class DeletedBaby extends BabyEvent {
-  final BabyModel babyModel;
+  final String idBaby;
 
-  const DeletedBaby(this.babyModel):super();
-
-  @override
-  List<Object> get props => [babyModel];
+  const DeletedBaby({this.idBaby});
 
   @override
-  String toString() => 'BabyDeleted { baby: $babyModel }';
+  List<Object> get props => [idBaby];
+
+  @override
+  String toString() => 'BabyDeleted { baby: $idBaby }';
 }
 
 class UpdateListBaby extends BabyEvent {
   final List<BabyModel> listBaby;
 
-  UpdateListBaby({this.listBaby}):super();
+  UpdateListBaby({this.listBaby}) : super();
 
   @override
   List<Object> get props => [listBaby];
@@ -56,7 +58,7 @@ class UpdateBaby extends BabyEvent {
   final BabyModel babyModel;
   final String idBaby;
 
-  UpdateBaby({this.babyModel, this.idBaby}):super();
+  UpdateBaby({this.babyModel, this.idBaby}) : super();
 
   @override
   List<Object> get props => [babyModel];
@@ -64,3 +66,4 @@ class UpdateBaby extends BabyEvent {
   @override
   String toString() => 'babyUpdated { updatedBaby: $babyModel }';
 }
+

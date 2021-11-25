@@ -43,4 +43,18 @@ class BabyRepository {
       return snapshot.docs.map((doc) => BabyModel.fromSnapshot(doc)).toList();
     });
   }
+
+  Stream<void> deleteBaby({String idBaby}) {
+    DocumentReference documentReferencer =
+        firebaseFirestore.collection('baby').doc(idBaby);
+
+    documentReferencer
+        .delete()
+        .whenComplete(() => print('Baby deleted from the database'))
+        .catchError((e) => print(e));
+
+    return firebaseFirestore.collection('baby').snapshots().map((snapshot) {
+      return snapshot.docs.map((doc) => BabyModel.fromSnapshot(doc)).toList();
+    });
+  }
 }

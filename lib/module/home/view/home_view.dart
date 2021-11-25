@@ -178,30 +178,53 @@ class _HomeBodyViewState extends State<HomeBodyView> {
                 return CustomLoadingWidget();
               }
               if (state is BabyLoaded) {
-                babyBloc.add(UpdateBaby(babyModel: BabyModel(
-                    name: "Duy hot boy",
-                    idAccount: widget._user.uid,
-                    birth: 50,
-                    image:
-                    "https://i.pinimg.com/736x/38/f2/ff/38f2ff0337ea5dbb0ce2e094ca2d910a.jpg"),idBaby: state.listBaby[0].id));
                 if (state.listBaby == null) {
                   return Text('No baby available now');
                 }
-                return ListView.builder(
-                  shrinkWrap: true,
-                  physics: ScrollPhysics(),
-                  itemCount: state.listBaby.length,
-                  itemBuilder: (context, index) {
-                    return _buildBabyInterfaceButton(
-                      babyName: state.listBaby[index].name,
-                      babyYearOld: state.listBaby[index].birth,
-                      imageUrl: state.listBaby[index].image,
-                      status: 'Love_1',
-                      action: () {
-                        print('Baby Health');
+                return Column(
+                  children: [
+                    InkWell(
+                      onTap: () {
+                        babyBloc.add(DeletedBaby(
+                            idBaby:
+                                state.listBaby[state.listBaby.length - 1].id));
                       },
-                    );
-                  },
+                      child: Container(
+                          padding: EdgeInsets.all(20.w),
+                          child: Text('Bam vao de xóa em be cuối danh sach')),
+                    ),
+                    InkWell(
+                      onTap: () {
+                        babyBloc.add(UpdateBaby(
+                            babyModel: BabyModel(
+                                name: "Duy dau dinh",
+                                idAccount: widget._user.uid,
+                                birth: 50,
+                                image:
+                                    "https://img.freepik.com/free-photo/shot-cute-baby-girl-looking-camera_329181-19580.jpg?size=626&ext=jpg"),
+                            idBaby: state.listBaby[1].id));
+                      },
+                      child: Container(
+                          padding: EdgeInsets.all(20.w),
+                          child: Text('Bam vao de Update em be đầu danh sach')),
+                    ),
+                    ListView.builder(
+                      shrinkWrap: true,
+                      physics: ScrollPhysics(),
+                      itemCount: state.listBaby.length,
+                      itemBuilder: (context, index) {
+                        return _buildBabyInterfaceButton(
+                          babyName: state.listBaby[index].name,
+                          babyYearOld: state.listBaby[index].birth,
+                          imageUrl: state.listBaby[index].image,
+                          status: 'Love_1',
+                          action: () {
+                            print('Baby Health');
+                          },
+                        );
+                      },
+                    ),
+                  ],
                 );
               } else {
                 return Text('Error');

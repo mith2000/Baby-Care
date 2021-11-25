@@ -34,6 +34,15 @@ class BabyBloc extends Bloc<BabyEvent, BabyState> {
     if (event is UpdateBaby) {
       yield* mapUpdateBabyToState(event);
     }
+    if (event is DeletedBaby) {
+      yield* mapDeleteBabyToState(event);
+    }
+  }
+
+  Stream<BabyState> mapDeleteBabyToState(DeletedBaby event) async* {
+    babySubscription = babyRepository
+        .deleteBaby(idBaby: event.idBaby)
+        .listen((baby) => getListBaby(event));
   }
 
   Stream<BabyState> mapUpdateBabyToState(UpdateBaby event) async* {
@@ -56,11 +65,10 @@ class BabyBloc extends Bloc<BabyEvent, BabyState> {
     yield BabyLoaded(event.listBaby);
   }
 
-  void getListBaby(BabyEvent event){
+  void getListBaby(BabyEvent event) {
     babySubscription =
         babyRepository.getAllBaby(event.userId).listen((baby) => add(
-          UpdateListBaby(listBaby: baby),
-        ));
+              UpdateListBaby(listBaby: baby),
+            ));
   }
-
 }
