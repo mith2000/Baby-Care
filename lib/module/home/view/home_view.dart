@@ -178,6 +178,12 @@ class _HomeBodyViewState extends State<HomeBodyView> {
                 return CustomLoadingWidget();
               }
               if (state is BabyLoaded) {
+                babyBloc.add(UpdateBaby(babyModel: BabyModel(
+                    name: "Duy hot boy",
+                    idAccount: widget._user.uid,
+                    birth: 50,
+                    image:
+                    "https://i.pinimg.com/736x/38/f2/ff/38f2ff0337ea5dbb0ce2e094ca2d910a.jpg"),idBaby: state.listBaby[0].id));
                 if (state.listBaby == null) {
                   return Text('No baby available now');
                 }

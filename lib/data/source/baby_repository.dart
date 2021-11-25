@@ -32,9 +32,9 @@ class BabyRepository {
     });
   }
 
-  Stream<void> updateBaby({String docId, BabyModel babyModel}) {
+  Stream<void> updateBaby({String idBaby, BabyModel babyModel}) {
     DocumentReference documentReferencer =
-        firebaseFirestore.collection('baby').doc(docId);
+        firebaseFirestore.collection('baby').doc(idBaby);
     documentReferencer
         .update(babyModel.toJson())
         .whenComplete(() => print("Baby updated in the database"))

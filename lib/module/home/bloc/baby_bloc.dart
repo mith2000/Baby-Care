@@ -13,7 +13,10 @@ class BabyBloc extends Bloc<BabyEvent, BabyState> {
   List<BabyModel> listBabyModel;
 
   BabyBloc(
-      {BabyRepository babyRepository, BabyModel babyModel, String idBaby, String userId})
+      {BabyRepository babyRepository,
+      BabyModel babyModel,
+      String idBaby,
+      String userId})
       : this.babyRepository = babyRepository,
         super(BabyLoading());
 
@@ -29,38 +32,35 @@ class BabyBloc extends Bloc<BabyEvent, BabyState> {
       yield* mapUpdateListBabyToState(event);
     }
     if (event is UpdateBaby) {
-      //yield* mapUpdateBabyToState();
+      yield* mapUpdateBabyToState(event);
     }
   }
 
-  Stream<BabyState> mapUpdateBabyToState(BabyModel model,
-      String idBaby) async* {
+  Stream<BabyState> mapUpdateBabyToState(UpdateBaby event) async* {
     babySubscription = babyRepository
-        .updateBaby(babyModel: model, docId: idBaby)
-        .listen((baby) => add(UpdateListBaby()));
+        .updateBaby(babyModel: event.babyModel, idBaby: event.idBaby)
+        .listen((baby) => getListBaby(event));
   }
-
 
   Stream<BabyState> mapBabyAddedToState(AddedBaby event) async* {
     babySubscription = babyRepository
         .addItem(babyModel: event.babyModel)
-        .listen((baby) => add(UpdateListBaby()));
-    babySubscription =
-        babyRepository.getAllBaby(event.userId).listen((baby) =>
-            add(
-              UpdateListBaby(listBaby: baby),
-            ));
+        .listen((baby) => getListBaby(event));
   }
 
   Stream<BabyState> mapBabyLoadedToState(LoadBaby event) async* {
-    babySubscription =
-        babyRepository.getAllBaby(event.userId).listen((baby) =>
-            add(
-              UpdateListBaby(listBaby: baby),
-            ));
+    getListBaby(event);
   }
 
   Stream<BabyState> mapUpdateListBabyToState(UpdateListBaby event) async* {
     yield BabyLoaded(event.listBaby);
   }
+
+  void getListBaby(BabyEvent event){
+    babySubscription =
+        babyRepository.getAllBaby(event.userId).listen((baby) => add(
+          UpdateListBaby(listBaby: baby),
+        ));
+  }
+
 }
