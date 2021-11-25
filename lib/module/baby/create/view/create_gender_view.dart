@@ -3,6 +3,7 @@ import 'package:flutter_babycare/constants/app_constants.dart';
 import 'package:flutter_babycare/utils/UI_components/icon_button.dart';
 import 'package:flutter_babycare/utils/UI_components/mini_line_button.dart';
 import 'package:flutter_babycare/utils/UI_components/mini_solid_button.dart';
+import 'package:flutter_babycare/utils/UI_components/title_label.dart';
 import 'package:flutter_babycare/utils/app_colors.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
@@ -46,35 +47,41 @@ class _CreateBabyGenderViewState extends State<CreateBabyGenderView> {
           child: Stack(
             children: [
               Center(
-                child: Container(
-                  child: Column(
-                    children: [
-                      SizedBox(height: AppConstants.paddingLargeH),
-                      _buildTitleLable(),
-                      SizedBox(height: AppConstants.paddingLargeH),
-                      _buildChooseGenderButtons(),
-                      _isNotifyMust2Pick ? _buildNotifyLable() : Container()
-                    ],
-                  ),
-                  height: 190.h,
-                  margin: EdgeInsets.symmetric(
-                    horizontal: AppConstants.paddingSuperLargeW -
-                        AppConstants.paddingAppW,
-                    vertical: AppConstants.paddingSuperLargeH -
-                        AppConstants.paddingAppH,
-                  ),
-                  decoration: BoxDecoration(
-                    color: AppColors.whiteBackground,
-                    borderRadius:
-                        BorderRadius.circular(AppConstants.cornerRadiusFrame),
-                    boxShadow: [
-                      BoxShadow(
-                        color: AppColors.shadow,
-                        blurRadius: 4,
-                        offset: Offset(0, 4), // changes position of shadow
+                child: Wrap(
+                  children: [
+                    Container(
+                      child: Column(
+                        children: [
+                          TitleLabel('What gender is the kid?'),
+                          SizedBox(height: AppConstants.paddingLargeH),
+                          _buildChooseGenderButtons(),
+                          _isNotifyMust2Pick ? _buildNotifyLable() : Container()
+                        ],
                       ),
-                    ],
-                  ),
+                      margin: EdgeInsets.symmetric(
+                        horizontal: AppConstants.paddingSuperLargeW -
+                            AppConstants.paddingAppW,
+                        vertical: AppConstants.paddingSuperLargeH -
+                            AppConstants.paddingAppH,
+                      ),
+                      padding: EdgeInsets.symmetric(
+                        horizontal: AppConstants.paddingLargeW,
+                        vertical: AppConstants.paddingLargeH,
+                      ),
+                      decoration: BoxDecoration(
+                        color: AppColors.whiteBackground,
+                        borderRadius: BorderRadius.circular(
+                            AppConstants.cornerRadiusFrame),
+                        boxShadow: [
+                          BoxShadow(
+                            color: AppColors.shadow,
+                            blurRadius: 4,
+                            offset: Offset(0, 4), // changes position of shadow
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
                 ),
               ),
               Column(
@@ -91,15 +98,6 @@ class _CreateBabyGenderViewState extends State<CreateBabyGenderView> {
     );
   }
 
-  Widget _buildTitleLable() {
-    return Center(
-      child: Text(
-        'What gender is the kid?',
-        style: Theme.of(context).textTheme.caption,
-      ),
-    );
-  }
-
   Widget _buildNotifyLable() {
     return Center(
       child: Text(
@@ -109,6 +107,7 @@ class _CreateBabyGenderViewState extends State<CreateBabyGenderView> {
           fontSize: 16.sp,
           color: AppColors.danger,
         ),
+        textAlign: TextAlign.center,
       ),
     );
   }
@@ -123,6 +122,7 @@ class _CreateBabyGenderViewState extends State<CreateBabyGenderView> {
           () {
             setState(() {
               _genderPick = GenderPick.Boy;
+              _isNotifyMust2Pick = false;
             });
           },
         ),
@@ -133,6 +133,7 @@ class _CreateBabyGenderViewState extends State<CreateBabyGenderView> {
           () {
             setState(() {
               _genderPick = GenderPick.Girl;
+              _isNotifyMust2Pick = false;
             });
           },
         ),

@@ -11,6 +11,7 @@ import 'package:flutter_babycare/utils/UI_components/icon_button.dart';
 import 'package:flutter_babycare/utils/UI_components/loading_widget.dart';
 import 'package:flutter_babycare/utils/UI_components/mini_line_button.dart';
 import 'package:flutter_babycare/utils/UI_components/mini_solid_button.dart';
+import 'package:flutter_babycare/utils/UI_components/title_label.dart';
 import 'package:flutter_babycare/utils/app_colors.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -113,7 +114,8 @@ class _RegisterViewState extends State<RegisterView> {
                         children: [
                           Column(
                             children: [
-                              _buildHeaderLable(),
+                              TitleLabel(
+                                  'Sign up now to enjoy our amazing features'),
                               _buildUsernameInput(state),
                               _buildEmailInput(state),
                               _buildPasswordInput(state),
@@ -453,14 +455,6 @@ class _RegisterViewState extends State<RegisterView> {
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(AppConstants.cornerRadius),
       ),
-    );
-  }
-
-  Widget _buildHeaderLable() {
-    return Text(
-      'Sign up now to enjoy our amazing features',
-      style: Theme.of(context).textTheme.headline1,
-      textAlign: TextAlign.center,
     );
   }
 
