@@ -37,6 +37,20 @@ class BabyBloc extends Bloc<BabyEvent, BabyState> {
     if (event is DeletedBaby) {
       yield* mapDeleteBabyToState(event);
     }
+    if (event is NameBabyChange) {
+      yield* mapNameBabyChangeToState(event);
+    }
+    if (event is BirthBabyChange) {
+      yield* mapBirthBabyChangeToState(event);
+    }
+  }
+
+  Stream<BabyState> mapNameBabyChangeToState(NameBabyChange event) async* {
+    yield state.update(isNameValid: true); // Bỏ validate dô
+  }
+
+  Stream<BabyState> mapBirthBabyChangeToState(BirthBabyChange event) async* {
+    yield state.update(isBirthValid: true); // Bỏ validate dô
   }
 
   Stream<BabyState> mapDeleteBabyToState(DeletedBaby event) async* {

@@ -30,6 +30,24 @@ class AddedBaby extends BabyEvent {
   List<Object> get props => [this.babyModel];
 }
 
+class NameBabyChange extends BabyEvent {
+  final String name;
+
+  const NameBabyChange({this.name});
+
+  @override
+  List<Object> get props => [name];
+}
+
+class BirthBabyChange extends BabyEvent {
+  final double birth;
+
+  const BirthBabyChange({this.birth});
+
+  @override
+  List<Object> get props => [birth];
+}
+
 class DeletedBaby extends BabyEvent {
   final String idBaby;
 
@@ -66,4 +84,3 @@ class UpdateBaby extends BabyEvent {
   @override
   String toString() => 'babyUpdated { updatedBaby: $babyModel }';
 }
-

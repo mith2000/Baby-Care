@@ -1,18 +1,21 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:flutter_babycare/constants/app_constants.dart';
+import 'package:flutter_babycare/data/model/baby_model.dart';
 import 'package:flutter_babycare/module/home/bloc/baby_bloc.dart';
+import 'package:flutter_babycare/module/home/bloc/baby_event.dart';
 import 'package:flutter_babycare/module/home/bloc/baby_state.dart';
 import 'package:flutter_babycare/utils/UI_components/icon_button.dart';
 import 'package:flutter_babycare/utils/UI_components/mini_line_button.dart';
 import 'package:flutter_babycare/utils/UI_components/title_label.dart';
 import 'package:flutter_babycare/utils/app_colors.dart';
+import 'package:flutter_babycare/utils/converttimetodouble.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:intl/intl.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 
 class CreateBabyInfoViewArguments {
@@ -439,17 +442,18 @@ class _CreateBabyInfoViewState extends State<CreateBabyInfoView> {
 
   void _onNameChange() {
     // todo bloc validate name
-    // _registerBloc
-    //     .add(RegisterUsernameChanged(username: _nameController.text));
+    babyBloc.add(NameBabyChange(name: _nameController.text));
   }
 
   void _onBirthChange() {
     // todo bloc validate name
-    // _registerBloc
-    //     .add(RegisterUsernameChanged(username: _nameController.text));
+    babyBloc.add(BirthBabyChange(
+        birth: _birthController.text.isEmpty
+            ? Convert.BirthTimeToDouble(_birthController.text)
+            : 0));
   }
 
-  void _onNextPressed(args) {
+  void _onNextPressed(CreateBabyInfoViewArguments args) {
     setState(() {
       if (!_formKey.currentState.validate()) {
         if (_formData['imageFile'] == null) {
@@ -461,14 +465,15 @@ class _CreateBabyInfoViewState extends State<CreateBabyInfoView> {
       }
       _formKey.currentState.save();
 
-      // babyBloc.add(AddedBaby(
-      //       babyModel: BabyModel(
-      //           name: _nameController.text,
-      //           idAccount: args.userId,
-      //           birth: _birthController.text,
-      //           image:
-      //               "https://i.pinimg.com/736x/38/f2/ff/38f2ff0337ea5dbb0ce2e094ca2d910a.jpg"),
-      //       userId: args.userId));
+      babyBloc.add(AddedBaby(
+          babyModel: BabyModel(
+              gender: args.genderPicked.index == 1 ? "boy" : "girl",
+              name: _nameController.text,
+              idAccount: args.userId,
+              birth: Convert.BirthTimeToDouble(_birthController.text),
+              image:
+                  "https://i.pinimg.com/736x/38/f2/ff/38f2ff0337ea5dbb0ce2e094ca2d910a.jpg"),
+          userId: args.userId));
     });
   }
 }

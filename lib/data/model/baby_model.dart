@@ -3,16 +3,24 @@ import 'package:equatable/equatable.dart';
 
 class BabyModel extends Equatable {
   final String id;
+  final String gender;
   final String name;
   final String idAccount;
   final double birth;
   final String image;
 
-  const BabyModel({this.id, this.name, this.idAccount, this.birth, this.image});
+  const BabyModel(
+      {this.id,
+      this.gender,
+      this.name,
+      this.idAccount,
+      this.birth,
+      this.image});
 
   static BabyModel fromSnapshot(DocumentSnapshot snap) {
     BabyModel babyModel = BabyModel(
       id: snap.id,
+      gender: snap['gender'],
       name: snap['name'],
       idAccount: snap['idAccount'],
       birth: snap['birth'] == null ? snap['birth'] : snap['birth'].toDouble(),
@@ -24,6 +32,7 @@ class BabyModel extends Equatable {
   @override
   List<Object> get props => [
         id,
+        gender,
         name,
         idAccount,
         birth,
@@ -33,6 +42,7 @@ class BabyModel extends Equatable {
   Map<String, Object> toJson() {
     return {
       "name": name,
+      "gender": gender,
       "idAccount": idAccount,
       "birth": birth,
       "image": image,
