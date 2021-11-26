@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_babycare/constants/app_constants.dart';
+import 'package:flutter_babycare/utils/UI_components/custom_slider.dart';
+import 'package:flutter_babycare/utils/UI_components/custom_slider_label.dart';
 import 'package:flutter_babycare/utils/UI_components/mini_line_button.dart';
 import 'package:flutter_babycare/utils/UI_components/mini_solid_button.dart';
 import 'package:flutter_babycare/utils/UI_components/title_label.dart';
 import 'package:flutter_babycare/utils/app_colors.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:syncfusion_flutter_sliders/sliders.dart';
-import 'package:syncfusion_flutter_core/theme.dart';
+
+import 'create_ni_view.dart';
 
 class CreateBabyBMIView extends StatefulWidget {
   static const routeName = '/create-baby-bmi';
@@ -45,14 +47,14 @@ class _CreateBabyBMIViewState extends State<CreateBabyBMIView> {
                         children: [
                           TitleLabel('How is your kid growing?'),
                           SizedBox(height: AppConstants.paddingLargeH),
-                          _buildInputLabel(
+                          CustomSliderLabel(
                               label: 'Height: ' +
                                   _formData['height'].toString() +
                                   'cm ~ ' +
                                   (_formData['height'].toDouble() / 100.0)
                                       .toString() +
                                   'm'),
-                          _buildInputField(
+                          CustomSlider(
                             value: _formData['height'],
                             max: 150,
                             stepSize: 10,
@@ -68,14 +70,14 @@ class _CreateBabyBMIViewState extends State<CreateBabyBMIView> {
                             },
                           ),
                           SizedBox(height: AppConstants.paddingLargeH),
-                          _buildInputLabel(
+                          CustomSliderLabel(
                               label: 'Weight: ' +
                                   _formData['weight'].toString() +
                                   '00g ~ ' +
                                   (_formData['weight'].toDouble() / 10.0)
                                       .toString() +
                                   'kg'),
-                          _buildInputField(
+                          CustomSlider(
                             value: _formData['weight'],
                             max: 400,
                             onChanged: (dynamic values) => {
@@ -134,54 +136,6 @@ class _CreateBabyBMIViewState extends State<CreateBabyBMIView> {
     );
   }
 
-  Widget _buildInputLabel({Widget icon, String label}) {
-    return Row(
-      mainAxisSize: MainAxisSize.max,
-      mainAxisAlignment: MainAxisAlignment.start,
-      children: [
-        icon == null ? Container() : icon,
-        Text(
-          label,
-          style: Theme.of(context).textTheme.headline1,
-        ),
-      ],
-    );
-  }
-
-  Widget _buildInputField(
-      {@required int value,
-      int min = 0,
-      @required int max,
-      double stepSize = 1,
-      @required Function(dynamic) onChanged}) {
-    return SfSliderTheme(
-      data: SfSliderThemeData(
-        thumbRadius: 16.w,
-        inactiveTrackColor: AppColors.secondary,
-      ),
-      child: SfSlider(
-        interval: 1.0,
-        stepSize: stepSize,
-        min: min,
-        max: max,
-        thumbIcon: Container(
-          alignment: Alignment.center,
-          child: Text(
-            value.toString(),
-            style: TextStyle(
-              fontWeight: FontWeight.w400,
-              fontSize: 16.sp,
-              color: AppColors.whiteBackground,
-            ),
-            textAlign: TextAlign.center,
-          ),
-        ),
-        value: value,
-        onChanged: (dynamic values) => onChanged(values),
-      ),
-    );
-  }
-
   Widget _buildNotifyLable() {
     return Center(
       child: Text(
@@ -213,6 +167,11 @@ class _CreateBabyBMIViewState extends State<CreateBabyBMIView> {
           }
 
           // weight submit to repository = weight * 100
+
+          Navigator.pushNamed(
+            context,
+            CreateBabyNIView.routeName,
+          );
         }),
       ],
     );

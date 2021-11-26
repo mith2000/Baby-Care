@@ -80,6 +80,14 @@ flutter:
     - assets/icon/gender_girl.svg
     - assets/icon/date.svg
     - assets/icon/person.svg
+    - assets/icon/porridge.svg
+    - assets/icon/milk.svg
+    - assets/icon/meat.svg
+    - assets/icon/fish.svg
+    - assets/icon/egg.svg
+    - assets/icon/green_vegets.svg
+    - assets/icon/red_vegets.svg
+    - assets/icon/citrus_fruit.svg
 
     - assets/image/default_baby.png
     - assets/image/EmojiLove_1.png
