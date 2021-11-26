@@ -44,6 +44,7 @@ dependencies:
   equatable: ^2.0.3
   syncfusion_flutter_datepicker: ^19.3.55
   image_picker: ^0.8.4+4
+  syncfusion_flutter_sliders: ^19.3.55
 
 dev_dependencies:
   flutter_test:

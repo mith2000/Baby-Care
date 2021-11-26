@@ -15,6 +15,8 @@ import 'package:flutter_svg/svg.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 
+import 'create_bmi_view.dart';
+
 class CreateBabyInfoViewArguments {
   final GenderPick genderPicked;
   final String userId;
@@ -452,11 +454,12 @@ class _CreateBabyInfoViewState extends State<CreateBabyInfoView> {
   void _onNextPressed(args) {
     setState(() {
       if (!_formKey.currentState.validate()) {
-        if (_formData['imageFile'] == null) {
-          setState(() {
-            _isNotifyMust2PickImage = true;
-          });
-        }
+        return;
+      }
+      if (_formData['imageFile'] == null) {
+        setState(() {
+          _isNotifyMust2PickImage = true;
+        });
         return;
       }
       _formKey.currentState.save();
@@ -469,6 +472,11 @@ class _CreateBabyInfoViewState extends State<CreateBabyInfoView> {
       //           image:
       //               "https://i.pinimg.com/736x/38/f2/ff/38f2ff0337ea5dbb0ce2e094ca2d910a.jpg"),
       //       userId: args.userId));
+
+      Navigator.pushNamed(
+        context,
+        CreateBabyBMIView.routeName,
+      );
     });
   }
 }
