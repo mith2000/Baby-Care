@@ -16,7 +16,9 @@ import 'module/authentication/authentication_bloc/authentication_bloc.dart';
 import 'module/authentication/authentication_bloc/authentication_event.dart';
 import 'module/authentication/authentication_bloc/authentication_state.dart';
 import 'module/authentication/simple_bloc_observer.dart';
+import 'module/baby/create/view/create_bmi_view.dart';
 import 'module/baby/create/view/create_info_view.dart';
+import 'module/baby/create/view/create_ni_view.dart';
 import 'module/home/bloc/baby_bloc.dart';
 import 'module/home/view/home_view.dart';
 import 'module/login/bloc/login_bloc.dart';
@@ -161,6 +163,10 @@ class _MyAppState extends State<MyApp> {
                       CreateBabyGenderView(),
                   CreateBabyInfoView.routeName: (BuildContext context) =>
                       CreateBabyInfoView(),
+                  CreateBabyBMIView.routeName: (BuildContext context) =>
+                      CreateBabyBMIView(),
+                  CreateBabyNIView.routeName: (BuildContext context) =>
+                      CreateBabyNIView(),
                 },
               )),
     );

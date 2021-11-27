@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:flutter_babycare/constants/app_constants.dart';
 import 'package:flutter_babycare/data/model/baby_model.dart';
 import 'package:flutter_babycare/module/home/bloc/baby_bloc.dart';
@@ -17,6 +18,8 @@ import 'package:flutter_svg/svg.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
+
+import 'create_bmi_view.dart';
 
 class CreateBabyInfoViewArguments {
   final GenderPick genderPicked;
@@ -456,15 +459,29 @@ class _CreateBabyInfoViewState extends State<CreateBabyInfoView> {
   void _onNextPressed(CreateBabyInfoViewArguments args) {
     setState(() {
       if (!_formKey.currentState.validate()) {
-        if (_formData['imageFile'] == null) {
-          setState(() {
-            _isNotifyMust2PickImage = true;
-          });
-        }
+        return;
+      }
+      if (_formData['imageFile'] == null) {
+        setState(() {
+          _isNotifyMust2PickImage = true;
+        });
         return;
       }
       _formKey.currentState.save();
 
+      // babyBloc.add(AddedBaby(
+      //       babyModel: BabyModel(
+      //           name: _nameController.text,
+      //           idAccount: args.userId,
+      //           birth: _birthController.text,
+      //           image:
+      //               "https://i.pinimg.com/736x/38/f2/ff/38f2ff0337ea5dbb0ce2e094ca2d910a.jpg"),
+      //       userId: args.userId));
+
+      Navigator.pushNamed(
+        context,
+        CreateBabyBMIView.routeName,
+      );
       babyBloc.add(AddedBaby(
           babyModel: BabyModel(
               gender: args.genderPicked.index == 1 ? "boy" : "girl",
