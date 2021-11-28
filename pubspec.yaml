@@ -88,6 +88,17 @@ flutter:
     - assets/icon/green_vegets.svg
     - assets/icon/red_vegets.svg
     - assets/icon/citrus_fruit.svg
+    - assets/icon/carbohydrate.svg
+    - assets/icon/fat.svg
+    - assets/icon/protein.svg
+    - assets/icon/vitamin_a.svg
+    - assets/icon/vitamin_b.svg
+    - assets/icon/vitamin_c.svg
+    - assets/icon/vitamin_d.svg
+    - assets/icon/iron.svg
+    - assets/icon/calcium.svg
+    - assets/icon/iodine.svg
+    - assets/icon/info.svg
 
     - assets/image/default_baby.png
     - assets/image/EmojiLove_1.png

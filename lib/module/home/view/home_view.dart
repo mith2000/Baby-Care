@@ -2,14 +2,16 @@ import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_babycare/constants/app_constants.dart';
-import 'package:flutter_babycare/data/model/baby_model.dart';
 import 'package:flutter_babycare/module/authentication/authentication_bloc/authentication_bloc.dart';
 import 'package:flutter_babycare/module/authentication/authentication_bloc/authentication_event.dart';
 import 'package:flutter_babycare/module/baby/create/view/create_gender_view.dart';
+import 'package:flutter_babycare/module/baby/detail/view/detail_view.dart';
 import 'package:flutter_babycare/module/home/bloc/baby_bloc.dart';
 import 'package:flutter_babycare/module/home/bloc/baby_event.dart';
 import 'package:flutter_babycare/module/home/bloc/baby_state.dart';
 import 'package:flutter_babycare/module/sample/view/sample_view.dart';
+import 'package:flutter_babycare/utils/UI_components/baby_status_icon.dart';
+import 'package:flutter_babycare/utils/UI_components/highlight_box.dart';
 import 'package:flutter_babycare/utils/UI_components/icon_button.dart';
 import 'package:flutter_babycare/utils/UI_components/loading_widget.dart';
 import 'package:flutter_babycare/utils/app_colors.dart';
@@ -60,6 +62,7 @@ class _HomeViewState extends State<HomeView> {
         preferredSize: Size.fromHeight(
             AppConstants.paddingAppH + AppConstants.paddingSuperLargeH),
         child: AppBar(
+          automaticallyImplyLeading: false,
           title: Container(
             height: 32.h,
             alignment: Alignment.bottomLeft,
@@ -190,9 +193,14 @@ class _HomeBodyViewState extends State<HomeBodyView> {
                       babyName: state.listBaby[index].name,
                       babyYearOld: state.listBaby[index].birth,
                       imageUrl: state.listBaby[index].image,
-                      status: 'Love_1',
+                      status: BabyStatus.Love,
                       action: () {
-                        print('Baby Health');
+                        Navigator.pushNamed(
+                          context,
+                          BabyDetailView.routeName,
+                          arguments:
+                              BabyDetailViewArguments(state.listBaby[index]),
+                        );
                       },
                     );
                   },
@@ -272,7 +280,7 @@ class _HomeBodyViewState extends State<HomeBodyView> {
       double babyYearOld,
       Function action,
       String imageUrl,
-      String status}) {
+      BabyStatus status}) {
     return Container(
       height: 168.h,
       margin: EdgeInsets.symmetric(vertical: AppConstants.paddingNormalH),
@@ -333,25 +341,7 @@ class _HomeBodyViewState extends State<HomeBodyView> {
                             children: [
                               Column(
                                 children: [
-                                  Container(
-                                    alignment: Alignment.center,
-                                    height: 32.h,
-                                    width: 32.w,
-                                    decoration: BoxDecoration(
-                                      color: AppColors.danger,
-                                      borderRadius: BorderRadius.circular(
-                                          AppConstants
-                                              .cornerRadiusHighlightBox),
-                                    ),
-                                    child: Text(
-                                      babyYearOld.toInt().toString(),
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.w700,
-                                        fontSize: 24.sp,
-                                        color: AppColors.whiteBackground,
-                                      ),
-                                    ),
-                                  ),
+                                  HighlightBox(babyYearOld.toInt().toString()),
                                   Text(
                                     ' month',
                                     style: TextStyle(
@@ -371,13 +361,7 @@ class _HomeBodyViewState extends State<HomeBodyView> {
                               ),
                             ],
                           ),
-                          FadeInImage(
-                            placeholder:
-                                AssetImage('assets/image/EmojiLove_1.png'),
-                            height: 80.h,
-                            width: 80.w,
-                            image: AssetImage('assets/image/Emoji$status.png'),
-                          ),
+                          BabyStatusIcon(status: status, size: 80),
                         ],
                       ),
                     ),

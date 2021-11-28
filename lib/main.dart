@@ -4,6 +4,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_babycare/module/baby/create/view/create_gender_view.dart';
+import 'package:flutter_babycare/module/baby/detail/view/detail_view.dart';
 import 'package:flutter_babycare/utils/UI_components/loading_widget.dart';
 import 'package:flutter_babycare/utils/app_colors.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -167,6 +168,8 @@ class _MyAppState extends State<MyApp> {
                       CreateBabyBMIView(),
                   CreateBabyNIView.routeName: (BuildContext context) =>
                       CreateBabyNIView(),
+                  BabyDetailView.routeName: (BuildContext context) =>
+                      BabyDetailView(),
                 },
               )),
     );
