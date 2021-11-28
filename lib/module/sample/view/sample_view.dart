@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_babycare/utils/app_colors.dart';
 
 class SampleView extends StatefulWidget {
+  static const routeName = '/sample';
+
   const SampleView({Key key}) : super(key: key);
 
   @override
