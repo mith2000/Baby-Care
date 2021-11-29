@@ -1,9 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:flutter_babycare/constants/app_constants.dart';
-import 'package:flutter_babycare/data/model/baby_model.dart';
 import 'package:flutter_babycare/module/home/bloc/baby_bloc.dart';
 import 'package:flutter_babycare/module/home/bloc/baby_event.dart';
 import 'package:flutter_babycare/module/home/bloc/baby_state.dart';
@@ -113,7 +111,7 @@ class _CreateBabyInfoViewState extends State<CreateBabyInfoView> {
                                   SizedBox(height: AppConstants.paddingLargeH),
                                   _buildBirthInput(state),
                                   SizedBox(height: AppConstants.paddingLargeH),
-                                  _buildImagePicker(),
+                                  _buildImagePicker(args),
                                   _isNotifyMust2PickImage
                                       ? _buildNotifyLable()
                                       : Container()
@@ -346,7 +344,7 @@ class _CreateBabyInfoViewState extends State<CreateBabyInfoView> {
     );
   }
 
-  Widget _buildImagePicker() {
+  Widget _buildImagePicker(CreateBabyInfoViewArguments args) {
     return Column(
       children: [
         CircleIconButton(
@@ -359,6 +357,8 @@ class _CreateBabyInfoViewState extends State<CreateBabyInfoView> {
 
             setState(() {
               _isNotifyMust2PickImage = false;
+              babyBloc.add(
+                  AddImageInFireBase(file: _imagePicked, idBaby: args.userId));
             });
 
             final imageName = _imagePicked.name;
@@ -366,19 +366,27 @@ class _CreateBabyInfoViewState extends State<CreateBabyInfoView> {
             _formData['imageFile'] = File(_imagePicked.path);
           },
         ),
-        _formData['imageFile'] != null
-            ? Center(
-                child: Text(
-                  'Image picked',
-                  style: TextStyle(
-                    fontWeight: FontWeight.w400,
-                    fontSize: 16.sp,
-                    color: AppColors.primary,
+        BlocListener<BabyBloc, BabyState>(
+          listener: (context, state) {
+            if (state.urlImage != null && !state.urlImage.isEmpty) {
+              _formData['imageFile'] = state.urlImage;
+              print(state.urlImage);
+            }
+          },
+          child: _formData['imageFile'] != null
+              ? Center(
+                  child: Text(
+                    'Image picked',
+                    style: TextStyle(
+                      fontWeight: FontWeight.w400,
+                      fontSize: 16.sp,
+                      color: AppColors.primary,
+                    ),
+                    textAlign: TextAlign.center,
                   ),
-                  textAlign: TextAlign.center,
-                ),
-              )
-            : Container(),
+                )
+              : Container(),
+        ),
       ],
     );
   }
@@ -469,28 +477,19 @@ class _CreateBabyInfoViewState extends State<CreateBabyInfoView> {
       }
       _formKey.currentState.save();
 
-      // babyBloc.add(AddedBaby(
-      //       babyModel: BabyModel(
-      //           name: _nameController.text,
-      //           idAccount: args.userId,
-      //           birth: _birthController.text,
-      //           image:
-      //               "https://i.pinimg.com/736x/38/f2/ff/38f2ff0337ea5dbb0ce2e094ca2d910a.jpg"),
-      //       userId: args.userId));
-
       Navigator.pushNamed(
         context,
         CreateBabyBMIView.routeName,
       );
-      babyBloc.add(AddedBaby(
-          babyModel: BabyModel(
-              gender: args.genderPicked.index == 1 ? "boy" : "girl",
-              name: _nameController.text,
-              idAccount: args.userId,
-              birth: Convert.BirthTimeToDouble(_birthController.text),
-              image:
-                  "https://i.pinimg.com/736x/38/f2/ff/38f2ff0337ea5dbb0ce2e094ca2d910a.jpg"),
-          userId: args.userId));
+      // babyBloc.add(AddedBaby(
+      //     babyModel: BabyModel(
+      //         gender: args.genderPicked.index == 1 ? "boy" : "girl",
+      //         name: _nameController.text,
+      //         idAccount: args.userId,
+      //         birth: Convert.BirthTimeToDouble(_birthController.text),
+      //         image:
+      //             "https://i.pinimg.com/736x/38/f2/ff/38f2ff0337ea5dbb0ce2e094ca2d910a.jpg"),
+      //     userId: args.userId));
     });
   }
 }

@@ -43,6 +43,17 @@ class BabyBloc extends Bloc<BabyEvent, BabyState> {
     if (event is BirthBabyChange) {
       yield* mapBirthBabyChangeToState(event);
     }
+    if (event is AddImageInFireBase){
+      yield* mapAddImageToState(event);
+    }
+  }
+
+  Stream<BabyState> mapAddImageToState(AddImageInFireBase event) async* {
+    babySubscription = babyRepository
+        .addImageInFireBase(idBaby: event.idBaby, xFile: event.file).asStream().listen((urlImage) {
+          state.updateUrlImage(urlImage: urlImage);
+    });
+
   }
 
   Stream<BabyState> mapNameBabyChangeToState(NameBabyChange event) async* {
@@ -56,7 +67,7 @@ class BabyBloc extends Bloc<BabyEvent, BabyState> {
   Stream<BabyState> mapDeleteBabyToState(DeletedBaby event) async* {
     babySubscription = babyRepository
         .deleteBaby(idBaby: event.idBaby)
-        .listen((baby) => getListBaby(event));
+        .listen((urlImage) => getListBaby(event));
   }
 
   Stream<BabyState> mapUpdateBabyToState(UpdateBaby event) async* {

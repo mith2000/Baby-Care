@@ -1,5 +1,7 @@
+
 import 'package:equatable/equatable.dart';
 import 'package:flutter_babycare/data/model/baby_model.dart';
+import 'package:image_picker/image_picker.dart';
 
 abstract class BabyEvent extends Equatable {
   final BabyModel babyModel;
@@ -37,6 +39,16 @@ class NameBabyChange extends BabyEvent {
 
   @override
   List<Object> get props => [name];
+}
+
+class AddImageInFireBase extends BabyEvent{
+  final XFile file;
+  final String idBaby;
+
+  const AddImageInFireBase({this.file, this.idBaby}):super();
+
+  @override
+  List<Object> get props => [file];
 }
 
 class BirthBabyChange extends BabyEvent {

@@ -1,5 +1,10 @@
+import 'dart:async';
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:flutter_babycare/data/model/baby_model.dart';
+import 'package:image_picker/image_picker.dart';
 
 class BabyRepository {
   final FirebaseFirestore firebaseFirestore;
@@ -16,6 +21,23 @@ class BabyRepository {
         .map((snapshot) {
       return snapshot.docs.map((doc) => BabyModel.fromSnapshot(doc)).toList();
     });
+  }
+
+  Future<String> addImageInFireBase({XFile xFile, String idBaby}) async {
+    File file = File(xFile.path);
+    var downloadUrl;
+    try {
+      firebase_storage.FirebaseStorage storage =
+          firebase_storage.FirebaseStorage.instance;
+
+      var snapshot = await storage.ref().child('baby/$file.path').putFile(file);
+      downloadUrl = await snapshot.ref.getDownloadURL();
+    } on FirebaseException catch (e) {
+      print(e);
+    }
+    return downloadUrl;
+
+    // return downloadUrl;
   }
 
   Stream<void> addItem({BabyModel babyModel}) {

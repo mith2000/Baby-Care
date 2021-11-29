@@ -4,11 +4,18 @@ import 'package:flutter_babycare/data/model/baby_model.dart';
 class BabyState extends Equatable {
   final bool isNameValid;
   final bool isBirthValid;
+  final String urlImage;
 
-  BabyState({this.isNameValid, this.isBirthValid});
+  BabyState({this.isNameValid, this.isBirthValid, this.urlImage});
 
   @override
   List<Object> get props => [];
+
+  BabyState updateUrlImage({String urlImage}) {
+    return BabyState(
+      urlImage: urlImage,
+    );
+  }
 
   BabyState update({
     bool isNameValid,
