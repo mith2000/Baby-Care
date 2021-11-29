@@ -40,6 +40,8 @@ class _BabyDetailViewState extends State<BabyDetailView> {
     'Calcium': 'assets/icon/calcium.svg',
     'Iodine': 'assets/icon/iodine.svg',
     'info': 'assets/icon/info.svg',
+    'achievement': 'assets/icon/achievement.svg',
+    'warn': 'assets/icon/warn.svg',
   };
 
   @override
@@ -58,6 +60,8 @@ class _BabyDetailViewState extends State<BabyDetailView> {
                 Container(
                   child: Column(
                     children: [
+                      _buildBabyGeneralInfoFrame(args),
+                      SizedBox(height: AppConstants.paddingLargeH),
                       _buildBMIFrame(
                         height: 1500,
                         heightStatus: BabyStatus.Cry,
@@ -87,13 +91,36 @@ class _BabyDetailViewState extends State<BabyDetailView> {
                         infoActionCalcium: () {},
                         infoActionIodine: () {},
                       ),
+                      SizedBox(height: AppConstants.paddingNormalH),
+                      _buildFeatureButton(
+                        featureName: 'Meal suggestion',
+                        featureDescription:
+                            'Get to know what your baby needs for the coming week',
+                        action: () {},
+                        image: AssetImage('assets/image/meal_suggestion.jpg'),
+                      ),
+                      _buildFeatureButton(
+                        featureName: 'Vaccine suggestion',
+                        featureDescription:
+                            'The following vaccination suggestions are very important for your kid',
+                        action: () {},
+                        image:
+                            AssetImage('assets/image/vaccine_suggestion.jpg'),
+                        isRedFrame: true,
+                      ),
+                      _buildFeatureButton(
+                        featureName: 'Vaccination history',
+                        featureDescription:
+                            'Store vaccination information for your baby',
+                        action: () {},
+                        image:
+                            AssetImage('assets/image/vaccination_history.jpg'),
+                      ),
                     ],
                   ),
-                  margin: EdgeInsets.only(
-                    left: AppConstants.paddingLargeW,
-                    right: AppConstants.paddingLargeW,
-                    top: AppConstants.paddingNormalH,
-                    bottom: AppConstants.paddingLargeH,
+                  margin: EdgeInsets.symmetric(
+                    horizontal: AppConstants.paddingLargeW,
+                    vertical: AppConstants.paddingNormalH,
                   ),
                 ),
                 SizedBox(height: AppConstants.paddingSuperLargeH * 2),
@@ -118,6 +145,148 @@ class _BabyDetailViewState extends State<BabyDetailView> {
       height: ScreenUtil().screenWidth,
       fit: BoxFit.cover,
       image: args.model.image,
+    );
+  }
+
+  Widget _buildBabyGeneralInfoFrame(BabyDetailViewArguments args) {
+    return Column(
+      children: [
+        Text(
+          args.model.name,
+          style: Theme.of(context).textTheme.caption,
+        ),
+        SizedBox(height: AppConstants.paddingLargeH),
+        Row(
+          children: [
+            Text(
+              'Baby\'s age:',
+              style: Theme.of(context).textTheme.bodyText1,
+            ),
+            SizedBox(width: AppConstants.paddingNormalW),
+            HighlightBox(
+              args.model.birth.toInt().toString(),
+              color: AppColors.primary,
+            ),
+            SizedBox(width: AppConstants.paddingNormalW),
+            Text(
+              'months',
+              style: Theme.of(context).textTheme.bodyText1,
+            ),
+            Expanded(child: Container()),
+            Text(
+              'Status',
+              style: Theme.of(context).textTheme.bodyText1,
+            ),
+            SizedBox(width: AppConstants.paddingNormalW),
+            BabyStatusIcon(status: BabyStatus.Happy),
+          ],
+        ),
+        SizedBox(height: AppConstants.paddingLargeH),
+        Container(
+          child: Text(
+            '15 days left to your baby\'s one month old',
+            style: Theme.of(context).textTheme.bodyText1,
+          ),
+          padding: EdgeInsets.symmetric(
+              horizontal: AppConstants.paddingNormalW,
+              vertical: AppConstants.paddingNormalH),
+          decoration: BoxDecoration(
+            color: AppColors.embrace,
+            borderRadius: BorderRadius.circular(AppConstants.cornerRadius),
+            boxShadow: [
+              BoxShadow(
+                color: AppColors.shadow,
+                blurRadius: 4,
+                offset: Offset(0, 4), // changes position of shadow
+              ),
+            ],
+          ),
+        ),
+        SizedBox(height: AppConstants.paddingLargeH),
+        Row(
+          children: [
+            SvgPicture.asset(_icons['achievement']),
+            SizedBox(width: AppConstants.paddingLargeW),
+            Text(
+              'Next achievement',
+              style: Theme.of(context).textTheme.bodyText1,
+            ),
+            SizedBox(width: AppConstants.paddingNormalW),
+            // đỉnk
+            // Expanded(Wrap(Container(Text))) thì khi text ngắn sẽ chỉ bao nhỏ, text quá dài sẽ tự có thể xuống dòng
+            Expanded(
+              child: Wrap(
+                children: [
+                  Container(
+                    child: Text(
+                      'Start to walk',
+                      style: Theme.of(context).textTheme.bodyText1,
+                    ),
+                    padding: EdgeInsets.symmetric(
+                        horizontal: AppConstants.paddingNormalW,
+                        vertical: AppConstants.paddingNormalH),
+                    decoration: BoxDecoration(
+                      color: AppColors.embrace,
+                      borderRadius:
+                          BorderRadius.circular(AppConstants.cornerRadius),
+                      boxShadow: [
+                        BoxShadow(
+                          color: AppColors.shadow,
+                          blurRadius: 4,
+                          offset: Offset(0, 4), // changes position of shadow
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+        SizedBox(height: AppConstants.paddingLargeH),
+        Row(
+          children: [
+            (true)
+                ? SvgPicture.asset(_icons['warn'])
+                : SizedBox(width: AppConstants.paddingLargeW * 2),
+            SizedBox(width: AppConstants.paddingLargeW),
+            Text(
+              'It\'s been',
+              style: Theme.of(context).textTheme.bodyText1,
+            ),
+            SizedBox(width: AppConstants.paddingNormalW),
+            HighlightBox('15'),
+            SizedBox(width: AppConstants.paddingNormalW),
+            Text(
+              'days since your last BMI update',
+              style: Theme.of(context).textTheme.bodyText1,
+            ),
+          ],
+        ),
+        SizedBox(height: AppConstants.paddingLargeH),
+        Row(
+          children: [
+            (false)
+                ? SvgPicture.asset(_icons['warn'])
+                : SizedBox(width: AppConstants.paddingLargeW * 2),
+            SizedBox(width: AppConstants.paddingLargeW),
+            Text(
+              'It\'s been',
+              style: Theme.of(context).textTheme.bodyText1,
+            ),
+            SizedBox(width: AppConstants.paddingNormalW),
+            HighlightBox(
+              '5',
+              color: AppColors.primary,
+            ),
+            SizedBox(width: AppConstants.paddingNormalW),
+            Text(
+              'days since your last NI update',
+              style: Theme.of(context).textTheme.bodyText1,
+            ),
+          ],
+        ),
+      ],
     );
   }
 
@@ -410,6 +579,111 @@ class _BabyDetailViewState extends State<BabyDetailView> {
           child: CircleIconButton(SvgPicture.asset(_icons['info']), infoAction),
         ),
       ],
+    );
+  }
+
+  Widget _buildFeatureButton({
+    String featureName,
+    String featureDescription,
+    Function action,
+    ImageProvider image,
+    bool isRedFrame = false,
+  }) {
+    return Container(
+      height: 132.h,
+      margin: EdgeInsets.symmetric(vertical: AppConstants.paddingNormalH),
+      child: ElevatedButton(
+        onPressed: action,
+        child: Container(
+          child: Row(
+            children: [
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Container(
+                      child: Text(
+                        featureName,
+                        style: TextStyle(
+                          fontWeight: FontWeight.w700,
+                          fontSize: 24.sp,
+                          color: AppColors.whiteBackground,
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: AppConstants.paddingNormalH),
+                    Container(
+                      child: Text(
+                        featureDescription,
+                        style: TextStyle(
+                          fontWeight: FontWeight.w600,
+                          fontSize: 22.sp,
+                          color: AppColors.whiteBackground,
+                        ),
+                        maxLines: 3,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              SizedBox(width: AppConstants.paddingNormalW),
+              Container(
+                height: double.infinity,
+                margin: EdgeInsets.only(
+                    top: AppConstants.paddingNormalH,
+                    bottom: AppConstants.paddingLargeH),
+                child: ClipRRect(
+                  borderRadius:
+                      BorderRadius.circular(AppConstants.cornerRadiusFrame),
+                  child: Image(
+                    width: 100.w,
+                    fit: BoxFit.cover,
+                    image: image,
+                  ),
+                ),
+              ),
+            ],
+          ),
+          padding: EdgeInsets.only(
+            top: AppConstants.paddingNormalH,
+            left: AppConstants.paddingLargeW,
+            right: AppConstants.paddingLargeW,
+          ),
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: isRedFrame == false
+                  ? [
+                      AppColors.primary,
+                      AppColors.secondary,
+                    ]
+                  : [
+                      AppColors.danger,
+                      AppColors.highlighter,
+                    ],
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+            ),
+            borderRadius: BorderRadius.circular(AppConstants.cornerRadiusFrame),
+            boxShadow: [
+              BoxShadow(
+                color: AppColors.shadow,
+                blurRadius: 4,
+                offset: Offset(0, 4), // changes position of shadow
+              ),
+            ],
+          ),
+        ),
+        style: ElevatedButton.styleFrom(
+          minimumSize: Size.zero,
+          padding: EdgeInsets.zero,
+          primary: AppColors.primary,
+          onPrimary: AppColors.solidButtonPress,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(AppConstants.cornerRadiusFrame),
+          ),
+        ),
+      ),
     );
   }
 

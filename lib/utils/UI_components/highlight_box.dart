@@ -28,6 +28,13 @@ class HighlightBox extends StatelessWidget {
         color: boxColor,
         borderRadius:
             BorderRadius.circular(AppConstants.cornerRadiusHighlightBox),
+        boxShadow: [
+          BoxShadow(
+            color: AppColors.shadow,
+            blurRadius: 4,
+            offset: Offset(0, 4), // changes position of shadow
+          ),
+        ],
       ),
       child: Text(
         text,
