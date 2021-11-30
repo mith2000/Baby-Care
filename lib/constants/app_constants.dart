@@ -21,3 +21,11 @@ enum GenderPick {
   Boy,
   Girl,
 }
+
+enum BabyStatus {
+  Love,
+  Happy,
+  Smile,
+  Sad,
+  Cry,
+}

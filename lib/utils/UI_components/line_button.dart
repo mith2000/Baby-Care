@@ -4,10 +4,10 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../app_colors.dart';
 
-class SolidButton extends StatelessWidget {
+class LineButton extends StatelessWidget {
   final String label;
   final Function action;
-  SolidButton(this.label, this.action, {Key key}) : super(key: key);
+  LineButton(this.label, this.action, {Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -18,16 +18,24 @@ class SolidButton extends StatelessWidget {
         onPressed: action,
         child: Text(
           label,
-          style: Theme.of(context).textTheme.button,
+          style: TextStyle(
+            fontWeight: FontWeight.w600,
+            fontSize: 22.sp,
+            color: AppColors.text,
+          ),
           textAlign: TextAlign.center,
         ),
         style: ElevatedButton.styleFrom(
           minimumSize: Size.zero,
           padding: EdgeInsets.zero,
-          primary: AppColors.primary,
-          onPrimary: AppColors.solidButtonPress,
+          primary: AppColors.whiteBackground,
+          onPrimary: AppColors.lineButtonPress,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(AppConstants.cornerRadius),
+            side: BorderSide(
+              width: 1.w,
+              color: AppColors.stroke,
+            ),
           ),
         ),
       ),

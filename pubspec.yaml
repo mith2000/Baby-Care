@@ -89,6 +89,19 @@ flutter:
     - assets/icon/green_vegets.svg
     - assets/icon/red_vegets.svg
     - assets/icon/citrus_fruit.svg
+    - assets/icon/carbohydrate.svg
+    - assets/icon/fat.svg
+    - assets/icon/protein.svg
+    - assets/icon/vitamin_a.svg
+    - assets/icon/vitamin_b.svg
+    - assets/icon/vitamin_c.svg
+    - assets/icon/vitamin_d.svg
+    - assets/icon/iron.svg
+    - assets/icon/calcium.svg
+    - assets/icon/iodine.svg
+    - assets/icon/info.svg
+    - assets/icon/achievement.svg
+    - assets/icon/warn.svg
 
     - assets/image/default_baby.png
     - assets/image/EmojiLove_1.png
@@ -96,6 +109,9 @@ flutter:
     - assets/image/EmojiSmile_3.png
     - assets/image/EmojiSad_4.png
     - assets/image/EmojiCry_5.png
+    - assets/image/meal_suggestion.jpg
+    - assets/image/vaccine_suggestion.jpg
+    - assets/image/vaccination_history.jpg
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
