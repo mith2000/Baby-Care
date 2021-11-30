@@ -11,11 +11,12 @@ import 'package:flutter_babycare/module/home/bloc/baby_event.dart';
 import 'package:flutter_babycare/module/home/bloc/baby_state.dart';
 import 'package:flutter_babycare/module/sample/view/sample_view.dart';
 import 'package:flutter_babycare/utils/UI_components/baby_status_icon.dart';
+import 'package:flutter_babycare/utils/UI_components/error_label.dart';
 import 'package:flutter_babycare/utils/UI_components/highlight_box.dart';
 import 'package:flutter_babycare/utils/UI_components/icon_button.dart';
 import 'package:flutter_babycare/utils/UI_components/loading_widget.dart';
 import 'package:flutter_babycare/utils/app_colors.dart';
-import 'package:flutter_babycare/utils/converttimetodouble.dart';
+import 'package:flutter_babycare/utils/converter.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -183,8 +184,9 @@ class _HomeBodyViewState extends State<HomeBodyView> {
                 return CustomLoadingWidget();
               }
               if (state is BabyLoaded) {
-                if (state.listBaby == null) {
-                  return Text('No baby available now');
+                if (state.listBaby == null || state.listBaby.length == 0) {
+                  return ErrorLabel(
+                      'No baby available now\nAdd one to use our features');
                 }
                 return ListView.builder(
                   shrinkWrap: true,
@@ -193,7 +195,7 @@ class _HomeBodyViewState extends State<HomeBodyView> {
                   itemBuilder: (context, index) {
                     return _buildBabyInterfaceButton(
                       babyName: state.listBaby[index].name,
-                      babyYearOld: Convert.BirthTimeToDouble(
+                      babyYearOld: Converter.dateToDouble(
                           DateFormat('dd/MM/yyyy')
                               .format(state.listBaby[index].birth)),
                       imageUrl: state.listBaby[index].image,
@@ -210,7 +212,7 @@ class _HomeBodyViewState extends State<HomeBodyView> {
                   },
                 );
               } else {
-                return Text('Error');
+                return ErrorLabel('Something error !!!');
               }
             },
           ),
