@@ -28,7 +28,7 @@ class BabyRepository {
     File file = File(xFile.path);
     String downloadUrl;
     int temp;
-    firebaseFirestore.collection('baby').get().then((querySnapshot) {
+    await firebaseFirestore.collection('baby').get().then((querySnapshot) {
       temp = querySnapshot.size;
     });
     try {
@@ -36,7 +36,6 @@ class BabyRepository {
           .ref()
           .child('baby/' + temp.toString() + '_' + idAccount);
       UploadTask uploadTask = storageReference.putFile(file);
-      await uploadTask;
       TaskSnapshot taskSnapshot = await uploadTask
           .whenComplete(() => print('added image baby in firebase'));
       downloadUrl = await taskSnapshot.ref.getDownloadURL();
