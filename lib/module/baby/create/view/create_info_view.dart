@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_babycare/constants/app_constants.dart';
+import 'package:flutter_babycare/data/model/baby_model.dart';
 import 'package:flutter_babycare/module/home/bloc/baby_bloc.dart';
 import 'package:flutter_babycare/module/home/bloc/baby_event.dart';
 import 'package:flutter_babycare/module/home/bloc/baby_state.dart';
@@ -36,6 +37,8 @@ class CreateBabyInfoView extends StatefulWidget {
 }
 
 class _CreateBabyInfoViewState extends State<CreateBabyInfoView> {
+  String imageBaby;
+  DateTime dateTime;
   Map<String, dynamic> _formData = {
     'name': null,
     'birth': null,
@@ -326,6 +329,7 @@ class _CreateBabyInfoViewState extends State<CreateBabyInfoView> {
                 showTodayButton: true,
                 showActionButtons: true,
                 onSubmit: (Object val) {
+                  dateTime = val;
                   String datePicked = DateFormat('dd/MM/yyyy').format(val);
                   _birthController.text = datePicked;
                   _datePickerController.selectedDate = null;
@@ -345,50 +349,52 @@ class _CreateBabyInfoViewState extends State<CreateBabyInfoView> {
   }
 
   Widget _buildImagePicker(CreateBabyInfoViewArguments args) {
-    return Column(
-      children: [
-        CircleIconButton(
-          SvgPicture.asset(_icons['person']),
-          () async {
-            _imagePicked =
-                await _imagePicker.pickImage(source: ImageSource.gallery);
+    return BlocBuilder<BabyBloc, BabyState>(
+        bloc: babyBloc,
+        builder: (context, state) {
+          if (state is BabyUploadedImageBaby) {
+            imageBaby = state.urlImage;
+            return Container(
+              child: Text(state.urlImage),
+            );
+          }
+          return Column(
+            children: [
+              CircleIconButton(
+                SvgPicture.asset(_icons['person']),
+                () async {
+                  _imagePicked =
+                      await _imagePicker.pickImage(source: ImageSource.gallery);
 
-            if (_imagePicked == null) return;
+                  if (_imagePicked == null) return;
 
-            setState(() {
-              _isNotifyMust2PickImage = false;
-              babyBloc.add(
-                  AddImageInFireBase(file: _imagePicked, idBaby: args.userId));
-            });
+                  setState(() {
+                    _isNotifyMust2PickImage = false;
+                    babyBloc.add(AddImageInFireBase(
+                        file: _imagePicked, idAccount: args.userId));
+                  });
 
-            final imageName = _imagePicked.name;
-            _formData['imageDestination'] = 'files/$imageName';
-            _formData['imageFile'] = File(_imagePicked.path);
-          },
-        ),
-        BlocListener<BabyBloc, BabyState>(
-          listener: (context, state) {
-            if (state.urlImage != null && !state.urlImage.isEmpty) {
-              _formData['imageFile'] = state.urlImage;
-              print(state.urlImage);
-            }
-          },
-          child: _formData['imageFile'] != null
-              ? Center(
-                  child: Text(
-                    'Image picked',
-                    style: TextStyle(
-                      fontWeight: FontWeight.w400,
-                      fontSize: 16.sp,
-                      color: AppColors.primary,
-                    ),
-                    textAlign: TextAlign.center,
-                  ),
-                )
-              : Container(),
-        ),
-      ],
-    );
+                  final imageName = _imagePicked.name;
+                  _formData['imageDestination'] = 'files/$imageName';
+                  _formData['imageFile'] = File(_imagePicked.path);
+                },
+              ),
+              _formData['imageFile'] != null
+                  ? Center(
+                      child: Text(
+                        'Image picked',
+                        style: TextStyle(
+                          fontWeight: FontWeight.w400,
+                          fontSize: 16.sp,
+                          color: AppColors.primary,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                    )
+                  : Container(),
+            ],
+          );
+        });
   }
 
   Widget _buildNotifyLable() {
@@ -481,15 +487,16 @@ class _CreateBabyInfoViewState extends State<CreateBabyInfoView> {
         context,
         CreateBabyBMIView.routeName,
       );
-      // babyBloc.add(AddedBaby(
-      //     babyModel: BabyModel(
-      //         gender: args.genderPicked.index == 1 ? "boy" : "girl",
-      //         name: _nameController.text,
-      //         idAccount: args.userId,
-      //         birth: Convert.BirthTimeToDouble(_birthController.text),
-      //         image:
-      //             "https://i.pinimg.com/736x/38/f2/ff/38f2ff0337ea5dbb0ce2e094ca2d910a.jpg"),
-      //     userId: args.userId));
+      //To TimeStamp
+      babyBloc.add(AddedBaby(
+          babyModel: BabyModel(
+            gender: args.genderPicked.index == 1 ? "boy" : "girl",
+            name: _nameController.text,
+            idAccount: args.userId,
+            birth: dateTime,
+            image: imageBaby,
+          ),
+          userId: args.userId));
     });
   }
 }

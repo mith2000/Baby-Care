@@ -1,4 +1,3 @@
-
 import 'package:equatable/equatable.dart';
 import 'package:flutter_babycare/data/model/baby_model.dart';
 import 'package:image_picker/image_picker.dart';
@@ -41,11 +40,20 @@ class NameBabyChange extends BabyEvent {
   List<Object> get props => [name];
 }
 
-class AddImageInFireBase extends BabyEvent{
-  final XFile file;
-  final String idBaby;
+class AddedImage extends BabyEvent {
+  final String urlImage;
 
-  const AddImageInFireBase({this.file, this.idBaby}):super();
+  const AddedImage({this.urlImage});
+
+  @override
+  List<Object> get props => [urlImage];
+}
+
+class AddImageInFireBase extends BabyEvent {
+  final XFile file;
+  final String idAccount;
+
+  const AddImageInFireBase({this.file, this.idAccount}) : super();
 
   @override
   List<Object> get props => [file];

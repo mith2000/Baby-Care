@@ -2,7 +2,8 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
+import 'package:firebase_storage/firebase_storage.dart';
+
 import 'package:flutter_babycare/data/model/baby_model.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -23,21 +24,26 @@ class BabyRepository {
     });
   }
 
-  Future<String> addImageInFireBase({XFile xFile, String idBaby}) async {
+  Future<String> addImageInFireBase({XFile xFile, String idAccount}) async {
     File file = File(xFile.path);
-    var downloadUrl;
+    String downloadUrl;
+    int temp;
+    firebaseFirestore.collection('baby').get().then((querySnapshot) {
+      temp = querySnapshot.size;
+    });
     try {
-      firebase_storage.FirebaseStorage storage =
-          firebase_storage.FirebaseStorage.instance;
-
-      var snapshot = await storage.ref().child('baby/$file.path').putFile(file);
-      downloadUrl = await snapshot.ref.getDownloadURL();
+      Reference storageReference = FirebaseStorage.instance
+          .ref()
+          .child('baby/' + temp.toString() + '_' + idAccount);
+      UploadTask uploadTask = storageReference.putFile(file);
+      await uploadTask;
+      TaskSnapshot taskSnapshot = await uploadTask
+          .whenComplete(() => print('added image baby in firebase'));
+      downloadUrl = await taskSnapshot.ref.getDownloadURL();
     } on FirebaseException catch (e) {
       print(e);
     }
     return downloadUrl;
-
-    // return downloadUrl;
   }
 
   Stream<void> addItem({BabyModel babyModel}) {

@@ -1,15 +1,16 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter/cupertino.dart';
 
 class BabyModel extends Equatable {
   final String id;
   final String gender;
   final String name;
   final String idAccount;
-  final double birth;
-  final String image;
+  final DateTime birth;
+  final String image; //DateTime
 
-  const BabyModel(
+  BabyModel(
       {this.id,
       this.gender,
       this.name,
@@ -18,12 +19,13 @@ class BabyModel extends Equatable {
       this.image});
 
   static BabyModel fromSnapshot(DocumentSnapshot snap) {
+    DateTime myDateTime = snap['birth'].toDate();
     BabyModel babyModel = BabyModel(
       id: snap.id,
       gender: snap['gender'],
       name: snap['name'],
       idAccount: snap['idAccount'],
-      birth: snap['birth'] == null ? snap['birth'] : snap['birth'].toDouble(),
+      birth: myDateTime,
       image: snap['image'],
     );
     return babyModel;
@@ -40,11 +42,12 @@ class BabyModel extends Equatable {
       ];
 
   Map<String, Object> toJson() {
+    Timestamp myTimeStamp = Timestamp.fromDate(birth);
     return {
       "name": name,
       "gender": gender,
       "idAccount": idAccount,
-      "birth": birth,
+      "birth": myTimeStamp,
       "image": image,
     };
   }

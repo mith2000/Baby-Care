@@ -9,8 +9,10 @@ import 'package:flutter_babycare/utils/UI_components/line_button.dart';
 import 'package:flutter_babycare/utils/UI_components/solid_button.dart';
 import 'package:flutter_babycare/utils/UI_components/title_label.dart';
 import 'package:flutter_babycare/utils/app_colors.dart';
+import 'package:flutter_babycare/utils/converttimetodouble.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:intl/intl.dart';
 
 class BabyDetailViewArguments {
   final BabyModel model;
@@ -164,7 +166,10 @@ class _BabyDetailViewState extends State<BabyDetailView> {
             ),
             SizedBox(width: AppConstants.paddingNormalW),
             HighlightBox(
-              args.model.birth.toInt().toString(),
+              Convert.BirthTimeToDouble(
+                      DateFormat('dd/MM/yyyy').format(args.model.birth))
+                  .toInt()
+                  .toString(),
               color: AppColors.primary,
             ),
             SizedBox(width: AppConstants.paddingNormalW),

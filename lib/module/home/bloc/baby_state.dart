@@ -4,18 +4,11 @@ import 'package:flutter_babycare/data/model/baby_model.dart';
 class BabyState extends Equatable {
   final bool isNameValid;
   final bool isBirthValid;
-  final String urlImage;
 
-  BabyState({this.isNameValid, this.isBirthValid, this.urlImage});
+  BabyState({this.isNameValid, this.isBirthValid});
 
   @override
   List<Object> get props => [];
-
-  BabyState updateUrlImage({String urlImage}) {
-    return BabyState(
-      urlImage: urlImage,
-    );
-  }
 
   BabyState update({
     bool isNameValid,
@@ -36,6 +29,17 @@ class BabyState extends Equatable {
       isBirthValid: isBirthValid ?? this.isBirthValid,
     );
   }
+}
+
+class BabyUploadedImageBaby extends BabyState {
+  final String urlImage;
+  BabyUploadedImageBaby([this.urlImage]);
+
+  @override
+  List<Object> get props => [urlImage];
+
+  @override
+  String toString() => 'Upload image success { urlImage: $urlImage }';
 }
 
 class BabyLoading extends BabyState {}

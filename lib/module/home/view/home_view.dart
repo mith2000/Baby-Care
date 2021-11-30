@@ -15,10 +15,12 @@ import 'package:flutter_babycare/utils/UI_components/highlight_box.dart';
 import 'package:flutter_babycare/utils/UI_components/icon_button.dart';
 import 'package:flutter_babycare/utils/UI_components/loading_widget.dart';
 import 'package:flutter_babycare/utils/app_colors.dart';
+import 'package:flutter_babycare/utils/converttimetodouble.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:intl/intl.dart';
 
 class HomeView extends StatefulWidget {
   static const routeName = '/home';
@@ -191,7 +193,9 @@ class _HomeBodyViewState extends State<HomeBodyView> {
                   itemBuilder: (context, index) {
                     return _buildBabyInterfaceButton(
                       babyName: state.listBaby[index].name,
-                      babyYearOld: state.listBaby[index].birth,
+                      babyYearOld: Convert.BirthTimeToDouble(
+                          DateFormat('dd/MM/yyyy')
+                              .format(state.listBaby[index].birth)),
                       imageUrl: state.listBaby[index].image,
                       status: BabyStatus.Love,
                       action: () {
