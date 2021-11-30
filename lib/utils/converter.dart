@@ -1,7 +1,7 @@
 import 'package:intl/intl.dart';
 
-class Convert {
-  static BirthTimeToDouble(String textBirthController) {
+class Converter {
+  static dateToDouble(String textBirthController) {
     DateFormat dateFormat = DateFormat("dd/MM/yyyy");
     String string = dateFormat.format(DateTime.now());
     var parts = string.split(' ');

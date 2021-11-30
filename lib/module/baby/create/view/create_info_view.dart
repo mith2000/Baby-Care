@@ -10,7 +10,7 @@ import 'package:flutter_babycare/utils/UI_components/icon_button.dart';
 import 'package:flutter_babycare/utils/UI_components/mini_line_button.dart';
 import 'package:flutter_babycare/utils/UI_components/title_label.dart';
 import 'package:flutter_babycare/utils/app_colors.dart';
-import 'package:flutter_babycare/utils/converttimetodouble.dart';
+import 'package:flutter_babycare/utils/validators.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
@@ -37,20 +37,12 @@ class CreateBabyInfoView extends StatefulWidget {
 }
 
 class _CreateBabyInfoViewState extends State<CreateBabyInfoView> {
-  String imageBaby;
-  DateTime dateTime;
-  Map<String, dynamic> _formData = {
-    'name': null,
-    'birth': null,
-    'imageDestination': null,
-    'imageFile': null,
-  };
   var _formKey = GlobalKey<FormState>();
   var _nameController = TextEditingController();
   var _birthController = TextEditingController();
   var _datePickerController = DateRangePickerController();
-  final ImagePicker _imagePicker = ImagePicker();
-  XFile _imagePicked;
+  DateTime babyBirth;
+  String babyImageUrl;
   bool _isNotifyMust2PickImage = false;
 
   BabyBloc babyBloc;
@@ -65,7 +57,6 @@ class _CreateBabyInfoViewState extends State<CreateBabyInfoView> {
     super.initState();
     babyBloc = BlocProvider.of<BabyBloc>(context);
     _nameController.addListener(_onNameChange);
-    _birthController.addListener(_onBirthChange);
   }
 
   @override
@@ -209,9 +200,6 @@ class _CreateBabyInfoViewState extends State<CreateBabyInfoView> {
         ),
       ),
       keyboardType: TextInputType.name,
-      onSaved: (String value) {
-        _formData['name'] = value;
-      },
       validator: (value) {
         if (value.length < 1)
           return "Required";
@@ -279,13 +267,14 @@ class _CreateBabyInfoViewState extends State<CreateBabyInfoView> {
       ),
       keyboardType: TextInputType.datetime,
       onSaved: (String value) {
-        _formData['birth'] = value;
+        babyBirth =
+            new DateFormat("dd/MM/yyyy hh:mm:ss").parse(value + ' 00:00:00');
       },
       validator: (value) {
         if (value.length < 1)
           return "Required";
-        // else if (!state.isUsernameValid)
-        //   return "Invalid Name";
+        else if (!Validators.isValidDate(value))
+          return "Invalid Date";
         else
           return null;
       },
@@ -329,7 +318,8 @@ class _CreateBabyInfoViewState extends State<CreateBabyInfoView> {
                 showTodayButton: true,
                 showActionButtons: true,
                 onSubmit: (Object val) {
-                  dateTime = val;
+                  if (val == null) return;
+                  babyBirth = val;
                   String datePicked = DateFormat('dd/MM/yyyy').format(val);
                   _birthController.text = datePicked;
                   _datePickerController.selectedDate = null;
@@ -353,46 +343,29 @@ class _CreateBabyInfoViewState extends State<CreateBabyInfoView> {
         bloc: babyBloc,
         builder: (context, state) {
           if (state is BabyUploadedImageBaby) {
-            imageBaby = state.urlImage;
-            return Container(
-              child: Text(state.urlImage),
+            babyImageUrl = state.urlImage;
+            return FadeInImage.assetNetwork(
+              placeholder: 'assets/image/default_baby.png',
+              height: ScreenUtil().screenWidth,
+              fit: BoxFit.cover,
+              image: babyImageUrl,
             );
           }
-          return Column(
-            children: [
-              CircleIconButton(
-                SvgPicture.asset(_icons['person']),
-                () async {
-                  _imagePicked =
-                      await _imagePicker.pickImage(source: ImageSource.gallery);
+          return CircleIconButton(
+            SvgPicture.asset(_icons['person']),
+            () async {
+              final ImagePicker _imagePicker = ImagePicker();
+              XFile _imagePicked =
+                  await _imagePicker.pickImage(source: ImageSource.gallery);
 
-                  if (_imagePicked == null) return;
+              if (_imagePicked == null) return;
 
-                  setState(() {
-                    _isNotifyMust2PickImage = false;
-                    babyBloc.add(AddImageInFireBase(
-                        file: _imagePicked, idAccount: args.userId));
-                  });
-
-                  final imageName = _imagePicked.name;
-                  _formData['imageDestination'] = 'files/$imageName';
-                  _formData['imageFile'] = File(_imagePicked.path);
-                },
-              ),
-              _formData['imageFile'] != null
-                  ? Center(
-                      child: Text(
-                        'Image picked',
-                        style: TextStyle(
-                          fontWeight: FontWeight.w400,
-                          fontSize: 16.sp,
-                          color: AppColors.primary,
-                        ),
-                        textAlign: TextAlign.center,
-                      ),
-                    )
-                  : Container(),
-            ],
+              setState(() {
+                _isNotifyMust2PickImage = false;
+                babyBloc.add(AddImageInFireBase(
+                    file: _imagePicked, idAccount: args.userId));
+              });
+            },
           );
         });
   }
@@ -458,16 +431,7 @@ class _CreateBabyInfoViewState extends State<CreateBabyInfoView> {
   }
 
   void _onNameChange() {
-    // todo bloc validate name
     babyBloc.add(NameBabyChange(name: _nameController.text));
-  }
-
-  void _onBirthChange() {
-    // todo bloc validate name
-    babyBloc.add(BirthBabyChange(
-        birth: _birthController.text.isEmpty
-            ? Convert.BirthTimeToDouble(_birthController.text)
-            : 0));
   }
 
   void _onNextPressed(CreateBabyInfoViewArguments args) {
@@ -475,7 +439,7 @@ class _CreateBabyInfoViewState extends State<CreateBabyInfoView> {
       if (!_formKey.currentState.validate()) {
         return;
       }
-      if (_formData['imageFile'] == null) {
+      if (babyImageUrl == null) {
         setState(() {
           _isNotifyMust2PickImage = true;
         });
@@ -483,20 +447,22 @@ class _CreateBabyInfoViewState extends State<CreateBabyInfoView> {
       }
       _formKey.currentState.save();
 
+      String gender = args.genderPicked == GenderPick.Boy ? "boy" : "girl";
+
+      babyBloc.add(AddedBaby(
+          babyModel: BabyModel(
+            gender: gender,
+            name: _nameController.text,
+            idAccount: args.userId,
+            birth: babyBirth,
+            image: babyImageUrl,
+          ),
+          userId: args.userId));
+
       Navigator.pushNamed(
         context,
         CreateBabyBMIView.routeName,
       );
-      //To TimeStamp
-      babyBloc.add(AddedBaby(
-          babyModel: BabyModel(
-            gender: args.genderPicked.index == 1 ? "boy" : "girl",
-            name: _nameController.text,
-            idAccount: args.userId,
-            birth: dateTime,
-            image: imageBaby,
-          ),
-          userId: args.userId));
     });
   }
 }
