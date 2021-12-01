@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_babycare/constants/app_constants.dart';
+import 'package:flutter_babycare/module/home/bloc/baby_bloc.dart';
+import 'package:flutter_babycare/module/home/bloc/baby_event.dart';
 import 'package:flutter_babycare/utils/UI_components/custom_slider.dart';
 import 'package:flutter_babycare/utils/UI_components/custom_slider_label.dart';
 import 'package:flutter_babycare/utils/UI_components/mini_line_button.dart';
 import 'package:flutter_babycare/utils/UI_components/mini_solid_button.dart';
 import 'package:flutter_babycare/utils/UI_components/title_label.dart';
 import 'package:flutter_babycare/utils/app_colors.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'create_ni_view.dart';
@@ -25,6 +28,13 @@ class _CreateBabyBMIViewState extends State<CreateBabyBMIView> {
     'weight': 0,
   };
   bool _isNotifyMust2Input = false;
+  BabyBloc babyBloc;
+
+  @override
+  void initState() {
+    super.initState();
+    babyBloc = BlocProvider.of<BabyBloc>(context);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -165,7 +175,7 @@ class _CreateBabyBMIViewState extends State<CreateBabyBMIView> {
             });
             return;
           }
-
+          babyBloc.add(CreateBMI())
           // weight submit to repository = weight * 100
 
           Navigator.pushNamed(

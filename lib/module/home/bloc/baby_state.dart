@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_babycare/data/model/baby_model.dart';
+import 'package:flutter_babycare/data/model/bmi_model.dart';
 
 class BabyState extends Equatable {
   final bool isNameValid;
@@ -33,6 +34,7 @@ class BabyState extends Equatable {
 
 class BabyUploadedImageBaby extends BabyState {
   final String urlImage;
+
   BabyUploadedImageBaby([this.urlImage]);
 
   @override
@@ -40,6 +42,15 @@ class BabyUploadedImageBaby extends BabyState {
 
   @override
   String toString() => 'Upload image success { urlImage: $urlImage }';
+}
+
+class LoadBMIBaby extends BabyState {
+  final List<BmiModel> list;
+
+  LoadBMIBaby({this.list});
+
+  @override
+  List<Object> get props => [list];
 }
 
 class BabyLoading extends BabyState {}

@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
-import 'package:flutter/cupertino.dart';
 
 class BabyModel extends Equatable {
   final String id;
@@ -8,7 +7,7 @@ class BabyModel extends Equatable {
   final String name;
   final String idAccount;
   final DateTime birth;
-  final String image; //DateTime
+  final String image;
 
   BabyModel(
       {this.id,

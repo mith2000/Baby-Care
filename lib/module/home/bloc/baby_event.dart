@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_babycare/data/model/baby_model.dart';
+import 'package:flutter_babycare/data/model/bmi_model.dart';
 import 'package:image_picker/image_picker.dart';
 
 abstract class BabyEvent extends Equatable {
@@ -19,6 +20,34 @@ class LoadBaby extends BabyEvent {
 
   @override
   List<Object> get props => [userId];
+}
+
+class FetchWeightBMI extends BabyEvent {
+  final String idBaby;
+
+  FetchWeightBMI({this.idBaby});
+
+  @override
+  List<Object> get props => [idBaby];
+}
+
+class CreateBMI extends BabyEvent {
+  final List<BmiModel> listBMIModel;
+  final String idBaby;
+
+  CreateBMI({this.listBMIModel, this.idBaby});
+
+  @override
+  List<Object> get props => [listBMIModel];
+}
+
+class LoadBMIEvent extends BabyEvent {
+  final List<BmiModel> listBMIModel;
+
+  LoadBMIEvent({this.listBMIModel});
+
+  @override
+  List<Object> get props => [listBMIModel];
 }
 
 class AddedBaby extends BabyEvent {

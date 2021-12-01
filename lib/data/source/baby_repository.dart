@@ -3,7 +3,6 @@ import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
-
 import 'package:flutter_babycare/data/model/baby_model.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -14,7 +13,7 @@ class BabyRepository {
       : this.firebaseFirestore =
             firebaseFirestore ?? FirebaseFirestore.instance;
 
-  Stream<List<BabyModel>> getAllBaby(String userId) {
+  Stream<List<BabyModel>> fetchAllBaby(String userId) {
     return firebaseFirestore
         .collection('baby')
         .where('idAccount', isEqualTo: userId)
@@ -45,18 +44,18 @@ class BabyRepository {
     return downloadUrl;
   }
 
-  Stream<void> addItem({BabyModel babyModel}) {
+  Future<String> createBaby({BabyModel babyModel}) async {
     DocumentReference documentReferencer =
         firebaseFirestore.collection('baby').doc();
-
-    documentReferencer
+    String id;
+    await documentReferencer
         .set(babyModel.toJson())
-        .whenComplete(() => print("baby added to the database"))
-        .catchError((e) => print(e));
-
-    return firebaseFirestore.collection('baby').snapshots().map((snapshot) {
-      return snapshot.docs.map((doc) => BabyModel.fromSnapshot(doc)).toList();
+        .catchError((e) => e.toString())
+        .whenComplete(() => print('baby added to the database'))
+        .then((doc) {
+      id = documentReferencer.id;
     });
+    return id;
   }
 
   Stream<void> updateBaby({String idBaby, BabyModel babyModel}) {
