@@ -124,4 +124,3 @@ class UpdateListBaby extends BabyEvent {
   @override
   String toString() => 'listBabyUpdated { updatedListBaby: $listBaby }';
 }
-

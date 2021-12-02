@@ -7,7 +7,6 @@ class BmiModel extends Equatable {
   final String type;
   final int value;
 
-
   BmiModel({
     this.id,
     this.idBaby,
