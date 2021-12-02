@@ -25,7 +25,6 @@ class BabyRepository {
 
   Future<String> addImageInFireBase({XFile xFile, String idAccount}) async {
     File file = File(xFile.path);
-    String downloadUrl;
     int temp;
     await firebaseFirestore.collection('baby').get().then((querySnapshot) {
       temp = querySnapshot.size;
@@ -37,11 +36,10 @@ class BabyRepository {
       UploadTask uploadTask = storageReference.putFile(file);
       TaskSnapshot taskSnapshot = await uploadTask
           .whenComplete(() => print('added image baby in firebase'));
-      downloadUrl = await taskSnapshot.ref.getDownloadURL();
+      return await taskSnapshot.ref.getDownloadURL();
     } on FirebaseException catch (e) {
-      print(e);
+      return e.toString();
     }
-    return downloadUrl;
   }
 
   Future<String> createBaby({BabyModel babyModel}) async {

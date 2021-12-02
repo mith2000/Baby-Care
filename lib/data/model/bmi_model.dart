@@ -18,9 +18,9 @@ class BmiModel extends Equatable {
   static BmiModel fromSnapshot(DocumentSnapshot snap) {
     BmiModel babyModel = BmiModel(
       id: snap.id,
-      idBaby: snap['gender'],
-      type: snap['name'],
-      value: snap['idAccount'],
+      idBaby: snap['idBaby'],
+      type: snap['type'],
+      value: snap['value'],
     );
     return babyModel;
   }

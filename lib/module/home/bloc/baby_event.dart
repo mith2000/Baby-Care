@@ -22,20 +22,28 @@ class LoadBaby extends BabyEvent {
   List<Object> get props => [userId];
 }
 
-class FetchWeightBMI extends BabyEvent {
+class FetchBMI extends BabyEvent {
   final String idBaby;
 
-  FetchWeightBMI({this.idBaby});
+  FetchBMI({this.idBaby});
 
   @override
   List<Object> get props => [idBaby];
 }
 
+class FetchedBMI extends BabyEvent {
+  final List<BmiModel> listBmi;
+
+  FetchedBMI({this.listBmi});
+
+  @override
+  List<Object> get props => [listBmi];
+}
+
 class CreateBMI extends BabyEvent {
   final List<BmiModel> listBMIModel;
-  final String idBaby;
 
-  CreateBMI({this.listBMIModel, this.idBaby});
+  CreateBMI({this.listBMIModel});
 
   @override
   List<Object> get props => [listBMIModel];
@@ -50,14 +58,22 @@ class LoadBMIEvent extends BabyEvent {
   List<Object> get props => [listBMIModel];
 }
 
-class AddedBaby extends BabyEvent {
+class CreateBaby extends BabyEvent {
   final BabyModel babyModel;
-  final String userId;
 
-  const AddedBaby({this.babyModel, this.userId}) : super();
+  const CreateBaby({this.babyModel}) : super();
 
   @override
   List<Object> get props => [this.babyModel];
+}
+
+class CreatedBabyEvent extends BabyEvent {
+  final String idBaby;
+
+  const CreatedBabyEvent({this.idBaby}) : super();
+
+  @override
+  List<Object> get props => [this.idBaby];
 }
 
 class NameBabyChange extends BabyEvent {
@@ -97,18 +113,6 @@ class BirthBabyChange extends BabyEvent {
   List<Object> get props => [birth];
 }
 
-class DeletedBaby extends BabyEvent {
-  final String idBaby;
-
-  const DeletedBaby({this.idBaby});
-
-  @override
-  List<Object> get props => [idBaby];
-
-  @override
-  String toString() => 'BabyDeleted { baby: $idBaby }';
-}
-
 class UpdateListBaby extends BabyEvent {
   final List<BabyModel> listBaby;
 
@@ -121,15 +125,3 @@ class UpdateListBaby extends BabyEvent {
   String toString() => 'listBabyUpdated { updatedListBaby: $listBaby }';
 }
 
-class UpdateBaby extends BabyEvent {
-  final BabyModel babyModel;
-  final String idBaby;
-
-  UpdateBaby({this.babyModel, this.idBaby}) : super();
-
-  @override
-  List<Object> get props => [babyModel];
-
-  @override
-  String toString() => 'babyUpdated { updatedBaby: $babyModel }';
-}

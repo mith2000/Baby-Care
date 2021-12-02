@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_babycare/constants/app_constants.dart';
 import 'package:flutter_babycare/data/model/baby_model.dart';
@@ -342,7 +340,7 @@ class _CreateBabyInfoViewState extends State<CreateBabyInfoView> {
     return BlocBuilder<BabyBloc, BabyState>(
         bloc: babyBloc,
         builder: (context, state) {
-          if (state is BabyUploadedImageBaby) {
+          if (state is UploadedImageBaby) {
             babyImageUrl = state.urlImage;
             return FadeInImage.assetNetwork(
               placeholder: 'assets/image/default_baby.png',
@@ -449,15 +447,15 @@ class _CreateBabyInfoViewState extends State<CreateBabyInfoView> {
 
       String gender = args.genderPicked == GenderPick.Boy ? "boy" : "girl";
 
-      babyBloc.add(AddedBaby(
-          babyModel: BabyModel(
-            gender: gender,
-            name: _nameController.text,
-            idAccount: args.userId,
-            birth: babyBirth,
-            image: babyImageUrl,
-          ),
-          userId: args.userId));
+      babyBloc.add(CreateBaby(
+        babyModel: BabyModel(
+          gender: gender,
+          name: _nameController.text,
+          idAccount: args.userId,
+          birth: babyBirth,
+          image: babyImageUrl,
+        ),
+      ));
 
       Navigator.pushNamed(
         context,

@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_babycare/constants/app_constants.dart';
 import 'package:flutter_babycare/data/model/baby_model.dart';
+import 'package:flutter_babycare/module/home/bloc/baby_bloc.dart';
+import 'package:flutter_babycare/module/home/bloc/baby_event.dart';
+import 'package:flutter_babycare/module/home/bloc/baby_state.dart';
 import 'package:flutter_babycare/utils/UI_components/baby_status_icon.dart';
 import 'package:flutter_babycare/utils/UI_components/badge_icon.dart';
 import 'package:flutter_babycare/utils/UI_components/highlight_box.dart';
@@ -10,6 +13,7 @@ import 'package:flutter_babycare/utils/UI_components/solid_button.dart';
 import 'package:flutter_babycare/utils/UI_components/title_label.dart';
 import 'package:flutter_babycare/utils/app_colors.dart';
 import 'package:flutter_babycare/utils/converter.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
@@ -45,11 +49,19 @@ class _BabyDetailViewState extends State<BabyDetailView> {
     'achievement': 'assets/icon/achievement.svg',
     'warn': 'assets/icon/warn.svg',
   };
+  BabyBloc babyBloc;
+
+  @override
+  void initState() {
+    super.initState();
+    babyBloc = BlocProvider.of<BabyBloc>(context);
+  }
 
   @override
   Widget build(BuildContext context) {
     final args =
         ModalRoute.of(context).settings.arguments as BabyDetailViewArguments;
+    babyBloc.add(FetchBMI(idBaby: args.model.id));
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: Container(
@@ -301,52 +313,64 @@ class _BabyDetailViewState extends State<BabyDetailView> {
     int weight,
     BabyStatus weightStatus,
   }) {
-    return Container(
-      width: double.infinity,
-      child: Column(
-        children: [
-          Container(
-            child: TitleLabel('Body Mass Index'),
-            padding: EdgeInsets.only(
-              top: AppConstants.paddingLargeH,
-              bottom: AppConstants.paddingNormalH,
-            ),
-          ),
-          _buildBMIContent(
-            'Current height:',
-            'cm',
-            value: height,
-            status: heightStatus,
-          ),
-          _buildBMIContent(
-            'Current weight:',
-            'g',
-            value: weight,
-            status: weightStatus,
-          ),
-          Container(
-            child: SolidButton('Update', () {}),
-            padding: EdgeInsets.only(
-              left: AppConstants.paddingLargeW,
-              right: AppConstants.paddingLargeW,
-              top: AppConstants.paddingNormalH,
-              bottom: AppConstants.paddingLargeH,
-            ),
-          ),
-        ],
-      ),
-      decoration: BoxDecoration(
-        color: AppColors.whiteBackground,
-        borderRadius: BorderRadius.circular(AppConstants.cornerRadiusFrame),
-        boxShadow: [
-          BoxShadow(
-            color: AppColors.shadow,
-            blurRadius: 4,
-            offset: Offset(0, 4), // changes position of shadow
-          ),
-        ],
-      ),
-    );
+    return BlocBuilder<BabyBloc, BabyState>(
+        bloc: babyBloc,
+        builder: (context, state) {
+          if (state is LoadBMIBaby) {
+            return Container(
+              width: double.infinity,
+              child: Column(
+                children: [
+                  Container(
+                    child: TitleLabel('Body Mass Index'),
+                    padding: EdgeInsets.only(
+                      top: AppConstants.paddingLargeH,
+                      bottom: AppConstants.paddingNormalH,
+                    ),
+                  ),
+                  _buildBMIContent(
+                    'Current height:',
+                    'cm',
+                    value: state.list[0].type == 'Height'
+                        ? state.list[0].value
+                        : state.list[1].value,
+                    status: heightStatus,
+                  ),
+                  _buildBMIContent(
+                    'Current weight:',
+                    'g',
+                    value: state.list[0].type == 'Weight'
+                        ? state.list[0].value
+                        : state.list[1].value,
+                    status: weightStatus,
+                  ),
+                  Container(
+                    child: SolidButton('Update', () {}),
+                    padding: EdgeInsets.only(
+                      left: AppConstants.paddingLargeW,
+                      right: AppConstants.paddingLargeW,
+                      top: AppConstants.paddingNormalH,
+                      bottom: AppConstants.paddingLargeH,
+                    ),
+                  ),
+                ],
+              ),
+              decoration: BoxDecoration(
+                color: AppColors.whiteBackground,
+                borderRadius:
+                    BorderRadius.circular(AppConstants.cornerRadiusFrame),
+                boxShadow: [
+                  BoxShadow(
+                    color: AppColors.shadow,
+                    blurRadius: 4,
+                    offset: Offset(0, 4), // changes position of shadow
+                  ),
+                ],
+              ),
+            );
+          }
+          return Container();
+        });
   }
 
   Widget _buildBMIContent(

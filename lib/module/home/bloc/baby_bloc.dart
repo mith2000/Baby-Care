@@ -27,17 +27,14 @@ class BabyBloc extends Bloc<BabyEvent, BabyState> {
     if (event is LoadBaby) {
       yield* mapBabyLoadedToState(event);
     }
-    if (event is AddedBaby) {
+    if (event is CreateBaby) {
       yield* mapBabyAddedToState(event);
+    }
+    if (event is CreatedBabyEvent) {
+      yield* mapCreatedBabyEventToState(event);
     }
     if (event is UpdateListBaby) {
       yield* mapUpdateListBabyToState(event);
-    }
-    if (event is UpdateBaby) {
-      yield* mapUpdateBabyToState(event);
-    }
-    if (event is DeletedBaby) {
-      yield* mapDeleteBabyToState(event);
     }
     if (event is NameBabyChange) {
       yield* mapNameBabyChangeToState(event);
@@ -54,23 +51,28 @@ class BabyBloc extends Bloc<BabyEvent, BabyState> {
     if (event is CreateBMI) {
       yield* mapCreateBMIToState(event);
     }
-    if (event is LoadBMIEvent) {
-      yield* mapLoadBMIEventToState(event);
+    if (event is FetchBMI) {
+      yield* mapFetchBMIToState(event);
+    }
+    if (event is FetchedBMI) {
+      yield* mapFetchedBMIoState(event);
     }
   }
 
-  Stream<BabyState> mapLoadBMIEventToState(LoadBMIEvent event) async* {
-    yield LoadBMIBaby(list: event.listBMIModel);
+  Stream<BabyState> mapFetchBMIToState(FetchBMI event) async* {
+    babySubscription = bmiRepository
+        .fetchBmi(event.idBaby)
+        .listen((listBMI) => add(FetchedBMI(listBmi: listBMI)));
+  }
+
+  Stream<BabyState> mapFetchedBMIoState(FetchedBMI event) async* {
+    yield LoadBMIBaby(list: event.listBmi);
   }
 
   Stream<BabyState> mapCreateBMIToState(CreateBMI event) async* {
     babySubscription = bmiRepository
-        .createBmi(event.listBMIModel, event.idBaby)
-        .listen((listBMI) => getListBMI(event));
-  }
-
-  Stream<BabyState> mapAddedImageToState(AddedImage event) async* {
-    yield BabyUploadedImageBaby(event.urlImage);
+        .createBmi(event.listBMIModel)
+        .listen((listBMI) => add(LoadBMIEvent(listBMIModel: listBMI)));
   }
 
   Stream<BabyState> mapAddImageToState(AddImageInFireBase event) async* {
@@ -78,6 +80,14 @@ class BabyBloc extends Bloc<BabyEvent, BabyState> {
         .addImageInFireBase(idAccount: event.idAccount, xFile: event.file)
         .asStream()
         .listen((urlImage) => add(AddedImage(urlImage: urlImage)));
+  }
+
+  Stream<BabyState> mapAddedImageToState(AddedImage event) async* {
+    yield UploadedImageBaby(event.urlImage);
+  }
+
+  Stream<BabyState> yieldBabyUploadedImageState(String urlImage) async* {
+    yield UploadedImageBaby(urlImage);
   }
 
   Stream<BabyState> mapNameBabyChangeToState(NameBabyChange event) async* {
@@ -88,23 +98,15 @@ class BabyBloc extends Bloc<BabyEvent, BabyState> {
     yield state.update(isBirthValid: true); // Bỏ validate dô
   }
 
-  Stream<BabyState> mapDeleteBabyToState(DeletedBaby event) async* {
+  Stream<BabyState> mapBabyAddedToState(CreateBaby event) async* {
     babySubscription = babyRepository
-        .deleteBaby(idBaby: event.idBaby)
-        .listen((urlImage) => getListBaby(event));
+        .createBaby(babyModel: event.babyModel)
+        .asStream()
+        .listen((idBaby) => add(CreatedBabyEvent(idBaby: idBaby)));
   }
 
-  Stream<BabyState> mapUpdateBabyToState(UpdateBaby event) async* {
-    babySubscription = babyRepository
-        .updateBaby(babyModel: event.babyModel, idBaby: event.idBaby)
-        .listen((baby) => getListBaby(event));
-  }
-
-  Stream<BabyState> mapBabyAddedToState(AddedBaby event) async* {
-    babySubscription = babyRepository
-        .createBaby(babyModel: event.babyModel).asStream()
-        .listen((idBaby) => getListBaby(event));
-        // todo: làm tiếp khúc này: Ko cần getlistbaby mà cần hàm để nhận id lúc vừa tạo baby
+  Stream<BabyState> mapCreatedBabyEventToState(CreatedBabyEvent event) async* {
+    yield BabyCreated(idBaby: event.idBaby);
   }
 
   Stream<BabyState> mapBabyLoadedToState(LoadBaby event) async* {
@@ -113,12 +115,6 @@ class BabyBloc extends Bloc<BabyEvent, BabyState> {
 
   Stream<BabyState> mapUpdateListBabyToState(UpdateListBaby event) async* {
     yield BabyLoaded(event.listBaby);
-  }
-
-  void getListBMI(CreateBMI event) {
-    babySubscription = bmiRepository
-        .fetchBmi(event.idBaby)
-        .listen((listBMI) => add(LoadBMIEvent(listBMIModel: listBMI)));
   }
 
   void getListBaby(BabyEvent event) {

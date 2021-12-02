@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_babycare/constants/app_constants.dart';
+import 'package:flutter_babycare/data/model/bmi_model.dart';
 import 'package:flutter_babycare/module/home/bloc/baby_bloc.dart';
 import 'package:flutter_babycare/module/home/bloc/baby_event.dart';
+import 'package:flutter_babycare/module/home/bloc/baby_state.dart';
 import 'package:flutter_babycare/utils/UI_components/custom_slider.dart';
 import 'package:flutter_babycare/utils/UI_components/custom_slider_label.dart';
 import 'package:flutter_babycare/utils/UI_components/mini_line_button.dart';
@@ -161,29 +163,41 @@ class _CreateBabyBMIViewState extends State<CreateBabyBMIView> {
   }
 
   Widget _buildMainButtons() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        MiniLineButton('Back', () {
-          Navigator.pop(context);
-        }),
-        SizedBox(width: AppConstants.paddingLargeW),
-        MiniSolidButton('Next', () {
-          if (_formData['height'] == 0 || _formData['weight'] == 0) {
-            setState(() {
-              _isNotifyMust2Input = true;
-            });
-            return;
-          }
-          babyBloc.add(CreateBMI())
-          // weight submit to repository = weight * 100
+    return BlocBuilder<BabyBloc, BabyState>(
+        bloc: babyBloc,
+        builder: (context, state) {
+          if (state is BabyCreated) {
+            return Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                MiniLineButton('Back', () {
+                  Navigator.pop(context);
+                }),
+                SizedBox(width: AppConstants.paddingLargeW),
+                MiniSolidButton('Next', () {
+                  if (_formData['height'] == 0 || _formData['weight'] == 0) {
+                    setState(() {
+                      _isNotifyMust2Input = true;
+                    });
+                    return;
+                  }
+                  babyBloc.add(CreateBMI(listBMIModel: [
+                    BmiModel(
+                        idBaby: state.idBaby, type: 'Weight', value: 20 * 1000),
+                    BmiModel(
+                        idBaby: state.idBaby, type: 'Height', value: 10 * 1000)
+                  ]));
+                  // weight submit to repository = weight * 100
 
-          Navigator.pushNamed(
-            context,
-            CreateBabyNIView.routeName,
-          );
-        }),
-      ],
-    );
+                  Navigator.pushNamed(
+                    context,
+                    CreateBabyNIView.routeName,
+                  );
+                }),
+              ],
+            );
+          }
+          return Container();
+        });
   }
 }

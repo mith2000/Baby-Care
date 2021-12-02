@@ -10,48 +10,27 @@ class BmiRepository {
       : this.firebaseFirestore =
             firebaseFirestore ?? FirebaseFirestore.instance;
 
-  Stream<List<BmiModel>> fetchBmi(String idBaby)  {
+  Stream<List<BmiModel>> fetchBmi(String idBaby) {
     return firebaseFirestore
-        .collection('baby')
-        .where('idAccount', isEqualTo: idBaby)
+        .collection('bmi')
+        .where('idBaby', isEqualTo: idBaby)
         .snapshots()
         .map((snapshot) {
       return snapshot.docs.map((doc) => BmiModel.fromSnapshot(doc)).toList();
     });
   }
 
-  Future<BmiModel> fetchWeightBmi(String idBaby) async {
-    BmiModel bmiModel;
-    await firebaseFirestore
-        .collection('bmi')
-        .where('idAccount', isEqualTo: idBaby)
-        .get()
-        .then((QuerySnapshot querySnapshot) {
-      querySnapshot.docs.forEach((doc) {
-        if (doc['type'] == 'weight') {
-          return BmiModel.fromSnapshot(doc);
-        }
-      });
-    });
-    return bmiModel;
-  }
-
-  Stream<void> createBmi(List<BmiModel> listBMIModel, String idBaby) {
-    DocumentReference documentReferencer =
-        firebaseFirestore.collection('bmi').doc();
-    for (var i=1; i<=listBMIModel.length; i++) {
+  Stream<List<BmiModel>> createBmi(List<BmiModel> listBMIModel) {
+    for (var i = 0; i < listBMIModel.length; i++) {
+      DocumentReference documentReferencer =
+          firebaseFirestore.collection('bmi').doc();
       documentReferencer
           .set(listBMIModel[i].toJson())
           .whenComplete(() => print("bmi added to the database"))
           .catchError((e) => print(e));
     }
-
     return firebaseFirestore.collection('bmi').snapshots().map((snapshot) {
-      return snapshot.docs.forEach((doc) {
-        if (doc['idBaby'] == idBaby) {
-          return BmiModel.fromSnapshot(doc);
-        }
-      });
+      return snapshot.docs.map((doc) => BmiModel.fromSnapshot(doc)).toList();
     });
   }
 

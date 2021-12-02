@@ -32,10 +32,10 @@ class BabyState extends Equatable {
   }
 }
 
-class BabyUploadedImageBaby extends BabyState {
+class UploadedImageBaby extends BabyState {
   final String urlImage;
 
-  BabyUploadedImageBaby([this.urlImage]);
+  UploadedImageBaby([this.urlImage]);
 
   @override
   List<Object> get props => [urlImage];
@@ -51,6 +51,15 @@ class LoadBMIBaby extends BabyState {
 
   @override
   List<Object> get props => [list];
+}
+
+class BabyCreated extends BabyState {
+  final String idBaby;
+
+  BabyCreated({this.idBaby});
+
+  @override
+  List<Object> get props => [idBaby];
 }
 
 class BabyLoading extends BabyState {}
