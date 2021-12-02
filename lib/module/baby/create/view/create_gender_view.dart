@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_babycare/constants/app_constants.dart';
+import 'package:flutter_babycare/module/home/bloc/baby_bloc.dart';
+import 'package:flutter_babycare/module/home/bloc/baby_event.dart';
 import 'package:flutter_babycare/utils/UI_components/icon_button.dart';
 import 'package:flutter_babycare/utils/UI_components/mini_line_button.dart';
 import 'package:flutter_babycare/utils/UI_components/mini_solid_button.dart';
 import 'package:flutter_babycare/utils/UI_components/title_label.dart';
 import 'package:flutter_babycare/utils/app_colors.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 
@@ -32,6 +35,13 @@ class _CreateBabyGenderViewState extends State<CreateBabyGenderView> {
     'boy': 'assets/icon/gender_boy.svg',
     'girl': 'assets/icon/gender_girl.svg',
   };
+  BabyBloc babyBloc;
+
+  @override
+  void initState() {
+    super.initState();
+    babyBloc = BlocProvider.of<BabyBloc>(context);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -207,7 +217,9 @@ class _CreateBabyGenderViewState extends State<CreateBabyGenderView> {
             context,
             CreateBabyInfoView.routeName,
             arguments: CreateBabyInfoViewArguments(_genderPick, args.userId),
-          );
+          ).then((_) {
+            babyBloc.add(LoadBaby(userId: args.userId));
+          });
         }),
       ],
     );

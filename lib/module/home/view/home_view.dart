@@ -206,7 +206,9 @@ class _HomeBodyViewState extends State<HomeBodyView> {
                           BabyDetailView.routeName,
                           arguments:
                               BabyDetailViewArguments(state.listBaby[index]),
-                        );
+                        ).then((_) {
+                          babyBloc.add(LoadBaby(userId: widget._user.uid));
+                        });
                       },
                     );
                   },

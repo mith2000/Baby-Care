@@ -6,6 +6,7 @@ import 'package:flutter_babycare/module/home/bloc/baby_event.dart';
 import 'package:flutter_babycare/module/home/bloc/baby_state.dart';
 import 'package:flutter_babycare/utils/UI_components/baby_status_icon.dart';
 import 'package:flutter_babycare/utils/UI_components/badge_icon.dart';
+import 'package:flutter_babycare/utils/UI_components/error_label.dart';
 import 'package:flutter_babycare/utils/UI_components/highlight_box.dart';
 import 'package:flutter_babycare/utils/UI_components/icon_button.dart';
 import 'package:flutter_babycare/utils/UI_components/line_button.dart';
@@ -77,9 +78,7 @@ class _BabyDetailViewState extends State<BabyDetailView> {
                       _buildBabyGeneralInfoFrame(args),
                       SizedBox(height: AppConstants.paddingLargeH),
                       _buildBMIFrame(
-                        height: 1500,
-                        heightStatus: BabyStatus.Cry,
-                        weight: 1500,
+                        heightStatus: BabyStatus.Love,
                         weightStatus: BabyStatus.Sad,
                       ),
                       SizedBox(height: AppConstants.paddingLargeH),
@@ -308,15 +307,17 @@ class _BabyDetailViewState extends State<BabyDetailView> {
   }
 
   Widget _buildBMIFrame({
-    int height,
     BabyStatus heightStatus,
-    int weight,
     BabyStatus weightStatus,
   }) {
     return BlocBuilder<BabyBloc, BabyState>(
         bloc: babyBloc,
         builder: (context, state) {
           if (state is LoadBMIBaby) {
+            if (state.list == null || state.list.length < 2) {
+              return ErrorLabel(
+                  'Something error with your baby\'s BMI data. We will fix this right now');
+            }
             return Container(
               width: double.infinity,
               child: Column(
@@ -369,7 +370,7 @@ class _BabyDetailViewState extends State<BabyDetailView> {
               ),
             );
           }
-          return Container();
+          return ErrorLabel('Something error !!!');
         });
   }
 
