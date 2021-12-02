@@ -1,14 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_babycare/constants/app_constants.dart';
 import 'package:flutter_babycare/data/model/baby_model.dart';
+import 'package:flutter_babycare/data/model/bmi_model.dart';
 import 'package:flutter_babycare/module/home/bloc/baby_bloc.dart';
 import 'package:flutter_babycare/module/home/bloc/baby_event.dart';
 import 'package:flutter_babycare/module/home/bloc/baby_state.dart';
 import 'package:flutter_babycare/utils/UI_components/baby_status_icon.dart';
 import 'package:flutter_babycare/utils/UI_components/badge_icon.dart';
+import 'package:flutter_babycare/utils/UI_components/error_label.dart';
 import 'package:flutter_babycare/utils/UI_components/highlight_box.dart';
 import 'package:flutter_babycare/utils/UI_components/icon_button.dart';
 import 'package:flutter_babycare/utils/UI_components/line_button.dart';
+import 'package:flutter_babycare/utils/UI_components/loading_widget.dart';
 import 'package:flutter_babycare/utils/UI_components/solid_button.dart';
 import 'package:flutter_babycare/utils/UI_components/title_label.dart';
 import 'package:flutter_babycare/utils/app_colors.dart';
@@ -76,11 +79,35 @@ class _BabyDetailViewState extends State<BabyDetailView> {
                     children: [
                       _buildBabyGeneralInfoFrame(args),
                       SizedBox(height: AppConstants.paddingLargeH),
-                      _buildBMIFrame(
-                        height: 1500,
-                        heightStatus: BabyStatus.Cry,
-                        weight: 1500,
-                        weightStatus: BabyStatus.Sad,
+                      BlocBuilder<BabyBloc, BabyState>(
+                        bloc: babyBloc,
+                        builder: (context, state) {
+                          if (state is BabyLoading) {
+                            return CustomLoadingWidget();
+                          }
+                          if (state is LoadBMIBaby) {
+                            if (state.list == null || state.list.length < 2) {
+                              return ErrorLabel(
+                                  'Something error with your baby\'s BMI data. We will fix this right now');
+                            }
+                            BmiModel babyHeight, babyWeight;
+                            if (state.list[0].type == 'Height') {
+                              babyHeight = state.list[0];
+                              babyWeight = state.list[1];
+                            } else {
+                              babyHeight = state.list[1];
+                              babyWeight = state.list[0];
+                            }
+                            return _buildBMIFrame(
+                              height: babyHeight.value,
+                              heightStatus: BabyStatus.Cry,
+                              weight: babyWeight.value,
+                              weightStatus: BabyStatus.Sad,
+                            );
+                          } else {
+                            return ErrorLabel('Something error !!!');
+                          }
+                        },
                       ),
                       SizedBox(height: AppConstants.paddingLargeH),
                       _buildNIFrame(

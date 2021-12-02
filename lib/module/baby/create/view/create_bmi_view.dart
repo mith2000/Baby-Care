@@ -181,13 +181,17 @@ class _CreateBabyBMIViewState extends State<CreateBabyBMIView> {
                     });
                     return;
                   }
+
                   babyBloc.add(CreateBMI(listBMIModel: [
                     BmiModel(
-                        idBaby: state.idBaby, type: 'Weight', value: 20 * 1000),
+                        idBaby: state.idBaby,
+                        type: 'Height',
+                        value: _formData['height']),
                     BmiModel(
-                        idBaby: state.idBaby, type: 'Height', value: 10 * 1000)
+                        idBaby: state.idBaby,
+                        type: 'Weight',
+                        value: _formData['weight'] * 100),
                   ]));
-                  // weight submit to repository = weight * 100
 
                   Navigator.pushNamed(
                     context,
