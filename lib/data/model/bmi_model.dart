@@ -34,6 +34,7 @@ class BmiModel extends Equatable {
 
   Map<String, Object> toJson() {
     return {
+      "id": id,
       "idBaby": idBaby,
       "type": type,
       "value": value,

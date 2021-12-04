@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_babycare/constants/app_constants.dart';
 import 'package:flutter_babycare/data/model/baby_model.dart';
+import 'package:flutter_babycare/data/model/bmi_model.dart';
 import 'package:flutter_babycare/module/home/bloc/baby_bloc.dart';
 import 'package:flutter_babycare/module/home/bloc/baby_event.dart';
 import 'package:flutter_babycare/module/home/bloc/baby_state.dart';
@@ -346,7 +347,20 @@ class _BabyDetailViewState extends State<BabyDetailView> {
                     status: weightStatus,
                   ),
                   Container(
-                    child: SolidButton('Update', () {}),
+                    child: SolidButton('Update', () {
+                      babyBloc.add(UpdateBMIEvent(listBmi: [
+                        BmiModel(
+                            id: state.list[0].id,
+                            idBaby: state.list[0].idBaby,
+                            type: 'Weight',
+                            value: 30 * 1000),
+                        BmiModel(
+                            id: state.list[1].id,
+                            idBaby: state.list[0].idBaby,
+                            type: 'Height',
+                            value: 50 * 1000)
+                      ]));
+                    }),
                     padding: EdgeInsets.only(
                       left: AppConstants.paddingLargeW,
                       right: AppConstants.paddingLargeW,

@@ -55,8 +55,17 @@ class BabyBloc extends Bloc<BabyEvent, BabyState> {
       yield* mapFetchBMIToState(event);
     }
     if (event is FetchedBMI) {
-      yield* mapFetchedBMIoState(event);
+      yield* mapFetchedBMToState(event);
     }
+    if (event is UpdateBMIEvent) {
+      yield* mapUpdateBMIEventToState(event);
+    }
+  }
+
+  Stream<BabyState> mapUpdateBMIEventToState(UpdateBMIEvent event) async* {
+    babySubscription = bmiRepository
+        .updateBMI(listBMIModel: event.listBmi, idBaby: event.listBmi[0].idBaby)
+        .listen((listBMI) => add(FetchedBMI(listBmi: listBMI)));
   }
 
   Stream<BabyState> mapFetchBMIToState(FetchBMI event) async* {
@@ -65,14 +74,14 @@ class BabyBloc extends Bloc<BabyEvent, BabyState> {
         .listen((listBMI) => add(FetchedBMI(listBmi: listBMI)));
   }
 
-  Stream<BabyState> mapFetchedBMIoState(FetchedBMI event) async* {
+  Stream<BabyState> mapFetchedBMToState(FetchedBMI event) async* {
     yield LoadBMIBaby(list: event.listBmi);
   }
 
   Stream<BabyState> mapCreateBMIToState(CreateBMI event) async* {
     babySubscription = bmiRepository
         .createBmi(event.listBMIModel)
-        .listen((listBMI) => add(LoadBMIEvent(listBMIModel: listBMI)));
+        .listen((listBMI) => add(FetchedBMI(listBmi: listBMI)));
   }
 
   Stream<BabyState> mapAddImageToState(AddImageInFireBase event) async* {

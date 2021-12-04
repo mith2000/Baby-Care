@@ -49,15 +49,6 @@ class CreateBMI extends BabyEvent {
   List<Object> get props => [listBMIModel];
 }
 
-class LoadBMIEvent extends BabyEvent {
-  final List<BmiModel> listBMIModel;
-
-  LoadBMIEvent({this.listBMIModel});
-
-  @override
-  List<Object> get props => [listBMIModel];
-}
-
 class CreateBaby extends BabyEvent {
   final BabyModel babyModel;
 
@@ -74,6 +65,16 @@ class CreatedBabyEvent extends BabyEvent {
 
   @override
   List<Object> get props => [this.idBaby];
+}
+
+class UpdateBMIEvent extends BabyEvent {
+  final String idBaby;
+  final List<BmiModel> listBmi;
+
+  UpdateBMIEvent({this.idBaby, this.listBmi});
+
+  @override
+  List<Object> get props => [listBmi];
 }
 
 class NameBabyChange extends BabyEvent {
