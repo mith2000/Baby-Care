@@ -1,10 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter_babycare/constants/app_constants.dart';
 
 class BmiModel extends Equatable {
   final String id;
   final String idBaby;
-  final String type;
+  final BMIType type;
   final int value;
 
   BmiModel({
@@ -18,7 +19,7 @@ class BmiModel extends Equatable {
     BmiModel babyModel = BmiModel(
       id: snap.id,
       idBaby: snap['idBaby'],
-      type: snap['type'],
+      type: snap['type'] == 'Height' ? BMIType.Height : BMIType.Weight,
       value: snap['value'],
     );
     return babyModel;
@@ -36,7 +37,7 @@ class BmiModel extends Equatable {
     return {
       "id": id,
       "idBaby": idBaby,
-      "type": type,
+      "type": type == BMIType.Height ? 'Height' : 'Weight',
       "value": value,
     };
   }

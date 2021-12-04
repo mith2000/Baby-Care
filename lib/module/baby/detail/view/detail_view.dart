@@ -333,7 +333,7 @@ class _BabyDetailViewState extends State<BabyDetailView> {
                   _buildBMIContent(
                     'Current height:',
                     'cm',
-                    value: state.list[0].type == 'Height'
+                    value: state.list[0].type == BMIType.Height
                         ? state.list[0].value
                         : state.list[1].value,
                     status: heightStatus,
@@ -341,7 +341,7 @@ class _BabyDetailViewState extends State<BabyDetailView> {
                   _buildBMIContent(
                     'Current weight:',
                     'g',
-                    value: state.list[0].type == 'Weight'
+                    value: state.list[0].type == BMIType.Weight
                         ? state.list[0].value
                         : state.list[1].value,
                     status: weightStatus,
@@ -352,12 +352,12 @@ class _BabyDetailViewState extends State<BabyDetailView> {
                         BmiModel(
                             id: state.list[0].id,
                             idBaby: state.list[0].idBaby,
-                            type: 'Weight',
-                            value: 30 * 1000),
+                            type: BMIType.Weight,
+                            value: 70 * 1000),
                         BmiModel(
                             id: state.list[1].id,
                             idBaby: state.list[0].idBaby,
-                            type: 'Height',
+                            type: BMIType.Height,
                             value: 50 * 1000)
                       ]));
                     }),

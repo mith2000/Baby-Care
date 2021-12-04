@@ -185,11 +185,11 @@ class _CreateBabyBMIViewState extends State<CreateBabyBMIView> {
                   babyBloc.add(CreateBMI(listBMIModel: [
                     BmiModel(
                         idBaby: state.idBaby,
-                        type: 'Height',
+                        type: BMIType.Height,
                         value: _formData['height']),
                     BmiModel(
                         idBaby: state.idBaby,
-                        type: 'Weight',
+                        type: BMIType.Weight,
                         value: _formData['weight'] * 100),
                   ]));
 

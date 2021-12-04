@@ -29,3 +29,8 @@ enum BabyStatus {
   Sad,
   Cry,
 }
+
+enum BMIType {
+  Height,
+  Weight,
+}
