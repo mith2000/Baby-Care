@@ -186,7 +186,8 @@ class _HomeBodyViewState extends State<HomeBodyView> {
               if (state is BabyLoaded) {
                 if (state.listBaby == null || state.listBaby.length == 0) {
                   return ErrorLabel(
-                      'No baby available now\nAdd one to use our features');
+                      label:
+                          'No baby available now\nAdd one to use our features');
                 }
                 return ListView.builder(
                   shrinkWrap: true,
@@ -214,7 +215,7 @@ class _HomeBodyViewState extends State<HomeBodyView> {
                   },
                 );
               } else {
-                return ErrorLabel('Something error !!!');
+                return ErrorLabel();
               }
             },
           ),
