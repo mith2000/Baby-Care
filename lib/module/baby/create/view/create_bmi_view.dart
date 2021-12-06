@@ -181,7 +181,6 @@ class _CreateBabyBMIViewState extends State<CreateBabyBMIView> {
                     });
                     return;
                   }
-
                   babyBloc.add(CreateBMI(listBMIModel: [
                     BmiModel(
                         idBaby: state.idBaby,

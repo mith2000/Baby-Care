@@ -1,6 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_babycare/data/model/baby_model.dart';
 import 'package:flutter_babycare/data/model/bmi_model.dart';
+import 'package:flutter_babycare/data/model/food_model.dart';
 
 class BabyState extends Equatable {
   final bool isNameValid;
@@ -48,6 +49,15 @@ class LoadBMIBaby extends BabyState {
   final List<BmiModel> list;
 
   LoadBMIBaby({this.list});
+
+  @override
+  List<Object> get props => [list];
+}
+
+class LoadFoodBaby extends BabyState {
+  final List<FoodModel> list;
+
+  LoadFoodBaby({this.list});
 
   @override
   List<Object> get props => [list];

@@ -9,7 +9,7 @@ class BmiRepository {
 
   BmiRepository({FirebaseFirestore firebaseFirestore})
       : this.firebaseFirestore =
-            firebaseFirestore ?? FirebaseFirestore.instance;
+      firebaseFirestore ?? FirebaseFirestore.instance;
 
   Stream<List<BmiModel>> fetchBmi(String idBaby) {
     return firebaseFirestore
@@ -21,7 +21,8 @@ class BmiRepository {
     });
   }
 
-  Stream<List<BmiModel>> createBmi(List<BmiModel> listBMIModel) {
+  Future<String> createBmi(List<BmiModel> listBMIModel) async {
+    String temp = listBMIModel[0].idBaby;
     for (var i = 0; i < listBMIModel.length; i++) {
       DocumentReference documentReferencer =
           firebaseFirestore.collection('bmi').doc(Uuid().v4());
@@ -30,9 +31,7 @@ class BmiRepository {
           .whenComplete(() => print("bmi added to the database"))
           .catchError((e) => print(e));
     }
-    return firebaseFirestore.collection('bmi').snapshots().map((snapshot) {
-      return snapshot.docs.map((doc) => BmiModel.fromSnapshot(doc)).toList();
-    });
+    return temp;
   }
 
   Stream<List<BmiModel>> updateBMI(

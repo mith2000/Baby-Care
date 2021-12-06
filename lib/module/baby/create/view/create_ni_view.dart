@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_babycare/constants/app_constants.dart';
+import 'package:flutter_babycare/data/model/food_model.dart';
+import 'package:flutter_babycare/module/home/bloc/baby_bloc.dart';
+import 'package:flutter_babycare/module/home/bloc/baby_event.dart';
+import 'package:flutter_babycare/module/home/bloc/baby_state.dart';
 import 'package:flutter_babycare/module/home/view/home_view.dart';
 import 'package:flutter_babycare/utils/UI_components/custom_slider.dart';
 import 'package:flutter_babycare/utils/UI_components/custom_slider_label.dart';
@@ -7,6 +11,7 @@ import 'package:flutter_babycare/utils/UI_components/mini_line_button.dart';
 import 'package:flutter_babycare/utils/UI_components/mini_solid_button.dart';
 import 'package:flutter_babycare/utils/UI_components/title_label.dart';
 import 'package:flutter_babycare/utils/app_colors.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -40,6 +45,14 @@ class _CreateBabyNIViewState extends State<CreateBabyNIView> {
     'red_vegets': 'assets/icon/red_vegets.svg',
     'citrus_fruit': 'assets/icon/citrus_fruit.svg',
   };
+
+  BabyBloc babyBloc;
+
+  @override
+  void initState() {
+    super.initState();
+    babyBloc = BlocProvider.of<BabyBloc>(context);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -294,22 +307,38 @@ class _CreateBabyNIViewState extends State<CreateBabyNIView> {
   }
 
   Widget _buildMainButtons() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        MiniLineButton('Back', () {
-          Navigator.pop(context);
-        }),
-        SizedBox(width: AppConstants.paddingLargeW),
-        MiniSolidButton('Next', () {
-          // moi data * 100 tru egg
-
-          Navigator.pushNamed(
-            context,
-            HomeView.routeName,
-          );
-        }),
-      ],
-    );
+    return BlocBuilder<BabyBloc, BabyState>(
+        bloc: babyBloc,
+        builder: (context, state) {
+          if (state is LoadBMIBaby) {
+            return Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                MiniLineButton('Back', () {
+                  Navigator.pop(context);
+                }),
+                SizedBox(width: AppConstants.paddingLargeW),
+                MiniSolidButton('Next', () {
+                  // moi data * 100 tru egg
+                  List<FoodModel> list = [];
+                  for (var i = 0; i < NIType.values.length; i++) {
+                    list.add(FoodModel(
+                      idBaby: state.list[0].idBaby,
+                      type: NIType.values[i],
+                      value: 100,
+                      updateDate: DateTime.now(),
+                    ));
+                  }
+                  babyBloc.add(CreateFood(listFoodModel: list));
+                  Navigator.pushNamed(
+                    context,
+                    HomeView.routeName,
+                  );
+                }),
+              ],
+            );
+          }
+          return Container();
+        });
   }
 }

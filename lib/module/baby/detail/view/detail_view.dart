@@ -64,6 +64,7 @@ class _BabyDetailViewState extends State<BabyDetailView> {
     final args =
         ModalRoute.of(context).settings.arguments as BabyDetailViewArguments;
     babyBloc.add(FetchBMI(idBaby: args.model.id));
+    babyBloc.add(FetchFood(idBaby: args.model.id));
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: Container(
@@ -323,6 +324,7 @@ class _BabyDetailViewState extends State<BabyDetailView> {
               width: double.infinity,
               child: Column(
                 children: [
+
                   Container(
                     child: TitleLabel('Body Mass Index'),
                     padding: EdgeInsets.only(

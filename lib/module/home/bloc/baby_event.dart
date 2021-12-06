@@ -1,6 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_babycare/data/model/baby_model.dart';
 import 'package:flutter_babycare/data/model/bmi_model.dart';
+import 'package:flutter_babycare/data/model/food_model.dart';
 import 'package:image_picker/image_picker.dart';
 
 abstract class BabyEvent extends Equatable {
@@ -124,4 +125,31 @@ class UpdateListBaby extends BabyEvent {
 
   @override
   String toString() => 'listBabyUpdated { updatedListBaby: $listBaby }';
+}
+
+class CreateFood extends BabyEvent {
+  final List<FoodModel> listFoodModel;
+
+  const CreateFood({this.listFoodModel}) : super();
+
+  @override
+  List<Object> get props => [listFoodModel];
+}
+
+class FetchedFood extends BabyEvent {
+  final List<FoodModel> listFood;
+
+  FetchedFood({this.listFood});
+
+  @override
+  List<Object> get props => [listFood];
+}
+
+class FetchFood extends BabyEvent {
+  final String idBaby;
+
+  FetchFood({this.idBaby});
+
+  @override
+  List<Object> get props => [idBaby];
 }

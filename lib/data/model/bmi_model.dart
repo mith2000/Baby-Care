@@ -19,7 +19,7 @@ class BmiModel extends Equatable {
     BmiModel babyModel = BmiModel(
       id: snap.id,
       idBaby: snap['idBaby'],
-      type: snap['type'] == 'Height' ? BMIType.Height : BMIType.Weight,
+      type: snap['type'] == 'Height' ? BMIType.Height: BMIType.Weight,
       value: snap['value'],
     );
     return babyModel;

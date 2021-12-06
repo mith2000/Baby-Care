@@ -34,3 +34,14 @@ enum BMIType {
   Height,
   Weight,
 }
+
+enum NIType {
+  Porridge,
+  Milk,
+  Meat,
+  Fish,
+  Egg,
+  Green_Vegets,
+  Red_Vegets,
+  Citrus_Fruit,
+}
