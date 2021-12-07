@@ -10,16 +10,16 @@ import 'package:flutter_babycare/utils/app_colors.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-class CreateBabyNIView extends StatefulWidget {
-  static const routeName = '/create-baby-ni';
+class CreateBabyFoodView extends StatefulWidget {
+  static const routeName = '/create-baby-food';
 
-  const CreateBabyNIView({Key key}) : super(key: key);
+  const CreateBabyFoodView({Key key}) : super(key: key);
 
   @override
-  _CreateBabyNIViewState createState() => _CreateBabyNIViewState();
+  _CreateBabyFoodViewState createState() => _CreateBabyFoodViewState();
 }
 
-class _CreateBabyNIViewState extends State<CreateBabyNIView> {
+class _CreateBabyFoodViewState extends State<CreateBabyFoodView> {
   Map<String, int> _formData = {
     'porridge': 0,
     'milk': 0,
@@ -59,7 +59,7 @@ class _CreateBabyNIViewState extends State<CreateBabyNIView> {
                   child: ListView(
                     children: [
                       TitleLabel(
-                          'Can you remember what your baby ate last week?'),
+                          'Can you remember what your baby ate yesterday?'),
                       SizedBox(height: AppConstants.paddingNormalH),
                       _buildNotifyLabel(),
                       SizedBox(height: AppConstants.paddingLargeH),
