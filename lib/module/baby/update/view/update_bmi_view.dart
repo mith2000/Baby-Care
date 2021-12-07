@@ -1,25 +1,31 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_babycare/constants/app_constants.dart';
+import 'package:flutter_babycare/data/model/baby_model.dart';
 import 'package:flutter_babycare/data/model/bmi_model.dart';
 import 'package:flutter_babycare/module/home/bloc/baby_bloc.dart';
 import 'package:flutter_babycare/module/home/bloc/baby_event.dart';
 import 'package:flutter_babycare/module/home/bloc/baby_state.dart';
+import 'package:flutter_babycare/utils/UI_components/baby_status_icon.dart';
 import 'package:flutter_babycare/utils/UI_components/custom_slider.dart';
 import 'package:flutter_babycare/utils/UI_components/custom_slider_label.dart';
 import 'package:flutter_babycare/utils/UI_components/error_label.dart';
+import 'package:flutter_babycare/utils/UI_components/highlight_box.dart';
 import 'package:flutter_babycare/utils/UI_components/mini_line_button.dart';
 import 'package:flutter_babycare/utils/UI_components/mini_solid_button.dart';
 import 'package:flutter_babycare/utils/UI_components/title_label.dart';
 import 'package:flutter_babycare/utils/app_colors.dart';
+import 'package:flutter_babycare/utils/converter.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:intl/intl.dart';
 
 class UpdateBMIViewArguments {
+  final BabyModel baby;
   final BmiModel height;
   final BmiModel weight;
 
-  UpdateBMIViewArguments(this.height, this.weight);
+  UpdateBMIViewArguments(this.baby, this.height, this.weight);
 }
 
 class UpdateBMIView extends StatefulWidget {
@@ -47,6 +53,9 @@ class _UpdateBMIViewState extends State<UpdateBMIView> {
 
   @override
   Widget build(BuildContext context) {
+    final args =
+        ModalRoute.of(context).settings.arguments as UpdateBMIViewArguments;
+
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: PreferredSize(
@@ -80,94 +89,18 @@ class _UpdateBMIViewState extends State<UpdateBMIView> {
           ),
           child: Stack(
             children: [
-              Center(
-                child: Wrap(
-                  children: [
-                    Container(
-                      child: Column(
-                        children: [
-                          TitleLabel('How did your kid grow up?'),
-                          SizedBox(height: AppConstants.paddingLargeH),
-                          CustomSliderLabel(
-                              label: 'Height: ' +
-                                  _formData['height'].toString() +
-                                  'cm ~ ' +
-                                  (_formData['height'].toDouble() / 100.0)
-                                      .toString() +
-                                  'm'),
-                          CustomSlider(
-                            value: _formData['height'],
-                            max: 150,
-                            stepSize: 10,
-                            onChanged: (dynamic values) => {
-                              setState(() {
-                                if (_formData['height'] != 0 &&
-                                    _formData['weight'] != 0) {
-                                  _isNotifyMust2Input = false;
-                                }
-                                double valueToInt = values as double;
-                                _formData['height'] = valueToInt.round();
-                              })
-                            },
-                          ),
-                          SizedBox(height: AppConstants.paddingLargeH),
-                          CustomSliderLabel(
-                              label: 'Weight: ' +
-                                  _formData['weight'].toString() +
-                                  '00g ~ ' +
-                                  (_formData['weight'].toDouble() / 10.0)
-                                      .toString() +
-                                  'kg'),
-                          CustomSlider(
-                            value: _formData['weight'],
-                            max: 400,
-                            onChanged: (dynamic values) => {
-                              setState(() {
-                                if (_formData['height'] != 0 &&
-                                    _formData['weight'] != 0) {
-                                  _isNotifyMust2Input = false;
-                                }
-                                double valueToInt = values as double;
-                                _formData['weight'] = valueToInt.round();
-                              })
-                            },
-                          ),
-                          _isNotifyMust2Input
-                              ? _buildNotifyLable()
-                              : Container()
-                        ],
-                      ),
-                      margin: EdgeInsets.symmetric(
-                        horizontal: AppConstants.paddingSuperLargeW -
-                            AppConstants.paddingAppW,
-                        vertical: AppConstants.paddingSuperLargeH -
-                            AppConstants.paddingAppH,
-                      ),
-                      padding: EdgeInsets.symmetric(
-                        horizontal: AppConstants.paddingLargeW,
-                        vertical: AppConstants.paddingLargeH,
-                      ),
-                      decoration: BoxDecoration(
-                        color: AppColors.whiteBackground,
-                        borderRadius: BorderRadius.circular(
-                            AppConstants.cornerRadiusFrame),
-                        boxShadow: [
-                          BoxShadow(
-                            color: AppColors.shadow,
-                            blurRadius: 4,
-                            offset: Offset(0, 4), // changes position of shadow
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
+              Column(
+                children: [
+                  _buildBabyInfoView(args),
+                  _buildTrackerView(args),
+                  _buildInputFrame(),
+                ],
               ),
               Column(
                 mainAxisSize: MainAxisSize.max,
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                  _buildMainButtons(),
+                  _buildMainButtons(args),
                 ],
               )
             ],
@@ -177,10 +110,233 @@ class _UpdateBMIViewState extends State<UpdateBMIView> {
     );
   }
 
+  Widget _buildBabyInfoView(UpdateBMIViewArguments args, {BabyStatus status}) {
+    return Wrap(
+      children: [
+        Row(
+          children: [
+            CircleAvatar(
+              radius: 75.w,
+              backgroundImage: NetworkImage(args.baby.image),
+              backgroundColor: Colors.transparent,
+            ),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Text(
+                    args.baby.name,
+                    style: Theme.of(context).textTheme.caption,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                    textAlign: TextAlign.center,
+                  ),
+                  SizedBox(height: AppConstants.paddingNormalH),
+                  Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(
+                        'Baby\'s age:',
+                        style: Theme.of(context).textTheme.bodyText1,
+                      ),
+                      SizedBox(width: AppConstants.paddingNormalW),
+                      HighlightBox(
+                        Converter.dateToDouble(DateFormat('dd/MM/yyyy')
+                                .format(args.baby.birth))
+                            .toInt()
+                            .toString(),
+                        color: AppColors.primary,
+                      ),
+                      SizedBox(width: AppConstants.paddingNormalW),
+                      Text(
+                        'months',
+                        style: Theme.of(context).textTheme.bodyText1,
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: AppConstants.paddingNormalH),
+                  Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(
+                        'Status',
+                        style: Theme.of(context).textTheme.bodyText1,
+                      ),
+                      SizedBox(width: AppConstants.paddingNormalW),
+                      BabyStatusIcon(status: status),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ],
+    );
+  }
+
+  Widget _buildTrackerView(
+    UpdateBMIViewArguments args,
+  ) {
+    int lastDateUpdate;
+    args.height.value < args.weight.value
+        ? lastDateUpdate = args.height.value
+        : lastDateUpdate = args.weight.value;
+
+    return Container(
+      height: 80.h,
+      alignment: Alignment.center,
+      padding: EdgeInsets.symmetric(
+        horizontal: AppConstants.paddingLargeW,
+      ),
+      margin: EdgeInsets.symmetric(vertical: AppConstants.paddingLargeH),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Container(
+                height: 30.h,
+                child: Row(
+                  children: [
+                    Text(
+                      'Last height:',
+                      style: Theme.of(context).textTheme.headline1,
+                    ),
+                    SizedBox(width: 19.w),
+                    Text(
+                      args.height.value.toString() + 'cm',
+                      style: Theme.of(context).textTheme.bodyText1,
+                    ),
+                  ],
+                ),
+              ),
+              SizedBox(height: AppConstants.paddingLargeH),
+              Container(
+                height: 30.h,
+                child: Row(
+                  children: [
+                    Text(
+                      'Last weight:',
+                      style: Theme.of(context).textTheme.headline1,
+                    ),
+                    SizedBox(width: 16.w),
+                    Text(
+                      args.weight.value.toString() + 'g',
+                      style: Theme.of(context).textTheme.bodyText1,
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+          SizedBox(width: AppConstants.paddingNormalW),
+          Text(
+            'since',
+            style: Theme.of(context).textTheme.bodyText1,
+          ),
+          SizedBox(width: AppConstants.paddingNormalW),
+          HighlightBox(
+            lastDateUpdate.toString(),
+            color: lastDateUpdate <= 7 ? AppColors.primary : AppColors.danger,
+          ),
+          SizedBox(width: AppConstants.paddingNormalW),
+          Text(
+            'days ago',
+            style: Theme.of(context).textTheme.bodyText1,
+          ),
+        ],
+      ),
+      decoration: BoxDecoration(
+        color: AppColors.whiteBackground,
+        borderRadius: BorderRadius.circular(AppConstants.cornerRadiusFrame),
+        boxShadow: [
+          BoxShadow(
+            color: AppColors.shadow,
+            blurRadius: 4,
+            offset: Offset(0, 4), // changes position of shadow
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildInputFrame() {
+    return Wrap(
+      children: [
+        Container(
+          child: Column(
+            children: [
+              TitleLabel('How did your kid grow up?'),
+              SizedBox(height: AppConstants.paddingLargeH),
+              CustomSliderLabel(
+                  label: 'Height: ' +
+                      _formData['height'].toString() +
+                      'cm ~ ' +
+                      (_formData['height'].toDouble() / 100.0).toString() +
+                      'm'),
+              CustomSlider(
+                value: _formData['height'],
+                max: 10,
+                onChanged: (dynamic values) => {
+                  setState(() {
+                    _isNotifyMust2Input = false;
+                    double valueToInt = values as double;
+                    _formData['height'] = valueToInt.round();
+                  })
+                },
+              ),
+              SizedBox(height: AppConstants.paddingLargeH),
+              CustomSliderLabel(
+                  label: 'Weight: ' +
+                      _formData['weight'].toString() +
+                      '00g ~ ' +
+                      (_formData['weight'].toDouble() / 10.0).toString() +
+                      'kg'),
+              CustomSlider(
+                value: _formData['weight'],
+                max: 10,
+                onChanged: (dynamic values) => {
+                  setState(() {
+                    _isNotifyMust2Input = false;
+                    double valueToInt = values as double;
+                    _formData['weight'] = valueToInt.round();
+                  })
+                },
+              ),
+              _isNotifyMust2Input ? _buildNotifyLable() : Container()
+            ],
+          ),
+          margin: EdgeInsets.symmetric(
+            horizontal:
+                AppConstants.paddingSuperLargeW - AppConstants.paddingAppW,
+          ),
+          padding: EdgeInsets.symmetric(
+            horizontal: AppConstants.paddingLargeW,
+            vertical: AppConstants.paddingLargeH,
+          ),
+          decoration: BoxDecoration(
+            color: AppColors.whiteBackground,
+            borderRadius: BorderRadius.circular(AppConstants.cornerRadiusFrame),
+            boxShadow: [
+              BoxShadow(
+                color: AppColors.shadow,
+                blurRadius: 4,
+                offset: Offset(0, 4), // changes position of shadow
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+
   Widget _buildNotifyLable() {
     return Center(
       child: Text(
-        'Must to input height and weight',
+        'Must to input increased height or weight',
         style: TextStyle(
           fontWeight: FontWeight.w400,
           fontSize: 16.sp,
@@ -191,10 +347,9 @@ class _UpdateBMIViewState extends State<UpdateBMIView> {
     );
   }
 
-  Widget _buildMainButtons() {
-    final args =
-        ModalRoute.of(context).settings.arguments as UpdateBMIViewArguments;
-
+  Widget _buildMainButtons(
+    UpdateBMIViewArguments args,
+  ) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
@@ -207,7 +362,7 @@ class _UpdateBMIViewState extends State<UpdateBMIView> {
             builder: (context, state) {
               if (state is LoadBMIBaby) {
                 return MiniSolidButton('Save', () {
-                  if (_formData['height'] == 0 || _formData['weight'] == 0) {
+                  if (_formData['height'] == 0 && _formData['weight'] == 0) {
                     setState(() {
                       _isNotifyMust2Input = true;
                     });
@@ -221,12 +376,13 @@ class _UpdateBMIViewState extends State<UpdateBMIView> {
                             id: args.height.id,
                             idBaby: args.height.idBaby,
                             type: BMIType.Height,
-                            value: _formData['height']),
+                            value: args.height.value + _formData['height']),
                         BmiModel(
                             id: args.weight.id,
                             idBaby: args.weight.idBaby,
                             type: BMIType.Weight,
-                            value: _formData['weight'] * 100),
+                            value:
+                                args.weight.value + _formData['weight'] * 100),
                       ],
                     ),
                   );
