@@ -306,7 +306,7 @@ class _UpdateBMIViewState extends State<UpdateBMIView> {
                   })
                 },
               ),
-              _isNotifyMust2Input ? _buildNotifyLable() : Container()
+              _isNotifyMust2Input ? _buildNotifyLabel() : Container()
             ],
           ),
           margin: EdgeInsets.symmetric(
@@ -333,7 +333,7 @@ class _UpdateBMIViewState extends State<UpdateBMIView> {
     );
   }
 
-  Widget _buildNotifyLable() {
+  Widget _buildNotifyLabel() {
     return Center(
       child: Text(
         'Must to input increased height or weight',
