@@ -174,6 +174,8 @@ class _MyAppState extends State<MyApp> {
                       CreateBabyNIView(),
                   BabyDetailView.routeName: (BuildContext context) =>
                       BabyDetailView(),
+                  UpdateBMIView.routeName: (BuildContext context) =>
+                      UpdateBMIView(),
                 },
               )),
     );

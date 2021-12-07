@@ -6,6 +6,7 @@ import 'package:flutter_babycare/module/home/bloc/baby_event.dart';
 import 'package:flutter_babycare/module/home/bloc/baby_state.dart';
 import 'package:flutter_babycare/utils/UI_components/custom_slider.dart';
 import 'package:flutter_babycare/utils/UI_components/custom_slider_label.dart';
+import 'package:flutter_babycare/utils/UI_components/error_label.dart';
 import 'package:flutter_babycare/utils/UI_components/mini_line_button.dart';
 import 'package:flutter_babycare/utils/UI_components/mini_solid_button.dart';
 import 'package:flutter_babycare/utils/UI_components/title_label.dart';
@@ -163,18 +164,18 @@ class _CreateBabyBMIViewState extends State<CreateBabyBMIView> {
   }
 
   Widget _buildMainButtons() {
-    return BlocBuilder<BabyBloc, BabyState>(
-        bloc: babyBloc,
-        builder: (context, state) {
-          if (state is BabyCreated) {
-            return Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                MiniLineButton('Back', () {
-                  Navigator.pop(context);
-                }),
-                SizedBox(width: AppConstants.paddingLargeW),
-                MiniSolidButton('Next', () {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        MiniLineButton('Back', () {
+          Navigator.pop(context);
+        }),
+        SizedBox(width: AppConstants.paddingLargeW),
+        BlocBuilder<BabyBloc, BabyState>(
+            bloc: babyBloc,
+            builder: (context, state) {
+              if (state is BabyCreated) {
+                return MiniSolidButton('Next', () {
                   if (_formData['height'] == 0 || _formData['weight'] == 0) {
                     setState(() {
                       _isNotifyMust2Input = true;
@@ -196,11 +197,11 @@ class _CreateBabyBMIViewState extends State<CreateBabyBMIView> {
                     context,
                     CreateBabyNIView.routeName,
                   );
-                }),
-              ],
-            );
-          }
-          return Container();
-        });
+                });
+              }
+              return ErrorLabel();
+            }),
+      ],
+    );
   }
 }

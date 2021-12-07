@@ -3,8 +3,10 @@ import 'package:flutter_babycare/constants/app_constants.dart';
 
 class ErrorLabel extends StatelessWidget {
   final String label;
-  const ErrorLabel(String label, {Key key})
-      : this.label = label,
+  const ErrorLabel({
+    Key key,
+    String label = 'Something Error !!!',
+  })  : this.label = label,
         super(key: key);
 
   @override

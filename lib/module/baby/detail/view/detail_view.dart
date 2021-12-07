@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_babycare/constants/app_constants.dart';
 import 'package:flutter_babycare/data/model/baby_model.dart';
-import 'package:flutter_babycare/data/model/bmi_model.dart';
+import 'package:flutter_babycare/module/baby/update/view/update_bmi_view.dart';
 import 'package:flutter_babycare/module/home/bloc/baby_bloc.dart';
 import 'package:flutter_babycare/module/home/bloc/baby_event.dart';
 import 'package:flutter_babycare/module/home/bloc/baby_state.dart';
@@ -80,6 +80,7 @@ class _BabyDetailViewState extends State<BabyDetailView> {
                       _buildBabyGeneralInfoFrame(args),
                       SizedBox(height: AppConstants.paddingLargeH),
                       _buildBMIFrame(
+                        args,
                         heightStatus: BabyStatus.Love,
                         weightStatus: BabyStatus.Sad,
                       ),
@@ -308,7 +309,8 @@ class _BabyDetailViewState extends State<BabyDetailView> {
     );
   }
 
-  Widget _buildBMIFrame({
+  Widget _buildBMIFrame(
+    BabyDetailViewArguments args, {
     BabyStatus heightStatus,
     BabyStatus weightStatus,
   }) {
@@ -318,7 +320,8 @@ class _BabyDetailViewState extends State<BabyDetailView> {
           if (state is LoadBMIBaby) {
             if (state.list == null || state.list.length < 2) {
               return ErrorLabel(
-                  'Something error with your baby\'s BMI data. We will fix this right now');
+                  label:
+                      'Something error with your baby\'s BMI data. We will fix this right now');
             }
             return Container(
               width: double.infinity,
@@ -350,18 +353,12 @@ class _BabyDetailViewState extends State<BabyDetailView> {
                   ),
                   Container(
                     child: SolidButton('Update', () {
-                      babyBloc.add(UpdateBMIEvent(listBmi: [
-                        BmiModel(
-                            id: state.list[0].id,
-                            idBaby: state.list[0].idBaby,
-                            type: BMIType.Weight,
-                            value: 70 * 1000),
-                        BmiModel(
-                            id: state.list[1].id,
-                            idBaby: state.list[0].idBaby,
-                            type: BMIType.Height,
-                            value: 50 * 1000)
-                      ]));
+                      Navigator.pushNamed(
+                        context,
+                        UpdateBMIView.routeName,
+                        arguments: UpdateBMIViewArguments(
+                            args.model, state.list[0], state.list[1]),
+                      );
                     }),
                     padding: EdgeInsets.only(
                       left: AppConstants.paddingLargeW,
@@ -386,7 +383,7 @@ class _BabyDetailViewState extends State<BabyDetailView> {
               ),
             );
           }
-          return ErrorLabel('Something error !!!');
+          return ErrorLabel();
         });
   }
 
