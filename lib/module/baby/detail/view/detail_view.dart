@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_babycare/constants/app_constants.dart';
 import 'package:flutter_babycare/data/model/baby_model.dart';
-import 'package:flutter_babycare/data/model/bmi_model.dart';
 import 'package:flutter_babycare/module/baby/update/view/update_bmi_view.dart';
 import 'package:flutter_babycare/module/home/bloc/baby_bloc.dart';
 import 'package:flutter_babycare/module/home/bloc/baby_event.dart';
@@ -80,6 +79,7 @@ class _BabyDetailViewState extends State<BabyDetailView> {
                       _buildBabyGeneralInfoFrame(args),
                       SizedBox(height: AppConstants.paddingLargeH),
                       _buildBMIFrame(
+                        args,
                         heightStatus: BabyStatus.Love,
                         weightStatus: BabyStatus.Sad,
                       ),
@@ -308,7 +308,8 @@ class _BabyDetailViewState extends State<BabyDetailView> {
     );
   }
 
-  Widget _buildBMIFrame({
+  Widget _buildBMIFrame(
+    BabyDetailViewArguments args, {
     BabyStatus heightStatus,
     BabyStatus weightStatus,
   }) {
@@ -354,7 +355,7 @@ class _BabyDetailViewState extends State<BabyDetailView> {
                         context,
                         UpdateBMIView.routeName,
                         arguments: UpdateBMIViewArguments(
-                            state.list[0], state.list[1]),
+                            args.model, state.list[0], state.list[1]),
                       );
                     }),
                     padding: EdgeInsets.only(
