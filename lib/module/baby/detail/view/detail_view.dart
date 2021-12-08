@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_babycare/constants/app_constants.dart';
 import 'package:flutter_babycare/data/model/baby_model.dart';
 import 'package:flutter_babycare/module/baby/update/view/update_bmi_view.dart';
+import 'package:flutter_babycare/module/baby/update/view/update_food_view.dart';
 import 'package:flutter_babycare/module/home/bloc/baby_bloc.dart';
 import 'package:flutter_babycare/module/home/bloc/baby_event.dart';
 import 'package:flutter_babycare/module/home/bloc/baby_state.dart';
@@ -85,6 +86,7 @@ class _BabyDetailViewState extends State<BabyDetailView> {
                       ),
                       SizedBox(height: AppConstants.paddingLargeH),
                       _buildNIFrame(
+                        args,
                         statusCarbohydrate: BabyStatus.Love,
                         statusFat: BabyStatus.Happy,
                         statusProtein: BabyStatus.Smile,
@@ -442,7 +444,8 @@ class _BabyDetailViewState extends State<BabyDetailView> {
     );
   }
 
-  Widget _buildNIFrame({
+  Widget _buildNIFrame(
+    BabyDetailViewArguments args, {
     BabyStatus statusCarbohydrate,
     BabyStatus statusFat,
     BabyStatus statusProtein,
@@ -516,7 +519,13 @@ class _BabyDetailViewState extends State<BabyDetailView> {
             infoAction2: infoActionIodine,
           ),
           Container(
-            child: SolidButton('Update', () {}),
+            child: SolidButton('Update', () {
+              Navigator.pushNamed(
+                context,
+                UpdateFoodView.routeName,
+                arguments: UpdateFoodViewArguments(args.model),
+              );
+            }),
             padding: EdgeInsets.only(
               left: AppConstants.paddingLargeW,
               right: AppConstants.paddingLargeW,

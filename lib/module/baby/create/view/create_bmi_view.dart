@@ -14,7 +14,7 @@ import 'package:flutter_babycare/utils/app_colors.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import 'create_ni_view.dart';
+import 'create_food_view.dart';
 
 class CreateBabyBMIView extends StatefulWidget {
   static const routeName = '/create-baby-bmi';
@@ -197,7 +197,7 @@ class _CreateBabyBMIViewState extends State<CreateBabyBMIView> {
 
                   Navigator.pushNamed(
                     context,
-                    CreateBabyNIView.routeName,
+                    CreateBabyFoodView.routeName,
                   );
                 });
               }
