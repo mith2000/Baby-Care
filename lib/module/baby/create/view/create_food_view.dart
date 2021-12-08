@@ -321,10 +321,10 @@ class _CreateBabyFoodViewState extends State<CreateBabyFoodView> {
                 MiniSolidButton('Next', () {
                   // moi data * 100 tru egg
                   List<FoodModel> list = [];
-                  for (var i = 0; i < NIType.values.length; i++) {
+                  for (var i = 0; i < FoodType.values.length; i++) {
                     list.add(FoodModel(
                       idBaby: state.list[0].idBaby,
-                      type: NIType.values[i],
+                      type: FoodType.values[i],
                       value: 100,
                       updateDate: DateTime.now(),
                     ));

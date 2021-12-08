@@ -1,30 +1,29 @@
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_babycare/constants/app_constants.dart';
 import 'package:flutter_babycare/utils/converter.dart';
 
-class FoodModel extends Equatable {
+class NIModel extends Equatable {
   final String id;
-  final FoodType type;
-  final String idBaby;
+  final NIType type;
+  final String idFood;
   final DateTime updateDate;
   final double value;
 
-  FoodModel({
+  NIModel({
     this.id,
     this.type,
-    this.idBaby,
+    this.idFood,
     this.updateDate,
     this.value,
   });
 
-  static FoodModel fromSnapshot(DocumentSnapshot snap) {
+  static NIModel fromSnapshot(DocumentSnapshot snap) {
     DateTime myDateTime = snap['updateDate'].toDate();
-    FoodModel babyModel = FoodModel(
+    NIModel babyModel = NIModel(
       id: snap.id,
-      type: Converter.stringToFoodType(snap['type']),
-      idBaby: snap['idBaby'],
+      type: Converter.stringToNIType(snap['type']),
+      idFood: snap['idFood'],
       updateDate: myDateTime,
       value: snap['value'],
     );
@@ -33,19 +32,19 @@ class FoodModel extends Equatable {
 
   @override
   List<Object> get props => [
-    id,
-    type,
-    idBaby,
-    updateDate,
-    value,
-  ];
+        id,
+        type,
+        idFood,
+        updateDate,
+        value,
+      ];
 
   Map<String, Object> toJson() {
     Timestamp myTimeStamp = Timestamp.fromDate(updateDate);
     return {
       "id": id,
-      "type": Converter.foodTypeToString(type),
-      "idBaby": idBaby,
+      "type": Converter.niTypeToString(type),
+      "idFood": idFood,
       "updateDate": myTimeStamp,
       "value": value,
     };

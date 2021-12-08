@@ -35,7 +35,7 @@ enum BMIType {
   Weight,
 }
 
-enum NIType {
+enum FoodType {
   Porridge,
   Milk,
   Meat,
@@ -44,4 +44,17 @@ enum NIType {
   Green_Vegets,
   Red_Vegets,
   Citrus_Fruit,
+}
+
+enum NIType {
+  Carbohydrate,
+  Fat,
+  Protein,
+  Vitamin_A,
+  Vitamin_B,
+  Vitamin_C,
+  Vitamin_D,
+  Iron,
+  Calcium,
+  Iodine
 }
