@@ -63,7 +63,6 @@ class _BabyDetailViewState extends State<BabyDetailView> {
   Widget build(BuildContext context) {
     final args =
         ModalRoute.of(context).settings.arguments as BabyDetailViewArguments;
-    babyBloc.add(FetchBMI(idBaby: args.model.id));
     babyBloc.add(FetchFood(idBaby: args.model.id));
     return Scaffold(
       resizeToAvoidBottomInset: false,
@@ -317,6 +316,7 @@ class _BabyDetailViewState extends State<BabyDetailView> {
     return BlocBuilder<BabyBloc, BabyState>(
         bloc: babyBloc,
         builder: (context, state) {
+          babyBloc.add(FetchBMI(idBaby: args.model.id));
           if (state is LoadBMIBaby) {
             if (state.list == null || state.list.length < 2) {
               return ErrorLabel(
@@ -327,7 +327,6 @@ class _BabyDetailViewState extends State<BabyDetailView> {
               width: double.infinity,
               child: Column(
                 children: [
-
                   Container(
                     child: TitleLabel('Body Mass Index'),
                     padding: EdgeInsets.only(

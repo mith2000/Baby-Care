@@ -186,10 +186,12 @@ class _CreateBabyBMIViewState extends State<CreateBabyBMIView> {
                     BmiModel(
                         idBaby: state.idBaby,
                         type: BMIType.Height,
+                        updateDate: DateTime.now(),
                         value: _formData['height']),
                     BmiModel(
                         idBaby: state.idBaby,
                         type: BMIType.Weight,
+                        updateDate: DateTime.now(),
                         value: _formData['weight'] * 100),
                   ]));
 

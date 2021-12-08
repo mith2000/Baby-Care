@@ -6,20 +6,24 @@ class BmiModel extends Equatable {
   final String id;
   final String idBaby;
   final BMIType type;
+  final DateTime updateDate;
   final int value;
 
   BmiModel({
     this.id,
     this.idBaby,
     this.type,
+    this.updateDate,
     this.value,
   });
 
   static BmiModel fromSnapshot(DocumentSnapshot snap) {
+    DateTime myDateTime = snap['updateDate'].toDate();
     BmiModel babyModel = BmiModel(
       id: snap.id,
       idBaby: snap['idBaby'],
-      type: snap['type'] == 'Height' ? BMIType.Height: BMIType.Weight,
+      type: snap['type'] == 'Height' ? BMIType.Height : BMIType.Weight,
+      updateDate: myDateTime,
       value: snap['value'],
     );
     return babyModel;
@@ -34,10 +38,12 @@ class BmiModel extends Equatable {
       ];
 
   Map<String, Object> toJson() {
+    Timestamp myTimeStamp = Timestamp.fromDate(updateDate);
     return {
       "id": id,
       "idBaby": idBaby,
       "type": type == BMIType.Height ? 'Height' : 'Weight',
+      "updateDate": myTimeStamp,
       "value": value,
     };
   }

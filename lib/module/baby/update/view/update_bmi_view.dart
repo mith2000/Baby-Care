@@ -375,11 +375,13 @@ class _UpdateBMIViewState extends State<UpdateBMIView> {
                         BmiModel(
                             id: args.height.id,
                             idBaby: args.height.idBaby,
+                            updateDate: DateTime.now(),
                             type: BMIType.Height,
                             value: args.height.value + _formData['height']),
                         BmiModel(
                             id: args.weight.id,
                             idBaby: args.weight.idBaby,
+                            updateDate: DateTime.now(),
                             type: BMIType.Weight,
                             value:
                                 args.weight.value + _formData['weight'] * 100),

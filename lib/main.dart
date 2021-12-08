@@ -22,6 +22,7 @@ import 'module/authentication/simple_bloc_observer.dart';
 import 'module/baby/create/view/create_bmi_view.dart';
 import 'module/baby/create/view/create_info_view.dart';
 import 'module/baby/create/view/create_ni_view.dart';
+import 'module/baby/update/view/update_bmi_view.dart';
 import 'module/home/bloc/baby_bloc.dart';
 import 'module/home/view/home_view.dart';
 import 'module/login/bloc/login_bloc.dart';
@@ -86,9 +87,10 @@ class _MyAppState extends State<MyApp> {
           ),
         ),
         BlocProvider(
-          create: (_) => BabyBloc(babyRepository: BabyRepository()
-          , bmiRepository: BmiRepository(),
-          foodRepository: FoodRepository()),
+          create: (_) => BabyBloc(
+              babyRepository: BabyRepository(),
+              bmiRepository: BmiRepository(),
+              foodRepository: FoodRepository()),
         ),
       ],
       child: ScreenUtilInit(
