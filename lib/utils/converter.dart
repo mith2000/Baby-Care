@@ -121,37 +121,37 @@ class Converter {
         return [
           NIModel(
               type: NIType.Protein,
-              idFood: foodModel.id,
+              idBaby: foodModel.idBaby,
               updateDate: DateTime.now(),
               value: 41 * foodModel.value / 100),
           NIModel(
               type: NIType.Calcium,
-              idFood: foodModel.id,
+              idBaby: foodModel.idBaby,
               updateDate: DateTime.now(),
               value: 2 * foodModel.value / 100),
           NIModel(
               type: NIType.Vitamin_B,
-              idFood: foodModel.id,
+              idBaby: foodModel.idBaby,
               updateDate: DateTime.now(),
               value: 1 * foodModel.value / 100),
           NIModel(
               type: NIType.Vitamin_A,
-              idFood: foodModel.id,
+              idBaby: foodModel.idBaby,
               updateDate: DateTime.now(),
               value: 1 * foodModel.value / 100),
           NIModel(
               type: NIType.Vitamin_D,
-              idFood: foodModel.id,
+              idBaby: foodModel.idBaby,
               updateDate: DateTime.now(),
               value: 1 * foodModel.value / 100),
           NIModel(
               type: NIType.Carbohydrate,
-              idFood: foodModel.id,
+              idBaby: foodModel.idBaby,
               updateDate: DateTime.now(),
               value: 10 * foodModel.value / 100),
           NIModel(
               type: NIType.Iodine,
-              idFood: foodModel.id,
+              idBaby: foodModel.idBaby,
               updateDate: DateTime.now(),
               value: 5 * foodModel.value / 100)
         ];
@@ -159,22 +159,22 @@ class Converter {
         return [
           NIModel(
               type: NIType.Protein,
-              idFood: foodModel.id,
+              idBaby: foodModel.idBaby,
               updateDate: DateTime.now(),
               value: 17 * foodModel.value / 100),
           NIModel(
               type: NIType.Fat,
-              idFood: foodModel.id,
+              idBaby: foodModel.idBaby,
               updateDate: DateTime.now(),
               value: 7 * foodModel.value / 100),
           NIModel(
               type: NIType.Vitamin_B,
-              idFood: foodModel.id,
+              idBaby: foodModel.idBaby,
               updateDate: DateTime.now(),
               value: 8 * foodModel.value / 100),
           NIModel(
               type: NIType.Carbohydrate,
-              idFood: foodModel.id,
+              idBaby: foodModel.idBaby,
               updateDate: DateTime.now(),
               value: 10 * foodModel.value / 100),
         ];
@@ -182,22 +182,22 @@ class Converter {
         return [
           NIModel(
               type: NIType.Protein,
-              idFood: foodModel.id,
+              idBaby: foodModel.idBaby,
               updateDate: DateTime.now(),
               value: 25 * foodModel.value / 100),
           NIModel(
               type: NIType.Calcium,
-              idFood: foodModel.id,
+              idBaby: foodModel.idBaby,
               updateDate: DateTime.now(),
               value: 0.9 * foodModel.value / 100),
           NIModel(
               type: NIType.Iron,
-              idFood: foodModel.id,
+              idBaby: foodModel.idBaby,
               updateDate: DateTime.now(),
               value: 0.15 * foodModel.value / 100),
           NIModel(
               type: NIType.Fat,
-              idFood: foodModel.id,
+              idBaby: foodModel.idBaby,
               updateDate: DateTime.now(),
               value: 7 * foodModel.value / 100),
         ];
@@ -205,12 +205,12 @@ class Converter {
         return [
           NIModel(
               type: NIType.Protein,
-              idFood: foodModel.id,
+              idBaby: foodModel.idBaby,
               updateDate: DateTime.now(),
               value: 20 * foodModel.value / 100),
           NIModel(
               type: NIType.Fat,
-              idFood: foodModel.id,
+              idBaby: foodModel.idBaby,
               updateDate: DateTime.now(),
               value: 7 * foodModel.value / 100),
         ];
@@ -218,27 +218,27 @@ class Converter {
         return [
           NIModel(
               type: NIType.Protein,
-              idFood: foodModel.id,
+              idBaby: foodModel.idBaby,
               updateDate: DateTime.now(),
               value: 14 * foodModel.value / 100),
           NIModel(
               type: NIType.Fat,
-              idFood: foodModel.id,
+              idBaby: foodModel.idBaby,
               updateDate: DateTime.now(),
               value: 12 * foodModel.value / 100),
           NIModel(
               type: NIType.Vitamin_B,
-              idFood: foodModel.id,
+              idBaby: foodModel.idBaby,
               updateDate: DateTime.now(),
               value: 0.0129 * foodModel.value / 100),
           NIModel(
               type: NIType.Iron,
-              idFood: foodModel.id,
+              idBaby: foodModel.idBaby,
               updateDate: DateTime.now(),
               value: 0.27 * foodModel.value / 100),
           NIModel(
               type: NIType.Vitamin_A,
-              idFood: foodModel.id,
+              idBaby: foodModel.idBaby,
               updateDate: DateTime.now(),
               value: 0.7 * foodModel.value / 100),
         ];
@@ -246,17 +246,17 @@ class Converter {
         return [
           NIModel(
               type: NIType.Carbohydrate,
-              idFood: foodModel.id,
+              idBaby: foodModel.idBaby,
               updateDate: DateTime.now(),
               value: 4 * foodModel.value / 100),
           NIModel(
               type: NIType.Protein,
-              idFood: foodModel.id,
+              idBaby: foodModel.idBaby,
               updateDate: DateTime.now(),
               value: 3 * foodModel.value / 100),
           NIModel(
               type: NIType.Vitamin_C,
-              idFood: foodModel.id,
+              idBaby: foodModel.idBaby,
               updateDate: DateTime.now(),
               value: 28 * foodModel.value / 100),
         ];
@@ -264,17 +264,17 @@ class Converter {
         return [
           NIModel(
               type: NIType.Carbohydrate,
-              idFood: foodModel.id,
+              idBaby: foodModel.idBaby,
               updateDate: DateTime.now(),
               value: 4 * foodModel.value / 100),
           NIModel(
               type: NIType.Protein,
-              idFood: foodModel.id,
+              idBaby: foodModel.idBaby,
               updateDate: DateTime.now(),
               value: 3 * foodModel.value / 100),
           NIModel(
               type: NIType.Vitamin_B,
-              idFood: foodModel.id,
+              idBaby: foodModel.idBaby,
               updateDate: DateTime.now(),
               value: 28 * foodModel.value / 100),
         ];
@@ -282,22 +282,22 @@ class Converter {
         return [
           NIModel(
               type: NIType.Vitamin_D,
-              idFood: foodModel.id,
+              idBaby: foodModel.idBaby,
               updateDate: DateTime.now(),
               value: 10 * foodModel.value / 100),
           NIModel(
               type: NIType.Vitamin_C,
-              idFood: foodModel.id,
+              idBaby: foodModel.idBaby,
               updateDate: DateTime.now(),
               value: 7 * foodModel.value / 100),
           NIModel(
               type: NIType.Vitamin_B,
-              idFood: foodModel.id,
+              idBaby: foodModel.idBaby,
               updateDate: DateTime.now(),
               value: 5 * foodModel.value / 100),
           NIModel(
               type: NIType.Vitamin_A,
-              idFood: foodModel.id,
+              idBaby: foodModel.idBaby,
               updateDate: DateTime.now(),
               value: 8 * foodModel.value / 100),
         ];

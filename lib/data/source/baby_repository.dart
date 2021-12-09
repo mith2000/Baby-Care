@@ -44,17 +44,15 @@ class BabyRepository {
   }
 
   Future<String> createBaby({BabyModel babyModel}) async {
+    String idBaby = Uuid().v4();
+    babyModel.setID(idBaby);
     DocumentReference documentReferencer =
-        firebaseFirestore.collection('baby').doc(Uuid().v4());
-    String id;
+        firebaseFirestore.collection('baby').doc(idBaby);
     await documentReferencer
         .set(babyModel.toJson())
         .catchError((e) => e.toString())
-        .whenComplete(() => print('baby added to the database'))
-        .then((doc) {
-      id = documentReferencer.id;
-    });
-    return id;
+        .whenComplete(() => print('baby added to the database'));
+    return idBaby;
   }
 
   Stream<void> updateBaby({String idBaby, BabyModel babyModel}) {

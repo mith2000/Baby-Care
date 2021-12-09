@@ -9,7 +9,7 @@ class BmiRepository {
 
   BmiRepository({FirebaseFirestore firebaseFirestore})
       : this.firebaseFirestore =
-      firebaseFirestore ?? FirebaseFirestore.instance;
+            firebaseFirestore ?? FirebaseFirestore.instance;
 
   Stream<List<BmiModel>> fetchBmi(String idBaby) {
     return firebaseFirestore
@@ -24,8 +24,10 @@ class BmiRepository {
   Future<String> createBmi(List<BmiModel> listBMIModel) async {
     String temp = listBMIModel[0].idBaby;
     for (var i = 0; i < listBMIModel.length; i++) {
+      String idBMI = Uuid().v4();
+      listBMIModel[i].setId(idBMI);
       DocumentReference documentReferencer =
-          firebaseFirestore.collection('bmi').doc(Uuid().v4());
+          firebaseFirestore.collection('bmi').doc(idBMI);
       documentReferencer
           .set(listBMIModel[i].toJson())
           .whenComplete(() => print("bmi added to the database"))

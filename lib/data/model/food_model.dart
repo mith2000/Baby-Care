@@ -1,15 +1,18 @@
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_babycare/constants/app_constants.dart';
 import 'package:flutter_babycare/utils/converter.dart';
 
 class FoodModel extends Equatable {
-  final String id;
+  String id;
   final FoodType type;
   final String idBaby;
   final DateTime updateDate;
   final double value;
+
+  void setId(String id) {
+    this.id = id;
+  }
 
   FoodModel({
     this.id,
@@ -33,12 +36,12 @@ class FoodModel extends Equatable {
 
   @override
   List<Object> get props => [
-    id,
-    type,
-    idBaby,
-    updateDate,
-    value,
-  ];
+        id,
+        type,
+        idBaby,
+        updateDate,
+        value,
+      ];
 
   Map<String, Object> toJson() {
     Timestamp myTimeStamp = Timestamp.fromDate(updateDate);

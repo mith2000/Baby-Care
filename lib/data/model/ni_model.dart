@@ -4,16 +4,20 @@ import 'package:flutter_babycare/constants/app_constants.dart';
 import 'package:flutter_babycare/utils/converter.dart';
 
 class NIModel extends Equatable {
-  final String id;
+  String id;
   final NIType type;
-  final String idFood;
+  final String idBaby;
   final DateTime updateDate;
   final double value;
+
+  void setID(String id) {
+    this.id = id;
+  }
 
   NIModel({
     this.id,
     this.type,
-    this.idFood,
+    this.idBaby,
     this.updateDate,
     this.value,
   });
@@ -23,7 +27,7 @@ class NIModel extends Equatable {
     NIModel babyModel = NIModel(
       id: snap.id,
       type: Converter.stringToNIType(snap['type']),
-      idFood: snap['idFood'],
+      idBaby: snap['idBaby'],
       updateDate: myDateTime,
       value: snap['value'],
     );
@@ -34,7 +38,7 @@ class NIModel extends Equatable {
   List<Object> get props => [
         id,
         type,
-        idFood,
+        idBaby,
         updateDate,
         value,
       ];
@@ -44,7 +48,7 @@ class NIModel extends Equatable {
     return {
       "id": id,
       "type": Converter.niTypeToString(type),
-      "idFood": idFood,
+      "idBaby": idBaby,
       "updateDate": myTimeStamp,
       "value": value,
     };
