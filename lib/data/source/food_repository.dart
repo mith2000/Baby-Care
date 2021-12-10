@@ -18,7 +18,7 @@ class FoodRepository {
       DocumentReference documentReferencer =
           firebaseFirestore.collection('food').doc(idFood);
       String temp = listFoodModel[i].type.toString();
-      documentReferencer
+      await documentReferencer
           .set(listFoodModel[i].toJson())
           .whenComplete(() => print("$temp food added to the database"))
           .catchError((e) => print(e));
@@ -29,7 +29,8 @@ class FoodRepository {
         bool isVariable = false;
         String type = Converter.niTypeToString(listNi[j].type);
         DocumentReference docRef;
-        firebaseFirestore
+        var batch = FirebaseFirestore.instance.batch();
+        await firebaseFirestore
             .collection('ni')
             .where('idBaby', isEqualTo: listFoodModel[0].idBaby)
             .where('type', isEqualTo: type)
@@ -37,7 +38,6 @@ class FoodRepository {
             .then((querySnapshot) {
           querySnapshot.docs.forEach((doc) {
             isVariable = true;
-            var batch = FirebaseFirestore.instance.batch();
             Map<String, dynamic> data = doc.data();
             docRef = firebaseFirestore.collection('ni').doc(doc.id);
             batch.update(docRef, {'value': data['value'] + listNi[j].value});
@@ -54,7 +54,7 @@ class FoodRepository {
           DocumentReference documentReferencer =
               firebaseFirestore.collection('ni').doc(idNI);
           String temp = listNi[j].type.toString();
-          documentReferencer
+          await documentReferencer
               .set(listNi[j].toJson())
               .whenComplete(() => print("$temp ni added to the database"))
               .catchError((e) => print(e));

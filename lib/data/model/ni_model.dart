@@ -46,11 +46,11 @@ class NIModel extends Equatable {
   Map<String, Object> toJson() {
     Timestamp myTimeStamp = Timestamp.fromDate(updateDate);
     return {
-      "id": id,
-      "type": Converter.niTypeToString(type),
-      "idBaby": idBaby,
-      "updateDate": myTimeStamp,
-      "value": value,
+      'id': id,
+      'type': Converter.niTypeToString(type),
+      'idBaby': idBaby,
+      'updateDate': myTimeStamp,
+      'value': value,
     };
   }
 }
