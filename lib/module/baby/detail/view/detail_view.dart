@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_babycare/constants/app_constants.dart';
 import 'package:flutter_babycare/data/model/baby_model.dart';
+import 'package:flutter_babycare/data/model/bmi_model.dart';
 import 'package:flutter_babycare/module/baby/update/view/update_bmi_view.dart';
 import 'package:flutter_babycare/module/baby/update/view/update_food_view.dart';
 import 'package:flutter_babycare/module/home/bloc/baby_bloc.dart';
@@ -64,7 +65,8 @@ class _BabyDetailViewState extends State<BabyDetailView> {
   Widget build(BuildContext context) {
     final args =
         ModalRoute.of(context).settings.arguments as BabyDetailViewArguments;
-    babyBloc.add(FetchFood(idBaby: args.model.id));
+    babyBloc.add(FetchBMI(idBaby: args.model.id));
+    //babyBloc.add(FetchFood(idBaby: args.model.id));
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: Container(
@@ -264,31 +266,70 @@ class _BabyDetailViewState extends State<BabyDetailView> {
           ],
         ),
         SizedBox(height: AppConstants.paddingLargeH),
-        Row(
-          children: [
-            (true)
-                ? SvgPicture.asset(_icons['warn'])
-                : SizedBox(width: AppConstants.paddingLargeW * 2),
-            SizedBox(width: AppConstants.paddingLargeW),
-            Text(
-              'It\'s been',
-              style: Theme.of(context).textTheme.bodyText1,
-            ),
-            SizedBox(width: AppConstants.paddingNormalW),
-            HighlightBox('15'),
-            SizedBox(width: AppConstants.paddingNormalW),
-            Text(
-              'days since your last BMI update',
-              style: Theme.of(context).textTheme.bodyText1,
-            ),
-          ],
-        ),
+        BlocBuilder<BabyBloc, BabyState>(
+            bloc: babyBloc,
+            builder: (context, state) {
+              if (state is LoadBMIBaby) {
+                if (state.list == null || state.list.length < 2) {
+                  return ErrorLabel(
+                      label:
+                          'Something error with your baby\'s BMI data. We will fix this right now');
+                }
+                BmiModel height;
+                BmiModel weight;
+                if (state.list[0].type == BMIType.Height) {
+                  height = state.list[0];
+                  weight = state.list[1];
+                } else {
+                  height = state.list[1];
+                  weight = state.list[0];
+                }
+
+                int heightUpdateDate = Converter.dateToDouble(
+                        DateFormat('dd/MM/yyyy').format(height.updateDate))
+                    .toInt();
+                int weightUpdateDate = Converter.dateToDouble(
+                        DateFormat('dd/MM/yyyy').format(weight.updateDate))
+                    .toInt();
+
+                int updateDateBMI = 0;
+                heightUpdateDate < weightUpdateDate
+                    ? updateDateBMI = heightUpdateDate
+                    : updateDateBMI = weightUpdateDate;
+
+                return Row(
+                  children: [
+                    updateDateBMI < AppConstants.dateDanger
+                        ? SizedBox(width: AppConstants.paddingLargeW * 2)
+                        : SvgPicture.asset(_icons['warn']),
+                    SizedBox(width: AppConstants.paddingLargeW),
+                    Text(
+                      'It\'s been',
+                      style: Theme.of(context).textTheme.bodyText1,
+                    ),
+                    SizedBox(width: AppConstants.paddingNormalW),
+                    HighlightBox(
+                      updateDateBMI.toString(),
+                      color: updateDateBMI < AppConstants.dateDanger
+                          ? AppColors.primary
+                          : AppColors.danger,
+                    ),
+                    SizedBox(width: AppConstants.paddingNormalW),
+                    Text(
+                      'days since your last BMI update',
+                      style: Theme.of(context).textTheme.bodyText1,
+                    ),
+                  ],
+                );
+              }
+              return ErrorLabel();
+            }),
         SizedBox(height: AppConstants.paddingLargeH),
         Row(
           children: [
             (false)
-                ? SvgPicture.asset(_icons['warn'])
-                : SizedBox(width: AppConstants.paddingLargeW * 2),
+                ? SizedBox(width: AppConstants.paddingLargeW * 2)
+                : SvgPicture.asset(_icons['warn']),
             SizedBox(width: AppConstants.paddingLargeW),
             Text(
               'It\'s been',
@@ -296,8 +337,7 @@ class _BabyDetailViewState extends State<BabyDetailView> {
             ),
             SizedBox(width: AppConstants.paddingNormalW),
             HighlightBox(
-              '5',
-              color: AppColors.primary,
+              '15',
             ),
             SizedBox(width: AppConstants.paddingNormalW),
             Text(
@@ -318,13 +358,22 @@ class _BabyDetailViewState extends State<BabyDetailView> {
     return BlocBuilder<BabyBloc, BabyState>(
         bloc: babyBloc,
         builder: (context, state) {
-          babyBloc.add(FetchBMI(idBaby: args.model.id));
           if (state is LoadBMIBaby) {
             if (state.list == null || state.list.length < 2) {
               return ErrorLabel(
                   label:
                       'Something error with your baby\'s BMI data. We will fix this right now');
             }
+            BmiModel height;
+            BmiModel weight;
+            if (state.list[0].type == BMIType.Height) {
+              height = state.list[0];
+              weight = state.list[1];
+            } else {
+              height = state.list[1];
+              weight = state.list[0];
+            }
+
             return Container(
               width: double.infinity,
               child: Column(
@@ -339,17 +388,13 @@ class _BabyDetailViewState extends State<BabyDetailView> {
                   _buildBMIContent(
                     'Current height:',
                     'cm',
-                    value: state.list[0].type == BMIType.Height
-                        ? state.list[0].value
-                        : state.list[1].value,
+                    value: height.value,
                     status: heightStatus,
                   ),
                   _buildBMIContent(
                     'Current weight:',
                     'g',
-                    value: state.list[0].type == BMIType.Weight
-                        ? state.list[0].value
-                        : state.list[1].value,
+                    value: weight.value,
                     status: weightStatus,
                   ),
                   Container(
@@ -358,7 +403,10 @@ class _BabyDetailViewState extends State<BabyDetailView> {
                         context,
                         UpdateBMIView.routeName,
                         arguments: UpdateBMIViewArguments(
-                            args.model, state.list[0], state.list[1]),
+                          args.model,
+                          height,
+                          weight,
+                        ),
                       );
                     }),
                     padding: EdgeInsets.only(
