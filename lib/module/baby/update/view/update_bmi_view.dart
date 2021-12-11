@@ -179,9 +179,15 @@ class _UpdateBMIViewState extends State<UpdateBMIView> {
     UpdateBMIViewArguments args,
   ) {
     int lastDateUpdate;
-    args.height.value < args.weight.value
-        ? lastDateUpdate = args.height.value
-        : lastDateUpdate = args.weight.value;
+    int heightUpdateDate = Converter.dateToDouble(
+            DateFormat('dd/MM/yyyy').format(args.height.updateDate))
+        .toInt();
+    int weightUpdateDate = Converter.dateToDouble(
+            DateFormat('dd/MM/yyyy').format(args.weight.updateDate))
+        .toInt();
+    heightUpdateDate < weightUpdateDate
+        ? lastDateUpdate = heightUpdateDate
+        : lastDateUpdate = weightUpdateDate;
 
     return Container(
       height: 80.h,
@@ -240,7 +246,9 @@ class _UpdateBMIViewState extends State<UpdateBMIView> {
           SizedBox(width: AppConstants.paddingNormalW),
           HighlightBox(
             lastDateUpdate.toString(),
-            color: lastDateUpdate <= 7 ? AppColors.primary : AppColors.danger,
+            color: lastDateUpdate <= AppConstants.dateDanger
+                ? AppColors.primary
+                : AppColors.danger,
           ),
           SizedBox(width: AppConstants.paddingNormalW),
           Text(
