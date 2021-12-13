@@ -2,6 +2,7 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter_babycare/data/model/baby_model.dart';
 import 'package:flutter_babycare/data/model/bmi_model.dart';
 import 'package:flutter_babycare/data/model/food_model.dart';
+import 'package:flutter_babycare/data/model/ni_model.dart';
 import 'package:image_picker/image_picker.dart';
 
 abstract class BabyEvent extends Equatable {
@@ -149,6 +150,24 @@ class FetchFood extends BabyEvent {
   final String idBaby;
 
   FetchFood({this.idBaby});
+
+  @override
+  List<Object> get props => [idBaby];
+}
+
+class FetchedNI extends BabyEvent {
+  final List<NIModel> listNI;
+
+  FetchedNI({this.listNI});
+
+  @override
+  List<Object> get props => [listNI];
+}
+
+class FetchNI extends BabyEvent {
+  final String idBaby;
+
+  FetchNI({this.idBaby});
 
   @override
   List<Object> get props => [idBaby];

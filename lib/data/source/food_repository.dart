@@ -1,15 +1,19 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_babycare/data/model/food_model.dart';
 import 'package:flutter_babycare/data/model/ni_model.dart';
+import 'package:flutter_babycare/data/source/ni_repository.dart';
 import 'package:flutter_babycare/utils/converter.dart';
 import 'package:uuid/uuid.dart';
 
 class FoodRepository {
   final FirebaseFirestore firebaseFirestore;
+  final NIRepository niRepository;
 
-  FoodRepository({FirebaseFirestore firebaseFirestore})
+  FoodRepository(
+      {FirebaseFirestore firebaseFirestore, NIRepository niRepository})
       : this.firebaseFirestore =
-            firebaseFirestore ?? FirebaseFirestore.instance;
+            firebaseFirestore ?? FirebaseFirestore.instance,
+        this.niRepository = niRepository ?? new NIRepository();
 
   Future<String> createFood(List<FoodModel> listFoodModel) async {
     for (var i = 0; i < listFoodModel.length; i++) {
@@ -26,39 +30,7 @@ class FoodRepository {
       List<NIModel> listNi = Converter.foodToNI(listFoodModel[i]);
 
       for (var j = 0; j < listNi.length; j++) {
-        bool isVariable = false;
-        String type = Converter.niTypeToString(listNi[j].type);
-        DocumentReference docRef;
-        var batch = FirebaseFirestore.instance.batch();
-        await firebaseFirestore
-            .collection('ni')
-            .where('idBaby', isEqualTo: listFoodModel[0].idBaby)
-            .where('type', isEqualTo: type)
-            .get()
-            .then((querySnapshot) {
-          querySnapshot.docs.forEach((doc) {
-            isVariable = true;
-            Map<String, dynamic> data = doc.data();
-            docRef = firebaseFirestore.collection('ni').doc(doc.id);
-            batch.update(docRef, {'value': data['value'] + listNi[j].value});
-            batch.commit().then((a) {
-              print('updated $type food');
-            });
-          });
-        }).catchError((error) {
-          print(error);
-        });
-        if (!isVariable) {
-          String idNI = Uuid().v4();
-          listNi[j].setID(idNI);
-          DocumentReference documentReferencer =
-              firebaseFirestore.collection('ni').doc(idNI);
-          String temp = listNi[j].type.toString();
-          await documentReferencer
-              .set(listNi[j].toJson())
-              .whenComplete(() => print("$temp ni added to the database"))
-              .catchError((e) => print(e));
-        }
+        await niRepository.createNi(listNi[j], listFoodModel[0].idBaby);
       }
     }
     return listFoodModel[0].idBaby;

@@ -4,6 +4,7 @@ import 'package:flutter_babycare/data/model/baby_model.dart';
 import 'package:flutter_babycare/data/source/baby_repository.dart';
 import 'package:flutter_babycare/data/source/bmi_repository.dart';
 import 'package:flutter_babycare/data/source/food_repository.dart';
+import 'package:flutter_babycare/data/source/ni_repository.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'baby_event.dart';
@@ -13,6 +14,7 @@ class BabyBloc extends Bloc<BabyEvent, BabyState> {
   final BabyRepository babyRepository;
   final BmiRepository bmiRepository;
   final FoodRepository foodRepository;
+  final NIRepository niRepository;
   StreamSubscription babySubscription;
   List<BabyModel> listBabyModel;
 
@@ -20,10 +22,12 @@ class BabyBloc extends Bloc<BabyEvent, BabyState> {
     BabyRepository babyRepository,
     BmiRepository bmiRepository,
     FoodRepository foodRepository,
+    NIRepository niRepository,
     BabyModel babyModel,
   })  : this.babyRepository = babyRepository,
         this.bmiRepository = bmiRepository,
         this.foodRepository = foodRepository,
+        this.niRepository = niRepository,
         super(BabyLoading());
 
   @override
@@ -64,7 +68,6 @@ class BabyBloc extends Bloc<BabyEvent, BabyState> {
     if (event is UpdateBMIEvent) {
       yield* mapUpdateBMIEventToState(event);
     }
-
     if (event is CreateFood) {
       yield* mapCreateFoodToState(event);
     }
@@ -74,11 +77,28 @@ class BabyBloc extends Bloc<BabyEvent, BabyState> {
     if (event is FetchedFood) {
       yield* mapFetchedFoodToState(event);
     }
+    if (event is FetchNI) {
+      yield* mapFetchNIToState(event);
+    }
+    if (event is FetchedNI) {
+      yield* mapFetchedNIToState(event);
+    }
+  }
+
+  Stream<BabyState> mapFetchNIToState(FetchNI event) async* {
+    babySubscription = niRepository
+        .fetchNi(event.idBaby)
+        .listen((listNI) => add(FetchedNI(listNI: listNI)));
+  }
+
+  Stream<BabyState> mapFetchedNIToState(FetchedNI event) async* {
+    yield LoadNIBaby(list: event.listNI);
   }
 
   Stream<BabyState> mapCreateFoodToState(CreateFood event) async* {
     babySubscription = foodRepository
-        .createFood(event.listFoodModel).asStream()
+        .createFood(event.listFoodModel)
+        .asStream()
         .listen((idBaby) => add(FetchFood(idBaby: idBaby)));
   }
 
@@ -91,8 +111,6 @@ class BabyBloc extends Bloc<BabyEvent, BabyState> {
   Stream<BabyState> mapFetchedFoodToState(FetchedFood event) async* {
     yield LoadFoodBaby(list: event.listFood);
   }
-
-
 
   Stream<BabyState> mapUpdateBMIEventToState(UpdateBMIEvent event) async* {
     babySubscription = bmiRepository
@@ -112,7 +130,8 @@ class BabyBloc extends Bloc<BabyEvent, BabyState> {
 
   Stream<BabyState> mapCreateBMIToState(CreateBMI event) async* {
     babySubscription = bmiRepository
-        .createBmi(event.listBMIModel).asStream()
+        .createBmi(event.listBMIModel)
+        .asStream()
         .listen((idBaby) => add(FetchBMI(idBaby: idBaby)));
   }
 
@@ -160,8 +179,11 @@ class BabyBloc extends Bloc<BabyEvent, BabyState> {
 
   void getListBaby(BabyEvent event) {
     babySubscription =
-        babyRepository.fetchAllBaby(event.userId).listen((baby) => add(
-              UpdateListBaby(listBaby: baby),
-            ));
+        babyRepository.fetchAllBaby(event.userId).listen((baby) => {
+              add(
+                UpdateListBaby(listBaby: baby),
+              ),
+              state.setListBaby(list: baby)
+            });
   }
 }

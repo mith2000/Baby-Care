@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_babycare/data/source/bmi_repository.dart';
 import 'package:flutter_babycare/data/source/food_repository.dart';
+import 'package:flutter_babycare/data/source/ni_repository.dart';
 import 'package:flutter_babycare/module/baby/create/view/create_gender_view.dart';
 import 'package:flutter_babycare/module/baby/detail/view/detail_view.dart';
 import 'package:flutter_babycare/utils/UI_components/loading_widget.dart';
@@ -20,8 +21,8 @@ import 'module/authentication/authentication_bloc/authentication_event.dart';
 import 'module/authentication/authentication_bloc/authentication_state.dart';
 import 'module/authentication/simple_bloc_observer.dart';
 import 'module/baby/create/view/create_bmi_view.dart';
-import 'module/baby/create/view/create_info_view.dart';
 import 'module/baby/create/view/create_food_view.dart';
+import 'module/baby/create/view/create_info_view.dart';
 import 'module/baby/update/view/update_bmi_view.dart';
 import 'module/baby/update/view/update_food_view.dart';
 import 'module/home/bloc/baby_bloc.dart';
@@ -91,7 +92,8 @@ class _MyAppState extends State<MyApp> {
           create: (_) => BabyBloc(
               babyRepository: BabyRepository(),
               bmiRepository: BmiRepository(),
-              foodRepository: FoodRepository()),
+              foodRepository: FoodRepository(),
+              niRepository: NIRepository()),
         ),
       ],
       child: ScreenUtilInit(

@@ -61,10 +61,17 @@ class _BabyDetailViewState extends State<BabyDetailView> {
   }
 
   @override
+  void dispose() {
+    babyBloc.close();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final args =
         ModalRoute.of(context).settings.arguments as BabyDetailViewArguments;
-    babyBloc.add(FetchFood(idBaby: args.model.id));
+    //babyBloc.add(FetchNI(idBaby: args.model.id));
+    babyBloc.add(FetchBMI(idBaby: args.model.id));
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: Container(
@@ -181,7 +188,7 @@ class _BabyDetailViewState extends State<BabyDetailView> {
             ),
             SizedBox(width: AppConstants.paddingNormalW),
             HighlightBox(
-              Converter.dateToDouble(
+              Converter.dateToMonthDouble(
                       DateFormat('dd/MM/yyyy').format(args.model.birth))
                   .toInt()
                   .toString(),
@@ -318,7 +325,6 @@ class _BabyDetailViewState extends State<BabyDetailView> {
     return BlocBuilder<BabyBloc, BabyState>(
         bloc: babyBloc,
         builder: (context, state) {
-          babyBloc.add(FetchBMI(idBaby: args.model.id));
           if (state is LoadBMIBaby) {
             if (state.list == null || state.list.length < 2) {
               return ErrorLabel(
@@ -467,86 +473,94 @@ class _BabyDetailViewState extends State<BabyDetailView> {
     Function infoActionCalcium,
     Function infoActionIodine,
   }) {
-    return Container(
-      width: double.infinity,
-      child: Column(
-        children: [
-          Container(
-            child: TitleLabel('Nutrition Index'),
-            padding: EdgeInsets.only(
-              top: AppConstants.paddingLargeH,
-              bottom: AppConstants.paddingNormalH,
-            ),
-          ),
-          _buildRowOfNI(
-            'Carbohydrate',
-            'Fat',
-            status1: statusCarbohydrate,
-            status2: statusFat,
-            infoAction1: infoActionCarbohydrate,
-            infoAction2: infoActionFat,
-          ),
-          _buildRowOfNI(
-            'Protein',
-            'Vitamin A',
-            status1: statusProtein,
-            status2: statusVitaminA,
-            infoAction1: infoActionProtein,
-            infoAction2: infoActionVitaminA,
-          ),
-          _buildRowOfNI(
-            'Vitamin B',
-            'Vitamin C',
-            status1: statusVitaminB,
-            status2: statusVitaminC,
-            infoAction1: infoActionVitaminB,
-            infoAction2: infoActionVitaminC,
-          ),
-          _buildRowOfNI(
-            'Vitamin D',
-            'Iron',
-            status1: statusVitaminD,
-            status2: statusIron,
-            infoAction1: infoActionVitaminD,
-            infoAction2: infoActionIron,
-          ),
-          _buildRowOfNI(
-            'Calcium',
-            'Iodine',
-            status1: statusCalcium,
-            status2: statusIodine,
-            infoAction1: infoActionCalcium,
-            infoAction2: infoActionIodine,
-          ),
-          Container(
-            child: SolidButton('Update', () {
-              Navigator.pushNamed(
-                context,
-                UpdateFoodView.routeName,
-                arguments: UpdateFoodViewArguments(args.model),
-              );
-            }),
-            padding: EdgeInsets.only(
-              left: AppConstants.paddingLargeW,
-              right: AppConstants.paddingLargeW,
-              top: AppConstants.paddingNormalH,
-              bottom: AppConstants.paddingLargeH,
-            ),
-          ),
-        ],
-      ),
-      decoration: BoxDecoration(
-        color: AppColors.whiteBackground,
-        borderRadius: BorderRadius.circular(AppConstants.cornerRadiusFrame),
-        boxShadow: [
-          BoxShadow(
-            color: AppColors.shadow,
-            blurRadius: 4,
-            offset: Offset(0, 4), // changes position of shadow
-          ),
-        ],
-      ),
-    );
+    return BlocBuilder<BabyBloc, BabyState>(
+        bloc: babyBloc,
+        builder: (context, state) {
+          if (state is LoadNIBaby) {
+            return Container(
+              width: double.infinity,
+              child: Column(
+                children: [
+                  Container(
+                    child: TitleLabel('Nutrition Index'),
+                    padding: EdgeInsets.only(
+                      top: AppConstants.paddingLargeH,
+                      bottom: AppConstants.paddingNormalH,
+                    ),
+                  ),
+                  _buildRowOfNI(
+                    'Carbohydrate',
+                    'Fat',
+                    status1: statusCarbohydrate,
+                    status2: statusFat,
+                    infoAction1: infoActionCarbohydrate,
+                    infoAction2: infoActionFat,
+                  ),
+                  _buildRowOfNI(
+                    'Protein',
+                    'Vitamin A',
+                    status1: statusProtein,
+                    status2: statusVitaminA,
+                    infoAction1: infoActionProtein,
+                    infoAction2: infoActionVitaminA,
+                  ),
+                  _buildRowOfNI(
+                    'Vitamin B',
+                    'Vitamin C',
+                    status1: statusVitaminB,
+                    status2: statusVitaminC,
+                    infoAction1: infoActionVitaminB,
+                    infoAction2: infoActionVitaminC,
+                  ),
+                  _buildRowOfNI(
+                    'Vitamin D',
+                    'Iron',
+                    status1: statusVitaminD,
+                    status2: statusIron,
+                    infoAction1: infoActionVitaminD,
+                    infoAction2: infoActionIron,
+                  ),
+                  _buildRowOfNI(
+                    'Calcium',
+                    'Iodine',
+                    status1: statusCalcium,
+                    status2: statusIodine,
+                    infoAction1: infoActionCalcium,
+                    infoAction2: infoActionIodine,
+                  ),
+                  Container(
+                    child: SolidButton('Update', () {
+                      Navigator.pushNamed(
+                        context,
+                        UpdateFoodView.routeName,
+                        arguments: UpdateFoodViewArguments(args.model),
+                      );
+                    }),
+                    padding: EdgeInsets.only(
+                      left: AppConstants.paddingLargeW,
+                      right: AppConstants.paddingLargeW,
+                      top: AppConstants.paddingNormalH,
+                      bottom: AppConstants.paddingLargeH,
+                    ),
+                  ),
+                ],
+              ),
+              decoration: BoxDecoration(
+                color: AppColors.whiteBackground,
+                borderRadius:
+                    BorderRadius.circular(AppConstants.cornerRadiusFrame),
+                boxShadow: [
+                  BoxShadow(
+                    color: AppColors.shadow,
+                    blurRadius: 4,
+                    offset: Offset(0, 4), // changes position of shadow
+                  ),
+                ],
+              ),
+            );
+          }
+          return ErrorLabel();
+        });
   }
 
   Widget _buildRowOfNI(

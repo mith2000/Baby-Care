@@ -156,7 +156,7 @@ class _UpdateFoodViewState extends State<UpdateFoodView> {
                       ),
                       SizedBox(width: AppConstants.paddingNormalW),
                       HighlightBox(
-                        Converter.dateToDouble(DateFormat('dd/MM/yyyy')
+                        Converter.dateToMonthDouble(DateFormat('dd/MM/yyyy')
                                 .format(args.baby.birth))
                             .toInt()
                             .toString(),

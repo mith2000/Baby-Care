@@ -4,7 +4,7 @@ import 'package:flutter_babycare/data/model/ni_model.dart';
 import 'package:intl/intl.dart';
 
 class Converter {
-  static dateToDouble(String textBirthController) {
+  static dateToMonthDouble(String textBirthController) {
     DateFormat dateFormat = DateFormat("dd/MM/yyyy");
     String string = dateFormat.format(DateTime.now());
     var parts = string.split(' ');
@@ -21,6 +21,23 @@ class Converter {
         30;
 
     return double.parse(temp3.toStringAsFixed(2));
+  }
+
+  static dateToDayDouble(String dateString){
+    DateFormat dateFormat = DateFormat("dd/MM/yyyy");
+    String string = dateFormat.format(DateTime.now());
+    var parts = string.split(' ');
+    var temp = parts.toString().split('/');
+    var temp2 = dateString.toString().split('/');
+    double temp3 = ((double.parse((temp[2].split(']'))[0].toString()) -
+        double.parse(temp2[2].toString())) *
+        12 +
+        (double.parse(temp[1].toString()) -
+            double.parse(temp2[1].toString())) *
+            30 +
+        (double.parse((temp[0].split('['))[1].toString()) -
+            double.parse(temp2[0].toString())));
+    return temp3;
   }
 
   static FoodType stringToFoodType(String content) {
@@ -302,5 +319,14 @@ class Converter {
               value: 8 * foodModel.value / 100),
         ];
     }
+  }
+
+  static NIModel getNiInList(List<NIModel> listNI, NIType type) {
+    for (var i = 0; i < listNI.length; i++) {
+      if (niTypeToString(type) == niTypeToString(listNI[i].type)) {
+        return listNI[i];
+      }
+    }
+    return null;
   }
 }

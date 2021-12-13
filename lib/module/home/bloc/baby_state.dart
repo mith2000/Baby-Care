@@ -2,15 +2,21 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter_babycare/data/model/baby_model.dart';
 import 'package:flutter_babycare/data/model/bmi_model.dart';
 import 'package:flutter_babycare/data/model/food_model.dart';
+import 'package:flutter_babycare/data/model/ni_model.dart';
 
 class BabyState extends Equatable {
   final bool isNameValid;
   final bool isBirthValid;
+  final List<BabyModel> listBaby;
 
-  BabyState({this.isNameValid, this.isBirthValid});
+  BabyState({this.isNameValid, this.isBirthValid, this.listBaby});
 
   @override
   List<Object> get props => [];
+
+  BabyState setListBaby({List<BabyModel> list}) {
+    return BabyState(listBaby: list);
+  }
 
   BabyState update({
     bool isNameValid,
@@ -58,6 +64,15 @@ class LoadFoodBaby extends BabyState {
   final List<FoodModel> list;
 
   LoadFoodBaby({this.list});
+
+  @override
+  List<Object> get props => [list];
+}
+
+class LoadNIBaby extends BabyState {
+  final List<NIModel> list;
+
+  LoadNIBaby({this.list});
 
   @override
   List<Object> get props => [list];
