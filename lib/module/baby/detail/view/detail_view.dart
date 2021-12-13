@@ -65,8 +65,7 @@ class _BabyDetailViewState extends State<BabyDetailView> {
   Widget build(BuildContext context) {
     final args =
         ModalRoute.of(context).settings.arguments as BabyDetailViewArguments;
-    babyBloc.add(FetchBMI(idBaby: args.model.id));
-    //babyBloc.add(FetchFood(idBaby: args.model.id));
+    babyBloc.add(FetchBMIAndNI(idBaby: args.model.id));
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: Container(
@@ -183,7 +182,7 @@ class _BabyDetailViewState extends State<BabyDetailView> {
             ),
             SizedBox(width: AppConstants.paddingNormalW),
             HighlightBox(
-              Converter.dateToDouble(
+              Converter.dateToDayDouble(
                       DateFormat('dd/MM/yyyy').format(args.model.birth))
                   .toInt()
                   .toString(),
@@ -269,26 +268,26 @@ class _BabyDetailViewState extends State<BabyDetailView> {
         BlocBuilder<BabyBloc, BabyState>(
             bloc: babyBloc,
             builder: (context, state) {
-              if (state is LoadBMIBaby) {
-                if (state.list == null || state.list.length < 2) {
+              if (state is LoadBMIAndNIBaby) {
+                if (state.listBMI == null || state.listBMI.length < 2) {
                   return ErrorLabel(
                       label:
                           'Something error with your baby\'s BMI data. We will fix this right now');
                 }
                 BmiModel height;
                 BmiModel weight;
-                if (state.list[0].type == BMIType.Height) {
-                  height = state.list[0];
-                  weight = state.list[1];
+                if (state.listBMI[0].type == BMIType.Height) {
+                  height = state.listBMI[0];
+                  weight = state.listBMI[1];
                 } else {
-                  height = state.list[1];
-                  weight = state.list[0];
+                  height = state.listBMI[1];
+                  weight = state.listBMI[0];
                 }
 
-                int heightUpdateDate = Converter.dateToDouble(
+                int heightUpdateDate = Converter.dateToDayDouble(
                         DateFormat('dd/MM/yyyy').format(height.updateDate))
                     .toInt();
-                int weightUpdateDate = Converter.dateToDouble(
+                int weightUpdateDate = Converter.dateToDayDouble(
                         DateFormat('dd/MM/yyyy').format(weight.updateDate))
                     .toInt();
 
@@ -356,84 +355,85 @@ class _BabyDetailViewState extends State<BabyDetailView> {
     BabyStatus weightStatus,
   }) {
     return BlocBuilder<BabyBloc, BabyState>(
-        bloc: babyBloc,
-        builder: (context, state) {
-          if (state is LoadBMIBaby) {
-            if (state.list == null || state.list.length < 2) {
-              return ErrorLabel(
-                  label:
-                      'Something error with your baby\'s BMI data. We will fix this right now');
-            }
-            BmiModel height;
-            BmiModel weight;
-            if (state.list[0].type == BMIType.Height) {
-              height = state.list[0];
-              weight = state.list[1];
-            } else {
-              height = state.list[1];
-              weight = state.list[0];
-            }
-
-            return Container(
-              width: double.infinity,
-              child: Column(
-                children: [
-                  Container(
-                    child: TitleLabel('Body Mass Index'),
-                    padding: EdgeInsets.only(
-                      top: AppConstants.paddingLargeH,
-                      bottom: AppConstants.paddingNormalH,
-                    ),
-                  ),
-                  _buildBMIContent(
-                    'Current height:',
-                    'cm',
-                    value: height.value,
-                    status: heightStatus,
-                  ),
-                  _buildBMIContent(
-                    'Current weight:',
-                    'g',
-                    value: weight.value,
-                    status: weightStatus,
-                  ),
-                  Container(
-                    child: SolidButton('Update', () {
-                      Navigator.pushNamed(
-                        context,
-                        UpdateBMIView.routeName,
-                        arguments: UpdateBMIViewArguments(
-                          args.model,
-                          height,
-                          weight,
-                        ),
-                      );
-                    }),
-                    padding: EdgeInsets.only(
-                      left: AppConstants.paddingLargeW,
-                      right: AppConstants.paddingLargeW,
-                      top: AppConstants.paddingNormalH,
-                      bottom: AppConstants.paddingLargeH,
-                    ),
-                  ),
-                ],
-              ),
-              decoration: BoxDecoration(
-                color: AppColors.whiteBackground,
-                borderRadius:
-                    BorderRadius.circular(AppConstants.cornerRadiusFrame),
-                boxShadow: [
-                  BoxShadow(
-                    color: AppColors.shadow,
-                    blurRadius: 4,
-                    offset: Offset(0, 4), // changes position of shadow
-                  ),
-                ],
-              ),
-            );
+      bloc: babyBloc,
+      builder: (context, state) {
+        if (state is LoadBMIAndNIBaby) {
+          if (state.listBMI == null || state.listBMI.length < 2) {
+            return ErrorLabel(
+                label:
+                    'Something error with your baby\'s BMI data. We will fix this right now');
           }
-          return ErrorLabel();
-        });
+          BmiModel height;
+          BmiModel weight;
+          if (state.listBMI[0].type == BMIType.Height) {
+            height = state.listBMI[0];
+            weight = state.listBMI[1];
+          } else {
+            height = state.listBMI[1];
+            weight = state.listBMI[0];
+          }
+
+          return Container(
+            width: double.infinity,
+            child: Column(
+              children: [
+                Container(
+                  child: TitleLabel('Body Mass Index'),
+                  padding: EdgeInsets.only(
+                    top: AppConstants.paddingLargeH,
+                    bottom: AppConstants.paddingNormalH,
+                  ),
+                ),
+                _buildBMIContent(
+                  'Current height:',
+                  'cm',
+                  value: height.value,
+                  status: heightStatus,
+                ),
+                _buildBMIContent(
+                  'Current weight:',
+                  'g',
+                  value: weight.value,
+                  status: weightStatus,
+                ),
+                Container(
+                  child: SolidButton('Update', () {
+                    Navigator.pushNamed(
+                      context,
+                      UpdateBMIView.routeName,
+                      arguments: UpdateBMIViewArguments(
+                        args.model,
+                        height,
+                        weight,
+                      ),
+                    );
+                  }),
+                  padding: EdgeInsets.only(
+                    left: AppConstants.paddingLargeW,
+                    right: AppConstants.paddingLargeW,
+                    top: AppConstants.paddingNormalH,
+                    bottom: AppConstants.paddingLargeH,
+                  ),
+                ),
+              ],
+            ),
+            decoration: BoxDecoration(
+              color: AppColors.whiteBackground,
+              borderRadius:
+                  BorderRadius.circular(AppConstants.cornerRadiusFrame),
+              boxShadow: [
+                BoxShadow(
+                  color: AppColors.shadow,
+                  blurRadius: 4,
+                  offset: Offset(0, 4), // changes position of shadow
+                ),
+              ],
+            ),
+          );
+        }
+        return ErrorLabel();
+      },
+    );
   }
 
   Widget _buildBMIContent(
@@ -515,86 +515,95 @@ class _BabyDetailViewState extends State<BabyDetailView> {
     Function infoActionCalcium,
     Function infoActionIodine,
   }) {
-    return Container(
-      width: double.infinity,
-      child: Column(
-        children: [
-          Container(
-            child: TitleLabel('Nutrition Index'),
-            padding: EdgeInsets.only(
-              top: AppConstants.paddingLargeH,
-              bottom: AppConstants.paddingNormalH,
-            ),
-          ),
-          _buildRowOfNI(
-            'Carbohydrate',
-            'Fat',
-            status1: statusCarbohydrate,
-            status2: statusFat,
-            infoAction1: infoActionCarbohydrate,
-            infoAction2: infoActionFat,
-          ),
-          _buildRowOfNI(
-            'Protein',
-            'Vitamin A',
-            status1: statusProtein,
-            status2: statusVitaminA,
-            infoAction1: infoActionProtein,
-            infoAction2: infoActionVitaminA,
-          ),
-          _buildRowOfNI(
-            'Vitamin B',
-            'Vitamin C',
-            status1: statusVitaminB,
-            status2: statusVitaminC,
-            infoAction1: infoActionVitaminB,
-            infoAction2: infoActionVitaminC,
-          ),
-          _buildRowOfNI(
-            'Vitamin D',
-            'Iron',
-            status1: statusVitaminD,
-            status2: statusIron,
-            infoAction1: infoActionVitaminD,
-            infoAction2: infoActionIron,
-          ),
-          _buildRowOfNI(
-            'Calcium',
-            'Iodine',
-            status1: statusCalcium,
-            status2: statusIodine,
-            infoAction1: infoActionCalcium,
-            infoAction2: infoActionIodine,
-          ),
-          Container(
-            child: SolidButton('Update', () {
-              Navigator.pushNamed(
-                context,
-                UpdateFoodView.routeName,
-                arguments: UpdateFoodViewArguments(args.model),
-              );
-            }),
-            padding: EdgeInsets.only(
-              left: AppConstants.paddingLargeW,
-              right: AppConstants.paddingLargeW,
-              top: AppConstants.paddingNormalH,
-              bottom: AppConstants.paddingLargeH,
-            ),
-          ),
-        ],
-      ),
-      decoration: BoxDecoration(
-        color: AppColors.whiteBackground,
-        borderRadius: BorderRadius.circular(AppConstants.cornerRadiusFrame),
-        boxShadow: [
-          BoxShadow(
-            color: AppColors.shadow,
-            blurRadius: 4,
-            offset: Offset(0, 4), // changes position of shadow
-          ),
-        ],
-      ),
-    );
+    return BlocBuilder<BabyBloc, BabyState>(
+        bloc: babyBloc,
+        builder: (context, state) {
+          if (state is LoadBMIAndNIBaby) {
+            print(state.listNI.toList());
+            return Container(
+              width: double.infinity,
+              child: Column(
+                children: [
+                  Container(
+                    child: TitleLabel('Nutrition Index'),
+                    padding: EdgeInsets.only(
+                      top: AppConstants.paddingLargeH,
+                      bottom: AppConstants.paddingNormalH,
+                    ),
+                  ),
+                  _buildRowOfNI(
+                    'Carbohydrate',
+                    'Fat',
+                    status1: statusCarbohydrate,
+                    status2: statusFat,
+                    infoAction1: infoActionCarbohydrate,
+                    infoAction2: infoActionFat,
+                  ),
+                  _buildRowOfNI(
+                    'Protein',
+                    'Vitamin A',
+                    status1: statusProtein,
+                    status2: statusVitaminA,
+                    infoAction1: infoActionProtein,
+                    infoAction2: infoActionVitaminA,
+                  ),
+                  _buildRowOfNI(
+                    'Vitamin B',
+                    'Vitamin C',
+                    status1: statusVitaminB,
+                    status2: statusVitaminC,
+                    infoAction1: infoActionVitaminB,
+                    infoAction2: infoActionVitaminC,
+                  ),
+                  _buildRowOfNI(
+                    'Vitamin D',
+                    'Iron',
+                    status1: statusVitaminD,
+                    status2: statusIron,
+                    infoAction1: infoActionVitaminD,
+                    infoAction2: infoActionIron,
+                  ),
+                  _buildRowOfNI(
+                    'Calcium',
+                    'Iodine',
+                    status1: statusCalcium,
+                    status2: statusIodine,
+                    infoAction1: infoActionCalcium,
+                    infoAction2: infoActionIodine,
+                  ),
+                  Container(
+                    child: SolidButton('Update', () {
+                      Navigator.pushNamed(
+                        context,
+                        UpdateFoodView.routeName,
+                        arguments: UpdateFoodViewArguments(args.model),
+                      );
+                    }),
+                    padding: EdgeInsets.only(
+                      left: AppConstants.paddingLargeW,
+                      right: AppConstants.paddingLargeW,
+                      top: AppConstants.paddingNormalH,
+                      bottom: AppConstants.paddingLargeH,
+                    ),
+                  ),
+                ],
+              ),
+              decoration: BoxDecoration(
+                color: AppColors.whiteBackground,
+                borderRadius:
+                    BorderRadius.circular(AppConstants.cornerRadiusFrame),
+                boxShadow: [
+                  BoxShadow(
+                    color: AppColors.shadow,
+                    blurRadius: 4,
+                    offset: Offset(0, 4), // changes position of shadow
+                  ),
+                ],
+              ),
+            );
+          }
+          return ErrorLabel();
+        });
   }
 
   Widget _buildRowOfNI(

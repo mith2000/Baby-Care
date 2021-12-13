@@ -8,14 +8,23 @@ class BabyState extends Equatable {
   final bool isNameValid;
   final bool isBirthValid;
   final List<BabyModel> listBaby;
+  final List<BmiModel> listBMI;
+  final List<NIModel> listNI;
 
-  BabyState({this.isNameValid, this.isBirthValid, this.listBaby});
+  BabyState(
+      {this.isNameValid,
+      this.isBirthValid,
+      this.listBaby,
+      this.listBMI,
+      this.listNI});
 
   @override
   List<Object> get props => [];
 
-  BabyState setListBaby({List<BabyModel> list}) {
-    return BabyState(listBaby: list);
+  BabyState updateListBMIAndNI({List<BmiModel> listBMI, List<NIModel> listNI}) {
+    return BabyState(
+        listBMI: listBMI == null ? this.listBMI : listBMI,
+        listNI: listNI == null ? this.listNI : listNI);
   }
 
   BabyState update({
@@ -76,6 +85,16 @@ class LoadNIBaby extends BabyState {
 
   @override
   List<Object> get props => [list];
+}
+
+class LoadBMIAndNIBaby extends BabyState {
+  final List<NIModel> listNI;
+  final List<BmiModel> listBMI;
+
+  LoadBMIAndNIBaby({this.listNI, this.listBMI});
+
+  @override
+  List<Object> get props => [listNI, listBMI];
 }
 
 class BabyCreated extends BabyState {

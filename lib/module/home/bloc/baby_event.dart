@@ -172,3 +172,22 @@ class FetchNI extends BabyEvent {
   @override
   List<Object> get props => [idBaby];
 }
+
+class FetchBMIAndNI extends BabyEvent{
+  final String idBaby;
+
+  FetchBMIAndNI({this.idBaby});
+
+  @override
+  List<Object> get props => [idBaby];
+}
+
+class FetchedBMIAndNI extends BabyEvent {
+  final List<NIModel> listNI;
+  final List<BmiModel> listBMI;
+
+  FetchedBMIAndNI({this.listNI, this.listBMI});
+
+  @override
+  List<Object> get props => [listNI, listBMI];
+}

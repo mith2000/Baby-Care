@@ -179,10 +179,10 @@ class _UpdateBMIViewState extends State<UpdateBMIView> {
     UpdateBMIViewArguments args,
   ) {
     int lastDateUpdate;
-    int heightUpdateDate = Converter.dateToDouble(
+    int heightUpdateDate = Converter.dateToDayDouble(
             DateFormat('dd/MM/yyyy').format(args.height.updateDate))
         .toInt();
-    int weightUpdateDate = Converter.dateToDouble(
+    int weightUpdateDate = Converter.dateToDayDouble(
             DateFormat('dd/MM/yyyy').format(args.weight.updateDate))
         .toInt();
     heightUpdateDate < weightUpdateDate
@@ -368,7 +368,7 @@ class _UpdateBMIViewState extends State<UpdateBMIView> {
         BlocBuilder<BabyBloc, BabyState>(
             bloc: babyBloc,
             builder: (context, state) {
-              if (state is LoadBMIBaby) {
+              if (state is LoadBMIAndNIBaby) {
                 return MiniSolidButton('Save', () {
                   if (_formData['height'] == 0 && _formData['weight'] == 0) {
                     setState(() {
@@ -396,7 +396,7 @@ class _UpdateBMIViewState extends State<UpdateBMIView> {
                       ],
                     ),
                   );
-
+                  babyBloc.add(FetchBMIAndNI(idBaby: args.baby.id));
                   Navigator.pop(context);
                 });
               }

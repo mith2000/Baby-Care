@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter_babycare/data/model/baby_model.dart';
+import 'package:flutter_babycare/data/model/ni_model.dart';
 import 'package:flutter_babycare/data/source/baby_repository.dart';
 import 'package:flutter_babycare/data/source/bmi_repository.dart';
 import 'package:flutter_babycare/data/source/food_repository.dart';
@@ -83,6 +84,25 @@ class BabyBloc extends Bloc<BabyEvent, BabyState> {
     if (event is FetchedNI) {
       yield* mapFetchedNIToState(event);
     }
+    if (event is FetchBMIAndNI) {
+      yield* mapFetchBMIAndNIToState(event);
+    }
+    if (event is FetchedBMIAndNI) {
+      yield* mapFetchedBMIAndNIToState(event);
+    }
+  }
+
+  Stream<BabyState> mapFetchBMIAndNIToState(FetchBMIAndNI event) async* {
+    List<NIModel> list = [];
+    babySubscription = await niRepository
+        .fetchNi(event.idBaby)
+        .listen((listNI) => list = listNI);
+    babySubscription = await bmiRepository.fetchBmi(event.idBaby).listen(
+        (listBMI) => add(FetchedBMIAndNI(listBMI: listBMI, listNI: list)));
+  }
+
+  Stream<BabyState> mapFetchedBMIAndNIToState(FetchedBMIAndNI event) async* {
+    yield LoadBMIAndNIBaby(listBMI: event.listBMI, listNI: event.listNI);
   }
 
   Stream<BabyState> mapFetchNIToState(FetchNI event) async* {
@@ -115,7 +135,7 @@ class BabyBloc extends Bloc<BabyEvent, BabyState> {
   Stream<BabyState> mapUpdateBMIEventToState(UpdateBMIEvent event) async* {
     babySubscription = bmiRepository
         .updateBMI(listBMIModel: event.listBmi, idBaby: event.listBmi[0].idBaby)
-        .listen((listBMI) => add(FetchedBMI(listBmi: listBMI)));
+        .listen((listBMI) =>{});
   }
 
   Stream<BabyState> mapFetchBMIToState(FetchBMI event) async* {
@@ -183,7 +203,6 @@ class BabyBloc extends Bloc<BabyEvent, BabyState> {
               add(
                 UpdateListBaby(listBaby: baby),
               ),
-              state.setListBaby(list: baby)
             });
   }
 }
