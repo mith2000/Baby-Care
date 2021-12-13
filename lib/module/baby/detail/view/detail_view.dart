@@ -7,6 +7,7 @@ import 'package:flutter_babycare/module/baby/update/view/update_food_view.dart';
 import 'package:flutter_babycare/module/home/bloc/baby_bloc.dart';
 import 'package:flutter_babycare/module/home/bloc/baby_event.dart';
 import 'package:flutter_babycare/module/home/bloc/baby_state.dart';
+import 'package:flutter_babycare/module/meal/view/suggestion_view.dart';
 import 'package:flutter_babycare/utils/UI_components/baby_status_icon.dart';
 import 'package:flutter_babycare/utils/UI_components/badge_icon.dart';
 import 'package:flutter_babycare/utils/UI_components/error_label.dart';
@@ -114,7 +115,13 @@ class _BabyDetailViewState extends State<BabyDetailView> {
                         featureName: 'Meal suggestion',
                         featureDescription:
                             'Get to know what your baby needs for the coming week',
-                        action: () {},
+                        action: () {
+                          Navigator.pushNamed(
+                            context,
+                            MealSuggestionView.routeName,
+                            arguments: MealSuggestionViewArguments(args.model),
+                          );
+                        },
                         image: AssetImage('assets/image/meal_suggestion.jpg'),
                       ),
                       _buildFeatureButton(
