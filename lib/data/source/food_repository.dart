@@ -36,6 +36,25 @@ class FoodRepository {
     return listFoodModel[0].idBaby;
   }
 
+  Future<String> updateFood(
+      {List<FoodModel> listFoodModel, String idBaby}) async {
+    for (var i = 0; i < listFoodModel.length; i++) {
+      DocumentReference documentReferencer =
+      firebaseFirestore.collection('food').doc(listFoodModel[i].id);
+      documentReferencer
+          .update(listFoodModel[i].toJson())
+          .whenComplete(() => print("Food updated in the database"))
+          .catchError((e) => print(e));
+
+      List<NIModel> listNi = Converter.foodToNI(listFoodModel[i]);
+
+      for (var j = 0; j < listNi.length; j++) {
+        await niRepository.createNi(listNi[j], listFoodModel[0].idBaby);
+      }
+    }
+    return listFoodModel[0].idBaby;
+  }
+
   Stream<List<FoodModel>> fetchFood(String idBaby) {
     return firebaseFirestore
         .collection('food')

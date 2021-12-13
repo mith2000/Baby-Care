@@ -79,6 +79,16 @@ class UpdateBMIEvent extends BabyEvent {
   List<Object> get props => [listBmi];
 }
 
+class UpdateFoodEvent extends BabyEvent {
+  final String idBaby;
+  final List<FoodModel> listFood;
+
+  UpdateFoodEvent({this.idBaby, this.listFood});
+
+  @override
+  List<Object> get props => [listFood];
+}
+
 class NameBabyChange extends BabyEvent {
   final String name;
 

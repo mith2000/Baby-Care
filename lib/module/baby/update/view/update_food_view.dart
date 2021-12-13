@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_babycare/constants/app_constants.dart';
 import 'package:flutter_babycare/data/model/baby_model.dart';
-import 'package:flutter_babycare/data/model/bmi_model.dart';
+import 'package:flutter_babycare/data/model/food_model.dart';
 import 'package:flutter_babycare/module/home/bloc/baby_bloc.dart';
 import 'package:flutter_babycare/module/home/bloc/baby_event.dart';
 import 'package:flutter_babycare/module/home/bloc/baby_state.dart';
@@ -70,7 +70,6 @@ class _UpdateFoodViewState extends State<UpdateFoodView> {
   Widget build(BuildContext context) {
     final args =
         ModalRoute.of(context).settings.arguments as UpdateFoodViewArguments;
-
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: PreferredSize(
@@ -485,7 +484,7 @@ class _UpdateFoodViewState extends State<UpdateFoodView> {
         BlocBuilder<BabyBloc, BabyState>(
             bloc: babyBloc,
             builder: (context, state) {
-              if (state is LoadBMIBaby) {
+              if (state is LoadBMIAndNIBaby) {
                 return MiniSolidButton('Save', () {
                   if (_formData['porridge'] == 0 &&
                       _formData['milk'] == 0 &&
@@ -500,25 +499,16 @@ class _UpdateFoodViewState extends State<UpdateFoodView> {
                     });
                     return;
                   }
-
-                  // babyBloc.add(
-                  //   UpdateBMIEvent(
-                  //     listBmi: [
-                  //       BmiModel(
-                  //           id: args.height.id,
-                  //           idBaby: args.height.idBaby,
-                  //           type: BMIType.Height,
-                  //           value: args.height.value + _formData['height']),
-                  //       BmiModel(
-                  //           id: args.weight.id,
-                  //           idBaby: args.weight.idBaby,
-                  //           type: BMIType.Weight,
-                  //           value:
-                  //               args.weight.value + _formData['weight'] * 100),
-                  //     ],
-                  //   ),
-                  // );
-
+                  List<FoodModel> list = [];
+                  for (var i = 0; i < FoodType.values.length; i++) {
+                    list.add(FoodModel(
+                      idBaby: args.baby.id,
+                      type: FoodType.values[i],
+                      value: 100,
+                      updateDate: DateTime.now(),
+                    ));
+                  }
+                  babyBloc.add(CreateFood(listFoodModel: list));// update food dung lai ham CreateFood luon
                   Navigator.pop(context);
                 });
               }
