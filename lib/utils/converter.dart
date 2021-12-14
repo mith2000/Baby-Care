@@ -12,7 +12,7 @@ class Converter {
     var temp2 = textBirthController.toString().split('/');
     double temp3 = ((double.parse((temp[2].split(']'))[0].toString()) -
                     double.parse(temp2[2].toString())) *
-                12 +
+                365 +
             (double.parse(temp[1].toString()) -
                     double.parse(temp2[1].toString())) *
                 30 +
@@ -31,7 +31,7 @@ class Converter {
     var temp2 = dateString.toString().split('/');
     double temp3 = ((double.parse((temp[2].split(']'))[0].toString()) -
                 double.parse(temp2[2].toString())) *
-            12 +
+            365 +
         (double.parse(temp[1].toString()) - double.parse(temp2[1].toString())) *
             30 +
         (double.parse((temp[0].split('['))[1].toString()) -
