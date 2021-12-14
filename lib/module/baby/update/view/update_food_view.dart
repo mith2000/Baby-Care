@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_babycare/constants/app_constants.dart';
 import 'package:flutter_babycare/data/model/baby_model.dart';
 import 'package:flutter_babycare/data/model/food_model.dart';
+import 'package:flutter_babycare/data/model/ni_model.dart';
 import 'package:flutter_babycare/module/home/bloc/baby_bloc.dart';
 import 'package:flutter_babycare/module/home/bloc/baby_event.dart';
 import 'package:flutter_babycare/module/home/bloc/baby_state.dart';
@@ -23,8 +24,28 @@ import 'package:intl/intl.dart';
 
 class UpdateFoodViewArguments {
   final BabyModel baby;
+  final NIModel carb,
+      fat,
+      protein,
+      vit_a,
+      vit_b,
+      vit_c,
+      vit_d,
+      iron,
+      calcium,
+      iodine;
 
-  UpdateFoodViewArguments(this.baby);
+  UpdateFoodViewArguments(this.baby,
+      {this.carb,
+      this.fat,
+      this.protein,
+      this.vit_a,
+      this.vit_b,
+      this.vit_c,
+      this.vit_d,
+      this.iron,
+      this.calcium,
+      this.iodine});
 }
 
 class UpdateFoodView extends StatefulWidget {
@@ -192,7 +213,28 @@ class _UpdateFoodViewState extends State<UpdateFoodView> {
   Widget _buildTrackerView(
     UpdateFoodViewArguments args,
   ) {
-    int lastDateUpdate;
+    var nutriUpdateDates = <int>[];
+    var NIlist = [];
+    NIlist.add(args.carb);
+    NIlist.add(args.fat);
+    NIlist.add(args.protein);
+    NIlist.add(args.vit_a);
+    NIlist.add(args.vit_a);
+    NIlist.add(args.vit_c);
+    NIlist.add(args.vit_d);
+    NIlist.add(args.iron);
+    NIlist.add(args.calcium);
+    NIlist.add(args.iodine);
+    for (var i = 0; i < NIlist.length; i++) {
+      nutriUpdateDates.add(Converter.dateToDayDouble(
+              DateFormat('dd/MM/yyyy').format(NIlist[0].updateDate))
+          .toInt());
+    }
+
+    int updateDateNI = 0;
+    updateDateNI =
+        nutriUpdateDates.reduce((curr, next) => curr < next ? curr : next);
+    ;
 
     return Container(
       height: 80.h,
@@ -215,8 +257,10 @@ class _UpdateFoodViewState extends State<UpdateFoodView> {
           ),
           SizedBox(width: AppConstants.paddingNormalW),
           HighlightBox(
-            " ",
-            color: AppColors.danger,
+            updateDateNI.toString(),
+            color: updateDateNI <= AppConstants.dateDanger
+                ? AppColors.primary
+                : AppColors.danger,
           ),
           SizedBox(width: AppConstants.paddingNormalW),
           Text(
@@ -499,16 +543,26 @@ class _UpdateFoodViewState extends State<UpdateFoodView> {
                     });
                     return;
                   }
-                  List<FoodModel> list = [];
+                  List<FoodModel> foodList = [];
+                  List<int> foodValues = [];
+                  foodValues.add(_formData['porridge'] * 100);
+                  foodValues.add(_formData['milk'] * 100);
+                  foodValues.add(_formData['meat'] * 100);
+                  foodValues.add(_formData['fish'] * 100);
+                  foodValues.add(_formData['egg']);
+                  foodValues.add(_formData['green_vegets'] * 100);
+                  foodValues.add(_formData['red_vegets'] * 100);
+                  foodValues.add(_formData['citrus_fruit'] * 100);
                   for (var i = 0; i < FoodType.values.length; i++) {
-                    list.add(FoodModel(
+                    foodList.add(FoodModel(
                       idBaby: args.baby.id,
                       type: FoodType.values[i],
-                      value: 100,
+                      value: foodValues[i].toDouble(),
                       updateDate: DateTime.now(),
                     ));
                   }
-                  babyBloc.add(CreateFood(listFoodModel: list));// update food dung lai ham CreateFood luon
+                  babyBloc.add(CreateFood(listFoodModel: foodList));
+                  babyBloc.add(FetchBMIAndNI(idBaby: args.baby.id));
                   Navigator.pop(context);
                 });
               }
