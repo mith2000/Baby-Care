@@ -543,18 +543,26 @@ class _UpdateFoodViewState extends State<UpdateFoodView> {
                     });
                     return;
                   }
-                  List<FoodModel> list = [];
+                  List<FoodModel> foodList = [];
+                  List<int> foodValues = [];
+                  foodValues.add(_formData['porridge'] * 100);
+                  foodValues.add(_formData['milk'] * 100);
+                  foodValues.add(_formData['meat'] * 100);
+                  foodValues.add(_formData['fish'] * 100);
+                  foodValues.add(_formData['egg']);
+                  foodValues.add(_formData['green_vegets'] * 100);
+                  foodValues.add(_formData['red_vegets'] * 100);
+                  foodValues.add(_formData['citrus_fruit'] * 100);
                   for (var i = 0; i < FoodType.values.length; i++) {
-                    list.add(FoodModel(
+                    foodList.add(FoodModel(
                       idBaby: args.baby.id,
                       type: FoodType.values[i],
-                      value: 100,
+                      value: foodValues[i].toDouble(),
                       updateDate: DateTime.now(),
                     ));
                   }
-                  babyBloc.add(CreateFood(
-                      listFoodModel:
-                          list)); // update food dung lai ham CreateFood luon
+                  babyBloc.add(CreateFood(listFoodModel: foodList));
+                  babyBloc.add(FetchBMIAndNI(idBaby: args.baby.id));
                   Navigator.pop(context);
                 });
               }
