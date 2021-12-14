@@ -7,6 +7,7 @@ import 'package:flutter_babycare/module/home/bloc/baby_state.dart';
 import 'package:flutter_babycare/module/home/view/home_view.dart';
 import 'package:flutter_babycare/utils/UI_components/custom_slider.dart';
 import 'package:flutter_babycare/utils/UI_components/custom_slider_label.dart';
+import 'package:flutter_babycare/utils/UI_components/error_label.dart';
 import 'package:flutter_babycare/utils/UI_components/mini_line_button.dart';
 import 'package:flutter_babycare/utils/UI_components/mini_solid_button.dart';
 import 'package:flutter_babycare/utils/UI_components/title_label.dart';
@@ -307,38 +308,43 @@ class _CreateBabyFoodViewState extends State<CreateBabyFoodView> {
   }
 
   Widget _buildMainButtons() {
-    return BlocBuilder<BabyBloc, BabyState>(
-        bloc: babyBloc,
-        builder: (context, state) {
-          if (state is LoadBMIBaby) {
-            return Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                MiniLineButton('Back', () {
-                  Navigator.pop(context);
-                }),
-                SizedBox(width: AppConstants.paddingLargeW),
-                MiniSolidButton('Next', () {
-                  // moi data * 100 tru egg
-                  List<FoodModel> list = [];
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        MiniLineButton('Back', () {
+          Navigator.pop(context);
+        }),
+        SizedBox(width: AppConstants.paddingLargeW),
+        BlocBuilder<BabyBloc, BabyState>(
+            bloc: babyBloc,
+            builder: (context, state) {
+              if (state is LoadBMIBaby) {
+                return MiniSolidButton('Next', () {
+                  List<FoodModel> foodList = [];
+                  List<int> foodValues = [];
+                  foodValues.add(_formData['porridge'] * 100);
+                  foodValues.add(_formData['milk'] * 100);
+                  foodValues.add(_formData['meat'] * 100);
+                  foodValues.add(_formData['fish'] * 100);
+                  foodValues.add(_formData['egg']);
+                  foodValues.add(_formData['green_vegets'] * 100);
+                  foodValues.add(_formData['red_vegets'] * 100);
+                  foodValues.add(_formData['citrus_fruit'] * 100);
                   for (var i = 0; i < FoodType.values.length; i++) {
-                    list.add(FoodModel(
+                    foodList.add(FoodModel(
                       idBaby: state.list[0].idBaby,
                       type: FoodType.values[i],
-                      value: 100,
+                      value: foodValues[i].toDouble(),
                       updateDate: DateTime.now(),
                     ));
                   }
-                  babyBloc.add(CreateFood(listFoodModel: list));
-                  Navigator.pushNamed(
-                    context,
-                    HomeView.routeName,
-                  );
-                }),
-              ],
-            );
-          }
-          return Container();
-        });
+                  babyBloc.add(CreateFood(listFoodModel: foodList));
+                  Navigator.pushNamed(context, HomeView.routeName);
+                });
+              }
+              return ErrorLabel();
+            }),
+      ],
+    );
   }
 }
