@@ -24,28 +24,9 @@ import 'package:intl/intl.dart';
 
 class UpdateFoodViewArguments {
   final BabyModel baby;
-  final NIModel carb,
-      fat,
-      protein,
-      vit_a,
-      vit_b,
-      vit_c,
-      vit_d,
-      iron,
-      calcium,
-      iodine;
+  final List<NIModel> NIList;
 
-  UpdateFoodViewArguments(this.baby,
-      {this.carb,
-      this.fat,
-      this.protein,
-      this.vit_a,
-      this.vit_b,
-      this.vit_c,
-      this.vit_d,
-      this.iron,
-      this.calcium,
-      this.iodine});
+  UpdateFoodViewArguments(this.baby, this.NIList);
 }
 
 class UpdateFoodView extends StatefulWidget {
@@ -214,20 +195,9 @@ class _UpdateFoodViewState extends State<UpdateFoodView> {
     UpdateFoodViewArguments args,
   ) {
     var nutriUpdateDates = <int>[];
-    var NIlist = [];
-    NIlist.add(args.carb);
-    NIlist.add(args.fat);
-    NIlist.add(args.protein);
-    NIlist.add(args.vit_a);
-    NIlist.add(args.vit_a);
-    NIlist.add(args.vit_c);
-    NIlist.add(args.vit_d);
-    NIlist.add(args.iron);
-    NIlist.add(args.calcium);
-    NIlist.add(args.iodine);
-    for (var i = 0; i < NIlist.length; i++) {
+    for (var i = 0; i < args.NIList.length; i++) {
       nutriUpdateDates.add(Converter.dateToDayDouble(
-              DateFormat('dd/MM/yyyy').format(NIlist[0].updateDate))
+              DateFormat('dd/MM/yyyy').format(args.NIList[i].updateDate))
           .toInt());
     }
 

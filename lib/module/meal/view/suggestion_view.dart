@@ -218,7 +218,7 @@ class _MealSuggestionViewState extends State<MealSuggestionView> {
                 ),
               ),
               Container(
-                width: 300.w * 0.5,
+                width: 300.w * (nutri.value / 100.0),
                 height: 30.h,
                 decoration: BoxDecoration(
                   color: AppColors.primary,
@@ -301,7 +301,7 @@ class _MealSuggestionViewState extends State<MealSuggestionView> {
       Navigator.pushNamed(
         context,
         UpdateFoodView.routeName,
-        arguments: UpdateFoodViewArguments(args.baby),
+        arguments: UpdateFoodViewArguments(args.baby, args.NIDeficiencyList),
       );
     });
   }
