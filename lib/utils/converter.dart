@@ -12,7 +12,7 @@ class Converter {
     var temp2 = textBirthController.toString().split('/');
     double temp3 = ((double.parse((temp[2].split(']'))[0].toString()) -
                     double.parse(temp2[2].toString())) *
-                12 +
+                365 +
             (double.parse(temp[1].toString()) -
                     double.parse(temp2[1].toString())) *
                 30 +
@@ -23,17 +23,16 @@ class Converter {
     return double.parse(temp3.toStringAsFixed(2));
   }
 
-  static dateToDayDouble(String dateString){
+  static dateToDayDouble(String dateString) {
     DateFormat dateFormat = DateFormat("dd/MM/yyyy");
     String string = dateFormat.format(DateTime.now());
     var parts = string.split(' ');
     var temp = parts.toString().split('/');
     var temp2 = dateString.toString().split('/');
     double temp3 = ((double.parse((temp[2].split(']'))[0].toString()) -
-        double.parse(temp2[2].toString())) *
-        12 +
-        (double.parse(temp[1].toString()) -
-            double.parse(temp2[1].toString())) *
+                double.parse(temp2[2].toString())) *
+            365 +
+        (double.parse(temp[1].toString()) - double.parse(temp2[1].toString())) *
             30 +
         (double.parse((temp[0].split('['))[1].toString()) -
             double.parse(temp2[0].toString())));
