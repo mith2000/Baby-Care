@@ -43,7 +43,7 @@ class BmiRepository {
           firebaseFirestore.collection('bmi').doc(listBMIModel[i].id);
       documentReferencer
           .update(listBMIModel[i].toJson())
-          .whenComplete(() => print("Baby updated in the database"))
+          .whenComplete(() => print("BMI updated in the database"))
           .catchError((e) => print(e));
     }
     return firebaseFirestore
