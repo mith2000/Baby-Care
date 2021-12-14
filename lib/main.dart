@@ -29,6 +29,7 @@ import 'module/home/bloc/baby_bloc.dart';
 import 'module/home/view/home_view.dart';
 import 'module/login/bloc/login_bloc.dart';
 import 'module/login/view/login_view.dart';
+import 'module/meal/view/suggestion_view.dart';
 import 'module/register/bloc/register_bloc.dart';
 import 'module/register/view/register_view.dart';
 
@@ -183,6 +184,8 @@ class _MyAppState extends State<MyApp> {
                       UpdateBMIView(),
                   UpdateFoodView.routeName: (BuildContext context) =>
                       UpdateFoodView(),
+                  MealSuggestionView.routeName: (BuildContext context) =>
+                      MealSuggestionView(),
                 },
               )),
     );
