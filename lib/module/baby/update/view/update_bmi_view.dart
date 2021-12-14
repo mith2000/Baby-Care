@@ -397,6 +397,7 @@ class _UpdateBMIViewState extends State<UpdateBMIView> {
                             value:
                                 args.weight.value + _formData['weight'] * 100),
                       ],
+                      idBaby: args.baby.id
                     ),
                   );
                   babyBloc.add(FetchBMIAndNI(idBaby: args.baby.id));
