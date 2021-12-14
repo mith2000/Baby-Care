@@ -14,6 +14,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import 'history_view.dart';
+
 class MealSuggestionViewArguments {
   final BabyModel baby;
   final int updateDateNI;
@@ -107,7 +109,7 @@ class _MealSuggestionViewState extends State<MealSuggestionView> {
                 mainAxisSize: MainAxisSize.max,
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                  _buildMealHistoryButton(),
+                  _buildMealHistoryButton(args),
                   SizedBox(height: AppConstants.paddingLargeH),
                   _buildMainButtons(),
                 ],
@@ -306,8 +308,14 @@ class _MealSuggestionViewState extends State<MealSuggestionView> {
     });
   }
 
-  _buildMealHistoryButton() {
-    return LineButton('Meal History', () {});
+  _buildMealHistoryButton(MealSuggestionViewArguments args) {
+    return LineButton('Meal History', () {
+      Navigator.pushNamed(
+        context,
+        MealHistoryView.routeName,
+        arguments: MealHistoryViewArguments(args.baby),
+      );
+    });
   }
 
   Widget _buildMainButtons() {

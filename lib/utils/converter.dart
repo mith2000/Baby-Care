@@ -362,6 +362,71 @@ class Converter {
         return "Iodine";
         break;
       default:
+        return "Carbohydrate";
+        break;
+    }
+  }
+
+  static String FoodTypeToIconNameString(FoodType type) {
+    switch (type) {
+      case FoodType.Porridge:
+        return "porridge";
+        break;
+      case FoodType.Milk:
+        return "milk";
+        break;
+      case FoodType.Meat:
+        return "meat";
+        break;
+      case FoodType.Fish:
+        return "fish";
+        break;
+      case FoodType.Egg:
+        return "egg";
+        break;
+      case FoodType.Green_Vegets:
+        return "green_vegets";
+        break;
+      case FoodType.Red_Vegets:
+        return "red_vegets";
+        break;
+      case FoodType.Citrus_Fruit:
+        return "citrus_fruit";
+        break;
+      default:
+        return "porridge";
+        break;
+    }
+  }
+
+  static String FoodTypeToUnitString(FoodType type) {
+    switch (type) {
+      case FoodType.Porridge:
+        return "g";
+        break;
+      case FoodType.Milk:
+        return "ml";
+        break;
+      case FoodType.Meat:
+        return "g";
+        break;
+      case FoodType.Fish:
+        return "g";
+        break;
+      case FoodType.Egg:
+        return "u";
+        break;
+      case FoodType.Green_Vegets:
+        return "g";
+        break;
+      case FoodType.Red_Vegets:
+        return "g";
+        break;
+      case FoodType.Citrus_Fruit:
+        return "g";
+        break;
+      default:
+        return "g";
         break;
     }
   }
