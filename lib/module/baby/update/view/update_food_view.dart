@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_babycare/constants/app_constants.dart';
 import 'package:flutter_babycare/data/model/baby_model.dart';
 import 'package:flutter_babycare/data/model/bmi_model.dart';
+import 'package:flutter_babycare/data/model/ni_model.dart';
 import 'package:flutter_babycare/module/home/bloc/baby_bloc.dart';
 import 'package:flutter_babycare/module/home/bloc/baby_event.dart';
 import 'package:flutter_babycare/module/home/bloc/baby_state.dart';
@@ -23,8 +24,28 @@ import 'package:intl/intl.dart';
 
 class UpdateFoodViewArguments {
   final BabyModel baby;
+  final NIModel carb,
+      fat,
+      protein,
+      vit_a,
+      vit_b,
+      vit_c,
+      vit_d,
+      iron,
+      calcium,
+      iodine;
 
-  UpdateFoodViewArguments(this.baby);
+  UpdateFoodViewArguments(this.baby,
+      {this.carb,
+      this.fat,
+      this.protein,
+      this.vit_a,
+      this.vit_b,
+      this.vit_c,
+      this.vit_d,
+      this.iron,
+      this.calcium,
+      this.iodine});
 }
 
 class UpdateFoodView extends StatefulWidget {
@@ -193,7 +214,28 @@ class _UpdateFoodViewState extends State<UpdateFoodView> {
   Widget _buildTrackerView(
     UpdateFoodViewArguments args,
   ) {
-    int lastDateUpdate;
+    var nutriUpdateDates = <int>[];
+    var NIlist = [];
+    NIlist.add(args.carb);
+    NIlist.add(args.fat);
+    NIlist.add(args.protein);
+    NIlist.add(args.vit_a);
+    NIlist.add(args.vit_a);
+    NIlist.add(args.vit_c);
+    NIlist.add(args.vit_d);
+    NIlist.add(args.iron);
+    NIlist.add(args.calcium);
+    NIlist.add(args.iodine);
+    for (var i = 0; i < NIlist.length; i++) {
+      nutriUpdateDates.add(Converter.dateToDayDouble(
+              DateFormat('dd/MM/yyyy').format(NIlist[0].updateDate))
+          .toInt());
+    }
+
+    int updateDateNI = 0;
+    updateDateNI =
+        nutriUpdateDates.reduce((curr, next) => curr < next ? curr : next);
+    ;
 
     return Container(
       height: 80.h,
@@ -216,8 +258,10 @@ class _UpdateFoodViewState extends State<UpdateFoodView> {
           ),
           SizedBox(width: AppConstants.paddingNormalW),
           HighlightBox(
-            " ",
-            color: AppColors.danger,
+            updateDateNI.toString(),
+            color: updateDateNI <= AppConstants.dateDanger
+                ? AppColors.primary
+                : AppColors.danger,
           ),
           SizedBox(width: AppConstants.paddingNormalW),
           Text(
@@ -485,7 +529,7 @@ class _UpdateFoodViewState extends State<UpdateFoodView> {
         BlocBuilder<BabyBloc, BabyState>(
             bloc: babyBloc,
             builder: (context, state) {
-              if (state is LoadBMIBaby) {
+              if (state is LoadBMIAndNIBaby) {
                 return MiniSolidButton('Save', () {
                   if (_formData['porridge'] == 0 &&
                       _formData['milk'] == 0 &&

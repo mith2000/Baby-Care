@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_babycare/constants/app_constants.dart';
 import 'package:flutter_babycare/data/model/baby_model.dart';
 import 'package:flutter_babycare/data/model/bmi_model.dart';
+import 'package:flutter_babycare/data/model/ni_model.dart';
 import 'package:flutter_babycare/module/baby/update/view/update_bmi_view.dart';
 import 'package:flutter_babycare/module/baby/update/view/update_food_view.dart';
 import 'package:flutter_babycare/module/home/bloc/baby_bloc.dart';
@@ -81,35 +82,9 @@ class _BabyDetailViewState extends State<BabyDetailView> {
                     children: [
                       _buildBabyGeneralInfoFrame(args),
                       SizedBox(height: AppConstants.paddingLargeH),
-                      _buildBMIFrame(
-                        args,
-                        heightStatus: BabyStatus.Love,
-                        weightStatus: BabyStatus.Sad,
-                      ),
+                      _buildBMIFrame(args),
                       SizedBox(height: AppConstants.paddingLargeH),
-                      _buildNIFrame(
-                        args,
-                        statusCarbohydrate: BabyStatus.Love,
-                        statusFat: BabyStatus.Happy,
-                        statusProtein: BabyStatus.Smile,
-                        statusVitaminA: BabyStatus.Sad,
-                        statusVitaminB: BabyStatus.Cry,
-                        statusVitaminC: BabyStatus.Love,
-                        statusVitaminD: BabyStatus.Happy,
-                        statusIron: BabyStatus.Smile,
-                        statusCalcium: BabyStatus.Sad,
-                        statusIodine: BabyStatus.Cry,
-                        infoActionCarbohydrate: () {},
-                        infoActionFat: () {},
-                        infoActionProtein: () {},
-                        infoActionVitaminA: () {},
-                        infoActionVitaminB: () {},
-                        infoActionVitaminC: () {},
-                        infoActionVitaminD: () {},
-                        infoActionIron: () {},
-                        infoActionCalcium: () {},
-                        infoActionIodine: () {},
-                      ),
+                      _buildNIFrame(args),
                       SizedBox(height: AppConstants.paddingNormalH),
                       _buildFeatureButton(
                         featureName: 'Meal suggestion',
@@ -189,7 +164,7 @@ class _BabyDetailViewState extends State<BabyDetailView> {
             ),
             SizedBox(width: AppConstants.paddingNormalW),
             HighlightBox(
-              Converter.dateToDayDouble(
+              Converter.dateToMonthDouble(
                       DateFormat('dd/MM/yyyy').format(args.model.birth))
                   .toInt()
                   .toString(),
@@ -281,27 +256,17 @@ class _BabyDetailViewState extends State<BabyDetailView> {
                       label:
                           'Something error with your baby\'s BMI data. We will fix this right now');
                 }
-                BmiModel height;
-                BmiModel weight;
-                if (state.listBMI[0].type == BMIType.Height) {
-                  height = state.listBMI[0];
-                  weight = state.listBMI[1];
-                } else {
-                  height = state.listBMI[1];
-                  weight = state.listBMI[0];
+                var BMIUpdateDates = <int>[];
+                for (var i = 0; i < state.listBMI.length; i++) {
+                  BMIUpdateDates.add(Converter.dateToDayDouble(
+                          DateFormat('dd/MM/yyyy')
+                              .format(state.listBMI[0].updateDate))
+                      .toInt());
                 }
 
-                int heightUpdateDate = Converter.dateToDayDouble(
-                        DateFormat('dd/MM/yyyy').format(height.updateDate))
-                    .toInt();
-                int weightUpdateDate = Converter.dateToDayDouble(
-                        DateFormat('dd/MM/yyyy').format(weight.updateDate))
-                    .toInt();
-
                 int updateDateBMI = 0;
-                heightUpdateDate < weightUpdateDate
-                    ? updateDateBMI = heightUpdateDate
-                    : updateDateBMI = weightUpdateDate;
+                updateDateBMI = BMIUpdateDates.reduce(
+                    (curr, next) => curr < next ? curr : next);
 
                 return Row(
                   children: [
@@ -331,36 +296,59 @@ class _BabyDetailViewState extends State<BabyDetailView> {
               return ErrorLabel();
             }),
         SizedBox(height: AppConstants.paddingLargeH),
-        Row(
-          children: [
-            (false)
-                ? SizedBox(width: AppConstants.paddingLargeW * 2)
-                : SvgPicture.asset(_icons['warn']),
-            SizedBox(width: AppConstants.paddingLargeW),
-            Text(
-              'It\'s been',
-              style: Theme.of(context).textTheme.bodyText1,
-            ),
-            SizedBox(width: AppConstants.paddingNormalW),
-            HighlightBox(
-              '15',
-            ),
-            SizedBox(width: AppConstants.paddingNormalW),
-            Text(
-              'days since your last NI update',
-              style: Theme.of(context).textTheme.bodyText1,
-            ),
-          ],
-        ),
+        BlocBuilder<BabyBloc, BabyState>(
+            bloc: babyBloc,
+            builder: (context, state) {
+              if (state is LoadBMIAndNIBaby) {
+                if (state.listNI == null || state.listNI.length < 10) {
+                  return ErrorLabel(
+                      label:
+                          'Something error with your baby\'s NI data. We will fix this right now');
+                }
+                var nutriUpdateDates = <int>[];
+                for (var i = 0; i < state.listNI.length; i++) {
+                  nutriUpdateDates.add(Converter.dateToDayDouble(
+                          DateFormat('dd/MM/yyyy')
+                              .format(state.listNI[0].updateDate))
+                      .toInt());
+                }
+
+                int updateDateNI = 0;
+                updateDateNI = nutriUpdateDates
+                    .reduce((curr, next) => curr < next ? curr : next);
+
+                return Row(
+                  children: [
+                    updateDateNI < AppConstants.dateDanger
+                        ? SizedBox(width: AppConstants.paddingLargeW * 2)
+                        : SvgPicture.asset(_icons['warn']),
+                    SizedBox(width: AppConstants.paddingLargeW),
+                    Text(
+                      'It\'s been',
+                      style: Theme.of(context).textTheme.bodyText1,
+                    ),
+                    SizedBox(width: AppConstants.paddingNormalW),
+                    HighlightBox(
+                      updateDateNI.toString(),
+                      color: updateDateNI < AppConstants.dateDanger
+                          ? AppColors.primary
+                          : AppColors.danger,
+                    ),
+                    SizedBox(width: AppConstants.paddingNormalW),
+                    Text(
+                      'days since your last NI update',
+                      style: Theme.of(context).textTheme.bodyText1,
+                    ),
+                  ],
+                );
+              }
+              return ErrorLabel();
+            }),
       ],
     );
   }
 
-  Widget _buildBMIFrame(
-    BabyDetailViewArguments args, {
-    BabyStatus heightStatus,
-    BabyStatus weightStatus,
-  }) {
+  Widget _buildBMIFrame(BabyDetailViewArguments args) {
     return BlocBuilder<BabyBloc, BabyState>(
       bloc: babyBloc,
       builder: (context, state) {
@@ -395,13 +383,13 @@ class _BabyDetailViewState extends State<BabyDetailView> {
                   'Current height:',
                   'cm',
                   value: height.value,
-                  status: heightStatus,
+                  status: BabyStatus.Happy,
                 ),
                 _buildBMIContent(
                   'Current weight:',
                   'g',
                   value: weight.value,
-                  status: weightStatus,
+                  status: BabyStatus.Sad,
                 ),
                 Container(
                   child: SolidButton('Update', () {
@@ -499,34 +487,63 @@ class _BabyDetailViewState extends State<BabyDetailView> {
     );
   }
 
-  Widget _buildNIFrame(
-    BabyDetailViewArguments args, {
-    BabyStatus statusCarbohydrate,
-    BabyStatus statusFat,
-    BabyStatus statusProtein,
-    BabyStatus statusVitaminA,
-    BabyStatus statusVitaminB,
-    BabyStatus statusVitaminC,
-    BabyStatus statusVitaminD,
-    BabyStatus statusIron,
-    BabyStatus statusCalcium,
-    BabyStatus statusIodine,
-    Function infoActionCarbohydrate,
-    Function infoActionFat,
-    Function infoActionProtein,
-    Function infoActionVitaminA,
-    Function infoActionVitaminB,
-    Function infoActionVitaminC,
-    Function infoActionVitaminD,
-    Function infoActionIron,
-    Function infoActionCalcium,
-    Function infoActionIodine,
-  }) {
+  Widget _buildNIFrame(BabyDetailViewArguments args) {
     return BlocBuilder<BabyBloc, BabyState>(
         bloc: babyBloc,
         builder: (context, state) {
           if (state is LoadBMIAndNIBaby) {
-            print(state.listNI.toList());
+            if (state.listNI == null || state.listNI.length < 10) {
+              return ErrorLabel(
+                  label:
+                      'Something error with your baby\'s NI data. We will fix this right now');
+            }
+            NIModel carb,
+                fat,
+                protein,
+                vit_a,
+                vit_b,
+                vit_c,
+                vit_d,
+                iron,
+                calcium,
+                iodine;
+            for (var nutri in state.listNI) {
+              switch (nutri.type) {
+                case NIType.Carbohydrate:
+                  carb = nutri;
+                  break;
+                case NIType.Fat:
+                  fat = nutri;
+                  break;
+                case NIType.Protein:
+                  protein = nutri;
+                  break;
+                case NIType.Vitamin_A:
+                  vit_a = nutri;
+                  break;
+                case NIType.Vitamin_B:
+                  vit_b = nutri;
+                  break;
+                case NIType.Vitamin_C:
+                  vit_c = nutri;
+                  break;
+                case NIType.Vitamin_D:
+                  vit_d = nutri;
+                  break;
+                case NIType.Iron:
+                  iron = nutri;
+                  break;
+                case NIType.Calcium:
+                  calcium = nutri;
+                  break;
+                case NIType.Iodine:
+                  iodine = nutri;
+                  break;
+                default:
+                  break;
+              }
+            }
+
             return Container(
               width: double.infinity,
               child: Column(
@@ -541,49 +558,59 @@ class _BabyDetailViewState extends State<BabyDetailView> {
                   _buildRowOfNI(
                     'Carbohydrate',
                     'Fat',
-                    status1: statusCarbohydrate,
-                    status2: statusFat,
-                    infoAction1: infoActionCarbohydrate,
-                    infoAction2: infoActionFat,
+                    status1: BabyStatus.Love,
+                    status2: BabyStatus.Love,
+                    infoAction1: () {},
+                    infoAction2: () {},
                   ),
                   _buildRowOfNI(
                     'Protein',
                     'Vitamin A',
-                    status1: statusProtein,
-                    status2: statusVitaminA,
-                    infoAction1: infoActionProtein,
-                    infoAction2: infoActionVitaminA,
+                    status1: BabyStatus.Cry,
+                    status2: BabyStatus.Love,
+                    infoAction1: () {},
+                    infoAction2: () {},
                   ),
                   _buildRowOfNI(
                     'Vitamin B',
                     'Vitamin C',
-                    status1: statusVitaminB,
-                    status2: statusVitaminC,
-                    infoAction1: infoActionVitaminB,
-                    infoAction2: infoActionVitaminC,
+                    status1: BabyStatus.Love,
+                    status2: BabyStatus.Love,
+                    infoAction1: () {},
+                    infoAction2: () {},
                   ),
                   _buildRowOfNI(
                     'Vitamin D',
                     'Iron',
-                    status1: statusVitaminD,
-                    status2: statusIron,
-                    infoAction1: infoActionVitaminD,
-                    infoAction2: infoActionIron,
+                    status1: BabyStatus.Smile,
+                    status2: BabyStatus.Happy,
+                    infoAction1: () {},
+                    infoAction2: () {},
                   ),
                   _buildRowOfNI(
                     'Calcium',
                     'Iodine',
-                    status1: statusCalcium,
-                    status2: statusIodine,
-                    infoAction1: infoActionCalcium,
-                    infoAction2: infoActionIodine,
+                    status1: BabyStatus.Sad,
+                    status2: BabyStatus.Cry,
+                    infoAction1: () {},
+                    infoAction2: () {},
                   ),
                   Container(
                     child: SolidButton('Update', () {
                       Navigator.pushNamed(
                         context,
                         UpdateFoodView.routeName,
-                        arguments: UpdateFoodViewArguments(args.model),
+                        arguments: UpdateFoodViewArguments(args.model,
+                            carb: carb,
+                            fat: fat,
+                            protein: protein,
+                            vit_a: vit_a,
+                            vit_b: vit_b,
+                            vit_c: vit_c,
+                            vit_d: vit_d,
+                            iron: iron,
+                            calcium: calcium,
+                            iodine: iodine),
                       );
                     }),
                     padding: EdgeInsets.only(

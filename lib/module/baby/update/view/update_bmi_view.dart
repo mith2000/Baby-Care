@@ -178,16 +178,19 @@ class _UpdateBMIViewState extends State<UpdateBMIView> {
   Widget _buildTrackerView(
     UpdateBMIViewArguments args,
   ) {
-    int lastDateUpdate;
-    int heightUpdateDate = Converter.dateToDayDouble(
-            DateFormat('dd/MM/yyyy').format(args.height.updateDate))
-        .toInt();
-    int weightUpdateDate = Converter.dateToDayDouble(
-            DateFormat('dd/MM/yyyy').format(args.weight.updateDate))
-        .toInt();
-    heightUpdateDate < weightUpdateDate
-        ? lastDateUpdate = heightUpdateDate
-        : lastDateUpdate = weightUpdateDate;
+    var BMIUpdateDates = <int>[];
+    var BMIlist = [];
+    BMIlist.add(args.height);
+    BMIlist.add(args.weight);
+    for (var i = 0; i < BMIlist.length; i++) {
+      BMIUpdateDates.add(Converter.dateToDayDouble(
+              DateFormat('dd/MM/yyyy').format(BMIlist[0].updateDate))
+          .toInt());
+    }
+
+    int updateDateBMI = 0;
+    updateDateBMI =
+        BMIUpdateDates.reduce((curr, next) => curr < next ? curr : next);
 
     return Container(
       height: 80.h,
@@ -245,8 +248,8 @@ class _UpdateBMIViewState extends State<UpdateBMIView> {
           ),
           SizedBox(width: AppConstants.paddingNormalW),
           HighlightBox(
-            lastDateUpdate.toString(),
-            color: lastDateUpdate <= AppConstants.dateDanger
+            updateDateBMI.toString(),
+            color: updateDateBMI <= AppConstants.dateDanger
                 ? AppColors.primary
                 : AppColors.danger,
           ),
