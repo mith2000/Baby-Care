@@ -86,19 +86,7 @@ class _BabyDetailViewState extends State<BabyDetailView> {
                       SizedBox(height: AppConstants.paddingLargeH),
                       _buildNIFrame(args),
                       SizedBox(height: AppConstants.paddingNormalH),
-                      _buildFeatureButton(
-                        featureName: 'Meal suggestion',
-                        featureDescription:
-                            'Get to know what your baby needs for the coming week',
-                        action: () {
-                          Navigator.pushNamed(
-                            context,
-                            MealSuggestionView.routeName,
-                            arguments: MealSuggestionViewArguments(args.model),
-                          );
-                        },
-                        image: AssetImage('assets/image/meal_suggestion.jpg'),
-                      ),
+                      _buildMealSuggestionButton(args),
                       _buildFeatureButton(
                         featureName: 'Vaccine suggestion',
                         featureDescription:
@@ -260,7 +248,7 @@ class _BabyDetailViewState extends State<BabyDetailView> {
                 for (var i = 0; i < state.listBMI.length; i++) {
                   BMIUpdateDates.add(Converter.dateToDayDouble(
                           DateFormat('dd/MM/yyyy')
-                              .format(state.listBMI[0].updateDate))
+                              .format(state.listBMI[i].updateDate))
                       .toInt());
                 }
 
@@ -309,7 +297,7 @@ class _BabyDetailViewState extends State<BabyDetailView> {
                 for (var i = 0; i < state.listNI.length; i++) {
                   nutriUpdateDates.add(Converter.dateToDayDouble(
                           DateFormat('dd/MM/yyyy')
-                              .format(state.listNI[0].updateDate))
+                              .format(state.listNI[i].updateDate))
                       .toInt());
                 }
 
@@ -497,53 +485,6 @@ class _BabyDetailViewState extends State<BabyDetailView> {
                   label:
                       'Something error with your baby\'s NI data. We will fix this right now');
             }
-            NIModel carb,
-                fat,
-                protein,
-                vit_a,
-                vit_b,
-                vit_c,
-                vit_d,
-                iron,
-                calcium,
-                iodine;
-            for (var nutri in state.listNI) {
-              switch (nutri.type) {
-                case NIType.Carbohydrate:
-                  carb = nutri;
-                  break;
-                case NIType.Fat:
-                  fat = nutri;
-                  break;
-                case NIType.Protein:
-                  protein = nutri;
-                  break;
-                case NIType.Vitamin_A:
-                  vit_a = nutri;
-                  break;
-                case NIType.Vitamin_B:
-                  vit_b = nutri;
-                  break;
-                case NIType.Vitamin_C:
-                  vit_c = nutri;
-                  break;
-                case NIType.Vitamin_D:
-                  vit_d = nutri;
-                  break;
-                case NIType.Iron:
-                  iron = nutri;
-                  break;
-                case NIType.Calcium:
-                  calcium = nutri;
-                  break;
-                case NIType.Iodine:
-                  iodine = nutri;
-                  break;
-                default:
-                  break;
-              }
-            }
-
             return Container(
               width: double.infinity,
               child: Column(
@@ -600,17 +541,8 @@ class _BabyDetailViewState extends State<BabyDetailView> {
                       Navigator.pushNamed(
                         context,
                         UpdateFoodView.routeName,
-                        arguments: UpdateFoodViewArguments(args.model,
-                            carb: carb,
-                            fat: fat,
-                            protein: protein,
-                            vit_a: vit_a,
-                            vit_b: vit_b,
-                            vit_c: vit_c,
-                            vit_d: vit_d,
-                            iron: iron,
-                            calcium: calcium,
-                            iodine: iodine),
+                        arguments:
+                            UpdateFoodViewArguments(args.model, state.listNI),
                       );
                     }),
                     padding: EdgeInsets.only(
@@ -722,6 +654,56 @@ class _BabyDetailViewState extends State<BabyDetailView> {
         ),
       ],
     );
+  }
+
+  Widget _buildMealSuggestionButton(BabyDetailViewArguments args) {
+    return BlocBuilder<BabyBloc, BabyState>(
+        bloc: babyBloc,
+        builder: (context, state) {
+          if (state is LoadBMIAndNIBaby) {
+            if (state.listNI == null || state.listNI.length < 10) {
+              return ErrorLabel(
+                  label:
+                      'Something error with your baby\'s NI data. We will fix this right now');
+            }
+            var nutriDeficiencyList = <NIModel>[];
+            for (var i = 0; i < state.listNI.length; i++) {
+              if (state.listNI[i].value < 100)
+                nutriDeficiencyList.add(state.listNI[i]);
+            }
+
+            var nutriUpdateDates = <int>[];
+            for (var i = 0; i < state.listNI.length; i++) {
+              nutriUpdateDates.add(Converter.dateToDayDouble(
+                      DateFormat('dd/MM/yyyy')
+                          .format(state.listNI[i].updateDate))
+                  .toInt());
+            }
+
+            int updateDateNI = 0;
+            updateDateNI = nutriUpdateDates
+                .reduce((curr, next) => curr < next ? curr : next);
+
+            return _buildFeatureButton(
+              featureName: 'Meal suggestion',
+              featureDescription:
+                  'Get to know what your baby needs for the coming week',
+              action: () {
+                Navigator.pushNamed(
+                  context,
+                  MealSuggestionView.routeName,
+                  arguments: MealSuggestionViewArguments(
+                    args.model,
+                    nutriDeficiencyList,
+                    updateDateNI,
+                  ),
+                );
+              },
+              image: AssetImage('assets/image/meal_suggestion.jpg'),
+            );
+          }
+          return ErrorLabel();
+        });
   }
 
   Widget _buildFeatureButton({
