@@ -9,15 +9,21 @@ import 'package:flutter_babycare/utils/UI_components/mini_line_button.dart';
 import 'package:flutter_babycare/utils/UI_components/mini_solid_button.dart';
 import 'package:flutter_babycare/utils/UI_components/solid_button.dart';
 import 'package:flutter_babycare/utils/app_colors.dart';
+import 'package:flutter_babycare/utils/converter.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class MealSuggestionViewArguments {
   final BabyModel baby;
-  //final List<NIModel> listNI;
+  final int updateDateNI;
+  final List<NIModel> NIDeficiencyList;
 
-  MealSuggestionViewArguments(this.baby);
+  MealSuggestionViewArguments(
+    this.baby,
+    this.NIDeficiencyList,
+    this.updateDateNI,
+  );
 }
 
 class MealSuggestionView extends StatefulWidget {
@@ -81,15 +87,19 @@ class _MealSuggestionViewState extends State<MealSuggestionView> {
             children: [
               ListView(
                 children: [
-                  _buildTrackerView(),
+                  _buildTrackerView(args),
                   SizedBox(height: AppConstants.paddingLargeH),
                   _buildUpdateNIButton(args),
                   SizedBox(height: AppConstants.paddingLargeH),
-                  _buildNutriDeficiencyList(),
-                  SizedBox(height: AppConstants.paddingLargeH),
-                  _buildNutriDeficiencyDetail(),
-                  SizedBox(height: AppConstants.paddingLargeH),
-                  _buildNutriDeficiencyDetail(),
+                  _buildNutriDeficiencyList(args),
+                  ListView.builder(
+                      shrinkWrap: true,
+                      physics: ScrollPhysics(),
+                      itemCount: args.NIDeficiencyList.length,
+                      itemBuilder: (context, index) {
+                        return _buildNutriDeficiencyDetail(
+                            args.baby.gender, args.NIDeficiencyList[index]);
+                      }),
                   SizedBox(height: AppConstants.paddingSuperLargeH * 4),
                 ],
               ),
@@ -109,7 +119,7 @@ class _MealSuggestionViewState extends State<MealSuggestionView> {
     );
   }
 
-  _buildTrackerView() {
+  _buildTrackerView(MealSuggestionViewArguments args) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
@@ -119,8 +129,10 @@ class _MealSuggestionViewState extends State<MealSuggestionView> {
         ),
         SizedBox(width: AppConstants.paddingNormalW),
         HighlightBox(
-          " ",
-          color: AppColors.primary,
+          args.updateDateNI.toString(),
+          color: args.updateDateNI < AppConstants.dateDanger
+              ? AppColors.primary
+              : AppColors.danger,
         ),
         SizedBox(width: AppConstants.paddingNormalW),
         Text(
@@ -131,7 +143,7 @@ class _MealSuggestionViewState extends State<MealSuggestionView> {
     );
   }
 
-  _buildNutriDeficiencyList() {
+  _buildNutriDeficiencyList(MealSuggestionViewArguments args) {
     return Column(
       children: [
         Text(
@@ -141,12 +153,11 @@ class _MealSuggestionViewState extends State<MealSuggestionView> {
         SizedBox(height: AppConstants.paddingNormalH),
         Wrap(
           runSpacing: AppConstants.paddingNormalH,
-          children: [
-            _buildNutriDeficiencyHighlightBox('Carbohydrate'),
-            _buildNutriDeficiencyHighlightBox('Fat'),
-            _buildNutriDeficiencyHighlightBox('Vitamin A'),
-            _buildNutriDeficiencyHighlightBox('Vitamin B'),
-          ],
+          children: args.NIDeficiencyList.map((item) =>
+                  _buildNutriDeficiencyHighlightBox(
+                      Converter.NITypeToTypeString(item.type)))
+              .toList()
+              .cast<Widget>(),
         ),
       ],
     );
@@ -181,7 +192,7 @@ class _MealSuggestionViewState extends State<MealSuggestionView> {
     );
   }
 
-  _buildNutriDeficiencyDetail() {
+  _buildNutriDeficiencyDetail(String gender, NIModel nutri) {
     return Container(
       height: 196.h,
       alignment: Alignment.center,
@@ -190,7 +201,9 @@ class _MealSuggestionViewState extends State<MealSuggestionView> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Text(
-            'His vitamin B index: ',
+            gender == "boy"
+                ? "His "
+                : "Her " + Converter.NITypeToTypeString(nutri.type) + " index:",
             style: Theme.of(context).textTheme.headline1,
           ),
           SizedBox(height: AppConstants.paddingLargeH),
@@ -220,7 +233,7 @@ class _MealSuggestionViewState extends State<MealSuggestionView> {
           SizedBox(height: AppConstants.paddingLargeH),
           Center(
             child: Text(
-              'He needs more',
+              gender == "boy" ? "He" : "She" + " need more",
               style: Theme.of(context).textTheme.bodyText1,
             ),
           ),
@@ -264,9 +277,11 @@ class _MealSuggestionViewState extends State<MealSuggestionView> {
       padding: EdgeInsets.symmetric(
         horizontal: AppConstants.paddingLargeW,
       ),
-      margin: EdgeInsets.symmetric(
-          horizontal:
-              AppConstants.paddingSuperLargeW - AppConstants.paddingAppW),
+      margin: EdgeInsets.only(
+        left: AppConstants.paddingSuperLargeW - AppConstants.paddingAppW,
+        right: AppConstants.paddingSuperLargeW - AppConstants.paddingAppW,
+        top: AppConstants.paddingLargeH,
+      ),
       decoration: BoxDecoration(
         color: AppColors.whiteBackground,
         borderRadius: BorderRadius.circular(AppConstants.cornerRadiusFrame),

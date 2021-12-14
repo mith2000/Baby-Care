@@ -23,17 +23,16 @@ class Converter {
     return double.parse(temp3.toStringAsFixed(2));
   }
 
-  static dateToDayDouble(String dateString){
+  static dateToDayDouble(String dateString) {
     DateFormat dateFormat = DateFormat("dd/MM/yyyy");
     String string = dateFormat.format(DateTime.now());
     var parts = string.split(' ');
     var temp = parts.toString().split('/');
     var temp2 = dateString.toString().split('/');
     double temp3 = ((double.parse((temp[2].split(']'))[0].toString()) -
-        double.parse(temp2[2].toString())) *
-        12 +
-        (double.parse(temp[1].toString()) -
-            double.parse(temp2[1].toString())) *
+                double.parse(temp2[2].toString())) *
+            12 +
+        (double.parse(temp[1].toString()) - double.parse(temp2[1].toString())) *
             30 +
         (double.parse((temp[0].split('['))[1].toString()) -
             double.parse(temp2[0].toString())));
@@ -328,5 +327,42 @@ class Converter {
       }
     }
     return null;
+  }
+
+  static String NITypeToTypeString(NIType type) {
+    switch (type) {
+      case NIType.Carbohydrate:
+        return "Carbohydrate";
+        break;
+      case NIType.Fat:
+        return "Fat";
+        break;
+      case NIType.Protein:
+        return "Protein";
+        break;
+      case NIType.Vitamin_A:
+        return "Vitamin A";
+        break;
+      case NIType.Vitamin_B:
+        return "Vitamin B";
+        break;
+      case NIType.Vitamin_C:
+        return "Vitamin C";
+        break;
+      case NIType.Vitamin_D:
+        return "Vitamin D";
+        break;
+      case NIType.Iron:
+        return "Iron";
+        break;
+      case NIType.Calcium:
+        return "Calcium";
+        break;
+      case NIType.Iodine:
+        return "Iodine";
+        break;
+      default:
+        break;
+    }
   }
 }
