@@ -97,8 +97,10 @@ class BabyBloc extends Bloc<BabyEvent, BabyState> {
 
   Stream<BabyState> mapUpdateFoodEventToState(UpdateFoodEvent event) async* {
     babySubscription = foodRepository
-        .updateFood(listFoodModel: event.listFood, idBaby: event.listFood[0].idBaby).asStream()
-        .listen((idBaby) =>add(FetchBMIAndNI(idBaby: idBaby)));
+        .updateFood(
+            listFoodModel: event.listFood, idBaby: event.listFood[0].idBaby)
+        .asStream()
+        .listen((idBaby) => add(FetchBMIAndNI(idBaby: idBaby)));
   }
 
   Stream<BabyState> mapFetchBMIAndNIToState(FetchBMIAndNI event) async* {
@@ -128,12 +130,13 @@ class BabyBloc extends Bloc<BabyEvent, BabyState> {
     babySubscription = foodRepository
         .createFood(event.listFoodModel)
         .asStream()
-        .listen((idBaby) => add(FetchFood(idBaby: idBaby)));
+        .listen((idBaby) => {});
   }
 
   Stream<BabyState> mapFetchFoodToState(FetchFood event) async* {
     babySubscription = foodRepository
-        .fetchFood(event.idBaby).asStream()
+        .fetchFood(event.idBaby)
+        .asStream()
         .listen((listFood) => add(FetchedFood(listFood: listFood)));
   }
 
@@ -144,7 +147,7 @@ class BabyBloc extends Bloc<BabyEvent, BabyState> {
   Stream<BabyState> mapUpdateBMIEventToState(UpdateBMIEvent event) async* {
     babySubscription = bmiRepository
         .updateBMI(listBMIModel: event.listBmi, idBaby: event.listBmi[0].idBaby)
-        .listen((listBMI) =>add(FetchedBMI(listBmi: listBMI)));
+        .listen((listBMI) => add(FetchedBMI(listBmi: listBMI)));
   }
 
   Stream<BabyState> mapFetchBMIToState(FetchBMI event) async* {

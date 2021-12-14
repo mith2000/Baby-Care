@@ -22,10 +22,12 @@ class NIRepository {
         .get()
         .then((querySnapshot) {
       querySnapshot.docs.forEach((doc) {
+        Timestamp myTimeStamp = Timestamp.fromDate(DateTime.now());
         isVariable = true;
         Map<String, dynamic> data = doc.data();
         docRef = firebaseFirestore.collection('ni').doc(doc.id);
         batch.update(docRef, {'value': data['value'] + niModel.value});
+        batch.update(docRef, {'updateDate': myTimeStamp});
         batch.commit().then((a) {
           print('updated $type NI');
         });
