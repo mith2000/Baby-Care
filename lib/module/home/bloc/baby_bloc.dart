@@ -133,7 +133,7 @@ class BabyBloc extends Bloc<BabyEvent, BabyState> {
 
   Stream<BabyState> mapFetchFoodToState(FetchFood event) async* {
     babySubscription = foodRepository
-        .fetchFood(event.idBaby)
+        .fetchFood(event.idBaby).asStream()
         .listen((listFood) => add(FetchedFood(listFood: listFood)));
   }
 

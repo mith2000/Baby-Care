@@ -27,7 +27,7 @@ class NIRepository {
         docRef = firebaseFirestore.collection('ni').doc(doc.id);
         batch.update(docRef, {'value': data['value'] + niModel.value});
         batch.commit().then((a) {
-          print('updated $type food');
+          print('updated $type NI');
         });
       });
     }).catchError((error) {
