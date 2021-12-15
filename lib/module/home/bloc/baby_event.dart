@@ -1,3 +1,5 @@
+// ignore_for_file: must_be_immutable
+
 import 'package:equatable/equatable.dart';
 import 'package:flutter_babycare/data/model/baby_model.dart';
 import 'package:flutter_babycare/data/model/bmi_model.dart';
@@ -128,14 +130,16 @@ class BirthBabyChange extends BabyEvent {
 
 class UpdateListBaby extends BabyEvent {
   final List<BabyModel> listBaby;
-
-  UpdateListBaby({this.listBaby}) : super();
+  int count;
+  UpdateListBaby({this.listBaby}) {
+    this.count = listBaby.length;
+  }
 
   @override
   List<Object> get props => [listBaby];
 
   @override
-  String toString() => 'listBabyUpdated { updatedListBaby: $listBaby }';
+  String toString() => 'listBabyUpdated { LenghtListBaby: $count }';
 }
 
 class CreateFood extends BabyEvent {
@@ -158,8 +162,9 @@ class FetchedFood extends BabyEvent {
 
 class FetchFood extends BabyEvent {
   final String idBaby;
+  final int dayAgo;
 
-  FetchFood({this.idBaby});
+  FetchFood({this.idBaby, this.dayAgo});
 
   @override
   List<Object> get props => [idBaby];
@@ -183,7 +188,7 @@ class FetchNI extends BabyEvent {
   List<Object> get props => [idBaby];
 }
 
-class FetchBMIAndNI extends BabyEvent{
+class FetchBMIAndNI extends BabyEvent {
   final String idBaby;
 
   FetchBMIAndNI({this.idBaby});
@@ -200,4 +205,7 @@ class FetchedBMIAndNI extends BabyEvent {
 
   @override
   List<Object> get props => [listNI, listBMI];
+
+  @override
+  String toString() => 'event FetchedBMIAndNI';
 }

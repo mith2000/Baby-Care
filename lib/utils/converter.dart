@@ -430,4 +430,27 @@ class Converter {
         break;
     }
   }
+
+  static bool checkOverDay(DateTime dateTime) {
+    var foodTime = DateFormat('dd/MM/yyyy')
+        .format(dateTime)
+        .split(' ')
+        .toString()
+        .split('/');
+    var nowTime = DateFormat('dd/MM/yyyy')
+        .format(DateTime.now())
+        .split(' ')
+        .toString()
+        .split('/');
+    if (foodTime[0] == nowTime[0]) {
+      if (foodTime[1] == nowTime[1]) {
+        if (foodTime[2] != nowTime[2]) {
+          return true;
+        }
+        return false;
+      }
+      return true;
+    }
+    return true;
+  }
 }

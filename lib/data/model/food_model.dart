@@ -1,3 +1,5 @@
+// ignore_for_file: must_be_immutable
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_babycare/constants/app_constants.dart';
@@ -7,6 +9,7 @@ class FoodModel extends Equatable {
   String id;
   final FoodType type;
   final String idBaby;
+  int countUpdate;
   final DateTime updateDate;
   final double value;
 
@@ -14,10 +17,15 @@ class FoodModel extends Equatable {
     this.id = id;
   }
 
+  void setCountUpdate(int count) {
+    this.countUpdate = count;
+  }
+
   FoodModel({
     this.id,
     this.type,
     this.idBaby,
+    this.countUpdate,
     this.updateDate,
     this.value,
   });
@@ -25,9 +33,10 @@ class FoodModel extends Equatable {
   static FoodModel fromSnapshot(DocumentSnapshot snap) {
     DateTime myDateTime = snap['updateDate'].toDate();
     FoodModel babyModel = FoodModel(
-      id: snap.id,
+      id: snap['id'],
       type: Converter.stringToFoodType(snap['type']),
       idBaby: snap['idBaby'],
+      countUpdate: snap['countUpdate'],
       updateDate: myDateTime,
       value: snap['value'],
     );
@@ -39,6 +48,7 @@ class FoodModel extends Equatable {
         id,
         type,
         idBaby,
+        countUpdate,
         updateDate,
         value,
       ];
@@ -49,6 +59,7 @@ class FoodModel extends Equatable {
       "id": id,
       "type": Converter.foodTypeToString(type),
       "idBaby": idBaby,
+      "countUpdate": countUpdate ?? 0,
       "updateDate": myTimeStamp,
       "value": value,
     };

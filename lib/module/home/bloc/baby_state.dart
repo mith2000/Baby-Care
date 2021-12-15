@@ -1,3 +1,5 @@
+// ignore_for_file: must_be_immutable
+
 import 'package:equatable/equatable.dart';
 import 'package:flutter_babycare/data/model/baby_model.dart';
 import 'package:flutter_babycare/data/model/bmi_model.dart';
@@ -90,11 +92,20 @@ class LoadNIBaby extends BabyState {
 class LoadBMIAndNIBaby extends BabyState {
   final List<NIModel> listNI;
   final List<BmiModel> listBMI;
+  int countNI;
+  int countBMI;
 
-  LoadBMIAndNIBaby({this.listNI, this.listBMI});
+  LoadBMIAndNIBaby({this.listNI, this.listBMI}) {
+    countNI = listNI.length;
+    countBMI = listBMI.length;
+  }
 
   @override
   List<Object> get props => [listNI, listBMI];
+
+  @override
+  String toString() =>
+      'FetchedBMIAndNI { LenghtNI: $countNI ,LenghtBMI:  $countBMI}';
 }
 
 class BabyCreated extends BabyState {
@@ -108,16 +119,20 @@ class BabyCreated extends BabyState {
 
 class BabyLoading extends BabyState {}
 
+// ignore: must_be_immutable
 class BabyLoaded extends BabyState {
   final List<BabyModel> listBaby;
+  int count;
 
-  BabyLoaded([this.listBaby = const []]);
+  BabyLoaded([this.listBaby = const []]) {
+    count = listBaby.length;
+  }
 
   @override
   List<Object> get props => [listBaby];
 
   @override
-  String toString() => 'ListBabyLoadSuccess { ListBaby: $listBaby }';
+  String toString() => 'ListBabyLoadSuccess { LenghtListBaby: $count }';
 }
 
 class BabyLoadFailure extends BabyState {}

@@ -64,6 +64,12 @@ class _BabyDetailViewState extends State<BabyDetailView> {
   }
 
   @override
+  void dispose() {
+    babyBloc.close();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final args =
         ModalRoute.of(context).settings.arguments as BabyDetailViewArguments;

@@ -381,24 +381,20 @@ class _UpdateBMIViewState extends State<UpdateBMIView> {
                   }
 
                   babyBloc.add(
-                    UpdateBMIEvent(
-                      listBmi: [
-                        BmiModel(
-                            id: args.height.id,
-                            idBaby: args.height.idBaby,
-                            updateDate: DateTime.now(),
-                            type: BMIType.Height,
-                            value: args.height.value + _formData['height']),
-                        BmiModel(
-                            id: args.weight.id,
-                            idBaby: args.weight.idBaby,
-                            updateDate: DateTime.now(),
-                            type: BMIType.Weight,
-                            value:
-                                args.weight.value + _formData['weight'] * 100),
-                      ],
-                      idBaby: args.baby.id
-                    ),
+                    UpdateBMIEvent(listBmi: [
+                      BmiModel(
+                          id: args.height.id,
+                          idBaby: args.height.idBaby,
+                          updateDate: DateTime.now(),
+                          type: BMIType.Height,
+                          value: args.height.value + _formData['height']),
+                      BmiModel(
+                          id: args.weight.id,
+                          idBaby: args.weight.idBaby,
+                          updateDate: DateTime.now(),
+                          type: BMIType.Weight,
+                          value: args.weight.value + _formData['weight'] * 100),
+                    ], idBaby: args.baby.id),
                   );
                   babyBloc.add(FetchBMIAndNI(idBaby: args.baby.id));
                   Navigator.pop(context);
