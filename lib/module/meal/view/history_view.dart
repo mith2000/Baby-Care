@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_babycare/constants/app_constants.dart';
 import 'package:flutter_babycare/data/model/baby_model.dart';
 import 'package:flutter_babycare/data/model/food_model.dart';
+import 'package:flutter_babycare/utils/UI_components/food_detail_icon.dart';
 import 'package:flutter_babycare/utils/UI_components/highlight_box.dart';
 import 'package:flutter_babycare/utils/UI_components/line_button.dart';
 import 'package:flutter_babycare/utils/app_colors.dart';
@@ -28,27 +29,16 @@ class MealHistoryView extends StatefulWidget {
 }
 
 class _MealHistoryViewState extends State<MealHistoryView> {
-  final Map<String, String> _icons = {
-    'porridge': 'assets/icon/porridge.svg',
-    'milk': 'assets/icon/milk.svg',
-    'meat': 'assets/icon/meat.svg',
-    'fish': 'assets/icon/fish.svg',
-    'egg': 'assets/icon/egg.svg',
-    'green_vegets': 'assets/icon/green_vegets.svg',
-    'red_vegets': 'assets/icon/red_vegets.svg',
-    'citrus_fruit': 'assets/icon/citrus_fruit.svg',
-  };
-
   @override
   Widget build(BuildContext context) {
     final args =
         ModalRoute.of(context).settings.arguments as MealHistoryViewArguments;
     List<FoodModel> foodList = [];
-    for (var i = 0; i < 5; i++) {
+    for (var i = 0; i < 8; i++) {
       foodList.add(FoodModel(
         idBaby: '',
         type: FoodType.values[i],
-        value: 999.0,
+        value: 900.0,
         updateDate: DateTime.now(),
       ));
     }
@@ -83,6 +73,7 @@ class _MealHistoryViewState extends State<MealHistoryView> {
             children: [
               ListView(
                 children: [
+                  SizedBox(height: AppConstants.paddingNormalH),
                   ListView.builder(
                       shrinkWrap: true,
                       physics: ScrollPhysics(),
@@ -140,18 +131,14 @@ class _MealHistoryViewState extends State<MealHistoryView> {
           ),
           Container(
             margin: EdgeInsets.only(
-              left: AppConstants.paddingLargeW,
-              right: AppConstants.paddingNormalW,
+              left: AppConstants.paddingNormalW,
               top: AppConstants.paddingNormalH,
               bottom: AppConstants.paddingNormalH,
             ),
             child: Wrap(
               runSpacing: AppConstants.paddingNormalH,
               children: foodList
-                  .map((item) => _buildFoodIcon(
-                      Converter.FoodTypeToIconNameString(item.type),
-                      item.value.toInt().toString(),
-                      Converter.FoodTypeToUnitString(item.type)))
+                  .map((item) => FoodDetailIcon(item))
                   .toList()
                   .cast<Widget>(),
             ),
@@ -160,7 +147,7 @@ class _MealHistoryViewState extends State<MealHistoryView> {
       ),
       margin: EdgeInsets.symmetric(
         horizontal: AppConstants.paddingAppW,
-        vertical: AppConstants.paddingAppH,
+        vertical: AppConstants.paddingNormalH,
       ),
       decoration: BoxDecoration(
         color: AppColors.whiteBackground,
@@ -173,25 +160,6 @@ class _MealHistoryViewState extends State<MealHistoryView> {
           ),
         ],
       ),
-    );
-  }
-
-  Widget _buildFoodIcon(String name, String value, String unit) {
-    return Row(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        SvgPicture.asset(
-          _icons[name],
-          width: 40.w,
-          height: 40.w,
-        ),
-        SizedBox(width: AppConstants.paddingNormalW),
-        Text(
-          value + unit,
-          style: Theme.of(context).textTheme.bodyText1,
-        ),
-        SizedBox(width: AppConstants.paddingNormalW),
-      ],
     );
   }
 
