@@ -6,9 +6,7 @@ import 'package:flutter_babycare/utils/UI_components/food_detail_icon.dart';
 import 'package:flutter_babycare/utils/UI_components/highlight_box.dart';
 import 'package:flutter_babycare/utils/UI_components/line_button.dart';
 import 'package:flutter_babycare/utils/app_colors.dart';
-import 'package:flutter_babycare/utils/converter.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class MealHistoryViewArguments {

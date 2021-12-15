@@ -3,6 +3,7 @@ import 'package:flutter_babycare/constants/app_constants.dart';
 import 'package:flutter_babycare/data/model/baby_model.dart';
 import 'package:flutter_babycare/data/model/ni_model.dart';
 import 'package:flutter_babycare/module/baby/update/view/update_food_view.dart';
+import 'package:flutter_babycare/module/meal/view/plan_view.dart';
 import 'package:flutter_babycare/utils/UI_components/highlight_box.dart';
 import 'package:flutter_babycare/utils/UI_components/line_button.dart';
 import 'package:flutter_babycare/utils/UI_components/mini_line_button.dart';
@@ -111,7 +112,7 @@ class _MealSuggestionViewState extends State<MealSuggestionView> {
                 children: [
                   _buildMealHistoryButton(args),
                   SizedBox(height: AppConstants.paddingLargeH),
-                  _buildMainButtons(),
+                  _buildMainButtons(args),
                 ],
               )
             ],
@@ -318,7 +319,7 @@ class _MealSuggestionViewState extends State<MealSuggestionView> {
     });
   }
 
-  Widget _buildMainButtons() {
+  Widget _buildMainButtons(MealSuggestionViewArguments args) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
@@ -326,7 +327,13 @@ class _MealSuggestionViewState extends State<MealSuggestionView> {
           Navigator.pop(context);
         }),
         SizedBox(width: AppConstants.paddingLargeW),
-        MiniSolidButton('Week Plan', () {}),
+        MiniSolidButton('Week Plan', () {
+          Navigator.pushNamed(
+            context,
+            MealPlanView.routeName,
+            arguments: MealPlanViewArguments(args.baby),
+          );
+        }),
       ],
     );
   }
