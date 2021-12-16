@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_babycare/constants/app_constants.dart';
-import 'package:flutter_babycare/data/model/bmi_model.dart';
 import 'package:flutter_babycare/data/model/food_model.dart';
 import 'package:flutter_babycare/data/model/ni_model.dart';
 import 'package:flutter_babycare/data/source/ni_repository.dart';
@@ -40,6 +39,8 @@ class FoodRepository {
   }
 
   Future<String> updateFood(List<FoodModel> listFoodModel) async {
+    List<FoodModel> listFoodRecent =
+        await fetchFood(listFoodModel[0].idBaby, 0);
     bool isOverDay = false;
     double temp = 10000;
     int maxCountUpdate;
@@ -93,12 +94,17 @@ class FoodRepository {
           await niRepository.createNi(listNi[j], listFoodModel[0].idBaby);
         }
       } else {
-        DocumentReference documentReferencer =
-            firebaseFirestore.collection('food').doc(listFoodModel[i].id);
-        documentReferencer
-            .update(listFoodModel[i].toJson())
-            .whenComplete(() => print("Food updated in the database"))
-            .catchError((e) => print(e));
+        for (var j = 0; j < listFoodRecent.length; j++) {
+          if (listFoodRecent[j].type == listFoodModel[i].type) {
+            listFoodModel[i].setId(listFoodRecent[j].id);
+            DocumentReference documentReferencer =
+                firebaseFirestore.collection('food').doc(listFoodRecent[j].id);
+            documentReferencer
+                .update(listFoodModel[i].toJson())
+                .whenComplete(() => print("Food updated in the database"))
+                .catchError((e) => print(e));
+          }
+        }
       }
     }
     return listFoodModel[0].idBaby;
@@ -123,7 +129,6 @@ class FoodRepository {
         }
       });
     });
-    maxCountUpdate++;
     await firebaseFirestore
         .collection('food')
         .where('idBaby', isEqualTo: idBaby)

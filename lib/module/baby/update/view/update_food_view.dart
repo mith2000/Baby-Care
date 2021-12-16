@@ -525,7 +525,6 @@ class _UpdateFoodViewState extends State<UpdateFoodView> {
                   foodValues.add(_formData['citrus_fruit'] * 100);
                   for (var i = 0; i < FoodType.values.length; i++) {
                     foodList.add(FoodModel(
-                      id: 'asdasdasd', // todo: chỗ này thầy lấy hết ID của food bên detail qua nha thầy
                       idBaby: args.baby.id,
                       type: FoodType.values[i],
                       value: foodValues[i].toDouble(),
