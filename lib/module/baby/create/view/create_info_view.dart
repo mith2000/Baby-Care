@@ -59,7 +59,6 @@ class _CreateBabyInfoViewState extends State<CreateBabyInfoView> {
 
   @override
   void dispose() {
-    babyBloc.close();
     _nameController.dispose();
     _birthController.dispose();
     _datePickerController.dispose();

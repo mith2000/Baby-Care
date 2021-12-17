@@ -41,12 +41,6 @@ class _MealHistoryViewState extends State<MealHistoryView> {
   }
 
   @override
-  void dispose() {
-    babyBloc.close();
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
     final args =
         ModalRoute.of(context).settings.arguments as MealHistoryViewArguments;
@@ -61,68 +55,69 @@ class _MealHistoryViewState extends State<MealHistoryView> {
         updateDate: DateTime.now(),
       ));
     }
-    return BlocBuilder<BabyBloc, BabyState>(
-        bloc: babyBloc,
-        builder: (context, state) {
-          if (state is LoadFoodBaby) {
-            print(state.list.length);
-            return Scaffold(
-              resizeToAvoidBottomInset: false,
-              appBar: PreferredSize(
-                preferredSize: Size.fromHeight(
-                    AppConstants.paddingAppH + AppConstants.paddingSuperLargeH),
-                child: AppBar(
-                  automaticallyImplyLeading: false,
-                  title: Container(
-                    height: 32.h,
-                    alignment: Alignment.bottomCenter,
-                    margin: EdgeInsets.only(left: AppConstants.paddingAppW),
-                    child: Text(
-                      'Meal History',
-                      style: GoogleFonts.dosis(
-                        fontWeight: FontWeight.w700,
-                        fontSize: 24.sp,
-                        color: Colors.white,
-                      ),
-                    ),
-                  ),
-                  backgroundColor: AppColors.primary,
-                  elevation: 0,
-                ),
+    return Scaffold(
+      resizeToAvoidBottomInset: false,
+      appBar: PreferredSize(
+        preferredSize: Size.fromHeight(
+            AppConstants.paddingAppH + AppConstants.paddingSuperLargeH),
+        child: AppBar(
+          automaticallyImplyLeading: false,
+          title: Container(
+            height: 32.h,
+            alignment: Alignment.bottomCenter,
+            margin: EdgeInsets.only(left: AppConstants.paddingAppW),
+            child: Text(
+              'Meal History',
+              style: GoogleFonts.dosis(
+                fontWeight: FontWeight.w700,
+                fontSize: 24.sp,
+                color: Colors.white,
               ),
-              body: Center(
-                child: Container(
-                  color: AppColors.background,
-                  child: Stack(
-                    children: [
-                      ListView(
-                        children: [
-                          SizedBox(height: AppConstants.paddingNormalH),
-                          ListView.builder(
+            ),
+          ),
+          backgroundColor: AppColors.primary,
+          elevation: 0,
+        ),
+      ),
+      body: Center(
+        child: Container(
+          color: AppColors.background,
+          child: Stack(
+            children: [
+              ListView(
+                children: [
+                  SizedBox(height: AppConstants.paddingNormalH),
+                  BlocBuilder<BabyBloc, BabyState>(
+                      bloc: babyBloc,
+                      builder: (context, state) {
+                        // todo: add Loading
+                        if (state is LoadFoodBaby) {
+                          print(state.list.length);
+                          return ListView.builder(
                               shrinkWrap: true,
                               physics: ScrollPhysics(),
                               itemCount: 4,
                               itemBuilder: (context, index) {
                                 return _buildDateDetail(foodList);
-                              }),
-                          SizedBox(height: AppConstants.paddingSuperLargeH * 2),
-                        ],
-                      ),
-                      Column(
-                        mainAxisSize: MainAxisSize.max,
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          _buildBackButton(),
-                        ],
-                      )
-                    ],
-                  ),
-                ),
+                              });
+                        }
+                        return ErrorLabel();
+                      }),
+                  SizedBox(height: AppConstants.paddingSuperLargeH * 2),
+                ],
               ),
-            );
-          }
-          return ErrorLabel();
-        });
+              Column(
+                mainAxisSize: MainAxisSize.max,
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  _buildBackButton(args),
+                ],
+              )
+            ],
+          ),
+        ),
+      ),
+    );
   }
 
   _buildDateDetail(List<FoodModel> foodList) {
@@ -190,13 +185,15 @@ class _MealHistoryViewState extends State<MealHistoryView> {
     );
   }
 
-  Widget _buildBackButton() {
+  Widget _buildBackButton(MealHistoryViewArguments args) {
     return Container(
       padding: EdgeInsets.symmetric(
         horizontal: AppConstants.paddingAppW,
         vertical: AppConstants.paddingAppH,
       ),
       child: LineButton('Back', () {
+        babyBloc.add(FetchBMIAndNI(idBaby: args.baby.id));
+
         Navigator.pop(context);
       }),
     );
