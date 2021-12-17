@@ -19,6 +19,7 @@ import 'package:flutter_babycare/utils/UI_components/solid_button.dart';
 import 'package:flutter_babycare/utils/UI_components/title_label.dart';
 import 'package:flutter_babycare/utils/app_colors.dart';
 import 'package:flutter_babycare/utils/converter.dart';
+import 'package:flutter_babycare/utils/evaluate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -371,13 +372,23 @@ class _BabyDetailViewState extends State<BabyDetailView> {
                   'Current height:',
                   'cm',
                   value: height.value,
-                  status: BabyStatus.Happy,
+                  status: Evaluate.heightEvaluate(
+                      height.value / 1,
+                      Converter.dateToMonthDouble(
+                              DateFormat('dd/MM/yyyy').format(args.model.birth))
+                          .toInt(),
+                      args.model.gender),
                 ),
                 _buildBMIContent(
                   'Current weight:',
                   'g',
                   value: weight.value,
-                  status: BabyStatus.Sad,
+                  status: Evaluate.weightEvaluate(
+                      weight.value / 1000,
+                      Converter.dateToMonthDouble(
+                              DateFormat('dd/MM/yyyy').format(args.model.birth))
+                          .toInt(),
+                      args.model.gender),
                 ),
                 Container(
                   child: SolidButton('Update', () {
@@ -485,6 +496,54 @@ class _BabyDetailViewState extends State<BabyDetailView> {
                   label:
                       'Something error with your baby\'s NI data. We will fix this right now');
             }
+
+            NIModel carb,
+                fat,
+                protein,
+                vit_a,
+                vit_b,
+                vit_c,
+                vit_d,
+                iron,
+                calcium,
+                iodine;
+            for (var nutri in state.listNI) {
+              switch (nutri.type) {
+                case NIType.Carbohydrate:
+                  carb = nutri;
+                  break;
+                case NIType.Fat:
+                  fat = nutri;
+                  break;
+                case NIType.Protein:
+                  protein = nutri;
+                  break;
+                case NIType.Vitamin_A:
+                  vit_a = nutri;
+                  break;
+                case NIType.Vitamin_B:
+                  vit_b = nutri;
+                  break;
+                case NIType.Vitamin_C:
+                  vit_c = nutri;
+                  break;
+                case NIType.Vitamin_D:
+                  vit_d = nutri;
+                  break;
+                case NIType.Iron:
+                  iron = nutri;
+                  break;
+                case NIType.Calcium:
+                  calcium = nutri;
+                  break;
+                case NIType.Iodine:
+                  iodine = nutri;
+                  break;
+                default:
+                  break;
+              }
+            }
+
             return Container(
               width: double.infinity,
               child: Column(
@@ -499,40 +558,40 @@ class _BabyDetailViewState extends State<BabyDetailView> {
                   _buildRowOfNI(
                     'Carbohydrate',
                     'Fat',
-                    status1: BabyStatus.Love,
-                    status2: BabyStatus.Love,
+                    status1: Evaluate.NIEvaluate(carb.value),
+                    status2: Evaluate.NIEvaluate(fat.value),
                     infoAction1: () {},
                     infoAction2: () {},
                   ),
                   _buildRowOfNI(
                     'Protein',
                     'Vitamin A',
-                    status1: BabyStatus.Cry,
-                    status2: BabyStatus.Love,
+                    status1: Evaluate.NIEvaluate(protein.value),
+                    status2: Evaluate.NIEvaluate(vit_a.value),
                     infoAction1: () {},
                     infoAction2: () {},
                   ),
                   _buildRowOfNI(
                     'Vitamin B',
                     'Vitamin C',
-                    status1: BabyStatus.Love,
-                    status2: BabyStatus.Love,
+                    status1: Evaluate.NIEvaluate(vit_b.value),
+                    status2: Evaluate.NIEvaluate(vit_c.value),
                     infoAction1: () {},
                     infoAction2: () {},
                   ),
                   _buildRowOfNI(
                     'Vitamin D',
                     'Iron',
-                    status1: BabyStatus.Smile,
-                    status2: BabyStatus.Happy,
+                    status1: Evaluate.NIEvaluate(vit_d.value),
+                    status2: Evaluate.NIEvaluate(iron.value),
                     infoAction1: () {},
                     infoAction2: () {},
                   ),
                   _buildRowOfNI(
                     'Calcium',
                     'Iodine',
-                    status1: BabyStatus.Sad,
-                    status2: BabyStatus.Cry,
+                    status1: Evaluate.NIEvaluate(calcium.value),
+                    status2: Evaluate.NIEvaluate(iodine.value),
                     infoAction1: () {},
                     infoAction2: () {},
                   ),
