@@ -11,7 +11,7 @@ class FoodModel extends Equatable {
   final String idBaby;
   int countUpdate;
   final DateTime updateDate;
-  final double value;
+  double value;
 
   void setId(String id) {
     this.id = id;
@@ -19,6 +19,14 @@ class FoodModel extends Equatable {
 
   void setCountUpdate(int count) {
     this.countUpdate = count;
+  }
+
+  double getValue() {
+    return value;
+  }
+
+  void setValue(double value) {
+    this.value = value;
   }
 
   FoodModel({

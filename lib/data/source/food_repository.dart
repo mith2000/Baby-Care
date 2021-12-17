@@ -97,6 +97,8 @@ class FoodRepository {
         for (var j = 0; j < listFoodRecent.length; j++) {
           if (listFoodRecent[j].type == listFoodModel[i].type) {
             listFoodModel[i].setId(listFoodRecent[j].id);
+            listFoodModel[i].setValue(
+                listFoodRecent[j].getValue() + listFoodModel[i].getValue());
             DocumentReference documentReferencer =
                 firebaseFirestore.collection('food').doc(listFoodRecent[j].id);
             documentReferencer
