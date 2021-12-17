@@ -158,12 +158,6 @@ class _HomeBodyViewState extends State<HomeBodyView> {
   }
 
   @override
-  void dispose() {
-    babyBloc.close();
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Container(
       padding: EdgeInsets.symmetric(
@@ -199,7 +193,6 @@ class _HomeBodyViewState extends State<HomeBodyView> {
                         imageUrl: state.listBaby[index].image,
                         status: BabyStatus.Love,
                         action: () {
-                          //babyBloc.close();
                           Navigator.pushNamed(
                             context,
                             BabyDetailView.routeName,
@@ -239,7 +232,6 @@ class _HomeBodyViewState extends State<HomeBodyView> {
                           imageUrl: state.listBaby[index].image,
                           status: BabyStatus.Love,
                           action: () {
-                            //babyBloc.close();
                             Navigator.pushNamed(
                               context,
                               BabyDetailView.routeName,

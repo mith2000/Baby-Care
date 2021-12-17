@@ -41,12 +41,6 @@ class _MealHistoryViewState extends State<MealHistoryView> {
   }
 
   @override
-  void dispose() {
-    babyBloc.close();
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
     final args =
         ModalRoute.of(context).settings.arguments as MealHistoryViewArguments;
@@ -112,7 +106,7 @@ class _MealHistoryViewState extends State<MealHistoryView> {
                         mainAxisSize: MainAxisSize.max,
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: [
-                          _buildBackButton(),
+                          _buildBackButton(args),
                         ],
                       )
                     ],
@@ -190,13 +184,15 @@ class _MealHistoryViewState extends State<MealHistoryView> {
     );
   }
 
-  Widget _buildBackButton() {
+  Widget _buildBackButton(MealHistoryViewArguments args) {
     return Container(
       padding: EdgeInsets.symmetric(
         horizontal: AppConstants.paddingAppW,
         vertical: AppConstants.paddingAppH,
       ),
       child: LineButton('Back', () {
+        babyBloc.add(FetchBMIAndNI(idBaby: args.baby.id));
+
         Navigator.pop(context);
       }),
     );
