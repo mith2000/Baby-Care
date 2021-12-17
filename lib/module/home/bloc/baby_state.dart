@@ -119,7 +119,14 @@ class BabyCreated extends BabyState {
 
 class BabyLoading extends BabyState {}
 
-// ignore: must_be_immutable
+class ImageLoading extends BabyState {}
+
+class FoodLoading extends BabyState {}
+
+class FoodAndBMILoading extends BabyState {}
+
+class NILoading extends BabyState {}
+
 class BabyLoaded extends BabyState {
   final List<BabyModel> listBaby;
   int count;

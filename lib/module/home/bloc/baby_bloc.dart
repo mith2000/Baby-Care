@@ -103,6 +103,7 @@ class BabyBloc extends Bloc<BabyEvent, BabyState> {
   }
 
   Stream<BabyState> mapFetchBMIAndNIToState(FetchBMIAndNI event) async* {
+    yield FoodAndBMILoading();
     List<NIModel> list = [];
     babySubscription = await niRepository
         .fetchNi(event.idBaby)
@@ -116,6 +117,7 @@ class BabyBloc extends Bloc<BabyEvent, BabyState> {
   }
 
   Stream<BabyState> mapFetchNIToState(FetchNI event) async* {
+    yield NILoading();
     babySubscription = niRepository
         .fetchNi(event.idBaby)
         .listen((listNI) => add(FetchedNI(listNI: listNI)));
@@ -133,6 +135,7 @@ class BabyBloc extends Bloc<BabyEvent, BabyState> {
   }
 
   Stream<BabyState> mapFetchFoodToState(FetchFood event) async* {
+    yield FoodLoading();
     babySubscription = foodRepository
         .fetchFood(event.idBaby, event.dayAgo)
         .asStream()
@@ -167,6 +170,7 @@ class BabyBloc extends Bloc<BabyEvent, BabyState> {
   }
 
   Stream<BabyState> mapAddImageToState(AddImageInFireBase event) async* {
+    yield ImageLoading();
     babySubscription = babyRepository
         .addImageInFireBase(idAccount: event.idAccount, xFile: event.file)
         .asStream()
@@ -201,6 +205,7 @@ class BabyBloc extends Bloc<BabyEvent, BabyState> {
   }
 
   Stream<BabyState> mapBabyLoadedToState(LoadBaby event) async* {
+    yield BabyLoading();
     getListBaby(event);
   }
 
