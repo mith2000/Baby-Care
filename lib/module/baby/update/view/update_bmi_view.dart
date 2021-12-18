@@ -15,6 +15,7 @@ import 'package:flutter_babycare/utils/UI_components/mini_solid_button.dart';
 import 'package:flutter_babycare/utils/UI_components/title_label.dart';
 import 'package:flutter_babycare/utils/app_colors.dart';
 import 'package:flutter_babycare/utils/converter.dart';
+import 'package:flutter_babycare/utils/evaluate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -163,7 +164,47 @@ class _UpdateBMIViewState extends State<UpdateBMIView> {
                         style: Theme.of(context).textTheme.bodyText1,
                       ),
                       SizedBox(width: AppConstants.paddingNormalW),
-                      BabyStatusIcon(status: status),
+                      BlocBuilder<BabyBloc, BabyState>(
+                        bloc: babyBloc,
+                        builder: (context, state) {
+                          if (state is LoadBMIAndNIBaby) {
+                            if (state.listBMI == null ||
+                                state.listBMI.length < 2) {
+                              return ErrorLabel(
+                                  label:
+                                      'Something error with your data. We will fix this right now');
+                            }
+                            BmiModel height;
+                            BmiModel weight;
+                            if (state.listBMI[0].type == BMIType.Height) {
+                              height = state.listBMI[0];
+                              weight = state.listBMI[1];
+                            } else {
+                              height = state.listBMI[1];
+                              weight = state.listBMI[0];
+                            }
+
+                            List<BabyStatus> statusList = [];
+                            statusList.add(Evaluate.heightEvaluate(
+                                height.value / 1,
+                                Converter.dateToMonthDouble(
+                                        DateFormat('dd/MM/yyyy')
+                                            .format(args.baby.birth))
+                                    .toInt(),
+                                args.baby.gender));
+                            statusList.add(Evaluate.weightEvaluate(
+                                weight.value / 1000,
+                                Converter.dateToMonthDouble(
+                                        DateFormat('dd/MM/yyyy')
+                                            .format(args.baby.birth))
+                                    .toInt(),
+                                args.baby.gender));
+                            return BabyStatusIcon(
+                                status: Evaluate.AverageEvaluate(statusList));
+                          }
+                          return ErrorLabel();
+                        },
+                      ),
                     ],
                   ),
                 ],
