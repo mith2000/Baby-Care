@@ -170,7 +170,50 @@ class _BabyDetailViewState extends State<BabyDetailView> {
               style: Theme.of(context).textTheme.bodyText1,
             ),
             SizedBox(width: AppConstants.paddingNormalW),
-            BabyStatusIcon(status: BabyStatus.Happy),
+            BlocBuilder<BabyBloc, BabyState>(
+              bloc: babyBloc,
+              builder: (context, state) {
+                if (state is LoadBMIAndNIBaby) {
+                  if (state.listBMI == null ||
+                      state.listBMI.length < 2 ||
+                      state.listNI == null ||
+                      state.listNI.length < 10) {
+                    return ErrorLabel(
+                        label:
+                            'Something error with your data. We will fix this right now');
+                  }
+                  BmiModel height;
+                  BmiModel weight;
+                  if (state.listBMI[0].type == BMIType.Height) {
+                    height = state.listBMI[0];
+                    weight = state.listBMI[1];
+                  } else {
+                    height = state.listBMI[1];
+                    weight = state.listBMI[0];
+                  }
+
+                  List<BabyStatus> statusList = [];
+                  statusList.add(Evaluate.heightEvaluate(
+                      height.value / 1,
+                      Converter.dateToMonthDouble(
+                              DateFormat('dd/MM/yyyy').format(args.model.birth))
+                          .toInt(),
+                      args.model.gender));
+                  statusList.add(Evaluate.weightEvaluate(
+                      weight.value / 1000,
+                      Converter.dateToMonthDouble(
+                              DateFormat('dd/MM/yyyy').format(args.model.birth))
+                          .toInt(),
+                      args.model.gender));
+                  for (var nutri in state.listNI) {
+                    statusList.add(Evaluate.NIEvaluate(nutri.value));
+                  }
+                  return BabyStatusIcon(
+                      status: Evaluate.AverageEvaluate(statusList));
+                }
+                return ErrorLabel();
+              },
+            ),
           ],
         ),
         SizedBox(height: AppConstants.paddingLargeH),

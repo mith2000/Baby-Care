@@ -171,84 +171,47 @@ class _HomeBodyViewState extends State<HomeBodyView> {
           SizedBox(height: AppConstants.paddingLargeH),
           _buildWelcomeUser(widget._user.displayName),
           SizedBox(height: AppConstants.paddingNormalH),
-          BlocListener<BabyBloc, BabyState>(
-              bloc: babyBloc,
-              listener: (context, state) {
-                if (state.listBaby != null) {
-                  if (state.listBaby == null || state.listBaby.length == 0) {
-                    return ErrorLabel(
-                        label:
-                            'No baby available now\nAdd one to use our features');
-                  }
-                  return ListView.builder(
-                    shrinkWrap: true,
-                    physics: ScrollPhysics(),
-                    itemCount: state.listBaby.length,
-                    itemBuilder: (context, index) {
-                      return _buildBabyInterfaceButton(
-                        babyName: state.listBaby[index].name,
-                        babyYearOld: Converter.dateToMonthDouble(
-                            DateFormat('dd/MM/yyyy')
-                                .format(state.listBaby[index].birth)),
-                        imageUrl: state.listBaby[index].image,
-                        status: BabyStatus.Love,
-                        action: () {
-                          Navigator.pushNamed(
-                            context,
-                            BabyDetailView.routeName,
-                            arguments:
-                                BabyDetailViewArguments(state.listBaby[index]),
-                          ).then((_) {
-                            babyBloc.add(LoadBaby(userId: widget._user.uid));
-                          });
-                        },
-                      );
-                    },
-                  );
+          BlocBuilder<BabyBloc, BabyState>(
+            bloc: babyBloc,
+            builder: (context, state) {
+              if (state is BabyLoading) {
+                return CustomLoadingWidget();
+              }
+              if (state is BabyLoaded) {
+                if (state.listBaby == null || state.listBaby.length == 0) {
+                  return ErrorLabel(
+                      label:
+                          'No baby available now\nAdd one to use our features');
                 }
-              },
-              child: BlocBuilder<BabyBloc, BabyState>(
-                bloc: babyBloc,
-                builder: (context, state) {
-                  if (state is BabyLoading) {
-                    return CustomLoadingWidget();
-                  }
-                  if (state is BabyLoaded) {
-                    if (state.listBaby == null || state.listBaby.length == 0) {
-                      return ErrorLabel(
-                          label:
-                              'No baby available now\nAdd one to use our features');
-                    }
-                    return ListView.builder(
-                      shrinkWrap: true,
-                      physics: ScrollPhysics(),
-                      itemCount: state.listBaby.length,
-                      itemBuilder: (context, index) {
-                        return _buildBabyInterfaceButton(
-                          babyName: state.listBaby[index].name,
-                          babyYearOld: Converter.dateToMonthDouble(
-                              DateFormat('dd/MM/yyyy')
-                                  .format(state.listBaby[index].birth)),
-                          imageUrl: state.listBaby[index].image,
-                          status: BabyStatus.Love,
-                          action: () {
-                            Navigator.pushNamed(
-                              context,
-                              BabyDetailView.routeName,
-                              arguments: BabyDetailViewArguments(
-                                  state.listBaby[index]),
-                            ).then((_) {
-                              babyBloc.add(LoadBaby(userId: widget._user.uid));
-                            });
-                          },
-                        );
+                return ListView.builder(
+                  shrinkWrap: true,
+                  physics: ScrollPhysics(),
+                  itemCount: state.listBaby.length,
+                  itemBuilder: (context, index) {
+                    return _buildBabyInterfaceButton(
+                      babyName: state.listBaby[index].name,
+                      babyYearOld: Converter.dateToMonthDouble(
+                          DateFormat('dd/MM/yyyy')
+                              .format(state.listBaby[index].birth)),
+                      imageUrl: state.listBaby[index].image,
+                      action: () {
+                        Navigator.pushNamed(
+                          context,
+                          BabyDetailView.routeName,
+                          arguments:
+                              BabyDetailViewArguments(state.listBaby[index]),
+                        ).then((_) {
+                          babyBloc.add(LoadBaby(userId: widget._user.uid));
+                        });
                       },
                     );
-                  } else {
-                    return ErrorLabel();
-                  }
-                },
-              )),
+                  },
+                );
+              } else {
+                return ErrorLabel();
+              }
+            },
+          ),
           _buildCreateBabyButton(),
           SizedBox(height: AppConstants.paddingLargeH),
         ],

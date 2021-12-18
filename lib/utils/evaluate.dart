@@ -1,6 +1,42 @@
 import 'package:flutter_babycare/constants/app_constants.dart';
 
 class Evaluate {
+  static BabyStatus AverageEvaluate(List<BabyStatus> sources) {
+    double point = 0;
+    for (var source in sources) {
+      switch (source) {
+        case BabyStatus.Love:
+          point += 100;
+          break;
+        case BabyStatus.Happy:
+          point += 80;
+          break;
+        case BabyStatus.Smile:
+          point += 60;
+          break;
+        case BabyStatus.Sad:
+          point += 40;
+          break;
+        case BabyStatus.Cry:
+          point += 20;
+          break;
+        default:
+          break;
+      }
+    }
+    point = point / sources.length;
+    if (100 <= point)
+      return BabyStatus.Love;
+    else if (80 <= point)
+      return BabyStatus.Happy;
+    else if (60 <= point)
+      return BabyStatus.Smile;
+    else if (40 <= point)
+      return BabyStatus.Sad;
+    else
+      return BabyStatus.Cry;
+  }
+
   static BabyStatus NIEvaluate(double value) {
     if (85 < value && value < 115)
       return BabyStatus.Love;

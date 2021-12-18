@@ -16,6 +16,7 @@ import 'package:flutter_babycare/utils/UI_components/mini_solid_button.dart';
 import 'package:flutter_babycare/utils/UI_components/title_label.dart';
 import 'package:flutter_babycare/utils/app_colors.dart';
 import 'package:flutter_babycare/utils/converter.dart';
+import 'package:flutter_babycare/utils/evaluate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
@@ -179,7 +180,26 @@ class _UpdateFoodViewState extends State<UpdateFoodView> {
                         style: Theme.of(context).textTheme.bodyText1,
                       ),
                       SizedBox(width: AppConstants.paddingNormalW),
-                      BabyStatusIcon(status: status),
+                      BlocBuilder<BabyBloc, BabyState>(
+                        bloc: babyBloc,
+                        builder: (context, state) {
+                          if (state is LoadBMIAndNIBaby) {
+                            if (state.listNI == null ||
+                                state.listNI.length < 10) {
+                              return ErrorLabel(
+                                  label:
+                                      'Something error with your data. We will fix this right now');
+                            }
+                            List<BabyStatus> statusList = [];
+                            for (var nutri in state.listNI) {
+                              statusList.add(Evaluate.NIEvaluate(nutri.value));
+                            }
+                            return BabyStatusIcon(
+                                status: Evaluate.AverageEvaluate(statusList));
+                          }
+                          return ErrorLabel();
+                        },
+                      ),
                     ],
                   ),
                 ],
