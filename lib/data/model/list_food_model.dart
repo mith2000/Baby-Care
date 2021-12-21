@@ -16,8 +16,7 @@ class ListFoodModel {
     this.listFood.add(FoodModel);
   }
 
-  ListFoodModel({
-    this.dayAgo,
-    this.listFood,
-  });
+  ListFoodModel({int dayAgo, List<FoodModel> listFood})
+      : this.dayAgo = dayAgo ?? 0,
+        this.listFood = listFood ?? [];
 }

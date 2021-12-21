@@ -114,10 +114,12 @@ class FoodRepository {
   }
 
   Future<List<ListFoodModel>> fetchFood(String idBaby, int dayAgo) async {
+    //dayAgo là số ngày cần lấy, ví dụ: dayAgo = 7 là lấy Food 7 ngày trước (sẽ có ngày list Food bị rỗng)
+    // dayAgo = 0 là food ngày hiện tại
     List<ListFoodModel> listFood = [];
-    List<FoodModel> temp = [];
+
     for (var i = 0; i <= dayAgo; i++) {
-      listFood.add(ListFoodModel(dayAgo: i, listFood: temp));
+      listFood.add(ListFoodModel(dayAgo: i));
     }
     await firebaseFirestore
         .collection('food')
@@ -129,16 +131,15 @@ class FoodRepository {
                 .format(doc.data()['updateDate'].toDate()))
             .toInt();
         if (date <= dayAgo) {
-          listFood[date].addFoodToList(FoodModel.fromSnapshot(doc));
+          listFood.elementAt(date).listFood.add(FoodModel.fromSnapshot(doc));
         }
       });
     });
-
+    print(listFood);
     return listFood;
   }
 
   Future<List<FoodModel>> fetchFoodToUpdate(String idBaby, int dayAgo) async {
-    // dayAgo = 0 là hôm nay, =1 là 1 ngày trước, =2 là 2 ngày trước
     List<FoodModel> listFood = [];
     int maxCountUpdate;
     double temp = 10000;
