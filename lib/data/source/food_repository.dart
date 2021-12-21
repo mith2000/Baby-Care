@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_babycare/constants/app_constants.dart';
 import 'package:flutter_babycare/data/model/food_model.dart';
+import 'package:flutter_babycare/data/model/list_food_model.dart';
 import 'package:flutter_babycare/data/model/ni_model.dart';
 import 'package:flutter_babycare/data/source/ni_repository.dart';
 import 'package:flutter_babycare/utils/converter.dart';
@@ -40,7 +41,7 @@ class FoodRepository {
 
   Future<String> updateFood(List<FoodModel> listFoodModel) async {
     List<FoodModel> listFoodRecent =
-        await fetchFood(listFoodModel[0].idBaby, 0);
+        await fetchFoodToUpdate(listFoodModel[0].idBaby, 0);
     bool isOverDay = false;
     double temp = 10000;
     int maxCountUpdate;
@@ -112,7 +113,31 @@ class FoodRepository {
     return listFoodModel[0].idBaby;
   }
 
-  Future<List<FoodModel>> fetchFood(String idBaby, int dayAgo) async {
+  Future<List<ListFoodModel>> fetchFood(String idBaby, int dayAgo) async {
+    List<ListFoodModel> listFood = [];
+    List<FoodModel> temp = [];
+    for (var i = 0; i <= dayAgo; i++) {
+      listFood.add(ListFoodModel(dayAgo: i, listFood: temp));
+    }
+    await firebaseFirestore
+        .collection('food')
+        .where('idBaby', isEqualTo: idBaby)
+        .get()
+        .then((querySnapshot) {
+      querySnapshot.docs.forEach((doc) {
+        int date = Converter.dateToDayDouble(DateFormat('dd/MM/yyyy')
+                .format(doc.data()['updateDate'].toDate()))
+            .toInt();
+        if (date <= dayAgo) {
+          listFood[date].addFoodToList(FoodModel.fromSnapshot(doc));
+        }
+      });
+    });
+
+    return listFood;
+  }
+
+  Future<List<FoodModel>> fetchFoodToUpdate(String idBaby, int dayAgo) async {
     // dayAgo = 0 là hôm nay, =1 là 1 ngày trước, =2 là 2 ngày trước
     List<FoodModel> listFood = [];
     int maxCountUpdate;

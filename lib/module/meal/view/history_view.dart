@@ -44,7 +44,7 @@ class _MealHistoryViewState extends State<MealHistoryView> {
   Widget build(BuildContext context) {
     final args =
         ModalRoute.of(context).settings.arguments as MealHistoryViewArguments;
-    babyBloc.add(FetchFood(idBaby: args.baby.id, dayAgo: 0));
+    babyBloc.add(FetchFood(idBaby: args.baby.id, dayAgo: 7));
     // dayAgo = 0 là hôm nay, =1 là 1 ngày trước, =2 là 2 ngày trước
     List<FoodModel> foodList = [];
     for (var i = 0; i < 8; i++) {

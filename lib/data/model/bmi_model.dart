@@ -1,3 +1,5 @@
+// ignore_for_file: must_be_immutable
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_babycare/constants/app_constants.dart';
