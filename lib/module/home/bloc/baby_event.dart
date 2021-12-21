@@ -4,6 +4,7 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter_babycare/data/model/baby_model.dart';
 import 'package:flutter_babycare/data/model/bmi_model.dart';
 import 'package:flutter_babycare/data/model/food_model.dart';
+import 'package:flutter_babycare/data/model/list_food_model.dart';
 import 'package:flutter_babycare/data/model/ni_model.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -152,7 +153,7 @@ class CreateFood extends BabyEvent {
 }
 
 class FetchedFood extends BabyEvent {
-  final List<FoodModel> listFood;
+  final List<ListFoodModel> listFood;
 
   FetchedFood({this.listFood});
 
