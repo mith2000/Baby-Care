@@ -15,6 +15,7 @@ import 'package:flutter_babycare/utils/UI_components/error_label.dart';
 import 'package:flutter_babycare/utils/UI_components/highlight_box.dart';
 import 'package:flutter_babycare/utils/UI_components/icon_button.dart';
 import 'package:flutter_babycare/utils/UI_components/line_button.dart';
+import 'package:flutter_babycare/utils/UI_components/loading_widget.dart';
 import 'package:flutter_babycare/utils/UI_components/solid_button.dart';
 import 'package:flutter_babycare/utils/UI_components/title_label.dart';
 import 'package:flutter_babycare/utils/app_colors.dart';
@@ -173,6 +174,10 @@ class _BabyDetailViewState extends State<BabyDetailView> {
             BlocBuilder<BabyBloc, BabyState>(
               bloc: babyBloc,
               builder: (context, state) {
+                if (state is FoodAndBMILoading) {
+                  return CustomLoadingWidget();
+                }
+
                 if (state is LoadBMIAndNIBaby) {
                   if (state.listBMI == null ||
                       state.listBMI.length < 2 ||
@@ -282,6 +287,10 @@ class _BabyDetailViewState extends State<BabyDetailView> {
         BlocBuilder<BabyBloc, BabyState>(
             bloc: babyBloc,
             builder: (context, state) {
+              if (state is FoodAndBMILoading) {
+                return CustomLoadingWidget();
+              }
+
               if (state is LoadBMIAndNIBaby) {
                 if (state.listBMI == null || state.listBMI.length < 2) {
                   return ErrorLabel(
@@ -331,6 +340,10 @@ class _BabyDetailViewState extends State<BabyDetailView> {
         BlocBuilder<BabyBloc, BabyState>(
             bloc: babyBloc,
             builder: (context, state) {
+              if (state is FoodAndBMILoading) {
+                return CustomLoadingWidget();
+              }
+
               if (state is LoadBMIAndNIBaby) {
                 if (state.listNI == null || state.listNI.length < 10) {
                   return ErrorLabel(
@@ -385,6 +398,10 @@ class _BabyDetailViewState extends State<BabyDetailView> {
       bloc: babyBloc,
       builder: (context, state) {
         if (state is LoadBMIAndNIBaby) {
+          if (state is FoodAndBMILoading) {
+            return CustomLoadingWidget();
+          }
+
           if (state.listBMI == null || state.listBMI.length < 2) {
             return ErrorLabel(
                 label:
@@ -533,6 +550,10 @@ class _BabyDetailViewState extends State<BabyDetailView> {
     return BlocBuilder<BabyBloc, BabyState>(
         bloc: babyBloc,
         builder: (context, state) {
+          if (state is FoodAndBMILoading) {
+            return CustomLoadingWidget();
+          }
+
           if (state is LoadBMIAndNIBaby) {
             if (state.listNI == null || state.listNI.length < 10) {
               return ErrorLabel(
@@ -762,6 +783,10 @@ class _BabyDetailViewState extends State<BabyDetailView> {
     return BlocBuilder<BabyBloc, BabyState>(
         bloc: babyBloc,
         builder: (context, state) {
+          if (state is FoodAndBMILoading) {
+            return CustomLoadingWidget();
+          }
+
           if (state is LoadBMIAndNIBaby) {
             if (state.listNI == null || state.listNI.length < 10) {
               return ErrorLabel(

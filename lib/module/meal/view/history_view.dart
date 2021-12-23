@@ -9,10 +9,12 @@ import 'package:flutter_babycare/utils/UI_components/error_label.dart';
 import 'package:flutter_babycare/utils/UI_components/food_detail_icon.dart';
 import 'package:flutter_babycare/utils/UI_components/highlight_box.dart';
 import 'package:flutter_babycare/utils/UI_components/line_button.dart';
+import 'package:flutter_babycare/utils/UI_components/loading_widget.dart';
 import 'package:flutter_babycare/utils/app_colors.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:intl/intl.dart';
 
 class MealHistoryViewArguments {
   final BabyModel baby;
@@ -44,17 +46,7 @@ class _MealHistoryViewState extends State<MealHistoryView> {
   Widget build(BuildContext context) {
     final args =
         ModalRoute.of(context).settings.arguments as MealHistoryViewArguments;
-    babyBloc.add(FetchFood(idBaby: args.baby.id, dayAgo: 7));
-    // dayAgo = 0 là hôm nay, =1 là 1 ngày trước, =2 là 2 ngày trước
-    List<FoodModel> foodList = [];
-    for (var i = 0; i < 8; i++) {
-      foodList.add(FoodModel(
-        idBaby: '',
-        type: FoodType.values[i],
-        value: 900.0,
-        updateDate: DateTime.now(),
-      ));
-    }
+    babyBloc.add(FetchFood(idBaby: args.baby.id, dayAgo: 6));
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: PreferredSize(
@@ -90,15 +82,23 @@ class _MealHistoryViewState extends State<MealHistoryView> {
                   BlocBuilder<BabyBloc, BabyState>(
                       bloc: babyBloc,
                       builder: (context, state) {
-                        // todo: add Loading
+                        if (state is FoodLoading) {
+                          return CustomLoadingWidget();
+                        }
+
                         if (state is LoadFoodBaby) {
-                          print(state.list.length);
                           return ListView.builder(
                               shrinkWrap: true,
                               physics: ScrollPhysics(),
-                              itemCount: 4,
+                              itemCount: state.list.length,
                               itemBuilder: (context, index) {
-                                return _buildDateDetail(foodList);
+                                if (state.list[index].listFood.length > 0)
+                                  return _buildDateDetail(
+                                    state.list[index].listFood,
+                                    state.list[index].dayAgo,
+                                  );
+                                else
+                                  return Container();
                               });
                         }
                         return ErrorLabel();
@@ -120,7 +120,8 @@ class _MealHistoryViewState extends State<MealHistoryView> {
     );
   }
 
-  _buildDateDetail(List<FoodModel> foodList) {
+  _buildDateDetail(List<FoodModel> foodList, int dayAgo) {
+    final DateFormat formatter = DateFormat('dd/MM/yyyy');
     return Container(
       height: 152.h,
       alignment: Alignment.center,
@@ -132,7 +133,7 @@ class _MealHistoryViewState extends State<MealHistoryView> {
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 SizedBox(width: AppConstants.paddingLargeW),
-                HighlightBox('7', color: AppColors.primary),
+                HighlightBox(dayAgo.toString(), color: AppColors.primary),
                 SizedBox(width: AppConstants.paddingNormalW),
                 Text(
                   'days ago',
@@ -140,7 +141,8 @@ class _MealHistoryViewState extends State<MealHistoryView> {
                 ),
                 Expanded(child: Container()),
                 Text(
-                  '20/5/2021',
+                  formatter
+                      .format(DateTime.now().subtract(Duration(days: dayAgo))),
                   style: Theme.of(context).textTheme.bodyText1,
                 ),
                 SizedBox(width: AppConstants.paddingLargeW),

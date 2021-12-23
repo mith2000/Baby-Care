@@ -5,6 +5,7 @@ import 'package:flutter_babycare/module/home/bloc/baby_bloc.dart';
 import 'package:flutter_babycare/module/home/bloc/baby_event.dart';
 import 'package:flutter_babycare/module/home/bloc/baby_state.dart';
 import 'package:flutter_babycare/utils/UI_components/icon_button.dart';
+import 'package:flutter_babycare/utils/UI_components/loading_widget.dart';
 import 'package:flutter_babycare/utils/UI_components/mini_line_button.dart';
 import 'package:flutter_babycare/utils/UI_components/title_label.dart';
 import 'package:flutter_babycare/utils/app_colors.dart';
@@ -339,6 +340,10 @@ class _CreateBabyInfoViewState extends State<CreateBabyInfoView> {
     return BlocBuilder<BabyBloc, BabyState>(
         bloc: babyBloc,
         builder: (context, state) {
+          if (state is ImageLoading) {
+            return CustomLoadingWidget();
+          }
+
           if (state is UploadedImageBaby) {
             babyImageUrl = state.urlImage;
             return FadeInImage.assetNetwork(
