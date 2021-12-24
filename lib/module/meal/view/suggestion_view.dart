@@ -11,6 +11,7 @@ import 'package:flutter_babycare/utils/UI_components/mini_solid_button.dart';
 import 'package:flutter_babycare/utils/UI_components/solid_button.dart';
 import 'package:flutter_babycare/utils/app_colors.dart';
 import 'package:flutter_babycare/utils/converter.dart';
+import 'package:flutter_babycare/utils/food_suggester.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -196,6 +197,7 @@ class _MealSuggestionViewState extends State<MealSuggestionView> {
   }
 
   _buildNutriDeficiencyDetail(String gender, NIModel nutri) {
+    List<FoodType> suggestFoods = FoodSuggester.getFoodSuggest(nutri.type);
     return Container(
       height: 196.h,
       alignment: Alignment.center,
@@ -243,37 +245,21 @@ class _MealSuggestionViewState extends State<MealSuggestionView> {
           SizedBox(height: AppConstants.paddingNormalH),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              SvgPicture.asset(
-                _icons['fish'],
-                width: 40.w,
-                height: 40.h,
-              ),
-              SizedBox(width: AppConstants.paddingNormalW),
-              SvgPicture.asset(
-                _icons['egg'],
-                width: 40.w,
-                height: 40.h,
-              ),
-              SizedBox(width: AppConstants.paddingNormalW),
-              SvgPicture.asset(
-                _icons['milk'],
-                width: 40.w,
-                height: 40.h,
-              ),
-              SizedBox(width: AppConstants.paddingNormalW),
-              SvgPicture.asset(
-                _icons['meat'],
-                width: 40.w,
-                height: 40.h,
-              ),
-              SizedBox(width: AppConstants.paddingNormalW),
-              SvgPicture.asset(
-                _icons['green_vegets'],
-                width: 40.w,
-                height: 40.h,
-              ),
-            ],
+            children: suggestFoods
+                .map(
+                  (item) => Row(
+                    children: [
+                      SvgPicture.asset(
+                        _icons[Converter.FoodTypeToIconNameString(item)],
+                        width: 40.w,
+                        height: 40.h,
+                      ),
+                      SizedBox(width: AppConstants.paddingNormalW),
+                    ],
+                  ),
+                )
+                .toList()
+                .cast<Widget>(),
           ),
         ],
       ),
