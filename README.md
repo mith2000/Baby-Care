@@ -1,8 +1,6 @@
 # Baby Care
-Đồ án của 2 sinh viên UIT cho môn Đồ án 1 - Ứng dụng Hỗ trợ Chăm sóc Em bé Baby Care
-
-## Giảng viên hướng dẫn
-Cô **Thái Thị Hàn Uyển**
+Cùng Baby Care dành những điều tốt nhất cho em bé của bạn.
+**Baby Care** là ứng dụng giúp các cha mẹ trẻ giám xát sức khỏe em bé của mình và đặc biệt từ những chất dinh dưỡng mà bậc cha mẹ đã cho em bé ăn thì ứng dụng có thể đưa ra những gợi ý về món ăn để cân bằng chất dinh dưỡng cần thiết cho bé.
 
 # Các chức năng chính
 - Tạo bản sao chỉ số em bé
@@ -13,7 +11,8 @@ Cô **Thái Thị Hàn Uyển**
 - Cung cấp mẹo hữu ích về kiến thức chăm sóc trẻ
 
 # Các chức năng dự kiến trong tương lai
-- **Giả lập xây dựng em bé ảo** - Mang đến cho người dùng trải nghiệm chăm sóc em bé thật nhất
+- **Giả lập xây dựng em bé ảo** 
+- Mang đến cho người dùng trải nghiệm chăm sóc em bé thật nhất
 - Hệ thống AR tăng trải nghiệm người dùng
 - Thông báo nhắc nhở cho người dùng về thay đổi cần thiết cho trẻ
 - Đưa ra gợi ý vaccine cần tiêm cho trẻ ở từng thời kỳ
@@ -28,9 +27,5 @@ Cô **Thái Thị Hàn Uyển**
 - Figma
 - Github
 
-# Thiết kế hiện tại trên Figma
-- https://www.figma.com/file/cN3PIMcaM9optmsiz620lE/Baby-Care-Simulator?node-id=0%3A1
-
-# Tác giả
--  **Nguyễn Minh Thắng** - erastnguyen@gmail.com - 0836469040
--  **Bùi Trọng Khánh Duy** - khanhduyvt0101@gmail.com - 0908423067
+# Thiết kế
+- Xem UI kit, thiết kế chi tiết của ứng dụng [tại đây](https://www.figma.com/file/cN3PIMcaM9optmsiz620lE/Baby-Care-Simulator?node-id=1122%3A160)
