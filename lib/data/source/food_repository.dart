@@ -135,7 +135,6 @@ class FoodRepository {
         }
       });
     });
-    print(listFood);
     return listFood;
   }
 
