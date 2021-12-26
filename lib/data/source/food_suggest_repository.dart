@@ -2,8 +2,9 @@ import 'dart:collection';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_babycare/constants/app_constants.dart';
-import 'package:flutter_babycare/data/model/meal_suggest_model.dart';
+import 'package:flutter_babycare/data/model/food_suggest_model.dart';
 import 'package:flutter_babycare/data/model/ni_model.dart';
+import 'package:uuid/uuid.dart';
 
 import 'ni_repository.dart';
 
@@ -17,67 +18,188 @@ class FoodSuggestRepository {
             firebaseFirestore ?? FirebaseFirestore.instance,
         this.niRepository = niRepository ?? new NIRepository();
 
-  List<MealSuggestModel> mealSuggest(List<NIModel> listNI) {
-    List<MealSuggestModel> listMealSuggest = [];
-    listNI.forEach((element) {
-      listMealSuggest.add(MealSuggestModel(niType: element.type));
+  Future<List<Food_Suggest_Model>> listTotalMealSuggestForWeek(
+      String idBaby) async {
+    List<Food_Suggest_Model> listMealSuggest = [
+      Food_Suggest_Model(
+          id: Uuid().v4(),
+          idBaby: idBaby,
+          type: FoodType.Milk,
+          value: 2000,
+          date: DateTime.now()),
+      Food_Suggest_Model(
+          id: Uuid().v4(),
+          idBaby: idBaby,
+          type: FoodType.Porridge,
+          value: 500,
+          date: DateTime.now()),
+      Food_Suggest_Model(
+          id: Uuid().v4(),
+          idBaby: idBaby,
+          type: FoodType.Fish,
+          value: 800,
+          date: DateTime.now()),
+      Food_Suggest_Model(
+          id: Uuid().v4(),
+          idBaby: idBaby,
+          type: FoodType.Egg,
+          value: 5,
+          date: DateTime.now()),
+      Food_Suggest_Model(
+          id: Uuid().v4(),
+          idBaby: idBaby,
+          type: FoodType.Green_Vegets,
+          value: 400,
+          date: DateTime.now()),
+      Food_Suggest_Model(
+          id: Uuid().v4(),
+          idBaby: idBaby,
+          type: FoodType.Red_Vegets,
+          value: 200,
+          date: DateTime.now()),
+      Food_Suggest_Model(
+          id: Uuid().v4(),
+          idBaby: idBaby,
+          type: FoodType.Citrus_Fruit,
+          value: 300,
+          date: DateTime.now()),
+    ];
+    List<NIModel> listNI = [];
+    List<NIType> listTypeNI = [];
+    await niRepository.fetchNi(idBaby).listen((event) {
+      listNI = event;
     });
 
-    listMealSuggest.forEach((element) {
-      switch (element.getNiType) {
+    listNI.forEach((element) {
+      switch (element.type) {
         case NIType.Calcium:
-          element.listFoodSuggest.add(FoodType.Milk);
+          if (element.value < 2 * 28) {
+            listTypeNI.add(NIType.Calcium);
+          }
           break;
         case NIType.Carbohydrate:
-          element.listFoodSuggest.add(FoodType.Milk);
-          element.listFoodSuggest.add(FoodType.Porridge);
-          element.listFoodSuggest.add(FoodType.Green_Vegets);
-          element.listFoodSuggest.add(FoodType.Red_Vegets);
+          if (element.value < 10 * 28) {
+            listTypeNI.add(NIType.Carbohydrate);
+          }
           break;
         case NIType.Fat:
-          element.listFoodSuggest.add(FoodType.Porridge);
-          element.listFoodSuggest.add(FoodType.Meat);
-          element.listFoodSuggest.add(FoodType.Fish);
-          element.listFoodSuggest.add(FoodType.Egg);
+          if (element.value < 30 * 28) {
+            listTypeNI.add(NIType.Fat);
+          }
           break;
         case NIType.Protein:
-          element.listFoodSuggest.add(FoodType.Milk);
-          element.listFoodSuggest.add(FoodType.Porridge);
-          element.listFoodSuggest.add(FoodType.Meat);
-          element.listFoodSuggest.add(FoodType.Fish);
-          element.listFoodSuggest.add(FoodType.Egg);
-          element.listFoodSuggest.add(FoodType.Green_Vegets);
-          element.listFoodSuggest.add(FoodType.Red_Vegets);
+          if (element.value < 41 * 28) {
+            listTypeNI.add(NIType.Protein);
+          }
           break;
         case NIType.Vitamin_A:
-          element.listFoodSuggest.add(FoodType.Milk);
-          element.listFoodSuggest.add(FoodType.Egg);
-          element.listFoodSuggest.add(FoodType.Citrus_Fruit);
+          if (element.value < 1 * 28) {
+            listTypeNI.add(NIType.Vitamin_A);
+          }
           break;
         case NIType.Vitamin_B:
-          element.listFoodSuggest.add(FoodType.Milk);
-          element.listFoodSuggest.add(FoodType.Red_Vegets);
-          element.listFoodSuggest.add(FoodType.Egg);
-          element.listFoodSuggest.add(FoodType.Porridge);
-          element.listFoodSuggest.add(FoodType.Citrus_Fruit);
+          if (element.value < 1 * 28) {
+            listTypeNI.add(NIType.Vitamin_B);
+          }
           break;
         case NIType.Vitamin_C:
-          element.listFoodSuggest.add(FoodType.Green_Vegets);
-          element.listFoodSuggest.add(FoodType.Citrus_Fruit);
+          if (element.value < 1 * 28) {
+            listTypeNI.add(NIType.Vitamin_C);
+          }
           break;
         case NIType.Vitamin_D:
-          element.listFoodSuggest.add(FoodType.Milk);
-          element.listFoodSuggest.add(FoodType.Citrus_Fruit);
+          if (element.value < 1 * 28) {
+            listTypeNI.add(NIType.Vitamin_D);
+          }
           break;
         case NIType.Iron:
-          element.listFoodSuggest.add(FoodType.Meat);
-          element.listFoodSuggest.add(FoodType.Egg);
+          if (element.value < 3 * 28) {
+            listTypeNI.add(NIType.Iron);
+          }
           break;
         default:
-          element.listFoodSuggest.add(FoodType.Milk);
+          if (element.value < 1 * 28) {
+            listTypeNI.add(NIType.Iodine);
+          }
           break;
       }
     });
+
+    listTypeNI.forEach((element) {
+      switch (element) {
+        case NIType.Calcium:
+          listMealSuggest.forEach((element) {
+            if (element.type == FoodType.Milk) {
+              element.value += element.value * 1.25;
+            }
+          });
+          break;
+        case NIType.Carbohydrate:
+          listMealSuggest.forEach((element) {
+            if (element.type == FoodType.Milk) {
+              element.value += element.value * 1.25;
+            }
+          });
+          break;
+        case NIType.Fat:
+          listMealSuggest.forEach((element) {
+            if (element.type == FoodType.Porridge) {
+              element.value += element.value * 1.25;
+            }
+          });
+          break;
+        case NIType.Protein:
+          listMealSuggest.forEach((element) {
+            if (element.type == FoodType.Milk) {
+              element.value += element.value * 1.25;
+            }
+          });
+          break;
+        case NIType.Vitamin_A:
+          listMealSuggest.forEach((element) {
+            if (element.type == FoodType.Citrus_Fruit) {
+              element.value += element.value * 1.25;
+            }
+          });
+          break;
+        case NIType.Vitamin_B:
+          listMealSuggest.forEach((element) {
+            if (element.type == FoodType.Milk) {
+              element.value += element.value * 1.25;
+            }
+          });
+          break;
+        case NIType.Vitamin_C:
+          listMealSuggest.forEach((element) {
+            if (element.type == FoodType.Green_Vegets) {
+              element.value += element.value * 1.25;
+            }
+          });
+          break;
+        case NIType.Vitamin_D:
+          listMealSuggest.forEach((element) {
+            if (element.type == FoodType.Citrus_Fruit) {
+              element.value += element.value * 1.25;
+            }
+          });
+          break;
+        case NIType.Iron:
+          listMealSuggest.forEach((element) {
+            if (element.type == FoodType.Meat) {
+              element.value += element.value * 1.25;
+            }
+          });
+          break;
+        default:
+          listMealSuggest.forEach((element) {
+            if (element.type == FoodType.Milk) {
+              element.value += element.value * 1.25;
+            }
+          });
+          break;
+      }
+    });
+
     return listMealSuggest;
   }
 }
