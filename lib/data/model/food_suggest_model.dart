@@ -7,7 +7,7 @@ class Food_Suggest_Model extends Equatable {
   final String id;
   final String idBaby;
   final FoodType type;
-  final double value;
+  double value;
   final DateTime date;
 
   Food_Suggest_Model({
