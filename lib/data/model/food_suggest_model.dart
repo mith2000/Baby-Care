@@ -3,14 +3,14 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter_babycare/constants/app_constants.dart';
 import 'package:flutter_babycare/utils/converter.dart';
 
-class Food_Suggest_Model extends Equatable {
+class FoodSuggestModel extends Equatable {
   final String id;
   final String idBaby;
   final FoodType type;
   double value;
   final DateTime date;
 
-  Food_Suggest_Model({
+  FoodSuggestModel({
     this.id,
     this.idBaby,
     this.type,
@@ -18,9 +18,9 @@ class Food_Suggest_Model extends Equatable {
     this.date,
   });
 
-  static Food_Suggest_Model fromSnapshot(DocumentSnapshot snap) {
+  static FoodSuggestModel fromSnapshot(DocumentSnapshot snap) {
     DateTime myDateTime = snap['date'].toDate();
-    Food_Suggest_Model babyModel = Food_Suggest_Model(
+    FoodSuggestModel babyModel = FoodSuggestModel(
       id: snap['id'],
       idBaby: snap['idBaby'],
       type: Converter.stringToFoodType(snap['type']),
