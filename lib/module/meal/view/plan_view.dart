@@ -2,12 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter_babycare/constants/app_constants.dart';
 import 'package:flutter_babycare/data/model/baby_model.dart';
 import 'package:flutter_babycare/data/model/food_model.dart';
+import 'package:flutter_babycare/data/model/food_suggest_model.dart';
+import 'package:flutter_babycare/data/source/food_suggest_repository.dart';
+import 'package:flutter_babycare/data/source/local_data_source.dart';
+import 'package:flutter_babycare/utils/UI_components/error_label.dart';
 import 'package:flutter_babycare/utils/UI_components/food_detail_icon.dart';
 import 'package:flutter_babycare/utils/UI_components/highlight_box.dart';
 import 'package:flutter_babycare/utils/UI_components/line_button.dart';
 import 'package:flutter_babycare/utils/app_colors.dart';
+import 'package:flutter_babycare/utils/converter.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:intl/intl.dart';
 
 class MealPlanViewArguments {
   final BabyModel baby;
@@ -27,46 +34,24 @@ class MealPlanView extends StatefulWidget {
 }
 
 class _MealPlanViewState extends State<MealPlanView> {
+  final Map<String, String> _icons = {
+    'porridge': 'assets/icon/porridge.svg',
+    'milk': 'assets/icon/milk.svg',
+    'meat': 'assets/icon/meat.svg',
+    'fish': 'assets/icon/fish.svg',
+    'egg': 'assets/icon/egg.svg',
+    'green_vegets': 'assets/icon/green_vegets.svg',
+    'red_vegets': 'assets/icon/red_vegets.svg',
+    'citrus_fruit': 'assets/icon/citrus_fruit.svg',
+  };
+
+  Future<List<FoodSuggestModel>> future;
+
   @override
   Widget build(BuildContext context) {
     final args =
         ModalRoute.of(context).settings.arguments as MealPlanViewArguments;
-    List<FoodModel> foodListTotal = [];
-    for (var i = 0; i < 8; i++) {
-      foodListTotal.add(FoodModel(
-        idBaby: '',
-        type: FoodType.values[i],
-        value: 900.0,
-        updateDate: DateTime.now(),
-      ));
-    }
-    List<FoodModel> foodListBreakfast = [];
-    for (var i = 0; i < 3; i++) {
-      foodListBreakfast.add(FoodModel(
-        idBaby: '',
-        type: FoodType.values[i],
-        value: 900.0,
-        updateDate: DateTime.now(),
-      ));
-    }
-    List<FoodModel> foodListNoon = [];
-    for (var i = 0; i < 3; i++) {
-      foodListNoon.add(FoodModel(
-        idBaby: '',
-        type: FoodType.values[i],
-        value: 800.0,
-        updateDate: DateTime.now(),
-      ));
-    }
-    List<FoodModel> foodListDinner = [];
-    for (var i = 0; i < 3; i++) {
-      foodListDinner.add(FoodModel(
-        idBaby: '',
-        type: FoodType.values[i],
-        value: 700.0,
-        updateDate: DateTime.now(),
-      ));
-    }
+    FoodSuggestRepository foodSuggestRepository = new FoodSuggestRepository();
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: PreferredSize(
@@ -99,16 +84,30 @@ class _MealPlanViewState extends State<MealPlanView> {
               ListView(
                 children: [
                   SizedBox(height: AppConstants.paddingNormalH),
-                  _buildTotalWeekDetail(foodListTotal),
+                  FutureBuilder(
+                      future: foodSuggestRepository
+                          .listTotalMealSuggestForWeek(args.baby.id),
+                      builder: (context, state) {
+                        if (state.hasData) {
+                          return _buildTotalWeekDetail(state.data);
+                        } else {
+                          return ErrorLabel();
+                        }
+                      }),
                   _buildTomorrowDetail(
-                      foodListBreakfast, foodListNoon, foodListDinner),
+                      LocalDataSource.fetchBreakfastSuggest(1),
+                      LocalDataSource.fetchNoonSuggest(1),
+                      LocalDataSource.fetchDinnerSuggest(1)),
                   ListView.builder(
                       shrinkWrap: true,
                       physics: ScrollPhysics(),
-                      itemCount: 4,
+                      itemCount: 6,
                       itemBuilder: (context, index) {
                         return _buildDateDetail(
-                            foodListBreakfast, foodListNoon, foodListDinner);
+                            LocalDataSource.fetchBreakfastSuggest(index + 2),
+                            LocalDataSource.fetchNoonSuggest(index + 2),
+                            LocalDataSource.fetchDinnerSuggest(index + 2),
+                            index + 2);
                       }),
                   SizedBox(height: AppConstants.paddingSuperLargeH * 2),
                 ],
@@ -127,7 +126,7 @@ class _MealPlanViewState extends State<MealPlanView> {
     );
   }
 
-  _buildTotalWeekDetail(List<FoodModel> foodList) {
+  _buildTotalWeekDetail(List<FoodSuggestModel> foodList) {
     return Container(
       height: 152.h,
       alignment: Alignment.center,
@@ -166,7 +165,7 @@ class _MealPlanViewState extends State<MealPlanView> {
             child: Wrap(
               runSpacing: AppConstants.paddingNormalH,
               children: foodList
-                  .map((item) => FoodDetailIcon(item))
+                  .map((item) => _buildFoodSuggestDetailIcon(item))
                   .toList()
                   .cast<Widget>(),
             ),
@@ -185,6 +184,30 @@ class _MealPlanViewState extends State<MealPlanView> {
             color: AppColors.shadow,
             blurRadius: 4,
             offset: Offset(0, 4), // changes position of shadow
+          ),
+        ],
+      ),
+    );
+  }
+
+  _buildFoodSuggestDetailIcon(FoodSuggestModel item) {
+    return Container(
+      width: 92.w,
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          SvgPicture.asset(
+            _icons[Converter.FoodTypeToIconNameString(item.type)],
+            width: 40.w,
+            height: 40.w,
+          ),
+          item.value < 1000
+              ? SizedBox(width: AppConstants.paddingNormalW)
+              : Container(),
+          Text(
+            item.value.toInt().toString() +
+                Converter.FoodTypeToUnitString(item.type),
+            style: Theme.of(context).textTheme.bodyText1,
           ),
         ],
       ),
@@ -338,7 +361,10 @@ class _MealPlanViewState extends State<MealPlanView> {
     List<FoodModel> breakfast,
     List<FoodModel> noon,
     List<FoodModel> dinner,
+    int dayNext,
   ) {
+    final DateFormat formatter = DateFormat('dd/MM/yyyy');
+
     return Container(
       height: 200.h,
       alignment: Alignment.center,
@@ -350,7 +376,7 @@ class _MealPlanViewState extends State<MealPlanView> {
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 SizedBox(width: AppConstants.paddingLargeW),
-                HighlightBox('7', color: AppColors.primary),
+                HighlightBox(dayNext.toString(), color: AppColors.primary),
                 SizedBox(width: AppConstants.paddingNormalW),
                 Text(
                   'days next',
@@ -358,7 +384,8 @@ class _MealPlanViewState extends State<MealPlanView> {
                 ),
                 Expanded(child: Container()),
                 Text(
-                  '20/5/2021',
+                  formatter.format(
+                      DateTime.now().subtract(Duration(days: -dayNext))),
                   style: Theme.of(context).textTheme.bodyText1,
                 ),
                 SizedBox(width: AppConstants.paddingLargeW),

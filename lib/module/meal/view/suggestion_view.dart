@@ -1,14 +1,9 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_babycare/constants/app_constants.dart';
 import 'package:flutter_babycare/data/model/baby_model.dart';
-import 'package:flutter_babycare/data/model/food_suggest_model.dart';
 import 'package:flutter_babycare/data/model/ni_model.dart';
-import 'package:flutter_babycare/data/source/food_suggest_repository.dart';
 import 'package:flutter_babycare/module/baby/update/view/update_food_view.dart';
 import 'package:flutter_babycare/module/meal/view/plan_view.dart';
-import 'package:flutter_babycare/utils/UI_components/error_label.dart';
 import 'package:flutter_babycare/utils/UI_components/highlight_box.dart';
 import 'package:flutter_babycare/utils/UI_components/line_button.dart';
 import 'package:flutter_babycare/utils/UI_components/mini_line_button.dart';
@@ -56,87 +51,75 @@ class _MealSuggestionViewState extends State<MealSuggestionView> {
     'citrus_fruit': 'assets/icon/citrus_fruit.svg',
   };
 
-  Future<List<FoodSuggestModel>> future;
-
   @override
   Widget build(BuildContext context) {
     final args = ModalRoute.of(context).settings.arguments
         as MealSuggestionViewArguments;
-    FoodSuggestRepository foodSuggestRepository = new FoodSuggestRepository();
-    return FutureBuilder(
-        future: foodSuggestRepository.listTotalMealSuggestForWeek(args.baby.id),
-        builder: (context, state) {
-          if (state.hasData) {
-            print(state.data);
-            return Scaffold(
-              resizeToAvoidBottomInset: false,
-              appBar: PreferredSize(
-                preferredSize: Size.fromHeight(
-                    AppConstants.paddingAppH + AppConstants.paddingSuperLargeH),
-                child: AppBar(
-                  automaticallyImplyLeading: false,
-                  title: Container(
-                    height: 32.h,
-                    alignment: Alignment.bottomCenter,
-                    margin: EdgeInsets.only(left: AppConstants.paddingAppW),
-                    child: Text(
-                      'Meal Suggestion',
-                      style: GoogleFonts.dosis(
-                        fontWeight: FontWeight.w700,
-                        fontSize: 24.sp,
-                        color: Colors.white,
-                      ),
-                    ),
-                  ),
-                  backgroundColor: AppColors.primary,
-                  elevation: 0,
-                ),
+    return Scaffold(
+      resizeToAvoidBottomInset: false,
+      appBar: PreferredSize(
+        preferredSize: Size.fromHeight(
+            AppConstants.paddingAppH + AppConstants.paddingSuperLargeH),
+        child: AppBar(
+          automaticallyImplyLeading: false,
+          title: Container(
+            height: 32.h,
+            alignment: Alignment.bottomCenter,
+            margin: EdgeInsets.only(left: AppConstants.paddingAppW),
+            child: Text(
+              'Meal Suggestion',
+              style: GoogleFonts.dosis(
+                fontWeight: FontWeight.w700,
+                fontSize: 24.sp,
+                color: Colors.white,
               ),
-              body: Center(
-                child: Container(
-                  color: AppColors.background,
-                  padding: EdgeInsets.symmetric(
-                    horizontal: AppConstants.paddingAppW,
-                    vertical: AppConstants.paddingAppH,
-                  ),
-                  child: Stack(
-                    children: [
-                      ListView(
-                        children: [
-                          _buildTrackerView(args),
-                          SizedBox(height: AppConstants.paddingLargeH),
-                          _buildUpdateNIButton(args),
-                          SizedBox(height: AppConstants.paddingLargeH),
-                          _buildNutriDeficiencyList(args),
-                          ListView.builder(
-                              shrinkWrap: true,
-                              physics: ScrollPhysics(),
-                              itemCount: args.NIDeficiencyList.length,
-                              itemBuilder: (context, index) {
-                                return _buildNutriDeficiencyDetail(
-                                    args.baby.gender,
-                                    args.NIDeficiencyList[index]);
-                              }),
-                          SizedBox(height: AppConstants.paddingSuperLargeH * 4),
-                        ],
-                      ),
-                      Column(
-                        mainAxisSize: MainAxisSize.max,
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          _buildMealHistoryButton(args),
-                          SizedBox(height: AppConstants.paddingLargeH),
-                          _buildMainButtons(args),
-                        ],
-                      )
-                    ],
-                  ),
-                ),
+            ),
+          ),
+          backgroundColor: AppColors.primary,
+          elevation: 0,
+        ),
+      ),
+      body: Center(
+        child: Container(
+          color: AppColors.background,
+          padding: EdgeInsets.symmetric(
+            horizontal: AppConstants.paddingAppW,
+            vertical: AppConstants.paddingAppH,
+          ),
+          child: Stack(
+            children: [
+              ListView(
+                children: [
+                  _buildTrackerView(args),
+                  SizedBox(height: AppConstants.paddingLargeH),
+                  _buildUpdateNIButton(args),
+                  SizedBox(height: AppConstants.paddingLargeH),
+                  _buildNutriDeficiencyList(args),
+                  ListView.builder(
+                      shrinkWrap: true,
+                      physics: ScrollPhysics(),
+                      itemCount: args.NIDeficiencyList.length,
+                      itemBuilder: (context, index) {
+                        return _buildNutriDeficiencyDetail(
+                            args.baby.gender, args.NIDeficiencyList[index]);
+                      }),
+                  SizedBox(height: AppConstants.paddingSuperLargeH * 4),
+                ],
               ),
-            );
-          }
-          return ErrorLabel();
-        });
+              Column(
+                mainAxisSize: MainAxisSize.max,
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  _buildMealHistoryButton(args),
+                  SizedBox(height: AppConstants.paddingLargeH),
+                  _buildMainButtons(args),
+                ],
+              )
+            ],
+          ),
+        ),
+      ),
+    );
   }
 
   _buildTrackerView(MealSuggestionViewArguments args) {
