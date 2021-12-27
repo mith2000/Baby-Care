@@ -18,46 +18,52 @@ class FoodSuggestRepository {
             firebaseFirestore ?? FirebaseFirestore.instance,
         this.niRepository = niRepository ?? new NIRepository();
 
-  Future<List<Food_Suggest_Model>> listTotalMealSuggestForWeek(
+  Future<List<FoodSuggestModel>> listTotalMealSuggestForWeek(
       String idBaby) async {
-    List<Food_Suggest_Model> listMealSuggest = [
-      Food_Suggest_Model(
+    List<FoodSuggestModel> listMealSuggest = [
+      FoodSuggestModel(
           id: Uuid().v4(),
           idBaby: idBaby,
           type: FoodType.Milk,
           value: 2000,
           date: DateTime.now()),
-      Food_Suggest_Model(
+      FoodSuggestModel(
+          id: Uuid().v4(),
+          idBaby: idBaby,
+          type: FoodType.Meat,
+          value: 200,
+          date: DateTime.now()),
+      FoodSuggestModel(
           id: Uuid().v4(),
           idBaby: idBaby,
           type: FoodType.Porridge,
           value: 500,
           date: DateTime.now()),
-      Food_Suggest_Model(
+      FoodSuggestModel(
           id: Uuid().v4(),
           idBaby: idBaby,
           type: FoodType.Fish,
           value: 800,
           date: DateTime.now()),
-      Food_Suggest_Model(
+      FoodSuggestModel(
           id: Uuid().v4(),
           idBaby: idBaby,
           type: FoodType.Egg,
           value: 5,
           date: DateTime.now()),
-      Food_Suggest_Model(
+      FoodSuggestModel(
           id: Uuid().v4(),
           idBaby: idBaby,
           type: FoodType.Green_Vegets,
           value: 400,
           date: DateTime.now()),
-      Food_Suggest_Model(
+      FoodSuggestModel(
           id: Uuid().v4(),
           idBaby: idBaby,
           type: FoodType.Red_Vegets,
           value: 200,
           date: DateTime.now()),
-      Food_Suggest_Model(
+      FoodSuggestModel(
           id: Uuid().v4(),
           idBaby: idBaby,
           type: FoodType.Citrus_Fruit,
