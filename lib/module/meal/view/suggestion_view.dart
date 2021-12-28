@@ -206,7 +206,7 @@ class _MealSuggestionViewState extends State<MealSuggestionView> {
         children: [
           Text(
             gender == "boy"
-                ? "His "
+                ? "His " + Converter.NITypeToTypeString(nutri.type) + " index:"
                 : "Her " + Converter.NITypeToTypeString(nutri.type) + " index:",
             style: Theme.of(context).textTheme.headline1,
           ),
@@ -237,7 +237,7 @@ class _MealSuggestionViewState extends State<MealSuggestionView> {
           SizedBox(height: AppConstants.paddingLargeH),
           Center(
             child: Text(
-              gender == "boy" ? "He" : "She" + " need more",
+              gender == "boy" ? "He" + " need more" : "She" + " need more",
               style: Theme.of(context).textTheme.bodyText1,
             ),
           ),
