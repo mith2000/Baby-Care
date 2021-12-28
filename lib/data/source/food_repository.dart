@@ -88,12 +88,6 @@ class FoodRepository {
             .set(listFoodModel[i].toJson())
             .whenComplete(() => print("$temp food added to the database"))
             .catchError((e) => print(e));
-
-        List<NIModel> listNi = Converter.foodToNI(listFoodModel[i]);
-
-        for (var j = 0; j < listNi.length; j++) {
-          await niRepository.createNi(listNi[j], listFoodModel[0].idBaby);
-        }
       } else {
         for (var j = 0; j < listFoodRecent.length; j++) {
           if (listFoodRecent[j].type == listFoodModel[i].type) {
@@ -108,6 +102,11 @@ class FoodRepository {
                 .catchError((e) => print(e));
           }
         }
+      }
+      List<NIModel> listNi = Converter.foodToNI(listFoodModel[i]);
+
+      for (var j = 0; j < listNi.length; j++) {
+        await niRepository.createNi(listNi[j], listFoodModel[0].idBaby);
       }
     }
     return listFoodModel[0].idBaby;
