@@ -15,42 +15,43 @@ class CreateSampleData {
 
   Future<void> create() async {
     List<FoodModel> foodList4 = [];
+    String idBaby = "0e0d1b6a-29a4-4adb-bc65-7b53a9592d0b";
     List<int> foodValues4 = [];
     foodValues4.add(500); //porridge
     foodValues4.add(600); //milk
-    foodValues4.add(300); //meat
-    foodValues4.add(300); //fish
-    foodValues4.add(3); //egg
-    foodValues4.add(300); //green_vegets
-    foodValues4.add(300); //red_vegets
-    foodValues4.add(300); //citrus_fruit
+    foodValues4.add(0); //meat
+    foodValues4.add(0); //fish
+    foodValues4.add(1); //egg
+    foodValues4.add(100); //green_vegets
+    foodValues4.add(50); //red_vegets
+    foodValues4.add(60); //citrus_fruit
     for (var i = 0; i < FoodType.values.length; i++) {
       foodList4.add(FoodModel(
-        idBaby: "0cd64145-113c-41c3-b867-fa11d032b632",
+        idBaby: idBaby,
         type: FoodType.values[i],
-        countUpdate: 4,
+        countUpdate: 0,
         value: foodValues4[i].toDouble(),
-        updateDate: DateTime(2021, 12, 15),
+        updateDate: DateTime(2021, 12, 25),
       ));
     }
 
     List<FoodModel> foodList3 = [];
     List<int> foodValues3 = [];
-    foodValues3.add(500); //porridge
-    foodValues3.add(600); //milk
-    foodValues3.add(300); //meat
-    foodValues3.add(300); //fish
-    foodValues3.add(3); //egg
-    foodValues3.add(300); //green_vegets
-    foodValues3.add(300); //red_vegets
-    foodValues3.add(300); //citrus_fruit
+    foodValues3.add(200); //porridge
+    foodValues3.add(300); //milk
+    foodValues3.add(500); //meat
+    foodValues3.add(0); //fish
+    foodValues3.add(0); //egg
+    foodValues3.add(100); //green_vegets
+    foodValues3.add(0); //red_vegets
+    foodValues3.add(100); //citrus_fruit
     for (var i = 0; i < FoodType.values.length; i++) {
       foodList3.add(FoodModel(
-        idBaby: "0cd64145-113c-41c3-b867-fa11d032b632",
+        idBaby: idBaby,
         type: FoodType.values[i],
-        countUpdate: 3,
+        countUpdate: 1,
         value: foodValues3[i].toDouble(),
-        updateDate: DateTime(2021, 12, 16),
+        updateDate: DateTime(2021, 12, 26),
       ));
     }
 
@@ -58,39 +59,39 @@ class CreateSampleData {
     List<int> foodValues2 = [];
     foodValues2.add(500); //porridge
     foodValues2.add(600); //milk
-    foodValues2.add(300); //meat
-    foodValues2.add(300); //fish
-    foodValues2.add(3); //egg
-    foodValues2.add(300); //green_vegets
-    foodValues2.add(300); //red_vegets
-    foodValues2.add(300); //citrus_fruit
+    foodValues2.add(0); //meat
+    foodValues2.add(0); //fish
+    foodValues2.add(0); //egg
+    foodValues2.add(100); //green_vegets
+    foodValues2.add(0); //red_vegets
+    foodValues2.add(0); //citrus_fruit
     for (var i = 0; i < FoodType.values.length; i++) {
       foodList2.add(FoodModel(
-        idBaby: "0cd64145-113c-41c3-b867-fa11d032b632",
+        idBaby: idBaby,
         type: FoodType.values[i],
-        countUpdate: 2,
+        countUpdate: 2, //ban dau la 2
         value: foodValues2[i].toDouble(),
-        updateDate: DateTime(2021, 12, 17),
+        updateDate: DateTime(2021, 12, 27),
       ));
     }
 
     List<FoodModel> foodList1 = [];
     List<int> foodValues1 = [];
-    foodValues1.add(500); //porridge
+    foodValues1.add(0); //porridge
     foodValues1.add(600); //milk
-    foodValues1.add(300); //meat
-    foodValues1.add(300); //fish
-    foodValues1.add(3); //egg
-    foodValues1.add(300); //green_vegets
-    foodValues1.add(300); //red_vegets
-    foodValues1.add(300); //citrus_fruit
+    foodValues1.add(50); //meat
+    foodValues1.add(50); //fish
+    foodValues1.add(2); //egg
+    foodValues1.add(0); //green_vegets
+    foodValues1.add(200); //red_vegets
+    foodValues1.add(100); //citrus_fruit
     for (var i = 0; i < FoodType.values.length; i++) {
       foodList1.add(FoodModel(
-        idBaby: "0cd64145-113c-41c3-b867-fa11d032b632",
+        idBaby: idBaby,
         type: FoodType.values[i],
-        countUpdate: 1,
+        countUpdate: 3, // ban dau la 3
         value: foodValues1[i].toDouble(),
-        updateDate: DateTime(2021, 12, 19),
+        updateDate: DateTime(2021, 12, 28),
       ));
     }
 
@@ -98,19 +99,19 @@ class CreateSampleData {
     List<int> foodValues0 = [];
     foodValues0.add(500); //porridge
     foodValues0.add(600); //milk
-    foodValues0.add(300); //meat
-    foodValues0.add(300); //fish
-    foodValues0.add(3); //egg
-    foodValues0.add(300); //green_vegets
-    foodValues0.add(300); //red_vegets
-    foodValues0.add(300); //citrus_fruit
+    foodValues0.add(0); //meat
+    foodValues0.add(0); //fish
+    foodValues0.add(0); //egg
+    foodValues0.add(0); //green_vegets
+    foodValues0.add(0); //red_vegets
+    foodValues0.add(0); //citrus_fruit
     for (var i = 0; i < FoodType.values.length; i++) {
       foodList0.add(FoodModel(
-        idBaby: "0cd64145-113c-41c3-b867-fa11d032b632",
+        idBaby: idBaby,
         type: FoodType.values[i],
-        countUpdate: 0,
+        countUpdate: 4,
         value: foodValues0[i].toDouble(),
-        updateDate: DateTime(2021, 12, 21),
+        updateDate: DateTime(2021, 12, 30),
       ));
     }
 

@@ -41,7 +41,7 @@ class FoodRepository {
 
   Future<String> updateFood(List<FoodModel> listFoodModel) async {
     List<FoodModel> listFoodRecent =
-        await fetchFoodToUpdate(listFoodModel[0].idBaby, 0);
+        await fetchFoodToUpdate(listFoodModel[0].idBaby);
     bool isOverDay = false;
     double temp = 10000;
     int maxCountUpdate;
@@ -120,12 +120,14 @@ class FoodRepository {
     for (var i = 0; i <= dayAgo; i++) {
       listFood.add(ListFoodModel(dayAgo: i));
     }
+    List<FoodModel> list = [];
     await firebaseFirestore
         .collection('food')
         .where('idBaby', isEqualTo: idBaby)
         .get()
         .then((querySnapshot) {
       querySnapshot.docs.forEach((doc) {
+        list.add(FoodModel.fromSnapshot(doc));
         int date = Converter.dateToDayDouble(DateFormat('dd/MM/yyyy')
                 .format(doc.data()['updateDate'].toDate()))
             .toInt();
@@ -134,10 +136,12 @@ class FoodRepository {
         }
       });
     });
+    List<FoodModel> temp = list;
+    List<FoodModel> temp1 = temp;
     return listFood;
   }
 
-  Future<List<FoodModel>> fetchFoodToUpdate(String idBaby, int dayAgo) async {
+  Future<List<FoodModel>> fetchFoodToUpdate(String idBaby) async {
     List<FoodModel> listFood = [];
     int maxCountUpdate;
     double temp = 10000;
@@ -158,7 +162,7 @@ class FoodRepository {
     await firebaseFirestore
         .collection('food')
         .where('idBaby', isEqualTo: idBaby)
-        .where('countUpdate', isEqualTo: maxCountUpdate - dayAgo)
+        .where('countUpdate', isEqualTo: maxCountUpdate)
         .get()
         .then((querySnapshot) {
       querySnapshot.docs.forEach((doc) {

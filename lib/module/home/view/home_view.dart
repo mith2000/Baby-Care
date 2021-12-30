@@ -160,8 +160,8 @@ class _HomeBodyViewState extends State<HomeBodyView> {
 
   @override
   Widget build(BuildContext context) {
-    // CreateSampleData createSampleData = new CreateSampleData();
-    // createSampleData.create();
+    CreateSampleData createSampleData = new CreateSampleData();
+    createSampleData.create();
     return Container(
       padding: EdgeInsets.symmetric(
         horizontal: AppConstants.paddingAppW,
