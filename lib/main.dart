@@ -40,7 +40,7 @@ void main() async {
 
   HttpOverrides.global = MyHttpOverrides();
 
-  // Vertical only
+  // vertical only
   await SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
     DeviceOrientation.portraitDown,
