@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_babycare/constants/app_constants.dart';
+import 'package:flutter_babycare/module/handbook/article/view/article_view.dart';
 import 'package:flutter_babycare/utils/UI_components/line_button.dart';
 import 'package:flutter_babycare/utils/app_colors.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -41,7 +42,9 @@ class _ListArticleViewState extends State<ListArticleView> {
                       return _buildArticleButton(
                         title: args.themeId,
                         induction: 'Theme Description',
-                        action: () {},
+                        action: () {
+                          Navigator.pushNamed(context, ArticleView.routeName);
+                        },
                         image: AssetImage('assets/image/default_baby.png'),
                         isRedFrame: index % 2 == 1 ? true : false,
                       );
