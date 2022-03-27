@@ -28,8 +28,8 @@ class _HandbookThemeViewState extends State<HandbookThemeView> {
         itemCount: 4,
         itemBuilder: (context, index) {
           return _buildThemeButton(
-            themeName: 'Theme Title',
-            themeDescription: 'Theme Description',
+            title: 'Theme Title',
+            description: 'Theme Description',
             action: () {
               Navigator.pushNamed(context, ListArticleView.routeName,
                   arguments: ListArticleViewArguments("themeId"));
@@ -43,8 +43,8 @@ class _HandbookThemeViewState extends State<HandbookThemeView> {
   }
 
   Widget _buildThemeButton({
-    String themeName,
-    String themeDescription,
+    String title,
+    String description,
     Function action,
     ImageProvider image,
     bool isRedFrame = false,
@@ -63,7 +63,7 @@ class _HandbookThemeViewState extends State<HandbookThemeView> {
                   children: [
                     Container(
                       child: Text(
-                        themeName,
+                        title,
                         style: TextStyle(
                           fontWeight: FontWeight.w700,
                           fontSize: 24.sp,
@@ -74,7 +74,7 @@ class _HandbookThemeViewState extends State<HandbookThemeView> {
                     SizedBox(height: AppConstants.paddingNormalH),
                     Container(
                       child: Text(
-                        themeDescription,
+                        description,
                         style: TextStyle(
                           fontWeight: FontWeight.w600,
                           fontSize: 22.sp,

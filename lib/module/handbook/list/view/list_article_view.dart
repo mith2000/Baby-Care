@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_babycare/constants/app_constants.dart';
+import 'package:flutter_babycare/utils/UI_components/line_button.dart';
 import 'package:flutter_babycare/utils/app_colors.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -23,35 +24,53 @@ class _ListArticleViewState extends State<ListArticleView> {
   Widget build(BuildContext context) {
     final args =
         ModalRoute.of(context).settings.arguments as ListArticleViewArguments;
-    return Container(
-      padding: EdgeInsets.symmetric(
-        horizontal: AppConstants.paddingAppW,
-        vertical: AppConstants.paddingAppH,
-      ),
-      color: AppColors.background,
-      child: ListView.builder(
-        shrinkWrap: true,
-        physics: ScrollPhysics(),
-        itemCount: 4,
-        itemBuilder: (context, index) {
-          return _buildThemeButton(
-            themeName: args.themeId,
-            themeDescription: 'Theme Description',
-            action: () {
-              Navigator.pushNamed(context, ListArticleView.routeName,
-                  arguments: ListArticleViewArguments("themeId"));
-            },
-            image: AssetImage('assets/image/default_baby.png'),
-            isRedFrame: index % 2 == 1 ? true : false,
-          );
-        },
+    return Scaffold(
+      resizeToAvoidBottomInset: false,
+      body: Container(
+        color: AppColors.background,
+        child: Stack(
+          children: [
+            ListView(
+              children: [
+                Container(
+                  child: ListView.builder(
+                    shrinkWrap: true,
+                    physics: ScrollPhysics(),
+                    itemCount: 6,
+                    itemBuilder: (context, index) {
+                      return _buildArticleButton(
+                        title: args.themeId,
+                        induction: 'Theme Description',
+                        action: () {},
+                        image: AssetImage('assets/image/default_baby.png'),
+                        isRedFrame: index % 2 == 1 ? true : false,
+                      );
+                    },
+                  ),
+                  margin: EdgeInsets.symmetric(
+                    horizontal: AppConstants.paddingLargeW,
+                    vertical: AppConstants.paddingNormalH,
+                  ),
+                ),
+                SizedBox(height: AppConstants.paddingSuperLargeH * 2),
+              ],
+            ),
+            Column(
+              mainAxisSize: MainAxisSize.max,
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                _buildBackButton(),
+              ],
+            )
+          ],
+        ),
       ),
     );
   }
 
-  Widget _buildThemeButton({
-    String themeName,
-    String themeDescription,
+  Widget _buildArticleButton({
+    String title,
+    String induction,
     Function action,
     ImageProvider image,
     bool isRedFrame = false,
@@ -70,7 +89,7 @@ class _ListArticleViewState extends State<ListArticleView> {
                   children: [
                     Container(
                       child: Text(
-                        themeName,
+                        title,
                         style: TextStyle(
                           fontWeight: FontWeight.w700,
                           fontSize: 24.sp,
@@ -81,7 +100,7 @@ class _ListArticleViewState extends State<ListArticleView> {
                     SizedBox(height: AppConstants.paddingNormalH),
                     Container(
                       child: Text(
-                        themeDescription,
+                        induction,
                         style: TextStyle(
                           fontWeight: FontWeight.w600,
                           fontSize: 22.sp,
@@ -151,6 +170,18 @@ class _ListArticleViewState extends State<ListArticleView> {
           ),
         ),
       ),
+    );
+  }
+
+  Widget _buildBackButton() {
+    return Container(
+      padding: EdgeInsets.symmetric(
+        horizontal: AppConstants.paddingAppW,
+        vertical: AppConstants.paddingAppH,
+      ),
+      child: LineButton('Back', () {
+        Navigator.pop(context);
+      }),
     );
   }
 }
