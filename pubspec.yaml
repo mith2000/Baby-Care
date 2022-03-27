@@ -31,7 +31,7 @@ dependencies:
   flutter_bloc: ^7.3.3
   http: ^0.13.4
   shared_preferences: ^2.0.8
-  flutter_svg: ^0.23.0+1
+  flutter_svg: ^1.0.3
   rxdart: ^0.27.2
   url_launcher: ^6.0.13
   flutter_screenutil: ^5.0.0+2
