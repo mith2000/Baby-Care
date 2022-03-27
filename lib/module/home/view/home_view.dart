@@ -7,6 +7,7 @@ import 'package:flutter_babycare/module/authentication/authentication_bloc/authe
 import 'package:flutter_babycare/module/authentication/authentication_bloc/authentication_event.dart';
 import 'package:flutter_babycare/module/baby/create/view/create_gender_view.dart';
 import 'package:flutter_babycare/module/baby/detail/view/detail_view.dart';
+import 'package:flutter_babycare/module/handbook/theme/view/theme_view.dart';
 import 'package:flutter_babycare/module/home/bloc/baby_bloc.dart';
 import 'package:flutter_babycare/module/home/bloc/baby_event.dart';
 import 'package:flutter_babycare/module/home/bloc/baby_state.dart';
@@ -43,7 +44,7 @@ class _HomeViewState extends State<HomeView> {
   List<Widget> screens;
   var _icons = {
     'home': 'assets/icon/home.svg',
-    'notify': 'assets/icon/notify.svg',
+    'book': 'assets/icon/book.svg',
     'chat': 'assets/icon/chat.svg',
     'user': 'assets/icon/user.svg',
   };
@@ -53,7 +54,7 @@ class _HomeViewState extends State<HomeView> {
     super.initState();
     screens = [
       HomeBodyView(widget._user),
-      SampleView(),
+      HandbookThemeView(),
       SampleView(),
       SampleView(),
     ];
@@ -111,7 +112,7 @@ class _HomeViewState extends State<HomeView> {
         ),
         Tab(
           icon: SvgPicture.asset(
-            _icons['notify'],
+            _icons['book'],
             color: AppColors.text,
           ),
         ),

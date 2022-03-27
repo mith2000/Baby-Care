@@ -103,6 +103,7 @@ flutter:
     - assets/icon/info.svg
     - assets/icon/achievement.svg
     - assets/icon/warn.svg
+    - assets/icon/book.svg
 
     - assets/image/default_baby.png
     - assets/image/EmojiLove_1.png
