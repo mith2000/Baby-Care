@@ -22,7 +22,7 @@ class HighlightBox extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       alignment: Alignment.center,
-      height: 32.h,
+      padding: EdgeInsets.symmetric(vertical: AppConstants.paddingSlightH),
       width: width.w,
       decoration: BoxDecoration(
         color: boxColor,
@@ -43,6 +43,7 @@ class HighlightBox extends StatelessWidget {
           fontSize: 22.sp,
           color: AppColors.whiteBackground,
         ),
+        textAlign: TextAlign.center,
       ),
     );
   }
