@@ -8,6 +8,7 @@ import 'package:flutter_babycare/data/source/food_repository.dart';
 import 'package:flutter_babycare/data/source/ni_repository.dart';
 import 'package:flutter_babycare/module/baby/create/view/create_gender_view.dart';
 import 'package:flutter_babycare/module/baby/detail/view/detail_view.dart';
+import 'package:flutter_babycare/module/handbook/list/view/list_article_view.dart';
 import 'package:flutter_babycare/module/handbook/theme/view/theme_view.dart';
 import 'package:flutter_babycare/utils/UI_components/loading_widget.dart';
 import 'package:flutter_babycare/utils/app_colors.dart';
@@ -195,6 +196,8 @@ class _MyAppState extends State<MyApp> {
                       MealPlanView(),
                   HandbookThemeView.routeName: (BuildContext context) =>
                       HandbookThemeView(),
+                  ListArticleView.routeName: (BuildContext context) =>
+                      ListArticleView(),
                 },
               )),
     );
