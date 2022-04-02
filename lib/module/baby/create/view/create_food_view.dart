@@ -8,6 +8,7 @@ import 'package:flutter_babycare/module/home/view/home_view.dart';
 import 'package:flutter_babycare/utils/UI_components/custom_slider.dart';
 import 'package:flutter_babycare/utils/UI_components/custom_slider_label.dart';
 import 'package:flutter_babycare/utils/UI_components/error_label.dart';
+import 'package:flutter_babycare/utils/UI_components/loading_widget.dart';
 import 'package:flutter_babycare/utils/UI_components/mini_line_button.dart';
 import 'package:flutter_babycare/utils/UI_components/mini_solid_button.dart';
 import 'package:flutter_babycare/utils/UI_components/title_label.dart';
@@ -318,7 +319,10 @@ class _CreateBabyFoodViewState extends State<CreateBabyFoodView> {
         BlocBuilder<BabyBloc, BabyState>(
             bloc: babyBloc,
             builder: (context, state) {
-              if (state is LoadBMIBaby) {
+              if (state is FoodAndBMILoading) {
+                return CustomLoadingWidget();
+              }
+              if (state is LoadedBMI) {
                 return MiniSolidButton('Next', () {
                   List<FoodModel> foodList = [];
                   List<int> foodValues = [];

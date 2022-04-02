@@ -2,7 +2,6 @@ import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_babycare/constants/app_constants.dart';
-import 'package:flutter_babycare/data/source/create_sample_data.dart';
 import 'package:flutter_babycare/module/authentication/authentication_bloc/authentication_bloc.dart';
 import 'package:flutter_babycare/module/authentication/authentication_bloc/authentication_event.dart';
 import 'package:flutter_babycare/module/baby/create/view/create_gender_view.dart';
@@ -181,7 +180,7 @@ class _HomeBodyViewState extends State<HomeBodyView> {
               if (state is BabyLoading) {
                 return CustomLoadingWidget();
               }
-              if (state is BabyLoaded) {
+              if (state is LoadedBaby) {
                 if (state.listBaby == null || state.listBaby.length == 0) {
                   return ErrorLabel(
                       label:

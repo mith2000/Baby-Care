@@ -10,6 +10,7 @@ import 'package:flutter_babycare/utils/UI_components/custom_slider.dart';
 import 'package:flutter_babycare/utils/UI_components/custom_slider_label.dart';
 import 'package:flutter_babycare/utils/UI_components/error_label.dart';
 import 'package:flutter_babycare/utils/UI_components/highlight_box.dart';
+import 'package:flutter_babycare/utils/UI_components/loading_widget.dart';
 import 'package:flutter_babycare/utils/UI_components/mini_line_button.dart';
 import 'package:flutter_babycare/utils/UI_components/mini_solid_button.dart';
 import 'package:flutter_babycare/utils/UI_components/title_label.dart';
@@ -167,7 +168,10 @@ class _UpdateBMIViewState extends State<UpdateBMIView> {
                       BlocBuilder<BabyBloc, BabyState>(
                         bloc: babyBloc,
                         builder: (context, state) {
-                          if (state is LoadBMIAndNIBaby) {
+                          if (state is FoodAndBMILoading) {
+                            return CustomLoadingWidget();
+                          }
+                          if (state is LoadedBMIAndNI) {
                             if (state.listBMI == null ||
                                 state.listBMI.length < 2) {
                               return ErrorLabel(
@@ -412,7 +416,7 @@ class _UpdateBMIViewState extends State<UpdateBMIView> {
         BlocBuilder<BabyBloc, BabyState>(
             bloc: babyBloc,
             builder: (context, state) {
-              if (state is LoadBMIAndNIBaby) {
+              if (state is LoadedBMIAndNI) {
                 return MiniSolidButton('Save', () {
                   if (_formData['height'] == 0 && _formData['weight'] == 0) {
                     setState(() {
@@ -422,7 +426,7 @@ class _UpdateBMIViewState extends State<UpdateBMIView> {
                   }
 
                   babyBloc.add(
-                    UpdateBMIEvent(listBmi: [
+                    UpdateBMI(listBmi: [
                       BmiModel(
                           id: args.height.id,
                           idBaby: args.height.idBaby,
@@ -437,7 +441,6 @@ class _UpdateBMIViewState extends State<UpdateBMIView> {
                           value: args.weight.value + _formData['weight'] * 100),
                     ], idBaby: args.baby.id),
                   );
-                  babyBloc.add(FetchBMIAndNI(idBaby: args.baby.id));
                   Navigator.pop(context);
                 });
               }

@@ -16,6 +16,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
+import 'package:uuid/uuid.dart';
 
 import 'create_bmi_view.dart';
 
@@ -450,9 +451,10 @@ class _CreateBabyInfoViewState extends State<CreateBabyInfoView> {
       _formKey.currentState.save();
 
       String gender = args.genderPicked == GenderPick.Boy ? "boy" : "girl";
-
+      String idBaby = Uuid().v4();
       babyBloc.add(CreateBaby(
         babyModel: BabyModel(
+          id: idBaby,
           gender: gender,
           name: _nameController.text,
           idAccount: args.userId,
@@ -464,6 +466,7 @@ class _CreateBabyInfoViewState extends State<CreateBabyInfoView> {
       Navigator.pushNamed(
         context,
         CreateBabyBMIView.routeName,
+        arguments: CreateBabyBMIViewArguments(idBaby),
       );
     });
   }
