@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
+import 'package:uuid/uuid.dart';
 
 class BabyModel extends Equatable {
   String id;
@@ -9,7 +10,7 @@ class BabyModel extends Equatable {
   final DateTime birth;
   final String image;
 
-  void setID(String id){
+  void setID(String id) {
     this.id = id;
   }
 
@@ -47,6 +48,7 @@ class BabyModel extends Equatable {
   Map<String, Object> toJson() {
     Timestamp myTimeStamp = Timestamp.fromDate(birth);
     return {
+      "id": id ?? Uuid().v4(),
       "name": name,
       "gender": gender,
       "idAccount": idAccount,

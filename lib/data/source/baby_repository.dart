@@ -8,26 +8,39 @@ import 'package:image_picker/image_picker.dart';
 import 'package:uuid/uuid.dart';
 
 class BabyRepository {
-  final FirebaseFirestore firebaseFirestore;
-
-  BabyRepository({FirebaseFirestore firebaseFirestore})
-      : this.firebaseFirestore =
-            firebaseFirestore ?? FirebaseFirestore.instance;
-
-  Stream<List<BabyModel>> fetchAllBaby(String userId) {
-    return firebaseFirestore
+  static Future<BabyModel> fetchBaby(String idBaby) async {
+    BabyModel babyModel;
+    var document = await FirebaseFirestore.instance
         .collection('baby')
-        .where('idAccount', isEqualTo: userId)
+        .doc(idBaby)
         .snapshots()
-        .map((snapshot) {
-      return snapshot.docs.map((doc) => BabyModel.fromSnapshot(doc)).toList();
-    });
+        .map((doc) => babyModel = BabyModel.fromSnapshot(doc));
+    return babyModel;
   }
 
-  Future<String> addImageInFireBase({XFile xFile, String idAccount}) async {
+  static Future<List<BabyModel>> fetchAllBaby(String userId) async {
+    List<BabyModel> list;
+    try {
+      QuerySnapshot snapshot = await FirebaseFirestore.instance
+          .collection('baby')
+          .where('idAccount', isEqualTo: userId)
+          .get();
+      list = snapshot.docs.map((doc) => BabyModel.fromSnapshot(doc)).toList();
+    } catch (error) {
+      print(error);
+      return null;
+    }
+    return list;
+  }
+
+  static Future<String> addImageInFireBase(
+      {XFile xFile, String idAccount}) async {
     File file = File(xFile.path);
     int temp;
-    await firebaseFirestore.collection('baby').get().then((querySnapshot) {
+    await FirebaseFirestore.instance
+        .collection('baby')
+        .get()
+        .then((querySnapshot) {
       temp = querySnapshot.size;
     });
     try {
@@ -43,41 +56,49 @@ class BabyRepository {
     }
   }
 
-  Future<String> createBaby({BabyModel babyModel}) async {
-    String idBaby = Uuid().v4();
-    babyModel.setID(idBaby);
+  static Future<List<BabyModel>> createBaby({BabyModel babyModel}) async {
+    String idBaby;
+    if (babyModel.id == null) {
+      idBaby = Uuid().v4();
+      babyModel.setID(idBaby);
+    } else {
+      idBaby = babyModel.id;
+    }
     DocumentReference documentReferencer =
-        firebaseFirestore.collection('baby').doc(idBaby);
+        FirebaseFirestore.instance.collection('baby').doc(idBaby);
     await documentReferencer
         .set(babyModel.toJson())
         .catchError((e) => e.toString())
         .whenComplete(() => print('baby added to the database'));
-    return idBaby;
+    return await fetchAllBaby(babyModel.idAccount);
   }
 
-  Stream<void> updateBaby({String idBaby, BabyModel babyModel}) {
+  static Future<BabyModel> updateBaby({BabyModel babyModel}) async {
+    BabyModel _babyModel;
     DocumentReference documentReferencer =
-        firebaseFirestore.collection('baby').doc(idBaby);
+        FirebaseFirestore.instance.collection('baby').doc(babyModel.id);
     documentReferencer
         .update(babyModel.toJson())
-        .whenComplete(() => print("Baby updated in the database"))
+        .whenComplete(() =>
+            {print("Baby updated in the database"), _babyModel = babyModel})
         .catchError((e) => print(e));
-    return firebaseFirestore.collection('baby').snapshots().map((snapshot) {
-      return snapshot.docs.map((doc) => BabyModel.fromSnapshot(doc)).toList();
-    });
+    return _babyModel;
   }
 
-  Stream<void> deleteBaby({String idBaby}) {
+  static Future<List<BabyModel>> deleteBaby({String idBaby}) async {
     DocumentReference documentReferencer =
-        firebaseFirestore.collection('baby').doc(idBaby);
-
+        FirebaseFirestore.instance.collection('baby').doc(idBaby);
     documentReferencer
         .delete()
         .whenComplete(() => print('Baby deleted from the database'))
         .catchError((e) => print(e));
-
-    return firebaseFirestore.collection('baby').snapshots().map((snapshot) {
-      return snapshot.docs.map((doc) => BabyModel.fromSnapshot(doc)).toList();
+    List<BabyModel> list;
+    await FirebaseFirestore.instance
+        .collection('baby')
+        .snapshots()
+        .map((snapshot) {
+      list = snapshot.docs.map((doc) => BabyModel.fromSnapshot(doc)).toList();
     });
+    return list;
   }
 }

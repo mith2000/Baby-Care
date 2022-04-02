@@ -11,6 +11,7 @@ import 'package:flutter_babycare/utils/UI_components/custom_slider.dart';
 import 'package:flutter_babycare/utils/UI_components/custom_slider_label.dart';
 import 'package:flutter_babycare/utils/UI_components/error_label.dart';
 import 'package:flutter_babycare/utils/UI_components/highlight_box.dart';
+import 'package:flutter_babycare/utils/UI_components/loading_widget.dart';
 import 'package:flutter_babycare/utils/UI_components/mini_line_button.dart';
 import 'package:flutter_babycare/utils/UI_components/mini_solid_button.dart';
 import 'package:flutter_babycare/utils/UI_components/title_label.dart';
@@ -183,7 +184,7 @@ class _UpdateFoodViewState extends State<UpdateFoodView> {
                       BlocBuilder<BabyBloc, BabyState>(
                         bloc: babyBloc,
                         builder: (context, state) {
-                          if (state is LoadBMIAndNIBaby) {
+                          if (state is LoadedBMIAndNI) {
                             if (state.listNI == null ||
                                 state.listNI.length < 10) {
                               return ErrorLabel(
@@ -518,7 +519,7 @@ class _UpdateFoodViewState extends State<UpdateFoodView> {
         BlocBuilder<BabyBloc, BabyState>(
             bloc: babyBloc,
             builder: (context, state) {
-              if (state is LoadBMIAndNIBaby) {
+              if (state is LoadedBMIAndNI) {
                 return MiniSolidButton('Save', () {
                   if (_formData['porridge'] == 0 &&
                       _formData['milk'] == 0 &&
@@ -551,8 +552,7 @@ class _UpdateFoodViewState extends State<UpdateFoodView> {
                       updateDate: DateTime.now(),
                     ));
                   }
-                  babyBloc.add(UpdateFoodEvent(listFood: foodList));
-                  babyBloc.add(FetchBMIAndNI(idBaby: args.baby.id));
+                  babyBloc.add(UpdateFood(listFood: foodList));
                   Navigator.pop(context);
                 });
               }

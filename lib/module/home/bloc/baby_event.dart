@@ -4,8 +4,6 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter_babycare/data/model/baby_model.dart';
 import 'package:flutter_babycare/data/model/bmi_model.dart';
 import 'package:flutter_babycare/data/model/food_model.dart';
-import 'package:flutter_babycare/data/model/list_food_model.dart';
-import 'package:flutter_babycare/data/model/ni_model.dart';
 import 'package:image_picker/image_picker.dart';
 
 abstract class BabyEvent extends Equatable {
@@ -27,22 +25,13 @@ class LoadBaby extends BabyEvent {
   List<Object> get props => [userId];
 }
 
-class FetchBMI extends BabyEvent {
+class LoadBMI extends BabyEvent {
   final String idBaby;
 
-  FetchBMI({this.idBaby});
+  LoadBMI({this.idBaby});
 
   @override
   List<Object> get props => [idBaby];
-}
-
-class FetchedBMI extends BabyEvent {
-  final List<BmiModel> listBmi;
-
-  FetchedBMI({this.listBmi});
-
-  @override
-  List<Object> get props => [listBmi];
 }
 
 class CreateBMI extends BabyEvent {
@@ -63,30 +52,21 @@ class CreateBaby extends BabyEvent {
   List<Object> get props => [this.babyModel];
 }
 
-class CreatedBabyEvent extends BabyEvent {
-  final String idBaby;
-
-  const CreatedBabyEvent({this.idBaby}) : super();
-
-  @override
-  List<Object> get props => [this.idBaby];
-}
-
-class UpdateBMIEvent extends BabyEvent {
+class UpdateBMI extends BabyEvent {
   final String idBaby;
   final List<BmiModel> listBmi;
 
-  UpdateBMIEvent({this.idBaby, this.listBmi});
+  UpdateBMI({this.idBaby, this.listBmi});
 
   @override
   List<Object> get props => [listBmi];
 }
 
-class UpdateFoodEvent extends BabyEvent {
+class UpdateFood extends BabyEvent {
   final String idBaby;
   final List<FoodModel> listFood;
 
-  UpdateFoodEvent({this.idBaby, this.listFood});
+  UpdateFood({this.idBaby, this.listFood});
 
   @override
   List<Object> get props => [listFood];
@@ -129,18 +109,15 @@ class BirthBabyChange extends BabyEvent {
   List<Object> get props => [birth];
 }
 
-class UpdateListBaby extends BabyEvent {
-  final List<BabyModel> listBaby;
-  int count;
-  UpdateListBaby({this.listBaby}) {
-    this.count = listBaby.length;
-  }
+class UpdateBaby extends BabyEvent {
+  final BabyModel babyModel;
+  UpdateBaby({this.babyModel});
 
   @override
-  List<Object> get props => [listBaby];
+  List<Object> get props => [babyModel];
 
   @override
-  String toString() => 'listBabyUpdated { LenghtListBaby: $count }';
+  String toString() => 'BabyUpdated';
 }
 
 class CreateFood extends BabyEvent {
@@ -152,15 +129,6 @@ class CreateFood extends BabyEvent {
   List<Object> get props => [listFoodModel];
 }
 
-class FetchedFood extends BabyEvent {
-  final List<ListFoodModel> listFood;
-
-  FetchedFood({this.listFood});
-
-  @override
-  List<Object> get props => [listFood];
-}
-
 class FetchFood extends BabyEvent {
   final String idBaby;
   final int dayAgo;
@@ -169,15 +137,6 @@ class FetchFood extends BabyEvent {
 
   @override
   List<Object> get props => [idBaby];
-}
-
-class FetchedNI extends BabyEvent {
-  final List<NIModel> listNI;
-
-  FetchedNI({this.listNI});
-
-  @override
-  List<Object> get props => [listNI];
 }
 
 class FetchNI extends BabyEvent {
@@ -196,17 +155,4 @@ class FetchBMIAndNI extends BabyEvent {
 
   @override
   List<Object> get props => [idBaby];
-}
-
-class FetchedBMIAndNI extends BabyEvent {
-  final List<NIModel> listNI;
-  final List<BmiModel> listBMI;
-
-  FetchedBMIAndNI({this.listNI, this.listBMI});
-
-  @override
-  List<Object> get props => [listNI, listBMI];
-
-  @override
-  String toString() => 'event FetchedBMIAndNI';
 }

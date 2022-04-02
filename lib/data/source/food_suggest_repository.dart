@@ -72,9 +72,7 @@ class FoodSuggestRepository {
     ];
     List<NIModel> listNI = [];
     List<NIType> listTypeNI = [];
-    await niRepository.fetchNi(idBaby).listen((event) {
-      listNI = event;
-    });
+    listNI = await NIRepository.fetchNi(idBaby);
 
     listNI.forEach((element) {
       switch (element.type) {

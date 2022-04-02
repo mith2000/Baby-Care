@@ -7,6 +7,7 @@ import 'package:flutter_babycare/module/home/bloc/baby_state.dart';
 import 'package:flutter_babycare/utils/UI_components/custom_slider.dart';
 import 'package:flutter_babycare/utils/UI_components/custom_slider_label.dart';
 import 'package:flutter_babycare/utils/UI_components/error_label.dart';
+import 'package:flutter_babycare/utils/UI_components/loading_widget.dart';
 import 'package:flutter_babycare/utils/UI_components/mini_line_button.dart';
 import 'package:flutter_babycare/utils/UI_components/mini_solid_button.dart';
 import 'package:flutter_babycare/utils/UI_components/title_label.dart';
@@ -15,6 +16,14 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'create_food_view.dart';
+
+class CreateBabyBMIViewArguments {
+  final String idBaby;
+
+  CreateBabyBMIViewArguments(
+    this.idBaby,
+  );
+}
 
 class CreateBabyBMIView extends StatefulWidget {
   static const routeName = '/create-baby-bmi';
@@ -41,6 +50,8 @@ class _CreateBabyBMIViewState extends State<CreateBabyBMIView> {
 
   @override
   Widget build(BuildContext context) {
+    final args =
+        ModalRoute.of(context).settings.arguments as CreateBabyBMIViewArguments;
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: Center(
@@ -139,7 +150,7 @@ class _CreateBabyBMIViewState extends State<CreateBabyBMIView> {
                 mainAxisSize: MainAxisSize.max,
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                  _buildMainButtons(),
+                  _buildMainButtons(args),
                 ],
               )
             ],
@@ -163,7 +174,7 @@ class _CreateBabyBMIViewState extends State<CreateBabyBMIView> {
     );
   }
 
-  Widget _buildMainButtons() {
+  Widget _buildMainButtons(args) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
@@ -174,7 +185,10 @@ class _CreateBabyBMIViewState extends State<CreateBabyBMIView> {
         BlocBuilder<BabyBloc, BabyState>(
             bloc: babyBloc,
             builder: (context, state) {
-              if (state is BabyCreated) {
+              if (state is BabyLoading) {
+                return CustomLoadingWidget();
+              }
+              if (state is LoadedBaby) {
                 return MiniSolidButton('Next', () {
                   if (_formData['height'] == 0 || _formData['weight'] == 0) {
                     setState(() {
@@ -184,12 +198,12 @@ class _CreateBabyBMIViewState extends State<CreateBabyBMIView> {
                   }
                   babyBloc.add(CreateBMI(listBMIModel: [
                     BmiModel(
-                        idBaby: state.idBaby,
+                        idBaby: args.idBaby,
                         type: BMIType.Height,
                         updateDate: DateTime.now(),
                         value: _formData['height']),
                     BmiModel(
-                        idBaby: state.idBaby,
+                        idBaby: args.idBaby,
                         type: BMIType.Weight,
                         updateDate: DateTime.now(),
                         value: _formData['weight'] * 100),
