@@ -177,8 +177,7 @@ class _BabyDetailViewState extends State<BabyDetailView> {
                 if (state is FoodAndBMILoading) {
                   return CustomLoadingWidget();
                 }
-
-                if (state is LoadBMIAndNIBaby) {
+                if (state is LoadedBMIAndNI) {
                   if (state.listBMI == null ||
                       state.listBMI.length < 2 ||
                       state.listNI == null ||
@@ -290,8 +289,7 @@ class _BabyDetailViewState extends State<BabyDetailView> {
               if (state is FoodAndBMILoading) {
                 return CustomLoadingWidget();
               }
-
-              if (state is LoadBMIAndNIBaby) {
+              if (state is LoadedBMIAndNI) {
                 if (state.listBMI == null || state.listBMI.length < 2) {
                   return ErrorLabel(
                       label:
@@ -343,8 +341,7 @@ class _BabyDetailViewState extends State<BabyDetailView> {
               if (state is FoodAndBMILoading) {
                 return CustomLoadingWidget();
               }
-
-              if (state is LoadBMIAndNIBaby) {
+              if (state is LoadedBMIAndNI) {
                 if (state.listNI == null || state.listNI.length < 10) {
                   return ErrorLabel(
                       label:
@@ -397,11 +394,10 @@ class _BabyDetailViewState extends State<BabyDetailView> {
     return BlocBuilder<BabyBloc, BabyState>(
       bloc: babyBloc,
       builder: (context, state) {
-        if (state is LoadBMIAndNIBaby) {
-          if (state is FoodAndBMILoading) {
-            return CustomLoadingWidget();
-          }
-
+        if (state is FoodAndBMILoading) {
+          return CustomLoadingWidget();
+        }
+        if (state is LoadedBMIAndNI) {
           if (state.listBMI == null || state.listBMI.length < 2) {
             return ErrorLabel(
                 label:
@@ -553,8 +549,7 @@ class _BabyDetailViewState extends State<BabyDetailView> {
           if (state is FoodAndBMILoading) {
             return CustomLoadingWidget();
           }
-
-          if (state is LoadBMIAndNIBaby) {
+          if (state is LoadedBMIAndNI) {
             if (state.listNI == null || state.listNI.length < 10) {
               return ErrorLabel(
                   label:
@@ -786,8 +781,7 @@ class _BabyDetailViewState extends State<BabyDetailView> {
           if (state is FoodAndBMILoading) {
             return CustomLoadingWidget();
           }
-
-          if (state is LoadBMIAndNIBaby) {
+          if (state is LoadedBMIAndNI) {
             if (state.listNI == null || state.listNI.length < 10) {
               return ErrorLabel(
                   label:

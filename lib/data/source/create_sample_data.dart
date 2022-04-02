@@ -139,7 +139,7 @@ class CreateSampleData {
       List<NIModel> listNi = Converter.foodToNI(list[i]);
 
       for (var j = 0; j < listNi.length; j++) {
-        await niRepository.createNi(listNi[j], list[0].idBaby);
+        await NIRepository.createNi(listNi[j], list[0].idBaby);
       }
     }
   }

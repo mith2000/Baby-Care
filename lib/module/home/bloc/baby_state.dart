@@ -3,53 +3,15 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_babycare/data/model/baby_model.dart';
 import 'package:flutter_babycare/data/model/bmi_model.dart';
-import 'package:flutter_babycare/data/model/food_model.dart';
 import 'package:flutter_babycare/data/model/list_food_model.dart';
 import 'package:flutter_babycare/data/model/ni_model.dart';
 
 class BabyState extends Equatable {
-  final bool isNameValid;
-  final bool isBirthValid;
-  final List<BabyModel> listBaby;
-  final List<BmiModel> listBMI;
-  final List<NIModel> listNI;
-
-  BabyState(
-      {this.isNameValid,
-      this.isBirthValid,
-      this.listBaby,
-      this.listBMI,
-      this.listNI});
-
   @override
   List<Object> get props => [];
-
-  BabyState updateListBMIAndNI({List<BmiModel> listBMI, List<NIModel> listNI}) {
-    return BabyState(
-        listBMI: listBMI == null ? this.listBMI : listBMI,
-        listNI: listNI == null ? this.listNI : listNI);
-  }
-
-  BabyState update({
-    bool isNameValid,
-    bool isBirthValid,
-  }) {
-    return copyWith(
-      isNameValid: isNameValid,
-      isBirthValid: isBirthValid,
-    );
-  }
-
-  BabyState copyWith({
-    bool isNameValid,
-    bool isBirthValid,
-  }) {
-    return BabyState(
-      isNameValid: isNameValid ?? this.isNameValid,
-      isBirthValid: isBirthValid ?? this.isBirthValid,
-    );
-  }
 }
+
+class BabyInitial extends BabyState {}
 
 class UploadedImageBaby extends BabyState {
   final String urlImage;
@@ -63,40 +25,40 @@ class UploadedImageBaby extends BabyState {
   String toString() => 'Upload image success { urlImage: $urlImage }';
 }
 
-class LoadBMIBaby extends BabyState {
+class LoadedBMI extends BabyState {
   final List<BmiModel> list;
 
-  LoadBMIBaby({this.list});
+  LoadedBMI({this.list});
 
   @override
   List<Object> get props => [list];
 }
 
-class LoadFoodBaby extends BabyState {
+class LoadedFood extends BabyState {
   final List<ListFoodModel> list;
 
-  LoadFoodBaby({this.list});
+  LoadedFood({this.list});
 
   @override
   List<Object> get props => [list];
 }
 
-class LoadNIBaby extends BabyState {
+class LoadedNI extends BabyState {
   final List<NIModel> list;
 
-  LoadNIBaby({this.list});
+  LoadedNI({this.list});
 
   @override
   List<Object> get props => [list];
 }
 
-class LoadBMIAndNIBaby extends BabyState {
+class LoadedBMIAndNI extends BabyState {
   final List<NIModel> listNI;
   final List<BmiModel> listBMI;
   int countNI;
   int countBMI;
 
-  LoadBMIAndNIBaby({this.listNI, this.listBMI}) {
+  LoadedBMIAndNI({this.listNI, this.listBMI}) {
     countNI = listNI.length;
     countBMI = listBMI.length;
   }
@@ -109,15 +71,6 @@ class LoadBMIAndNIBaby extends BabyState {
       'FetchedBMIAndNI { LenghtNI: $countNI ,LenghtBMI:  $countBMI}';
 }
 
-class BabyCreated extends BabyState {
-  final String idBaby;
-
-  BabyCreated({this.idBaby});
-
-  @override
-  List<Object> get props => [idBaby];
-}
-
 class BabyLoading extends BabyState {}
 
 class ImageLoading extends BabyState {}
@@ -128,11 +81,11 @@ class FoodAndBMILoading extends BabyState {}
 
 class NILoading extends BabyState {}
 
-class BabyLoaded extends BabyState {
+class LoadedBaby extends BabyState {
   final List<BabyModel> listBaby;
   int count;
 
-  BabyLoaded([this.listBaby = const []]) {
+  LoadedBaby([this.listBaby = const []]) {
     count = listBaby.length;
   }
 

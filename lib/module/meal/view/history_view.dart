@@ -85,8 +85,7 @@ class _MealHistoryViewState extends State<MealHistoryView> {
                         if (state is FoodLoading) {
                           return CustomLoadingWidget();
                         }
-
-                        if (state is LoadFoodBaby) {
+                        if (state is LoadedFood) {
                           return ListView.builder(
                               shrinkWrap: true,
                               physics: ScrollPhysics(),
