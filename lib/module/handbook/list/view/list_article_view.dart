@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_babycare/constants/app_constants.dart';
 import 'package:flutter_babycare/module/handbook/article/view/article_view.dart';
-import 'package:flutter_babycare/utils/UI_components/highlight_box.dart';
+import 'package:flutter_babycare/utils/UI_components/highlight_expandable_box.dart';
 import 'package:flutter_babycare/utils/UI_components/line_button.dart';
 import 'package:flutter_babycare/utils/app_colors.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -96,7 +96,8 @@ class _ListArticleViewState extends State<ListArticleView> {
                     Container(
                       height: 100.h,
                       width: double.infinity,
-                      margin: EdgeInsets.only(bottom: AppConstants.paddingNormalH),
+                      margin:
+                          EdgeInsets.only(bottom: AppConstants.paddingNormalH),
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(
                             AppConstants.cornerRadiusFrame),
@@ -107,7 +108,7 @@ class _ListArticleViewState extends State<ListArticleView> {
                         ),
                       ),
                     ),
-                    HighlightBox(
+                    HighlightExpandableBox(
                       category,
                       width: double.infinity,
                       color: AppColors.primary,
