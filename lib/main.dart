@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_babycare/module/baby/create/view/create_gender_view.dart';
 import 'package:flutter_babycare/module/baby/detail/view/detail_view.dart';
+import 'package:flutter_babycare/module/handbook/article/view/article_view.dart';
 import 'package:flutter_babycare/module/handbook/list/view/list_article_view.dart';
 import 'package:flutter_babycare/module/handbook/theme/view/theme_view.dart';
 import 'package:flutter_babycare/utils/UI_components/loading_widget.dart';
@@ -191,6 +192,8 @@ class _MyAppState extends State<MyApp> {
                       HandbookThemeView(),
                   ListArticleView.routeName: (BuildContext context) =>
                       ListArticleView(),
+                  ArticleView.routeName: (BuildContext context) =>
+                      ArticleView(),
                 },
               )),
     );

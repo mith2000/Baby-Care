@@ -4,11 +4,11 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../app_colors.dart';
 
-class HighlightBox extends StatelessWidget {
+class HighlightExpandableBox extends StatelessWidget {
   final double width;
   final String text;
   final Color boxColor;
-  const HighlightBox(
+  const HighlightExpandableBox(
     String text, {
     Key key,
     double width = 32,
@@ -22,7 +22,7 @@ class HighlightBox extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       alignment: Alignment.center,
-      height: 32.h,
+      padding: EdgeInsets.symmetric(vertical: AppConstants.paddingSlightH),
       width: width.w,
       decoration: BoxDecoration(
         color: boxColor,

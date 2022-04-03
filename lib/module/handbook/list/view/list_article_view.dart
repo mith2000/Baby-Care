@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_babycare/constants/app_constants.dart';
+import 'package:flutter_babycare/module/handbook/article/view/article_view.dart';
+import 'package:flutter_babycare/utils/UI_components/highlight_expandable_box.dart';
 import 'package:flutter_babycare/utils/UI_components/line_button.dart';
 import 'package:flutter_babycare/utils/app_colors.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -41,7 +43,10 @@ class _ListArticleViewState extends State<ListArticleView> {
                       return _buildArticleButton(
                         title: args.themeId,
                         induction: 'Theme Description',
-                        action: () {},
+                        category: '1-week',
+                        action: () {
+                          Navigator.pushNamed(context, ArticleView.routeName);
+                        },
                         image: AssetImage('assets/image/default_baby.png'),
                         isRedFrame: index % 2 == 1 ? true : false,
                       );
@@ -71,18 +76,47 @@ class _ListArticleViewState extends State<ListArticleView> {
   Widget _buildArticleButton({
     String title,
     String induction,
+    String category,
     Function action,
     ImageProvider image,
     bool isRedFrame = false,
   }) {
     return Container(
-      height: 132.h,
       margin: EdgeInsets.symmetric(vertical: AppConstants.paddingNormalH),
       child: ElevatedButton(
         onPressed: action,
         child: Container(
           child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              Container(
+                width: 100.h,
+                child: Column(
+                  children: [
+                    Container(
+                      height: 100.h,
+                      width: double.infinity,
+                      margin:
+                          EdgeInsets.only(bottom: AppConstants.paddingNormalH),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(
+                            AppConstants.cornerRadiusFrame),
+                        child: Image(
+                          width: double.infinity,
+                          fit: BoxFit.cover,
+                          image: image,
+                        ),
+                      ),
+                    ),
+                    HighlightExpandableBox(
+                      category,
+                      width: double.infinity,
+                      color: AppColors.primary,
+                    ),
+                  ],
+                ),
+              ),
+              SizedBox(width: AppConstants.paddingLargeW),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -93,8 +127,10 @@ class _ListArticleViewState extends State<ListArticleView> {
                         style: TextStyle(
                           fontWeight: FontWeight.w700,
                           fontSize: 24.sp,
-                          color: AppColors.whiteBackground,
+                          color: AppColors.text,
                         ),
+                        maxLines: 3,
+                        overflow: TextOverflow.ellipsis,
                       ),
                     ),
                     SizedBox(height: AppConstants.paddingNormalH),
@@ -102,9 +138,9 @@ class _ListArticleViewState extends State<ListArticleView> {
                       child: Text(
                         induction,
                         style: TextStyle(
-                          fontWeight: FontWeight.w600,
-                          fontSize: 22.sp,
-                          color: AppColors.whiteBackground,
+                          fontWeight: FontWeight.w400,
+                          fontSize: 16.sp,
+                          color: AppColors.text,
                         ),
                         maxLines: 3,
                         overflow: TextOverflow.ellipsis,
@@ -113,60 +149,21 @@ class _ListArticleViewState extends State<ListArticleView> {
                   ],
                 ),
               ),
-              SizedBox(width: AppConstants.paddingNormalW),
-              Container(
-                height: double.infinity,
-                margin: EdgeInsets.only(
-                    top: AppConstants.paddingNormalH,
-                    bottom: AppConstants.paddingLargeH),
-                child: ClipRRect(
-                  borderRadius:
-                      BorderRadius.circular(AppConstants.cornerRadiusFrame),
-                  child: Image(
-                    width: 100.w,
-                    fit: BoxFit.cover,
-                    image: image,
-                  ),
-                ),
-              ),
             ],
           ),
-          padding: EdgeInsets.only(
-            top: AppConstants.paddingNormalH,
-            left: AppConstants.paddingLargeW,
-            right: AppConstants.paddingLargeW,
-          ),
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              colors: isRedFrame == false
-                  ? [
-                      AppColors.primary,
-                      AppColors.secondary,
-                    ]
-                  : [
-                      AppColors.danger,
-                      AppColors.highlighter,
-                    ],
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
-            ),
-            borderRadius: BorderRadius.circular(AppConstants.cornerRadiusFrame),
-            boxShadow: [
-              BoxShadow(
-                color: AppColors.shadow,
-                blurRadius: 4,
-                offset: Offset(0, 4), // changes position of shadow
-              ),
-            ],
-          ),
+          padding: EdgeInsets.all(AppConstants.paddingLargeH),
         ),
         style: ElevatedButton.styleFrom(
           minimumSize: Size.zero,
           padding: EdgeInsets.zero,
-          primary: AppColors.primary,
-          onPrimary: AppColors.solidButtonPress,
+          primary: AppColors.whiteBackground,
+          onPrimary: AppColors.lineButtonPress,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(AppConstants.cornerRadiusFrame),
+            side: BorderSide(
+              width: 1.w,
+              color: AppColors.stroke,
+            ),
           ),
         ),
       ),
