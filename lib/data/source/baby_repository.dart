@@ -9,13 +9,19 @@ import 'package:uuid/uuid.dart';
 
 class BabyRepository {
   static Future<BabyModel> fetchBaby(String idBaby) async {
-    BabyModel babyModel;
-    var document = await FirebaseFirestore.instance
-        .collection('baby')
-        .doc(idBaby)
-        .snapshots()
-        .map((doc) => babyModel = BabyModel.fromSnapshot(doc));
-    return babyModel;
+    List<BabyModel> babyModel;
+    try {
+      QuerySnapshot snapshot = await FirebaseFirestore.instance
+          .collection('baby')
+          .where('id', isEqualTo: idBaby)
+          .get();
+      babyModel =
+          snapshot.docs.map((doc) => BabyModel.fromSnapshot(doc)).toList();
+    } catch (error) {
+      print(error);
+      return null;
+    }
+    return babyModel[0];
   }
 
   static Future<List<BabyModel>> fetchAllBaby(String userId) async {

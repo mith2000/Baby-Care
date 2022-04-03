@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_babycare/constants/app_constants.dart';
 import 'package:flutter_babycare/module/handbook/article/view/article_view.dart';
+import 'package:flutter_babycare/module/handbook/bloc/handbook_bloc.dart';
+import 'package:flutter_babycare/module/handbook/bloc/handbook_event.dart';
 import 'package:flutter_babycare/utils/UI_components/highlight_expandable_box.dart';
 import 'package:flutter_babycare/utils/UI_components/line_button.dart';
 import 'package:flutter_babycare/utils/app_colors.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class ListArticleViewArguments {
@@ -22,10 +25,19 @@ class ListArticleView extends StatefulWidget {
 }
 
 class _ListArticleViewState extends State<ListArticleView> {
+  HandBookBloc handbookBloc;
+
+  @override
+  void initState() {
+    super.initState();
+    handbookBloc = BlocProvider.of<HandBookBloc>(context);
+  }
+
   @override
   Widget build(BuildContext context) {
     final args =
         ModalRoute.of(context).settings.arguments as ListArticleViewArguments;
+    handbookBloc.add(LoadListArticle(themeID: args.themeId));
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: Container(
