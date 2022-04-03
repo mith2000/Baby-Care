@@ -18,3 +18,19 @@ class LoadThemeHandBook extends HandBookEvent {
   @override
   List<Object> get props => [];
 }
+
+class LoadListArticle extends HandBookEvent {
+  final String themeID;
+  LoadListArticle({this.themeID}) : super();
+
+  @override
+  List<Object> get props => [];
+}
+
+class LoadArticle extends HandBookEvent {
+  final String idTip;
+  LoadArticle({this.idTip}) : super();
+
+  @override
+  List<Object> get props => [];
+}
