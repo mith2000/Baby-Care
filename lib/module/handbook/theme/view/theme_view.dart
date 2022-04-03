@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_babycare/constants/app_constants.dart';
+import 'package:flutter_babycare/module/handbook/bloc/handbook_bloc.dart';
+import 'package:flutter_babycare/module/handbook/bloc/handbook_event.dart';
 import 'package:flutter_babycare/module/handbook/list/view/list_article_view.dart';
 import 'package:flutter_babycare/utils/app_colors.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class HandbookThemeView extends StatefulWidget {
@@ -14,6 +17,15 @@ class HandbookThemeView extends StatefulWidget {
 }
 
 class _HandbookThemeViewState extends State<HandbookThemeView> {
+  HandBookBloc handbookBloc;
+
+  @override
+  void initState() {
+    super.initState();
+    handbookBloc = BlocProvider.of<HandBookBloc>(context);
+    handbookBloc.add(LoadThemeHandBook());
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(

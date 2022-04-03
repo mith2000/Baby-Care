@@ -2,8 +2,6 @@ import 'dart:async';
 import 'dart:developer';
 
 import 'package:flutter_babycare/data/model/baby_model.dart';
-import 'package:flutter_babycare/data/model/bmi_model.dart';
-import 'package:flutter_babycare/data/model/ni_model.dart';
 import 'package:flutter_babycare/data/source/baby_repository.dart';
 import 'package:flutter_babycare/data/source/bmi_repository.dart';
 import 'package:flutter_babycare/data/source/food_repository.dart';
@@ -133,7 +131,6 @@ class BabyBloc extends Bloc<BabyEvent, BabyState> {
   Stream<BabyState> mapBabyLoadedToState(LoadBaby event) async* {
     listBabyModel = [];
     listBabyModel = await BabyRepository.fetchAllBaby(event.userId);
-    print(listBabyModel);
     yield LoadedBaby(listBabyModel);
   }
 
