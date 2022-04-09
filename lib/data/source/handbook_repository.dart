@@ -41,7 +41,7 @@ class HandBookRepository {
 
   //Article
   static Future<ArticleModel> fetchArticle(String idTip) async {
-    List<ArticleModel> babyModel;
+    List<ArticleModel> babyModel = [];
     try {
       QuerySnapshot snapshot = await FirebaseFirestore.instance
           .collection('tip_detail')
@@ -52,6 +52,9 @@ class HandBookRepository {
           .toList();
     } catch (error) {
       print(error);
+      return null;
+    }
+    if (babyModel.isEmpty) {
       return null;
     }
     return babyModel[0];
