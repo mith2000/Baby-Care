@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_babycare/constants/app_constants.dart';
-import 'package:flutter_babycare/data/model/food_model.dart';
+import '../../constants/app_constants.dart';
+import '../../data/model/food_model.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 

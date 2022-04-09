@@ -1,7 +1,7 @@
-import 'package:flutter_babycare/data/source/user_repository.dart';
-import 'package:flutter_babycare/module/register/bloc/register_event.dart';
-import 'package:flutter_babycare/module/register/bloc/register_state.dart';
-import 'package:flutter_babycare/utils/validators.dart';
+import '../../../data/source/user_repository.dart';
+import 'register_event.dart';
+import 'register_state.dart';
+import '../../../utils/validators.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {

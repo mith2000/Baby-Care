@@ -1,6 +1,6 @@
-import 'package:flutter_babycare/constants/app_constants.dart';
-import 'package:flutter_babycare/data/model/food_model.dart';
-import 'package:flutter_babycare/data/model/ni_model.dart';
+import '../constants/app_constants.dart';
+import '../data/model/food_model.dart';
+import '../data/model/ni_model.dart';
 import 'package:intl/intl.dart';
 
 class Converter {

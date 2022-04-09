@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter_babycare/data/model/ni_model.dart';
-import 'package:flutter_babycare/utils/converter.dart';
+import '../model/ni_model.dart';
+import '../../utils/converter.dart';
 import 'package:uuid/uuid.dart';
 
 class NIRepository {

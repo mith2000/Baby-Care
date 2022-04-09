@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter_babycare/data/model/bmi_model.dart';
+import '../model/bmi_model.dart';
 import 'package:uuid/uuid.dart';
 
 class BmiRepository {

@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter_babycare/data/model/handbook/article_model.dart';
-import 'package:flutter_babycare/data/model/handbook/category_handbook_model.dart';
-import 'package:flutter_babycare/data/model/handbook/theme_handbook_model.dart';
+import '../model/handbook/article_model.dart';
+import '../model/handbook/category_handbook_model.dart';
+import '../model/handbook/theme_handbook_model.dart';
 
 class HandBookRepository {
   // Theme

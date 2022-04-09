@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_babycare/constants/app_constants.dart';
 
+import '../../constants/app_constants.dart';
 import '../app_colors.dart';
 
 class ErrorLabel extends StatelessWidget {

@@ -1,4 +1,4 @@
-import 'package:flutter_babycare/constants/app_constants.dart';
+import '../constants/app_constants.dart';
 
 class Evaluate {
   static BabyStatus AverageEvaluate(List<BabyStatus> sources) {

@@ -1,4 +1,4 @@
-import 'package:flutter_babycare/constants/app_constants.dart';
+import '../constants/app_constants.dart';
 
 class FoodSuggester {
   static List<FoodType> getFoodSuggest(NIType type) {
