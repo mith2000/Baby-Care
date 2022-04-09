@@ -28,7 +28,7 @@ class CategoryHandBookModel extends Equatable {
     CategoryHandBookModel listArticleModel = CategoryHandBookModel(
       id: snap['id'],
       title: snap['title'],
-      urlImage: snap['urlImage'],
+      urlImage: snap['image'],
       induction: snap['induction'],
       category: snap['category'],
       themeId: snap['themeId'],
@@ -43,7 +43,7 @@ class CategoryHandBookModel extends Equatable {
     return {
       "id": id ?? Uuid().v4(),
       "title": title,
-      "urlImage": urlImage,
+      "image": urlImage,
       "induction": induction,
       "category": category,
       "themeId": themeId

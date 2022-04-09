@@ -25,7 +25,7 @@ class ThemeHandBookModel extends Equatable {
     ThemeHandBookModel babyModel = ThemeHandBookModel(
       id: snap['id'],
       title: snap['title'],
-      urlImage: snap['urlImage'],
+      urlImage: snap['image'],
       description: snap['description'],
     );
     return babyModel;
@@ -43,7 +43,7 @@ class ThemeHandBookModel extends Equatable {
     return {
       "id": id ?? Uuid().v4(),
       "title": title,
-      "urlImage": urlImage,
+      "image": urlImage,
       "description": description,
     };
   }
