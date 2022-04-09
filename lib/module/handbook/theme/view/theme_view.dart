@@ -2,7 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_babycare/constants/app_constants.dart';
 import 'package:flutter_babycare/module/handbook/bloc/handbook_bloc.dart';
 import 'package:flutter_babycare/module/handbook/bloc/handbook_event.dart';
+import 'package:flutter_babycare/module/handbook/bloc/handbook_state.dart';
 import 'package:flutter_babycare/module/handbook/list/view/list_article_view.dart';
+import 'package:flutter_babycare/utils/UI_components/error_label.dart';
+import 'package:flutter_babycare/utils/UI_components/loading_widget.dart';
 import 'package:flutter_babycare/utils/app_colors.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -34,21 +37,37 @@ class _HandbookThemeViewState extends State<HandbookThemeView> {
         vertical: AppConstants.paddingAppH,
       ),
       color: AppColors.background,
-      child: ListView.builder(
-        shrinkWrap: true,
-        physics: ScrollPhysics(),
-        itemCount: 4,
-        itemBuilder: (context, index) {
-          return _buildThemeButton(
-            title: 'Theme Title',
-            description: 'Theme Description',
-            action: () {
-              Navigator.pushNamed(context, ListArticleView.routeName,
-                  arguments: ListArticleViewArguments("themeId"));
-            },
-            image: AssetImage('assets/image/default_baby.png'),
-            isRedFrame: index % 2 == 1 ? true : false,
-          );
+      child: BlocBuilder<HandBookBloc, HandBookState>(
+        bloc: handbookBloc,
+        builder: (context, state) {
+          if (state is HandBookLoading) {
+            return CustomLoadingWidget();
+          }
+          if (state is LoadedTheme) {
+            if (state.list == null || state.list.length == 0) {
+              return ErrorLabel(label: 'No Handbook theme available now');
+            }
+            return ListView.builder(
+              shrinkWrap: true,
+              physics: ScrollPhysics(),
+              itemCount: state.list.length,
+              itemBuilder: (context, index) {
+                return _buildThemeButton(
+                  title: state.list[index].title,
+                  description: state.list[index].description,
+                  action: () {
+                    Navigator.pushNamed(context, ListArticleView.routeName,
+                        arguments:
+                            ListArticleViewArguments(state.list[index].id));
+                  },
+                  image: AssetImage(state.list[index].urlImage),
+                  isRedFrame: index % 2 == 1 ? true : false,
+                );
+              },
+            );
+          } else {
+            return ErrorLabel();
+          }
         },
       ),
     );

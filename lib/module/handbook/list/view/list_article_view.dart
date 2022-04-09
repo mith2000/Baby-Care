@@ -3,8 +3,11 @@ import 'package:flutter_babycare/constants/app_constants.dart';
 import 'package:flutter_babycare/module/handbook/article/view/article_view.dart';
 import 'package:flutter_babycare/module/handbook/bloc/handbook_bloc.dart';
 import 'package:flutter_babycare/module/handbook/bloc/handbook_event.dart';
+import 'package:flutter_babycare/module/handbook/bloc/handbook_state.dart';
+import 'package:flutter_babycare/utils/UI_components/error_label.dart';
 import 'package:flutter_babycare/utils/UI_components/highlight_expandable_box.dart';
 import 'package:flutter_babycare/utils/UI_components/line_button.dart';
+import 'package:flutter_babycare/utils/UI_components/loading_widget.dart';
 import 'package:flutter_babycare/utils/app_colors.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -47,21 +50,38 @@ class _ListArticleViewState extends State<ListArticleView> {
             ListView(
               children: [
                 Container(
-                  child: ListView.builder(
-                    shrinkWrap: true,
-                    physics: ScrollPhysics(),
-                    itemCount: 6,
-                    itemBuilder: (context, index) {
-                      return _buildArticleButton(
-                        title: args.themeId,
-                        induction: 'Theme Description',
-                        category: '1-week',
-                        action: () {
-                          Navigator.pushNamed(context, ArticleView.routeName);
-                        },
-                        image: AssetImage('assets/image/default_baby.png'),
-                        isRedFrame: index % 2 == 1 ? true : false,
-                      );
+                  child: BlocBuilder<HandBookBloc, HandBookState>(
+                    bloc: handbookBloc,
+                    builder: (context, state) {
+                      if (state is HandBookLoading) {
+                        return CustomLoadingWidget();
+                      }
+                      if (state is LoadedListArticle) {
+                        if (state.list == null || state.list.length == 0) {
+                          return ErrorLabel(label: 'No Tip available now');
+                        }
+                        return ListView.builder(
+                          shrinkWrap: true,
+                          physics: ScrollPhysics(),
+                          itemCount: state.list.length,
+                          itemBuilder: (context, index) {
+                            return _buildArticleButton(
+                              title: state.list[index].title,
+                              induction: state.list[index].induction,
+                              category: state.list[index].category,
+                              action: () {
+                                Navigator.pushNamed(
+                                    context, ArticleView.routeName,
+                                    arguments: ArticleViewArguments(
+                                        state.list[index].id));
+                              },
+                              image: AssetImage(state.list[index].urlImage),
+                            );
+                          },
+                        );
+                      } else {
+                        return ErrorLabel();
+                      }
                     },
                   ),
                   margin: EdgeInsets.symmetric(
@@ -91,7 +111,6 @@ class _ListArticleViewState extends State<ListArticleView> {
     String category,
     Function action,
     ImageProvider image,
-    bool isRedFrame = false,
   }) {
     return Container(
       margin: EdgeInsets.symmetric(vertical: AppConstants.paddingNormalH),

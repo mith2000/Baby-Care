@@ -1,8 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_babycare/constants/app_constants.dart';
+import 'package:flutter_babycare/module/handbook/bloc/handbook_bloc.dart';
+import 'package:flutter_babycare/module/handbook/bloc/handbook_event.dart';
+import 'package:flutter_babycare/module/handbook/bloc/handbook_state.dart';
+import 'package:flutter_babycare/utils/UI_components/error_label.dart';
 import 'package:flutter_babycare/utils/UI_components/line_button.dart';
+import 'package:flutter_babycare/utils/UI_components/loading_widget.dart';
 import 'package:flutter_babycare/utils/app_colors.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+
+class ArticleViewArguments {
+  final String idTip;
+
+  ArticleViewArguments(this.idTip);
+}
 
 class ArticleView extends StatefulWidget {
   static const routeName = '/article';
@@ -14,50 +26,77 @@ class ArticleView extends StatefulWidget {
 }
 
 class _ArticleViewState extends State<ArticleView> {
+  HandBookBloc handbookBloc;
+
+  @override
+  void initState() {
+    super.initState();
+    handbookBloc = BlocProvider.of<HandBookBloc>(context);
+  }
+
   @override
   Widget build(BuildContext context) {
+    final args =
+        ModalRoute.of(context).settings.arguments as ArticleViewArguments;
+    handbookBloc.add(LoadArticle(idTip: args.idTip));
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: Container(
         color: AppColors.background,
         child: Stack(
           children: [
-            ListView(
-              children: [
-                _buildTitleLabel('Trẻ sơ sinh',
-                    'Những điều cần chú ý khi tiêm vắc xin cho trẻ dưới 6 tháng'),
-                _buildCategoryTag('type vaccine'),
-                _buildInduction('Tiêm phòng đầy đủ và đúng lịch là cách tốt '
-                    'nhất giúp trẻ phòng tránh bệnh tật. Dưới đây là những '
-                    'lưu ý quan trọng bố mẹ cần ghi nhớ khi đưa trẻ đi tiêm phòng'),
-                _buildArticleSection(
-                    'Header 1 Header 1 Header 1 Header 1 Header 1 Header 1 ',
-                    'https://i.pinimg.com/736x/7f/49/95/7f4995b970f96ec2dd7cf305d298284f.jpg',
-                    'Image 1 description',
-                    'Body 1 Body 1 Body 1 Body 1 Body 1 Body 1 Body 1 Body 1 Body 1 Body 1 Body 1 Body 1 Body 1 Body 1 Body 1 Body 1 Body 1 Body 1 Body 1 Body 1 Body 1 Body 1 Body 1 Body 1 Body 1 Body 1 Body 1 Body 1 Body 1 Body 1 Body 1 Body 1 Body 1 Body 1 '),
-                _buildArticleSection(
-                    'Header 1 Header 1 Header 1 Header 1 Header 1 Header 1 ',
-                    null,
-                    null,
-                    'Body 1 Body 1 Body 1 Body 1 Body 1 Body 1 Body 1 Body 1 Body 1 Body 1 Body 1 Body 1 Body 1 Body 1 Body 1 Body 1 Body 1 Body 1 Body 1 Body 1 Body 1 Body 1 Body 1 Body 1 Body 1 Body 1 Body 1 Body 1 Body 1 Body 1 Body 1 Body 1 Body 1 Body 1 '),
-                _buildArticleSection(
-                    'Header 1 Header 1 Header 1 Header 1 Header 1 Header 1 ',
-                    'https://i.pinimg.com/736x/7f/49/95/7f4995b970f96ec2dd7cf305d298284f.jpg',
-                    'Image 1 description',
-                    null),
-                _buildArticleSection(
-                    'Header 1 Header 1 Header 1 Header 1 Header 1 Header 1 ',
-                    null,
-                    null,
-                    null),
-                _buildArticleSection(
-                    'Header 1 Header 1 Header 1 Header 1 Header 1 Header 1 ',
-                    'https://i.pinimg.com/736x/7f/49/95/7f4995b970f96ec2dd7cf305d298284f.jpg',
-                    'Image 1 description',
-                    'Body 1 Body 1 Body 1 Body 1 Body 1 Body 1 Body 1 Body 1 Body 1 Body 1 Body 1 Body 1 Body 1 Body 1 Body 1 Body 1 Body 1 Body 1 Body 1 Body 1 Body 1 Body 1 Body 1 Body 1 Body 1 Body 1 Body 1 Body 1 Body 1 Body 1 Body 1 Body 1 Body 1 Body 1 '),
-                SizedBox(height: AppConstants.paddingLargeH),
-                SizedBox(height: AppConstants.paddingSuperLargeH * 2),
-              ],
+            BlocBuilder<HandBookBloc, HandBookState>(
+              bloc: handbookBloc,
+              builder: (context, state) {
+                if (state is HandBookLoading) {
+                  return CustomLoadingWidget();
+                }
+                if (state is LoadedArticle) {
+                  if (state.articleModel == null) {
+                    return ErrorLabel(label: 'Load article error');
+                  }
+                  return ListView(
+                    children: [
+                      _buildTitleLabel('Trẻ sơ sinh',
+                          'Những điều cần chú ý khi tiêm vắc xin cho trẻ dưới 6 tháng'),
+                      _buildCategoryTag('type vaccine'),
+                      _buildInduction(
+                          'Tiêm phòng đầy đủ và đúng lịch là cách tốt '
+                          'nhất giúp trẻ phòng tránh bệnh tật. Dưới đây là những '
+                          'lưu ý quan trọng bố mẹ cần ghi nhớ khi đưa trẻ đi tiêm phòng'),
+                      _buildArticleSection(
+                          'Header 1 Header 1 Header 1 Header 1 Header 1 Header 1 ',
+                          'https://i.pinimg.com/736x/7f/49/95/7f4995b970f96ec2dd7cf305d298284f.jpg',
+                          'Image 1 description',
+                          'Body 1 Body 1 Body 1 Body 1 Body 1 Body 1 Body 1 Body 1 Body 1 Body 1 Body 1 Body 1 Body 1 Body 1 Body 1 Body 1 Body 1 Body 1 Body 1 Body 1 Body 1 Body 1 Body 1 Body 1 Body 1 Body 1 Body 1 Body 1 Body 1 Body 1 Body 1 Body 1 Body 1 Body 1 '),
+                      _buildArticleSection(
+                          'Header 1 Header 1 Header 1 Header 1 Header 1 Header 1 ',
+                          null,
+                          null,
+                          'Body 1 Body 1 Body 1 Body 1 Body 1 Body 1 Body 1 Body 1 Body 1 Body 1 Body 1 Body 1 Body 1 Body 1 Body 1 Body 1 Body 1 Body 1 Body 1 Body 1 Body 1 Body 1 Body 1 Body 1 Body 1 Body 1 Body 1 Body 1 Body 1 Body 1 Body 1 Body 1 Body 1 Body 1 '),
+                      _buildArticleSection(
+                          'Header 1 Header 1 Header 1 Header 1 Header 1 Header 1 ',
+                          'https://i.pinimg.com/736x/7f/49/95/7f4995b970f96ec2dd7cf305d298284f.jpg',
+                          'Image 1 description',
+                          null),
+                      _buildArticleSection(
+                          'Header 1 Header 1 Header 1 Header 1 Header 1 Header 1 ',
+                          null,
+                          null,
+                          null),
+                      _buildArticleSection(
+                          'Header 1 Header 1 Header 1 Header 1 Header 1 Header 1 ',
+                          'https://i.pinimg.com/736x/7f/49/95/7f4995b970f96ec2dd7cf305d298284f.jpg',
+                          'Image 1 description',
+                          'Body 1 Body 1 Body 1 Body 1 Body 1 Body 1 Body 1 Body 1 Body 1 Body 1 Body 1 Body 1 Body 1 Body 1 Body 1 Body 1 Body 1 Body 1 Body 1 Body 1 Body 1 Body 1 Body 1 Body 1 Body 1 Body 1 Body 1 Body 1 Body 1 Body 1 Body 1 Body 1 Body 1 Body 1 '),
+                      SizedBox(height: AppConstants.paddingLargeH),
+                      SizedBox(height: AppConstants.paddingSuperLargeH * 2),
+                    ],
+                  );
+                } else {
+                  return ErrorLabel();
+                }
+              },
             ),
             Column(
               mainAxisSize: MainAxisSize.max,
