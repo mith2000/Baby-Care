@@ -21,7 +21,7 @@ class ThemeHandBookModel extends Equatable {
     this.description,
   });
 
-  static ThemeHandBookModel fromSnapshot(DocumentSnapshot snap) {
+  static ThemeHandBookModel fromSnapshot(Map<String, dynamic> snap) {
     ThemeHandBookModel babyModel = ThemeHandBookModel(
       id: snap['id'],
       title: snap['title'],
