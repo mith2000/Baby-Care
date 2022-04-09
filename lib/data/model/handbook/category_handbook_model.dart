@@ -24,7 +24,7 @@ class CategoryHandBookModel extends Equatable {
       this.category,
       this.themeId});
 
-  static CategoryHandBookModel fromSnapshot(DocumentSnapshot snap) {
+  static CategoryHandBookModel fromSnapshot(Map<String, dynamic> snap) {
     CategoryHandBookModel listArticleModel = CategoryHandBookModel(
       id: snap['id'],
       title: snap['title'],
