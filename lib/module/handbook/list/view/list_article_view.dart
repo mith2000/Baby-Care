@@ -14,8 +14,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class ListArticleViewArguments {
   final String themeId;
+  final String themeName;
 
-  ListArticleViewArguments(this.themeId);
+  ListArticleViewArguments(this.themeId, this.themeName);
 }
 
 class ListArticleView extends StatefulWidget {
@@ -73,9 +74,12 @@ class _ListArticleViewState extends State<ListArticleView> {
                                 Navigator.pushNamed(
                                     context, ArticleView.routeName,
                                     arguments: ArticleViewArguments(
-                                        state.list[index].id));
+                                      args.themeName,
+                                      state.list[index].id,
+                                      args.themeId,
+                                    ));
                               },
-                              image: AssetImage(state.list[index].urlImage),
+                              imageUrl: state.list[index].urlImage,
                             );
                           },
                         );
@@ -110,7 +114,7 @@ class _ListArticleViewState extends State<ListArticleView> {
     String induction,
     String category,
     Function action,
-    ImageProvider image,
+    String imageUrl,
   }) {
     return Container(
       margin: EdgeInsets.symmetric(vertical: AppConstants.paddingNormalH),
@@ -132,11 +136,16 @@ class _ListArticleViewState extends State<ListArticleView> {
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(
                             AppConstants.cornerRadiusFrame),
-                        child: Image(
-                          width: double.infinity,
-                          fit: BoxFit.cover,
-                          image: image,
-                        ),
+                        child: imageUrl == null
+                            ? Container(
+                                width: double.infinity,
+                              )
+                            : FadeInImage.assetNetwork(
+                                placeholder: 'assets/image/default_baby.png',
+                                width: double.infinity,
+                                fit: BoxFit.cover,
+                                image: imageUrl,
+                              ),
                       ),
                     ),
                     HighlightExpandableBox(

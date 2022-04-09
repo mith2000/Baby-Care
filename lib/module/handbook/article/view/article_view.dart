@@ -11,9 +11,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class ArticleViewArguments {
+  final String themeName;
   final String idTip;
+  final String themeId;
 
-  ArticleViewArguments(this.idTip);
+  ArticleViewArguments(this.themeName, this.idTip, this.themeId);
 }
 
 class ArticleView extends StatefulWidget {
@@ -57,38 +59,35 @@ class _ArticleViewState extends State<ArticleView> {
                   }
                   return ListView(
                     children: [
-                      _buildTitleLabel('Trẻ sơ sinh',
-                          'Những điều cần chú ý khi tiêm vắc xin cho trẻ dưới 6 tháng'),
-                      _buildCategoryTag('type vaccine'),
-                      _buildInduction(
-                          'Tiêm phòng đầy đủ và đúng lịch là cách tốt '
-                          'nhất giúp trẻ phòng tránh bệnh tật. Dưới đây là những '
-                          'lưu ý quan trọng bố mẹ cần ghi nhớ khi đưa trẻ đi tiêm phòng'),
+                      _buildTitleLabel(
+                          args.themeName, state.articleModel.title),
+                      _buildCategoryTag(state.articleModel.category),
+                      _buildInduction(state.articleModel.introduction),
                       _buildArticleSection(
-                          'Header 1 Header 1 Header 1 Header 1 Header 1 Header 1 ',
-                          'https://i.pinimg.com/736x/7f/49/95/7f4995b970f96ec2dd7cf305d298284f.jpg',
-                          'Image 1 description',
-                          'Body 1 Body 1 Body 1 Body 1 Body 1 Body 1 Body 1 Body 1 Body 1 Body 1 Body 1 Body 1 Body 1 Body 1 Body 1 Body 1 Body 1 Body 1 Body 1 Body 1 Body 1 Body 1 Body 1 Body 1 Body 1 Body 1 Body 1 Body 1 Body 1 Body 1 Body 1 Body 1 Body 1 Body 1 '),
-                      _buildArticleSection(
-                          'Header 1 Header 1 Header 1 Header 1 Header 1 Header 1 ',
+                          state.articleModel.header1,
+                          state.articleModel.image1,
                           null,
-                          null,
-                          'Body 1 Body 1 Body 1 Body 1 Body 1 Body 1 Body 1 Body 1 Body 1 Body 1 Body 1 Body 1 Body 1 Body 1 Body 1 Body 1 Body 1 Body 1 Body 1 Body 1 Body 1 Body 1 Body 1 Body 1 Body 1 Body 1 Body 1 Body 1 Body 1 Body 1 Body 1 Body 1 Body 1 Body 1 '),
+                          state.articleModel.body1),
                       _buildArticleSection(
-                          'Header 1 Header 1 Header 1 Header 1 Header 1 Header 1 ',
-                          'https://i.pinimg.com/736x/7f/49/95/7f4995b970f96ec2dd7cf305d298284f.jpg',
-                          'Image 1 description',
-                          null),
-                      _buildArticleSection(
-                          'Header 1 Header 1 Header 1 Header 1 Header 1 Header 1 ',
+                          state.articleModel.header2,
+                          state.articleModel.image2,
                           null,
-                          null,
-                          null),
+                          state.articleModel.body2),
                       _buildArticleSection(
-                          'Header 1 Header 1 Header 1 Header 1 Header 1 Header 1 ',
-                          'https://i.pinimg.com/736x/7f/49/95/7f4995b970f96ec2dd7cf305d298284f.jpg',
-                          'Image 1 description',
-                          'Body 1 Body 1 Body 1 Body 1 Body 1 Body 1 Body 1 Body 1 Body 1 Body 1 Body 1 Body 1 Body 1 Body 1 Body 1 Body 1 Body 1 Body 1 Body 1 Body 1 Body 1 Body 1 Body 1 Body 1 Body 1 Body 1 Body 1 Body 1 Body 1 Body 1 Body 1 Body 1 Body 1 Body 1 '),
+                          state.articleModel.header3,
+                          state.articleModel.image3,
+                          null,
+                          state.articleModel.body3),
+                      _buildArticleSection(
+                          state.articleModel.header4,
+                          state.articleModel.image4,
+                          null,
+                          state.articleModel.body4),
+                      _buildArticleSection(
+                          state.articleModel.header5,
+                          state.articleModel.image5,
+                          null,
+                          state.articleModel.body5),
                       SizedBox(height: AppConstants.paddingLargeH),
                       SizedBox(height: AppConstants.paddingSuperLargeH * 2),
                     ],
@@ -102,7 +101,7 @@ class _ArticleViewState extends State<ArticleView> {
               mainAxisSize: MainAxisSize.max,
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                _buildBackButton(),
+                _buildBackButton(args.themeId),
               ],
             )
           ],
@@ -202,10 +201,11 @@ class _ArticleViewState extends State<ArticleView> {
       String header, String imageLink, String imageDescription, String body) {
     return Column(
       children: [
-        if (header != null) _buildHeader(header),
-        if (imageLink != null) _buildImage(imageLink),
-        if (imageDescription != null) _buildImageDescription(imageDescription),
-        if (body != null) _buildArticleBody(body),
+        if (header != null && header.isNotEmpty) _buildHeader(header),
+        if (imageLink != null && imageLink.isNotEmpty) _buildImage(imageLink),
+        if (imageDescription != null && imageDescription.isNotEmpty)
+          _buildImageDescription(imageDescription),
+        if (body != null && body.isNotEmpty) _buildArticleBody(body),
       ],
     );
   }
@@ -271,13 +271,14 @@ class _ArticleViewState extends State<ArticleView> {
     );
   }
 
-  Widget _buildBackButton() {
+  Widget _buildBackButton(String themeId) {
     return Container(
       padding: EdgeInsets.symmetric(
         horizontal: AppConstants.paddingAppW,
         vertical: AppConstants.paddingAppH,
       ),
       child: LineButton('Back', () {
+        handbookBloc.add(LoadListArticle(themeID: themeId));
         Navigator.pop(context);
       }),
     );
