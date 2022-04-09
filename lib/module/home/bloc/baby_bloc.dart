@@ -1,11 +1,11 @@
 import 'dart:async';
 import 'dart:developer';
 
-import 'package:flutter_babycare/data/model/baby_model.dart';
-import 'package:flutter_babycare/data/source/baby_repository.dart';
-import 'package:flutter_babycare/data/source/bmi_repository.dart';
-import 'package:flutter_babycare/data/source/food_repository.dart';
-import 'package:flutter_babycare/data/source/ni_repository.dart';
+import '../../../data/model/baby_model.dart';
+import '../../../data/source/baby_repository.dart';
+import '../../../data/source/bmi_repository.dart';
+import '../../../data/source/food_repository.dart';
+import '../../../data/source/ni_repository.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'baby_event.dart';

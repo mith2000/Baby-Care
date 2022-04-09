@@ -1,10 +1,10 @@
 import 'dart:async';
 import 'dart:developer';
 
-import 'package:flutter_babycare/data/model/handbook/article_model.dart';
-import 'package:flutter_babycare/data/model/handbook/category_handbook_model.dart';
-import 'package:flutter_babycare/data/model/handbook/theme_handbook_model.dart';
-import 'package:flutter_babycare/data/source/handbook_repository.dart';
+import '../../../data/model/handbook/article_model.dart';
+import '../../../data/model/handbook/category_handbook_model.dart';
+import '../../../data/model/handbook/theme_handbook_model.dart';
+import '../../../data/source/handbook_repository.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'handbook_event.dart';

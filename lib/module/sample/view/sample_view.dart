@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_babycare/utils/app_colors.dart';
+import '../../../utils/app_colors.dart';
 
 class SampleView extends StatefulWidget {
   static const routeName = '/sam-ple';

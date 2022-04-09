@@ -1,10 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter_babycare/constants/app_constants.dart';
-import 'package:flutter_babycare/data/model/food_model.dart';
-import 'package:flutter_babycare/data/model/list_food_model.dart';
-import 'package:flutter_babycare/data/model/ni_model.dart';
-import 'package:flutter_babycare/data/source/ni_repository.dart';
-import 'package:flutter_babycare/utils/converter.dart';
+import '../../constants/app_constants.dart';
+import '../model/food_model.dart';
+import '../model/list_food_model.dart';
+import '../model/ni_model.dart';
+import 'ni_repository.dart';
+import '../../utils/converter.dart';
 import 'package:uuid/uuid.dart';
 import 'package:intl/intl.dart';
 

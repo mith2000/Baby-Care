@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_babycare/constants/app_constants.dart';
-import 'package:flutter_babycare/module/handbook/bloc/handbook_bloc.dart';
-import 'package:flutter_babycare/module/handbook/bloc/handbook_event.dart';
-import 'package:flutter_babycare/module/handbook/bloc/handbook_state.dart';
-import 'package:flutter_babycare/utils/UI_components/error_label.dart';
-import 'package:flutter_babycare/utils/UI_components/line_button.dart';
-import 'package:flutter_babycare/utils/UI_components/loading_widget.dart';
-import 'package:flutter_babycare/utils/app_colors.dart';
+import '../../../../constants/app_constants.dart';
+import '../../bloc/handbook_bloc.dart';
+import '../../bloc/handbook_event.dart';
+import '../../bloc/handbook_state.dart';
+import '../../../../utils/UI_components/error_label.dart';
+import '../../../../utils/UI_components/line_button.dart';
+import '../../../../utils/UI_components/loading_widget.dart';
+import '../../../../utils/app_colors.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 

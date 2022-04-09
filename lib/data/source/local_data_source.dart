@@ -1,5 +1,5 @@
-import 'package:flutter_babycare/constants/app_constants.dart';
-import 'package:flutter_babycare/data/model/food_model.dart';
+import '../../constants/app_constants.dart';
+import '../model/food_model.dart';
 
 class LocalDataSource {
   static List<FoodModel> fetchBreakfastSuggest(int dayNext) {

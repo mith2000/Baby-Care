@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_babycare/data/api/sample_api_provider.dart';
-import 'package:flutter_babycare/data/model/sample_model.dart';
+import '../api/sample_api_provider.dart';
+import '../model/sample_model.dart';
 
 class SampleRepository {
   Future<SampleModel> getSampleModel({@required sampleRequiredParam}) async {

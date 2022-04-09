@@ -1,4 +1,4 @@
-import 'package:flutter_babycare/data/model/food_model.dart';
+import 'food_model.dart';
 
 class ListFoodModel {
   int dayAgo;
