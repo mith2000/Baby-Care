@@ -56,6 +56,7 @@ class _HandbookThemeViewState extends State<HandbookThemeView> {
                   title: state.list[index].title,
                   description: state.list[index].description,
                   action: () {
+                    print(state.list[index].id);
                     Navigator.pushNamed(context, ListArticleView.routeName,
                         arguments:
                             ListArticleViewArguments(state.list[index].id));

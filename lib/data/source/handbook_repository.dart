@@ -27,10 +27,10 @@ class HandBookRepository {
     try {
       QuerySnapshot snapshot = await FirebaseFirestore.instance
           .collection('tip_info')
-          .where('themeID', isEqualTo: themeID)
+          .where('themeId', isEqualTo: themeID)
           .get();
       list = snapshot.docs
-          .map((doc) => CategoryHandBookModel.fromSnapshot(doc))
+          .map((doc) => CategoryHandBookModel.fromSnapshot(doc.data()))
           .toList();
     } catch (error) {
       print(error);
@@ -47,8 +47,9 @@ class HandBookRepository {
           .collection('tip_detail')
           .where('idTip', isEqualTo: idTip)
           .get();
-      babyModel =
-          snapshot.docs.map((doc) => ArticleModel.fromSnapshot(doc)).toList();
+      babyModel = snapshot.docs
+          .map((doc) => ArticleModel.fromSnapshot(doc.data()))
+          .toList();
     } catch (error) {
       print(error);
       return null;

@@ -53,7 +53,7 @@ class ArticleModel extends Equatable {
     this.idTip,
   });
 
-  static ArticleModel fromSnapshot(DocumentSnapshot snap) {
+  static ArticleModel fromSnapshot(Map<String, dynamic> snap) {
     ArticleModel listArticleModel = ArticleModel(
         id: snap['id'],
         title: snap['title'],
