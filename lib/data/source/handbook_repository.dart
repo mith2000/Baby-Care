@@ -11,7 +11,7 @@ class HandBookRepository {
       QuerySnapshot snapshot =
           await FirebaseFirestore.instance.collection('handbook_theme').get();
       list = snapshot.docs
-          .map((doc) => ThemeHandBookModel.fromSnapshot(doc))
+          .map((doc) => ThemeHandBookModel.fromSnapshot(doc.data()))
           .toList();
     } catch (error) {
       print(error);
