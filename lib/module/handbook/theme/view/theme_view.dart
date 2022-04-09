@@ -60,7 +60,7 @@ class _HandbookThemeViewState extends State<HandbookThemeView> {
                         arguments:
                             ListArticleViewArguments(state.list[index].id));
                   },
-                  image: AssetImage(state.list[index].urlImage),
+                  imageUrl: state.list[index].urlImage,
                   isRedFrame: index % 2 == 1 ? true : false,
                 );
               },
@@ -77,7 +77,7 @@ class _HandbookThemeViewState extends State<HandbookThemeView> {
     String title,
     String description,
     Function action,
-    ImageProvider image,
+    String imageUrl,
     bool isRedFrame = false,
   }) {
     return Container(
@@ -127,11 +127,16 @@ class _HandbookThemeViewState extends State<HandbookThemeView> {
                 child: ClipRRect(
                   borderRadius:
                       BorderRadius.circular(AppConstants.cornerRadiusFrame),
-                  child: Image(
-                    width: 100.w,
-                    fit: BoxFit.cover,
-                    image: image,
-                  ),
+                  child: imageUrl == null
+                      ? Container(
+                          width: 100.w,
+                        )
+                      : FadeInImage.assetNetwork(
+                          placeholder: 'assets/image/default_baby.png',
+                          width: 100.w,
+                          fit: BoxFit.cover,
+                          image: imageUrl,
+                        ),
                 ),
               ),
             ],

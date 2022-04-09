@@ -208,6 +208,7 @@ class _ListArticleViewState extends State<ListArticleView> {
         vertical: AppConstants.paddingAppH,
       ),
       child: LineButton('Back', () {
+        handbookBloc.add(LoadThemeHandBook());
         Navigator.pop(context);
       }),
     );
