@@ -1,16 +1,14 @@
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_babycare/module/chatcenter/center/view/chat_center.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:intl/intl.dart';
+
 import '../../../constants/app_constants.dart';
-import '../../authentication/authentication_bloc/authentication_bloc.dart';
-import '../../authentication/authentication_bloc/authentication_event.dart';
-import '../../baby/create/view/create_gender_view.dart';
-import '../../baby/detail/view/detail_view.dart';
-import '../../handbook/theme/view/theme_view.dart';
-import '../bloc/baby_bloc.dart';
-import '../bloc/baby_event.dart';
-import '../bloc/baby_state.dart';
-import '../../sample/view/sample_view.dart';
 import '../../../utils/UI_components/baby_status_icon.dart';
 import '../../../utils/UI_components/error_label.dart';
 import '../../../utils/UI_components/highlight_box.dart';
@@ -18,11 +16,15 @@ import '../../../utils/UI_components/icon_button.dart';
 import '../../../utils/UI_components/loading_widget.dart';
 import '../../../utils/app_colors.dart';
 import '../../../utils/converter.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:intl/intl.dart';
+import '../../authentication/authentication_bloc/authentication_bloc.dart';
+import '../../authentication/authentication_bloc/authentication_event.dart';
+import '../../baby/create/view/create_gender_view.dart';
+import '../../baby/detail/view/detail_view.dart';
+import '../../handbook/theme/view/theme_view.dart';
+import '../../sample/view/sample_view.dart';
+import '../bloc/baby_bloc.dart';
+import '../bloc/baby_event.dart';
+import '../bloc/baby_state.dart';
 
 class HomeView extends StatefulWidget {
   static const routeName = '/home';
@@ -54,7 +56,7 @@ class _HomeViewState extends State<HomeView> {
     screens = [
       HomeBodyView(widget._user),
       HandbookThemeView(),
-      SampleView(),
+      ChatCenterView(),
       SampleView(),
     ];
   }

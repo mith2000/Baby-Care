@@ -111,6 +111,7 @@ class BirthBabyChange extends BabyEvent {
 
 class UpdateBaby extends BabyEvent {
   final BabyModel babyModel;
+
   UpdateBaby({this.babyModel});
 
   @override

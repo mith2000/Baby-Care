@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
-import '../../constants/app_constants.dart';
-import '../../data/model/baby/food_model.dart';
+import 'package:flutter_babycare/data/model/baby/food_model.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 
+import '../../constants/app_constants.dart';
+import '../../data/model/baby/food_model.dart';
 import '../converter.dart';
 
 class FoodDetailIcon extends StatelessWidget {
   final FoodModel item;
+
   const FoodDetailIcon(FoodModel item, {Key key})
       : this.item = item,
         super(key: key);

@@ -1,8 +1,10 @@
 import 'dart:async';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import '../../model/baby/bmi_model.dart';
+import 'package:flutter_babycare/data/model/baby/bmi_model.dart';
 import 'package:uuid/uuid.dart';
+
+import '../../model/baby/bmi_model.dart';
 
 class BmiRepository {
   static Future<List<BmiModel>> fetchBmi(String idBaby) async {

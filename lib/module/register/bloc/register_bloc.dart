@@ -1,8 +1,10 @@
+import 'package:flutter_babycare/data/source/user/user_repository.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
 import '../../../data/source/user/user_repository.dart';
+import '../../../utils/validators.dart';
 import 'register_event.dart';
 import 'register_state.dart';
-import '../../../utils/validators.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
 class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
   final UserRepository _userRepository;

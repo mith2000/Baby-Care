@@ -3,14 +3,7 @@ import 'dart:io';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'module/baby/create/view/create_gender_view.dart';
-import 'module/baby/detail/view/detail_view.dart';
-import 'module/handbook/article/view/article_view.dart';
-import 'module/handbook/bloc/handbook_bloc.dart';
-import 'module/handbook/list/view/list_article_view.dart';
-import 'module/handbook/theme/view/theme_view.dart';
-import 'utils/UI_components/loading_widget.dart';
-import 'utils/app_colors.dart';
+import 'package:flutter_babycare/module/chatcenter/p2p/view/chat_p2p.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -23,9 +16,16 @@ import 'module/authentication/authentication_bloc/authentication_state.dart';
 import 'module/authentication/simple_bloc_observer.dart';
 import 'module/baby/create/view/create_bmi_view.dart';
 import 'module/baby/create/view/create_food_view.dart';
+import 'module/baby/create/view/create_gender_view.dart';
 import 'module/baby/create/view/create_info_view.dart';
+import 'module/baby/detail/view/detail_view.dart';
 import 'module/baby/update/view/update_bmi_view.dart';
 import 'module/baby/update/view/update_food_view.dart';
+import 'module/chatcenter/center/view/chat_center.dart';
+import 'module/handbook/article/view/article_view.dart';
+import 'module/handbook/bloc/handbook_bloc.dart';
+import 'module/handbook/list/view/list_article_view.dart';
+import 'module/handbook/theme/view/theme_view.dart';
 import 'module/home/bloc/baby_bloc.dart';
 import 'module/home/view/home_view.dart';
 import 'module/login/bloc/login_bloc.dart';
@@ -35,6 +35,8 @@ import 'module/meal/view/plan_view.dart';
 import 'module/meal/view/suggestion_view.dart';
 import 'module/register/bloc/register_bloc.dart';
 import 'module/register/view/register_view.dart';
+import 'utils/UI_components/loading_widget.dart';
+import 'utils/app_colors.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -198,6 +200,10 @@ class _MyAppState extends State<MyApp> {
                       ListArticleView(),
                   ArticleView.routeName: (BuildContext context) =>
                       ArticleView(),
+                  ChatCenterView.routeName: (BuildContext context) =>
+                      ChatCenterView(),
+                  ChatP2PView.routeName: (BuildContext context) =>
+                      ChatP2PView(),
                 },
               )),
     );

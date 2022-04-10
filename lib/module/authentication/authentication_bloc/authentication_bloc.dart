@@ -1,6 +1,7 @@
-import '../../../data/source/user/user_repository.dart';
+import 'package:flutter_babycare/data/source/user/user_repository.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../data/source/user/user_repository.dart';
 import 'authentication_event.dart';
 import 'authentication_state.dart';
 
