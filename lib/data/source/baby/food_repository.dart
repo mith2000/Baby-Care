@@ -1,10 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import '../../constants/app_constants.dart';
-import '../model/food_model.dart';
-import '../model/list_food_model.dart';
-import '../model/ni_model.dart';
+import '../../../constants/app_constants.dart';
+import '../../model/baby/food_model.dart';
+import '../../model/baby/list_food_model.dart';
+import '../../model/baby/ni_model.dart';
 import 'ni_repository.dart';
-import '../../utils/converter.dart';
+import '../../../utils/converter.dart';
 import 'package:uuid/uuid.dart';
 import 'package:intl/intl.dart';
 

@@ -1,4 +1,4 @@
-import '../../../data/source/user_repository.dart';
+import '../../../data/source/user/user_repository.dart';
 import 'register_event.dart';
 import 'register_state.dart';
 import '../../../utils/validators.dart';

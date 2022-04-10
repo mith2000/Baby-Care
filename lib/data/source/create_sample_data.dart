@@ -2,11 +2,11 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:uuid/uuid.dart';
 
 import '../../constants/app_constants.dart';
-import '../model/food_model.dart';
-import '../model/ni_model.dart';
+import '../model/baby/food_model.dart';
+import '../model/baby/ni_model.dart';
 import '../../utils/converter.dart';
 
-import 'ni_repository.dart';
+import 'baby/ni_repository.dart';
 
 class CreateSampleData {
   NIRepository niRepository;

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../../../constants/app_constants.dart';
-import '../../../../data/model/food_model.dart';
+import '../../../../data/model/baby/food_model.dart';
 import '../../../home/bloc/baby_bloc.dart';
 import '../../../home/bloc/baby_event.dart';
 import '../../../home/bloc/baby_state.dart';

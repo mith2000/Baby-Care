@@ -6,7 +6,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:uuid/uuid.dart';
 
-import '../model/baby_model.dart';
+import '../../model/baby/baby_model.dart';
 
 class BabyRepository {
   static Future<BabyModel> fetchBaby(String idBaby) async {

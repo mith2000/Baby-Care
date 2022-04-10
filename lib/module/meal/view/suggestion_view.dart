@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../../constants/app_constants.dart';
-import '../../../data/model/baby_model.dart';
-import '../../../data/model/ni_model.dart';
+import '../../../data/model/baby/baby_model.dart';
+import '../../../data/model/baby/ni_model.dart';
 import '../../baby/update/view/update_food_view.dart';
 import 'plan_view.dart';
 import '../../../utils/UI_components/highlight_box.dart';

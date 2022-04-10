@@ -1,4 +1,4 @@
-import '../../../data/source/user_repository.dart';
+import '../../../data/source/user/user_repository.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'authentication_event.dart';
