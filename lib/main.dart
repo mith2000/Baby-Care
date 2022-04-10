@@ -15,8 +15,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import 'data/source/baby_repository.dart';
-import 'data/source/user_repository.dart';
+import 'data/source/baby/baby_repository.dart';
+import 'data/source/user/user_repository.dart';
 import 'module/authentication/authentication_bloc/authentication_bloc.dart';
 import 'module/authentication/authentication_bloc/authentication_event.dart';
 import 'module/authentication/authentication_bloc/authentication_state.dart';

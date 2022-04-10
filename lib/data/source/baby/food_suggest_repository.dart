@@ -1,9 +1,9 @@
 import 'dart:collection';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import '../../constants/app_constants.dart';
-import '../model/food_suggest_model.dart';
-import '../model/ni_model.dart';
+import '../../../constants/app_constants.dart';
+import '../../model/baby/food_suggest_model.dart';
+import '../../model/baby/ni_model.dart';
 import 'package:uuid/uuid.dart';
 
 import 'ni_repository.dart';

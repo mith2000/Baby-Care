@@ -4,7 +4,7 @@ import 'dart:developer';
 import '../../../data/model/handbook/article_model.dart';
 import '../../../data/model/handbook/category_handbook_model.dart';
 import '../../../data/model/handbook/theme_handbook_model.dart';
-import '../../../data/source/handbook_repository.dart';
+import '../../../data/source/handbook/handbook_repository.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'handbook_event.dart';

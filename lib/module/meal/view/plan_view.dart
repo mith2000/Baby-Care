@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import '../../../constants/app_constants.dart';
-import '../../../data/model/baby_model.dart';
-import '../../../data/model/food_model.dart';
-import '../../../data/model/food_suggest_model.dart';
-import '../../../data/source/food_suggest_repository.dart';
+import '../../../data/model/baby/baby_model.dart';
+import '../../../data/model/baby/food_model.dart';
+import '../../../data/model/baby/food_suggest_model.dart';
+import '../../../data/source/baby/food_suggest_repository.dart';
 import '../../../data/source/local_data_source.dart';
 import '../../../utils/UI_components/error_label.dart';
 import '../../../utils/UI_components/food_detail_icon.dart';

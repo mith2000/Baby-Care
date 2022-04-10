@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import '../../../../constants/app_constants.dart';
-import '../../../../data/model/baby_model.dart';
-import '../../../../data/model/bmi_model.dart';
-import '../../../../data/model/ni_model.dart';
+import '../../../../data/model/baby/baby_model.dart';
+import '../../../../data/model/baby/bmi_model.dart';
+import '../../../../data/model/baby/ni_model.dart';
 import '../../update/view/update_bmi_view.dart';
 import '../../update/view/update_food_view.dart';
 import '../../../home/bloc/baby_bloc.dart';

@@ -1,6 +1,6 @@
 import '../constants/app_constants.dart';
-import '../data/model/food_model.dart';
-import '../data/model/ni_model.dart';
+import '../data/model/baby/food_model.dart';
+import '../data/model/baby/ni_model.dart';
 import 'package:intl/intl.dart';
 
 class Converter {

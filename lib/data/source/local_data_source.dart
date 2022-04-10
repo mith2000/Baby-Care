@@ -1,5 +1,5 @@
 import '../../constants/app_constants.dart';
-import '../model/food_model.dart';
+import '../model/baby/food_model.dart';
 
 class LocalDataSource {
   static List<FoodModel> fetchBreakfastSuggest(int dayNext) {

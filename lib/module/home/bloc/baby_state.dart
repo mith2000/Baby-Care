@@ -1,10 +1,10 @@
 // ignore_for_file: must_be_immutable
 
 import 'package:equatable/equatable.dart';
-import 'package:flutter_babycare/data/model/baby_model.dart';
-import 'package:flutter_babycare/data/model/bmi_model.dart';
-import 'package:flutter_babycare/data/model/list_food_model.dart';
-import 'package:flutter_babycare/data/model/ni_model.dart';
+import 'package:flutter_babycare/data/model/baby/baby_model.dart';
+import 'package:flutter_babycare/data/model/baby/bmi_model.dart';
+import 'package:flutter_babycare/data/model/baby/list_food_model.dart';
+import 'package:flutter_babycare/data/model/baby/ni_model.dart';
 
 class BabyState extends Equatable {
   @override

@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
-import '../../../constants/app_constants.dart';
-import '../../../utils/converter.dart';
+import '../../../../constants/app_constants.dart';
+import '../../../../utils/converter.dart';
 
 class FoodSuggestModel extends Equatable {
   final String id;
