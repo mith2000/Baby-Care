@@ -114,6 +114,7 @@ flutter:
     - assets/image/meal_suggestion.jpg
     - assets/image/vaccine_suggestion.jpg
     - assets/image/vaccination_history.jpg
+    - assets/image/logo_s150.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
