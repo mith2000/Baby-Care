@@ -1,22 +1,21 @@
 import 'package:flutter/material.dart';
-import '../../../constants/app_constants.dart';
-import '../../../data/model/baby/baby_model.dart';
-import '../../../data/model/baby/ni_model.dart';
-import '../../baby/update/view/update_food_view.dart';
-import 'plan_view.dart';
-import '../../../utils/UI_components/highlight_box.dart';
-import '../../../utils/UI_components/line_button.dart';
-import '../../../utils/UI_components/mini_line_button.dart';
-import '../../../utils/UI_components/mini_solid_button.dart';
-import '../../../utils/UI_components/solid_button.dart';
-import '../../../utils/app_colors.dart';
-import '../../../utils/converter.dart';
-import '../../../utils/food_suggester.dart';
+import 'package:flutter_babycare/constants/app_constants.dart';
+import 'package:flutter_babycare/data/model/baby/baby_model.dart';
+import 'package:flutter_babycare/data/model/baby/ni_model.dart';
+import 'package:flutter_babycare/module/baby/update/view/update_food_view.dart';
+import 'package:flutter_babycare/module/meal/history/view/history_view.dart';
+import 'package:flutter_babycare/module/meal/plan/view/plan_view.dart';
+import 'package:flutter_babycare/utils/UI_components/appbar_primary.dart';
+import 'package:flutter_babycare/utils/UI_components/highlight_box.dart';
+import 'package:flutter_babycare/utils/UI_components/line_button.dart';
+import 'package:flutter_babycare/utils/UI_components/mini_line_button.dart';
+import 'package:flutter_babycare/utils/UI_components/mini_solid_button.dart';
+import 'package:flutter_babycare/utils/UI_components/solid_button.dart';
+import 'package:flutter_babycare/utils/app_colors.dart';
+import 'package:flutter_babycare/utils/converter.dart';
+import 'package:flutter_babycare/utils/food_suggester.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:google_fonts/google_fonts.dart';
-
-import 'history_view.dart';
 
 class MealSuggestionViewArguments {
   final BabyModel baby;
@@ -57,28 +56,7 @@ class _MealSuggestionViewState extends State<MealSuggestionView> {
         as MealSuggestionViewArguments;
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      appBar: PreferredSize(
-        preferredSize: Size.fromHeight(
-            AppConstants.paddingAppH + AppConstants.paddingSuperLargeH),
-        child: AppBar(
-          automaticallyImplyLeading: false,
-          title: Container(
-            height: 32.h,
-            alignment: Alignment.bottomCenter,
-            margin: EdgeInsets.only(left: AppConstants.paddingAppW),
-            child: Text(
-              'Meal Suggestion',
-              style: GoogleFonts.dosis(
-                fontWeight: FontWeight.w700,
-                fontSize: 24.sp,
-                color: Colors.white,
-              ),
-            ),
-          ),
-          backgroundColor: AppColors.primary,
-          elevation: 0,
-        ),
-      ),
+      appBar: AppbarPrimary(title: 'Meal Suggestion'),
       body: Center(
         child: Container(
           color: AppColors.background,

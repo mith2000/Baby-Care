@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:intl/intl.dart';
+
 import '../../../../constants/app_constants.dart';
 import '../../../../data/model/baby/baby_model.dart';
 import '../../../../data/model/baby/bmi_model.dart';
 import '../../../../data/model/baby/ni_model.dart';
-import '../../update/view/update_bmi_view.dart';
-import '../../update/view/update_food_view.dart';
-import '../../../home/bloc/baby_bloc.dart';
-import '../../../home/bloc/baby_event.dart';
-import '../../../home/bloc/baby_state.dart';
-import '../../../meal/view/suggestion_view.dart';
 import '../../../../utils/UI_components/baby_status_icon.dart';
 import '../../../../utils/UI_components/badge_icon.dart';
 import '../../../../utils/UI_components/error_label.dart';
@@ -21,10 +20,12 @@ import '../../../../utils/UI_components/title_label.dart';
 import '../../../../utils/app_colors.dart';
 import '../../../../utils/converter.dart';
 import '../../../../utils/evaluate.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:intl/intl.dart';
+import '../../../home/bloc/baby_bloc.dart';
+import '../../../home/bloc/baby_event.dart';
+import '../../../home/bloc/baby_state.dart';
+import '../../../meal/suggestion/view/suggestion_view.dart';
+import '../../update/view/update_bmi_view.dart';
+import '../../update/view/update_food_view.dart';
 
 class BabyDetailViewArguments {
   final BabyModel model;

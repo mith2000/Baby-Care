@@ -41,9 +41,9 @@ class FoodDetailIcon extends StatelessWidget {
           SizedBox(width: AppConstants.paddingNormalW),
           Text(
             item.value < 1000
-                ? item.value.toInt().toString() +
-                    Converter.FoodTypeToUnitString(item.type)
-                : '999' + Converter.FoodTypeToUnitString(item.type),
+                ? (item.value.toInt().toString() +
+                    Converter.FoodTypeToUnitString(item.type))
+                : ('999' + Converter.FoodTypeToUnitString(item.type)),
             style: Theme.of(context).textTheme.bodyText1,
           ),
         ],

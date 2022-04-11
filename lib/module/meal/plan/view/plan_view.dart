@@ -1,20 +1,21 @@
 import 'package:flutter/material.dart';
-import '../../../constants/app_constants.dart';
-import '../../../data/model/baby/baby_model.dart';
-import '../../../data/model/baby/food_model.dart';
-import '../../../data/model/baby/food_suggest_model.dart';
-import '../../../data/source/baby/food_suggest_repository.dart';
-import '../../../data/source/local_data_source.dart';
-import '../../../utils/UI_components/error_label.dart';
-import '../../../utils/UI_components/food_detail_icon.dart';
-import '../../../utils/UI_components/highlight_box.dart';
-import '../../../utils/UI_components/line_button.dart';
-import '../../../utils/app_colors.dart';
-import '../../../utils/converter.dart';
+import 'package:flutter_babycare/utils/UI_components/appbar_primary.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
+
+import '../../../../constants/app_constants.dart';
+import '../../../../data/model/baby/baby_model.dart';
+import '../../../../data/model/baby/food_model.dart';
+import '../../../../data/model/baby/food_suggest_model.dart';
+import '../../../../data/source/baby/food_suggest_repository.dart';
+import '../../../../data/source/local_data_source.dart';
+import '../../../../utils/UI_components/error_label.dart';
+import '../../../../utils/UI_components/food_detail_icon.dart';
+import '../../../../utils/UI_components/highlight_box.dart';
+import '../../../../utils/UI_components/line_button.dart';
+import '../../../../utils/app_colors.dart';
+import '../../../../utils/converter.dart';
 
 class MealPlanViewArguments {
   final BabyModel baby;
@@ -54,28 +55,7 @@ class _MealPlanViewState extends State<MealPlanView> {
     FoodSuggestRepository foodSuggestRepository = new FoodSuggestRepository();
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      appBar: PreferredSize(
-        preferredSize: Size.fromHeight(
-            AppConstants.paddingAppH + AppConstants.paddingSuperLargeH),
-        child: AppBar(
-          automaticallyImplyLeading: false,
-          title: Container(
-            height: 32.h,
-            alignment: Alignment.bottomCenter,
-            margin: EdgeInsets.only(left: AppConstants.paddingAppW),
-            child: Text(
-              'Week Plan',
-              style: GoogleFonts.dosis(
-                fontWeight: FontWeight.w700,
-                fontSize: 24.sp,
-                color: Colors.white,
-              ),
-            ),
-          ),
-          backgroundColor: AppColors.primary,
-          elevation: 0,
-        ),
-      ),
+      appBar: AppbarPrimary(title: 'Week Plan'),
       body: Center(
         child: Container(
           color: AppColors.background,
