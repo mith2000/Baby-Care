@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_babycare/utils/UI_components/appbar_primary.dart';
 import '../../../../constants/app_constants.dart';
 import '../../article/view/article_view.dart';
 import '../../bloc/handbook_bloc.dart';
@@ -44,6 +45,7 @@ class _ListArticleViewState extends State<ListArticleView> {
     handbookBloc.add(LoadListArticle(themeID: args.themeId));
     return Scaffold(
       resizeToAvoidBottomInset: false,
+      appBar: AppbarPrimary(title: 'Handbook'),
       body: Container(
         color: AppColors.background,
         child: Stack(
