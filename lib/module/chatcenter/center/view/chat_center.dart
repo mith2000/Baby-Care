@@ -36,7 +36,7 @@ class _ChatCenterViewState extends State<ChatCenterView> {
               Navigator.pushNamed(
                 context,
                 ChatP2PView.routeName,
-                arguments: ChatP2PViewArguments('Caring center'),
+                arguments: ChatP2PViewArguments('Caring center', null),
               );
             },
             image: AssetImage('assets/image/logo_s150.png'),
