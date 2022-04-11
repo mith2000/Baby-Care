@@ -105,6 +105,8 @@ flutter:
     - assets/icon/warn.svg
     - assets/icon/book.svg
     - assets/icon/arrow_back.svg
+    - assets/icon/send.svg
+    - assets/icon/send_inactive.svg
 
     - assets/image/default_baby.png
     - assets/image/EmojiLove_1.png

@@ -25,42 +25,60 @@ class ChatP2PView extends StatefulWidget {
 }
 
 class _ChatP2PViewState extends State<ChatP2PView> {
+  Map<String, String> _formData = {
+    'content': null,
+  };
+  var _formKey = GlobalKey<FormState>();
+  var _textController = TextEditingController();
+  var _scrollController = ScrollController();
+  bool _hasText = false;
+
+  @override
+  void initState() {
+    super.initState();
+
+    // scroll when on receive new message
+    // _scrollController.animateTo(_scrollController.position.maxScrollExtent,
+    //     duration: Duration(milliseconds: 300), curve: Curves.easeOut);
+  }
+
+  @override
+  void dispose() {
+    _textController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     final args =
         ModalRoute.of(context).settings.arguments as ChatP2PViewArguments;
-    return Scaffold(
-      resizeToAvoidBottomInset: false,
-      appBar: _buildChatAppbar(args.peerName, args.peerAvatarUrl),
-      body: Container(
-        color: AppColors.background,
-        child: Stack(
+    return GestureDetector(
+      onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
+      child: Scaffold(
+        backgroundColor: AppColors.background,
+        appBar: _buildChatAppbar(args.peerName, args.peerAvatarUrl),
+        body: Column(
           children: [
-            ListView(
-              children: [
-                Container(
-                  color: AppColors.danger,
-                  child: ListView.builder(
-                    shrinkWrap: true,
-                    physics: ScrollPhysics(),
-                    itemCount: 1,
-                    itemBuilder: (context, index) {
-                      return SizedBox(
-                          height: AppConstants.paddingSuperLargeH * 2);
-                    },
-                  ),
-                  margin: EdgeInsets.symmetric(
-                    horizontal: AppConstants.paddingLargeW,
-                  ),
-                ),
-                SizedBox(height: AppConstants.paddingSuperLargeH * 2),
-              ],
+            Expanded(
+              child: ListView.builder(
+                shrinkWrap: true,
+                controller: _scrollController,
+                itemCount: 20,
+                itemBuilder: (context, index) {
+                  return Container(
+                      height: 40.h,
+                      color: AppColors.danger,
+                      margin: EdgeInsets.only(top: 20.h));
+                },
+              ),
             ),
-            Column(
-              mainAxisSize: MainAxisSize.max,
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [],
-            )
+            Align(
+              alignment: Alignment.bottomCenter,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [_buildTextInput()],
+              ),
+            ),
           ],
         ),
       ),
@@ -72,6 +90,7 @@ class _ChatP2PViewState extends State<ChatP2PView> {
       preferredSize: Size.fromHeight(
           AppConstants.paddingAppH + AppConstants.paddingSuperLargeH),
       child: AppBar(
+        titleSpacing: 0,
         automaticallyImplyLeading: false,
         title: Container(
           margin: EdgeInsets.only(left: AppConstants.paddingNormalW),
@@ -116,5 +135,103 @@ class _ChatP2PViewState extends State<ChatP2PView> {
         elevation: 0,
       ),
     );
+  }
+
+  Widget _buildTextInput() {
+    return Form(
+      key: _formKey,
+      child: Container(
+        margin: EdgeInsets.all(
+          AppConstants.paddingLargeW,
+        ),
+        child: TextFormField(
+          controller: _textController,
+          style: Theme.of(context).textTheme.headline1,
+          decoration: InputDecoration(
+            contentPadding: EdgeInsets.only(
+              left: AppConstants.paddingLargeW,
+              top: AppConstants.paddingNormalH,
+              bottom: AppConstants.paddingNormalH,
+            ),
+            hintText: "Chatting...",
+            hintStyle: TextStyle(
+              fontWeight: FontWeight.w600,
+              fontSize: 22.sp,
+              color: AppColors.stroke,
+            ),
+            suffixIcon: CircleIconButton(
+              Container(
+                padding: EdgeInsets.symmetric(
+                  horizontal: AppConstants.paddingLargeW,
+                  vertical: AppConstants.paddingNormalH,
+                ),
+                child: _hasText
+                    ? SvgPicture.asset('assets/icon/send.svg')
+                    : SvgPicture.asset('assets/icon/send_inactive.svg'),
+              ),
+              () {
+                if (_hasText) _onSendPressed();
+              },
+            ),
+            filled: true,
+            fillColor: AppColors.whiteBackground,
+            focusedBorder: OutlineInputBorder(
+              borderRadius:
+                  BorderRadius.circular(AppConstants.cornerRadiusFrame),
+              borderSide: BorderSide(
+                width: 1.w,
+                color: AppColors.primary,
+              ),
+            ),
+            enabledBorder: OutlineInputBorder(
+              borderRadius:
+                  BorderRadius.circular(AppConstants.cornerRadiusFrame),
+              borderSide: BorderSide(
+                width: 1.w,
+                color: AppColors.stroke,
+              ),
+            ),
+          ),
+          keyboardType: TextInputType.multiline,
+          minLines: 1,
+          maxLines: 5,
+          onChanged: (value) {
+            if (value.length > 0) {
+              setState(() {
+                _hasText = true;
+              });
+            } else {
+              setState(() {
+                _hasText = false;
+              });
+            }
+          },
+          onSaved: (String value) {
+            _formData['content'] = value;
+          },
+        ),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(AppConstants.cornerRadiusFrame),
+        ),
+      ),
+    );
+  }
+
+  void _onSendPressed() {
+    FocusManager.instance.primaryFocus?.unfocus();
+    setState(() {
+      if (!_formKey.currentState.validate()) {
+        return;
+      }
+      _formKey.currentState.save();
+      _scrollController.animateTo(_scrollController.position.maxScrollExtent,
+          duration: Duration(milliseconds: 300), curve: Curves.easeOut);
+
+      print(_formData['content']);
+      // server todo
+
+      _textController.clear();
+      _hasText = false;
+    });
   }
 }

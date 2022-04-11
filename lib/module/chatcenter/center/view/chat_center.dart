@@ -29,7 +29,7 @@ class _ChatCenterViewState extends State<ChatCenterView> {
         physics: ScrollPhysics(),
         itemCount: 1,
         itemBuilder: (context, index) {
-          return _buildThemeButton(
+          return _buildDirectButton(
             title: 'Caring center',
             description: 'Get advices by chatting with us',
             action: () {
@@ -47,7 +47,7 @@ class _ChatCenterViewState extends State<ChatCenterView> {
     );
   }
 
-  Widget _buildThemeButton({
+  Widget _buildDirectButton({
     String title,
     String description,
     Function action,
