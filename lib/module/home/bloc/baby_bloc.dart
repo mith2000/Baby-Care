@@ -8,6 +8,7 @@ import '../../../data/source/baby/baby_repository.dart';
 import '../../../data/source/baby/bmi_repository.dart';
 import '../../../data/source/baby/food_repository.dart';
 import '../../../data/source/baby/ni_repository.dart';
+import '../../../data/source/create_sample_data.dart';
 import 'baby_event.dart';
 import 'baby_state.dart';
 
@@ -97,7 +98,8 @@ class BabyBloc extends Bloc<BabyEvent, BabyState> {
   }
 
   Stream<BabyState> mapFetchFoodToState(FetchFood event) async* {
-    yield LoadedFood(list: await FoodRepository.fetchFood(event.idBaby, 0));
+    yield LoadedFood(
+        list: await FoodRepository.fetchFood(event.idBaby, event.dayAgo));
   }
 
   Stream<BabyState> mapUpdateBMIToState(UpdateBMI event) async* {
@@ -131,6 +133,7 @@ class BabyBloc extends Bloc<BabyEvent, BabyState> {
   Stream<BabyState> mapBabyLoadedToState(LoadBaby event) async* {
     listBabyModel = [];
     listBabyModel = await BabyRepository.fetchAllBaby(event.userId);
+    await CreateSampleData.create();
     yield LoadedBaby(listBabyModel);
   }
 

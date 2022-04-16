@@ -31,45 +31,26 @@ class FoodRepository {
   }
 
   static Future<String> updateFood(List<FoodModel> listFoodModel) async {
-    List<FoodModel> listFoodRecent =
-        await fetchFoodToUpdate(listFoodModel[0].idBaby);
-    bool isOverDay = false;
-    double temp = 10000;
-    int maxCountUpdate;
-    await FirebaseFirestore.instance
-        .collection('food')
-        .where('idBaby', isEqualTo: listFoodModel[0].idBaby)
-        .get()
-        .then((querySnapshot) {
-      querySnapshot.docs.forEach((doc) {
-        double date = Converter.dateToDayDouble(
-            DateFormat('dd/MM/yyyy').format(doc.data()['updateDate'].toDate()));
-        if (temp >= date) {
-          temp = date;
-          maxCountUpdate = doc.data()['countUpdate'];
-        }
-      });
-    });
+    List<ListFoodModel> list = await fetchFood(listFoodModel[0].idBaby, 0);
+    List<FoodModel> listFoodRecent = list[0].listFood;
+    bool isOverDay = true;
 
     await FirebaseFirestore.instance
         .collection('food')
         .where('idBaby', isEqualTo: listFoodModel[0].idBaby)
-        .where('countUpdate', isEqualTo: maxCountUpdate)
         .get()
         .then((querySnapshot) {
       querySnapshot.docs.forEach((doc) {
-        if (doc.data()['type'] ==
-            Converter.FoodTypeToUnitString(FoodType.Egg)) {
-          if (Converter.checkOverDay(doc.data()['updateDate'].toDay())) {
-            isOverDay = true;
-          }
+        if (doc.data()['updateDate'].toDate().day == DateTime.now().day &&
+            doc.data()['updateDate'].toDate().month == DateTime.now().month &&
+            doc.data()['updateDate'].toDate().year == DateTime.now().year) {
+          isOverDay = false;
         }
       });
     });
 
     for (var i = 0; i < listFoodModel.length; i++) {
       if (isOverDay) {
-        listFoodModel[i].setCountUpdate(maxCountUpdate + 1);
         String idFood = Uuid().v4();
         listFoodModel[i].setId(idFood);
         DocumentReference documentReferencer =
@@ -109,59 +90,28 @@ class FoodRepository {
     //dayAgo là số ngày cần lấy, ví dụ: dayAgo = 7 là lấy Food 7 ngày trước (sẽ có ngày list Food bị rỗng)
     // dayAgo = 0 là food ngày hiện tại
     List<ListFoodModel> listFood = [];
-
     for (var i = 0; i <= dayAgo; i++) {
       listFood.add(ListFoodModel(dayAgo: i));
     }
-    List<FoodModel> list = [];
-    await FirebaseFirestore.instance
-        .collection('food')
-        .where('idBaby', isEqualTo: idBaby)
-        .get()
-        .then((querySnapshot) {
-      querySnapshot.docs.forEach((doc) {
-        list.add(FoodModel.fromSnapshot(doc));
-        int date = Converter.dateToDayDouble(DateFormat('dd/MM/yyyy')
-                .format(doc.data()['updateDate'].toDate()))
-            .toInt();
-        if (date <= dayAgo) {
-          listFood.elementAt(date).listFood.add(FoodModel.fromSnapshot(doc));
-        }
-      });
-    });
-    List<FoodModel> temp = list;
-    List<FoodModel> temp1 = temp;
-    return listFood;
-  }
 
-  static Future<List<FoodModel>> fetchFoodToUpdate(String idBaby) async {
-    List<FoodModel> listFood = [];
-    int maxCountUpdate;
-    double temp = 10000;
-    await FirebaseFirestore.instance
-        .collection('food')
-        .where('idBaby', isEqualTo: idBaby)
-        .get()
-        .then((querySnapshot) {
-      querySnapshot.docs.forEach((doc) {
-        double date = Converter.dateToDayDouble(
-            DateFormat('dd/MM/yyyy').format(doc.data()['updateDate'].toDate()));
-        if (temp >= date) {
-          temp = date;
-          maxCountUpdate = doc.data()['countUpdate'];
-        }
+    for (var i = 0; i < dayAgo; i++) {
+      await FirebaseFirestore.instance
+          .collection('food')
+          .where('idBaby', isEqualTo: idBaby)
+          .get()
+          .then((querySnapshot) {
+        querySnapshot.docs.forEach((doc) {
+          if (doc.data()['updateDate'].toDate().day ==
+                  DateTime.now().subtract(Duration(days: i)).day &&
+              doc.data()['updateDate'].toDate().month ==
+                  DateTime.now().subtract(Duration(days: i)).month &&
+              doc.data()['updateDate'].toDate().year ==
+                  DateTime.now().subtract(Duration(days: i)).year) {
+            listFood.elementAt(i).listFood.add(FoodModel.fromSnapshot(doc));
+          }
+        });
       });
-    });
-    await FirebaseFirestore.instance
-        .collection('food')
-        .where('idBaby', isEqualTo: idBaby)
-        .where('countUpdate', isEqualTo: maxCountUpdate)
-        .get()
-        .then((querySnapshot) {
-      querySnapshot.docs.forEach((doc) {
-        listFood.add(FoodModel.fromSnapshot(doc));
-      });
-    });
+    }
     return listFood;
   }
 }

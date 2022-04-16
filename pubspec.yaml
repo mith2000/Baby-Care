@@ -47,6 +47,7 @@ dependencies:
   image_picker: ^0.8.4+4
   syncfusion_flutter_sliders: ^19.3.55
   uuid: ^3.0.5
+  date_util: ^0.1.4
 
 dev_dependencies:
   flutter_test:

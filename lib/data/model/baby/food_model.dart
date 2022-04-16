@@ -9,16 +9,11 @@ class FoodModel extends Equatable {
   String id;
   final FoodType type;
   final String idBaby;
-  int countUpdate;
   final DateTime updateDate;
   double value;
 
   void setId(String id) {
     this.id = id;
-  }
-
-  void setCountUpdate(int count) {
-    this.countUpdate = count;
   }
 
   double getValue() {
@@ -33,7 +28,6 @@ class FoodModel extends Equatable {
     this.id,
     this.type,
     this.idBaby,
-    this.countUpdate,
     this.updateDate,
     this.value,
   });
@@ -44,7 +38,6 @@ class FoodModel extends Equatable {
       id: snap['id'],
       type: Converter.stringToFoodType(snap['type']),
       idBaby: snap['idBaby'],
-      countUpdate: snap['countUpdate'],
       updateDate: myDateTime,
       value: snap['value'],
     );
@@ -56,7 +49,6 @@ class FoodModel extends Equatable {
         id,
         type,
         idBaby,
-        countUpdate,
         updateDate,
         value,
       ];
@@ -67,7 +59,6 @@ class FoodModel extends Equatable {
       "id": id,
       "type": Converter.foodTypeToString(type),
       "idBaby": idBaby,
-      "countUpdate": countUpdate ?? 0,
       "updateDate": myTimeStamp,
       "value": value,
     };
