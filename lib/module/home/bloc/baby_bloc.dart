@@ -133,7 +133,6 @@ class BabyBloc extends Bloc<BabyEvent, BabyState> {
   Stream<BabyState> mapBabyLoadedToState(LoadBaby event) async* {
     listBabyModel = [];
     listBabyModel = await BabyRepository.fetchAllBaby(event.userId);
-    await CreateSampleData.create();
     yield LoadedBaby(listBabyModel);
   }
 
