@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_babycare/utils/UI_components/own_message_card.dart';
+import 'package:flutter_babycare/utils/UI_components/reply_message_card.dart';
 import 'package:flutter_babycare/utils/app_colors.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
@@ -60,16 +62,20 @@ class _ChatP2PViewState extends State<ChatP2PView> {
         body: Column(
           children: [
             Expanded(
-              child: ListView.builder(
-                shrinkWrap: true,
-                controller: _scrollController,
-                itemCount: 20,
-                itemBuilder: (context, index) {
-                  return Container(
-                      height: 40.h,
-                      color: AppColors.danger,
-                      margin: EdgeInsets.only(top: 20.h));
-                },
+              child: Container(
+                padding:
+                    EdgeInsets.symmetric(horizontal: AppConstants.paddingAppW),
+                child: ListView.builder(
+                  shrinkWrap: true,
+                  controller: _scrollController,
+                  itemCount: 20,
+                  itemBuilder: (context, index) {
+                    return index % 3 == 0
+                        ? OwnMessageCard("Lorem ipsum")
+                        : ReplyMessageCard(
+                            "Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum ");
+                  },
+                ),
               ),
             ),
             Align(
