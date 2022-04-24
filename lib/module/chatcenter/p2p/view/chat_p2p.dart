@@ -7,6 +7,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../../../../constants/app_constants.dart';
+import '../../../../data/model/chat/message_model.dart';
 import '../../../../utils/UI_components/icon_button.dart';
 import '../../../../utils/app_colors.dart';
 
@@ -34,6 +35,8 @@ class _ChatP2PViewState extends State<ChatP2PView> {
   var _textController = TextEditingController();
   var _scrollController = ScrollController();
   bool _hasText = false;
+
+  List<MessageModel> _messages = [];
 
   @override
   void initState() {
@@ -68,12 +71,11 @@ class _ChatP2PViewState extends State<ChatP2PView> {
                 child: ListView.builder(
                   shrinkWrap: true,
                   controller: _scrollController,
-                  itemCount: 20,
+                  itemCount: _messages.length,
                   itemBuilder: (context, index) {
-                    return index % 3 == 0
-                        ? OwnMessageCard("Lorem ipsum")
-                        : ReplyMessageCard(
-                            "Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum ");
+                    return _messages[index].type == MessageType.Own
+                        ? OwnMessageCard(_messages[index].content)
+                        : ReplyMessageCard(_messages[index].content);
                   },
                 ),
               ),
@@ -213,7 +215,7 @@ class _ChatP2PViewState extends State<ChatP2PView> {
             }
           },
           onSaved: (String value) {
-            _formData['content'] = value;
+            _formData['content'] = value.trim();
           },
         ),
         decoration: BoxDecoration(
@@ -233,11 +235,26 @@ class _ChatP2PViewState extends State<ChatP2PView> {
       _scrollController.animateTo(_scrollController.position.maxScrollExtent,
           duration: Duration(milliseconds: 300), curve: Curves.easeOut);
 
-      print(_formData['content']);
-      // server todo
+      _setMessage(MessageType.Own, _formData['content']);
+      _onReceiveMessage("Implementing...");
+      // server todo > Send message
 
       _textController.clear();
       _hasText = false;
+    });
+  }
+
+  void _onReceiveMessage(String contentFromOther) {
+    // server todo > Receiver message
+    _setMessage(MessageType.Other, contentFromOther);
+  }
+
+  void _setMessage(MessageType type, String content) {
+    MessageModel messageModel = MessageModel(type: type, content: content);
+    print(messageModel.content);
+
+    setState(() {
+      _messages.add(messageModel);
     });
   }
 }

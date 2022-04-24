@@ -59,3 +59,8 @@ enum NIType {
   Calcium,
   Iodine
 }
+
+enum MessageType {
+  Own,
+  Other,
+}
