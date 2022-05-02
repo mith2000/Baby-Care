@@ -3,7 +3,7 @@ import 'package:flutter_babycare/constants/app_constants.dart';
 
 class MessageModel {
   String content;
-  MessageType type;
+  MessageTypes type;
 
   MessageModel({
     @required this.content,

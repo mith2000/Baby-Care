@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "babycare-caug",
+  "private_key_id": "5734d56d8adc2fa70af748674e50b0a2ee552acc",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQDK1h7HVNNlFilc\nSFWuYT3BkcoYzNxjLfDNL5OwnnBGgflc98WOHHPoNs6FaH3AwShvKiJ4Ud9VlQ4H\nWZ7IcfUI+k6GGPGeyXfd5SA0HW1QMCPAuy58SvZjzvboAk1SZJL4i+igoUbr/srA\nSWVihtXi4peUIu1TGVoZ5uVXVFMpAxBLKQvrFFxUp54x1JLQdKrZLLj7MEk4fLUj\nrE4zqzhfQHLtyZWrD1JASzCi/QQ9O+5uDyB16umAvae12U3xZ5AM2uVVlBREJY+j\n3/+gVHI1XwhqM+10hU7NBmq2Lkmw5VS6z4Bki6YShEBMGjNafxO9c9YeAYRM0GjZ\nKrgAvbqrAgMBAAECggEALiCzrzEjQgHgNhRdJ+MFYFf/VdSA6i0wbfk75RajAeXd\nB79xNfhSg6SzIrO4pXVH9L/oRuSXnabgIdvHuF3yE7CY2vYhPLMkh1nsEO4ARhQs\njVAEKlAB6IDQtcKQQwSMR+nJZX5H2rN++Gu4msd/LLHLNu0ae6NwUiOoVEvg/ZpE\n3TIQFV+ehSss2FQu3XAdGNBGRbvgbgqC12TKpRxlwLtn8leoDTLU8vTxs23hzm8h\nWVhgYTlP7+D8nuiHvdQ9sxyv+dw/RsGrcWg5MGqjkoFKJHhHb9kNT4Fk5LnjkVMB\nTn4fWv2MSJk6qGA/H4VKI39yBP639naUWU7LqLjYQQKBgQD0R+ZavXcgitaRPNum\n86JimRi8d2LZ5YfAbJ8bZ72fiSM0L6X7cBN8UJM8bjKd/ksb/y2x4V8ycLqdwcQ0\nN6E3GUqUXr7VKXqbMLUr0Y4tTqlb0vp4GU6yXaZu4CaHVwpZ7+cJ7OiYuV442rRq\n3Jo94YP1yCVAmZteJ4tm20QqhQKBgQDUkTnxxZkLVjksxsi0C48uZplK39UGK5s1\n0OQ24uR6hHic6L5s8C6BDaRcfwAs3t+DABikayfLyppAyG8hCWfiYBQt8umzlB/a\n+cTSj1yHu52vPXPKr/0VfHOO5mdBij/LomGPdRRK8OUdQ5bZH2pfQiUZAraHN9Xn\nYXTolWOPbwKBgDuGscl21eqmKncl31ilkfJ44CA872etmRD45ySkeP7BSkTTP50v\nyG/IqrhVGhyJ9P+ThS0NgEcoVTFQIGGhFLX6gcP5+oKzIt9iVSOiYwUDYB2yIbrW\nX+jzDTWDhaABQ9J6tVAj3OIqeZ1dHg3UR/nAVIm2Be3iAIxHEp8z2z6JAoGBAL5c\nzHqjjfqkHhHmd6kdzP0t7swqBfk/pgEc8LPin+DEr8s9eAPRWKREVlRre/mzIpGL\nzYW5XOtZpqirlzIL3VfS2V+I8hfbaGfPVJ+IucHomD9uljsHPmw2hrqLxh7gs18n\nLZ2uqRyv/U8mz3nkc3uZneV3E4Wm0E4lbfA4kO/LAoGAUeLkgOfZFzCBhajcYBC4\n2HvtXtNBDDkpqnRTK/sIG/Hs3OY+9yj97T7UmzHfeFeTVLmbRkyD6fzjf/TgItvZ\nf0Sq6+9KcBIIGk5nnGs/udz3v3s61D63A2KU7ebp9nbbQWb8dnnTFbWeBk5qtd1f\nYSks7K5wFipUcT4g/qDgXeE=\n-----END PRIVATE KEY-----\n",
+  "client_email": "babycare@babycare-caug.iam.gserviceaccount.com",
+  "client_id": "113193703047065073466",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/babycare%40babycare-caug.iam.gserviceaccount.com"
+}
