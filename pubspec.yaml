@@ -48,6 +48,7 @@ dependencies:
   syncfusion_flutter_sliders: ^19.3.55
   uuid: ^3.0.5
   date_util: ^0.1.4
+  dialog_flowtter: ^0.3.3
 
 dev_dependencies:
   flutter_test:
@@ -119,6 +120,8 @@ flutter:
     - assets/image/vaccine_suggestion.jpg
     - assets/image/vaccination_history.jpg
     - assets/image/logo_s150.png
+    # Authenticate gg API
+    - assets/babycare-caug-5734d56d8adc.json
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

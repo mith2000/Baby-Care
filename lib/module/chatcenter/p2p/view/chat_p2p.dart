@@ -1,3 +1,4 @@
+import 'package:dialog_flowtter/dialog_flowtter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_babycare/utils/UI_components/own_message_card.dart';
 import 'package:flutter_babycare/utils/UI_components/reply_message_card.dart';
@@ -38,10 +39,30 @@ class _ChatP2PViewState extends State<ChatP2PView> {
 
   List<MessageModel> _messages = [];
 
+  Future<String> _getMessageResponse(String text) async {
+    DialogFlowtter dialogFlowtter;
+    DialogAuthCredentials credentials;
+    credentials = await DialogAuthCredentials.fromFile(
+        'assets/babycare-caug-5734d56d8adc.json');
+    dialogFlowtter = DialogFlowtter(
+      credentials: credentials,
+      sessionId: "baby-care-69c67",
+    );
+    final QueryInput queryInput = QueryInput(
+      text: TextInput(
+        text: text,
+        languageCode: "en",
+      ),
+    );
+    DetectIntentResponse response = await dialogFlowtter.detectIntent(
+      queryInput: queryInput,
+    );
+    return response.text;
+  }
+
   @override
   void initState() {
     super.initState();
-
     // scroll when on receive new message
     // _scrollController.animateTo(_scrollController.position.maxScrollExtent,
     //     duration: Duration(milliseconds: 300), curve: Curves.easeOut);
@@ -73,7 +94,7 @@ class _ChatP2PViewState extends State<ChatP2PView> {
                   controller: _scrollController,
                   itemCount: _messages.length,
                   itemBuilder: (context, index) {
-                    return _messages[index].type == MessageType.Own
+                    return _messages[index].type == MessageTypes.Own
                         ? OwnMessageCard(_messages[index].content)
                         : ReplyMessageCard(_messages[index].content);
                   },
@@ -235,7 +256,7 @@ class _ChatP2PViewState extends State<ChatP2PView> {
       _scrollController.animateTo(_scrollController.position.maxScrollExtent,
           duration: Duration(milliseconds: 300), curve: Curves.easeOut);
 
-      _setMessage(MessageType.Own, _formData['content']);
+      _setMessage(MessageTypes.Own, _formData['content']);
       _onReceiveMessage("Implementing...");
       // server todo > Send message
 
@@ -244,12 +265,13 @@ class _ChatP2PViewState extends State<ChatP2PView> {
     });
   }
 
-  void _onReceiveMessage(String contentFromOther) {
+  void _onReceiveMessage(String contentFromOther) async {
     // server todo > Receiver message
-    _setMessage(MessageType.Other, contentFromOther);
+    String response = await _getMessageResponse(_formData['content']);
+    _setMessage(MessageTypes.Other, response);
   }
 
-  void _setMessage(MessageType type, String content) {
+  void _setMessage(MessageTypes type, String content) {
     MessageModel messageModel = MessageModel(type: type, content: content);
     print(messageModel.content);
 

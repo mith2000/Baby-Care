@@ -60,7 +60,7 @@ enum NIType {
   Iodine
 }
 
-enum MessageType {
+enum MessageTypes {
   Own,
   Other,
 }
