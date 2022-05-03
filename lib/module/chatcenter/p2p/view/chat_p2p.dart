@@ -241,7 +241,7 @@ class _ChatP2PViewState extends State<ChatP2PView> {
     setState(() {
       _messages.removeLast();
     });
-    if (response != null) {
+    if (response.payload['messages'] != null) {
       response.payload['messages']
           .forEach((item) => _setMessage(MessageTypes.Other, item.toString()));
     } else {
