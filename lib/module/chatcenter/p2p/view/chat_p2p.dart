@@ -237,12 +237,17 @@ class _ChatP2PViewState extends State<ChatP2PView> {
   }
 
   void _sendMessageToServer(String message) async {
-    String response = await _getMessageResponse(message);
+    Message response = await _getMessageResponse(_formData['content']);
     setState(() {
       _messages.removeLast();
     });
-    _setMessage(MessageTypes.Other,
-        response ?? "An error has occurred on the server.\nPlease try again.");
+    if (response != null) {
+      response.payload['messages']
+          .forEach((item) => _setMessage(MessageTypes.Other, item.toString()));
+    } else {
+      _setMessage(MessageTypes.Other,
+          "An error has occurred on the server.\nPlease try again.");
+    }
   }
 
   void _setMessage(MessageTypes type, String content) {
@@ -254,14 +259,14 @@ class _ChatP2PViewState extends State<ChatP2PView> {
     });
   }
 
-  Future<String> _getMessageResponse(String text) async {
+  Future<Message> _getMessageResponse(String text) async {
     DialogFlowtter dialogFlowtter;
     DialogAuthCredentials credentials;
     credentials = await DialogAuthCredentials.fromFile(
         'assets/babycare-caug-5734d56d8adc.json');
     dialogFlowtter = DialogFlowtter(
       credentials: credentials,
-      sessionId: "baby-care-69c67",
+      sessionId: "babycare-caug",
     );
     final QueryInput queryInput = QueryInput(
       text: TextInput(
@@ -274,9 +279,9 @@ class _ChatP2PViewState extends State<ChatP2PView> {
       response = await dialogFlowtter.detectIntent(
         queryInput: queryInput,
       );
-      return response.text;
+      return response.message;
     } catch (error) {
-      return "Nah~\nTry another question please";
+      return new Message(payload: {"Nah~\nTry another question please": ""});
     }
   }
 }
