@@ -39,40 +39,6 @@ class _ChatP2PViewState extends State<ChatP2PView> {
 
   List<MessageModel> _messages = [];
 
-  Future<String> _getMessageResponse(String text) async {
-    DialogFlowtter dialogFlowtter;
-    DialogAuthCredentials credentials;
-    credentials = await DialogAuthCredentials.fromFile(
-        'assets/babycare-caug-5734d56d8adc.json');
-    dialogFlowtter = DialogFlowtter(
-      credentials: credentials,
-      sessionId: "baby-care-69c67",
-    );
-    final QueryInput queryInput = QueryInput(
-      text: TextInput(
-        text: text,
-        languageCode: "en",
-      ),
-    );
-    DetectIntentResponse response;
-    try {
-      response = await dialogFlowtter.detectIntent(
-        queryInput: queryInput,
-      );
-      return response.text;
-    } catch (error) {
-      return "[empty response]";
-    }
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    // scroll when on receive new message
-    // _scrollController.animateTo(_scrollController.position.maxScrollExtent,
-    //     duration: Duration(milliseconds: 300), curve: Curves.easeOut);
-  }
-
   @override
   void dispose() {
     _textController.dispose();
@@ -262,19 +228,21 @@ class _ChatP2PViewState extends State<ChatP2PView> {
           duration: Duration(milliseconds: 300), curve: Curves.easeOut);
 
       _setMessage(MessageTypes.Own, _formData['content']);
-      _onReceiveMessage("Implementing...");
-      // server todo > Send message
+      _setMessage(MessageTypes.Other, "...");
+      _sendMessageToServer(_formData['content']);
 
       _textController.clear();
       _hasText = false;
     });
   }
 
-  void _onReceiveMessage(String contentFromOther) async {
-    // server todo > Receiver message
-    String response = await _getMessageResponse(_formData['content']);
-    _setMessage(
-        MessageTypes.Other, response ?? "vui long nhap ro context hon...");
+  void _sendMessageToServer(String message) async {
+    String response = await _getMessageResponse(message);
+    setState(() {
+      _messages.removeLast();
+    });
+    _setMessage(MessageTypes.Other,
+        response ?? "An error has occurred on the server.\nPlease try again.");
   }
 
   void _setMessage(MessageTypes type, String content) {
@@ -284,5 +252,31 @@ class _ChatP2PViewState extends State<ChatP2PView> {
     setState(() {
       _messages.add(messageModel);
     });
+  }
+
+  Future<String> _getMessageResponse(String text) async {
+    DialogFlowtter dialogFlowtter;
+    DialogAuthCredentials credentials;
+    credentials = await DialogAuthCredentials.fromFile(
+        'assets/babycare-caug-5734d56d8adc.json');
+    dialogFlowtter = DialogFlowtter(
+      credentials: credentials,
+      sessionId: "baby-care-69c67",
+    );
+    final QueryInput queryInput = QueryInput(
+      text: TextInput(
+        text: text,
+        languageCode: "en",
+      ),
+    );
+    DetectIntentResponse response;
+    try {
+      response = await dialogFlowtter.detectIntent(
+        queryInput: queryInput,
+      );
+      return response.text;
+    } catch (error) {
+      return "Nah~\nTry another question please";
+    }
   }
 }
