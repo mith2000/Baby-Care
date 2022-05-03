@@ -39,14 +39,14 @@ class _ChatP2PViewState extends State<ChatP2PView> {
 
   List<MessageModel> _messages = [];
 
-  Future<String> _getMessageResponse(String text) async {
+  Future<Message> _getMessageResponse(String text) async {
     DialogFlowtter dialogFlowtter;
     DialogAuthCredentials credentials;
     credentials = await DialogAuthCredentials.fromFile(
         'assets/babycare-caug-5734d56d8adc.json');
     dialogFlowtter = DialogFlowtter(
       credentials: credentials,
-      sessionId: "baby-care-69c67",
+      sessionId: "babycare-caug",
     );
     final QueryInput queryInput = QueryInput(
       text: TextInput(
@@ -59,9 +59,10 @@ class _ChatP2PViewState extends State<ChatP2PView> {
       response = await dialogFlowtter.detectIntent(
         queryInput: queryInput,
       );
-      return response.text;
+      return response.message;
     } catch (error) {
-      return "[empty response]";
+      print(error);
+      return null;
     }
   }
 
@@ -272,9 +273,13 @@ class _ChatP2PViewState extends State<ChatP2PView> {
 
   void _onReceiveMessage(String contentFromOther) async {
     // server todo > Receiver message
-    String response = await _getMessageResponse(_formData['content']);
-    _setMessage(
-        MessageTypes.Other, response ?? "vui long nhap ro context hon...");
+    Message response = await _getMessageResponse(_formData['content']);
+    if (response != null) {
+      response.payload['messages']
+          .forEach((item) => _setMessage(MessageTypes.Other, item.toString()));
+    } else {
+      _setMessage(MessageTypes.Other, "vui long nhap ro context hon...");
+    }
   }
 
   void _setMessage(MessageTypes type, String content) {
