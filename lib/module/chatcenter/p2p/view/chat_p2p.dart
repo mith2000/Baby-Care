@@ -54,10 +54,15 @@ class _ChatP2PViewState extends State<ChatP2PView> {
         languageCode: "en",
       ),
     );
-    DetectIntentResponse response = await dialogFlowtter.detectIntent(
-      queryInput: queryInput,
-    );
-    return response.text;
+    DetectIntentResponse response;
+    try {
+      response = await dialogFlowtter.detectIntent(
+        queryInput: queryInput,
+      );
+      return response.text;
+    } catch (error) {
+      return "[empty response]";
+    }
   }
 
   @override
@@ -268,7 +273,8 @@ class _ChatP2PViewState extends State<ChatP2PView> {
   void _onReceiveMessage(String contentFromOther) async {
     // server todo > Receiver message
     String response = await _getMessageResponse(_formData['content']);
-    _setMessage(MessageTypes.Other, response);
+    _setMessage(
+        MessageTypes.Other, response ?? "vui long nhap ro context hon...");
   }
 
   void _setMessage(MessageTypes type, String content) {
