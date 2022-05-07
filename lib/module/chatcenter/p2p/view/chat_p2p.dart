@@ -241,9 +241,11 @@ class _ChatP2PViewState extends State<ChatP2PView> {
     setState(() {
       _messages.removeLast();
     });
-    if (response.payload['messages'] != null) {
+    if (response.payload != null) {
       response.payload['messages']
           .forEach((item) => _setMessage(MessageTypes.Other, item.toString()));
+    } else if (response.text.text.first != null) {
+      _setMessage(MessageTypes.Other, response.text.text.first);
     } else {
       _setMessage(MessageTypes.Other,
           "An error has occurred on the server.\nPlease try again.");
