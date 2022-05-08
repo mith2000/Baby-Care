@@ -1,17 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_babycare/utils/UI_components/appbar_primary.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+
 import '../../../../constants/app_constants.dart';
-import '../../article/view/article_view.dart';
-import '../../bloc/handbook_bloc.dart';
-import '../../bloc/handbook_event.dart';
-import '../../bloc/handbook_state.dart';
 import '../../../../utils/UI_components/error_label.dart';
 import '../../../../utils/UI_components/highlight_expandable_box.dart';
 import '../../../../utils/UI_components/line_button.dart';
 import '../../../../utils/UI_components/loading_widget.dart';
 import '../../../../utils/app_colors.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
+import '../../article/view/article_view.dart';
+import '../../bloc/handbook_bloc.dart';
+import '../../bloc/handbook_event.dart';
+import '../../bloc/handbook_state.dart';
 
 class ListArticleViewArguments {
   final String themeId;
@@ -79,6 +80,7 @@ class _ListArticleViewState extends State<ListArticleView> {
                                       args.themeName,
                                       state.list[index].id,
                                       args.themeId,
+                                      state.list[index].urlImage,
                                     ));
                               },
                               imageUrl: state.list[index].urlImage,

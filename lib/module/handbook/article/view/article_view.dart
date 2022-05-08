@@ -1,22 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_babycare/utils/UI_components/appbar_primary.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+
 import '../../../../constants/app_constants.dart';
-import '../../bloc/handbook_bloc.dart';
-import '../../bloc/handbook_event.dart';
-import '../../bloc/handbook_state.dart';
 import '../../../../utils/UI_components/error_label.dart';
 import '../../../../utils/UI_components/line_button.dart';
 import '../../../../utils/UI_components/loading_widget.dart';
 import '../../../../utils/app_colors.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
+import '../../bloc/handbook_bloc.dart';
+import '../../bloc/handbook_event.dart';
+import '../../bloc/handbook_state.dart';
 
 class ArticleViewArguments {
   final String themeName;
   final String idTip;
   final String themeId;
+  final String imageLink;
 
-  ArticleViewArguments(this.themeName, this.idTip, this.themeId);
+  ArticleViewArguments(
+      this.themeName, this.idTip, this.themeId, this.imageLink);
 }
 
 class ArticleView extends StatefulWidget {
@@ -64,6 +67,7 @@ class _ArticleViewState extends State<ArticleView> {
                       _buildTitleLabel(
                           args.themeName, state.articleModel.title),
                       _buildCategoryTag(state.articleModel.category),
+                      _buildImage(args.imageLink),
                       _buildInduction(state.articleModel.introduction),
                       _buildArticleSection(
                           state.articleModel.header1,
