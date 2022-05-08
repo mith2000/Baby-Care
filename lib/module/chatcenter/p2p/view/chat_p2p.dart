@@ -224,8 +224,6 @@ class _ChatP2PViewState extends State<ChatP2PView> {
         return;
       }
       _formKey.currentState.save();
-      _scrollController.animateTo(_scrollController.position.maxScrollExtent,
-          duration: Duration(milliseconds: 300), curve: Curves.easeOut);
 
       _setMessage(MessageTypes.Own, _formData['content']);
       _setMessage(MessageTypes.Other, "...");
@@ -258,6 +256,8 @@ class _ChatP2PViewState extends State<ChatP2PView> {
 
     setState(() {
       _messages.add(messageModel);
+      _scrollController.animateTo(_scrollController.position.maxScrollExtent,
+          duration: Duration(milliseconds: 300), curve: Curves.easeOut);
     });
   }
 
