@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import '../../constants/app_constants.dart';
 
 class CustomSliderLabel extends StatelessWidget {
@@ -23,9 +24,11 @@ class CustomSliderLabel extends StatelessWidget {
                   SizedBox(width: AppConstants.paddingNormalW),
                 ],
               ),
-        Text(
-          label,
-          style: Theme.of(context).textTheme.headline1,
+        Expanded(
+          child: Text(
+            label,
+            style: Theme.of(context).textTheme.headline1,
+          ),
         ),
       ],
     );

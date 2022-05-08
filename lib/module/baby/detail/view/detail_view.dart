@@ -324,11 +324,14 @@ class _BabyDetailViewState extends State<BabyDetailView> {
                       color: updateDateBMI < AppConstants.dateDanger
                           ? AppColors.primary
                           : AppColors.danger,
+                      width: updateDateBMI < 100 ? 32.w : 40.w,
                     ),
                     SizedBox(width: AppConstants.paddingNormalW),
-                    Text(
-                      'days since your last BMI update',
-                      style: Theme.of(context).textTheme.bodyText1,
+                    Expanded(
+                      child: Text(
+                        'days since your last BMI update',
+                        style: Theme.of(context).textTheme.bodyText1,
+                      ),
                     ),
                   ],
                 );
@@ -376,11 +379,14 @@ class _BabyDetailViewState extends State<BabyDetailView> {
                       color: updateDateNI < AppConstants.dateDanger
                           ? AppColors.primary
                           : AppColors.danger,
+                      width: updateDateNI < 100 ? 32.w : 40.w,
                     ),
                     SizedBox(width: AppConstants.paddingNormalW),
-                    Text(
-                      'days since your last NI update',
-                      style: Theme.of(context).textTheme.bodyText1,
+                    Expanded(
+                      child: Text(
+                        'days since your last NI update',
+                        style: Theme.of(context).textTheme.bodyText1,
+                      ),
                     ),
                   ],
                 );
@@ -498,29 +504,21 @@ class _BabyDetailViewState extends State<BabyDetailView> {
         Container(
           width: double.infinity,
           height: 40.h,
-          child: Stack(
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    label,
-                    style: Theme.of(context).textTheme.bodyText1,
-                  ),
-                ],
+              Text(
+                label,
+                style: Theme.of(context).textTheme.bodyText1,
               ),
-              Row(
-                children: [
-                  SizedBox(width: 111.w),
-                  HighlightBox(
-                    value.toString() + unit,
-                    width: 96,
-                    color: AppColors.primary,
-                  ),
-                  Expanded(child: Container()),
-                  BabyStatusIcon(status: status),
-                ],
+              SizedBox(width: AppConstants.paddingSlightW),
+              HighlightBox(
+                value.toString() + unit,
+                width: 96,
+                color: AppColors.primary,
               ),
+              Expanded(child: Container()),
+              BabyStatusIcon(status: status),
             ],
           ),
           padding: EdgeInsets.symmetric(
@@ -862,8 +860,8 @@ class _BabyDetailViewState extends State<BabyDetailView> {
                       child: Text(
                         featureDescription,
                         style: TextStyle(
-                          fontWeight: FontWeight.w600,
-                          fontSize: 22.sp,
+                          fontWeight: FontWeight.w400,
+                          fontSize: 16.sp,
                           color: AppColors.whiteBackground,
                         ),
                         maxLines: 3,

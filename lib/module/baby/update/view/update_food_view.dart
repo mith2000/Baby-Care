@@ -231,6 +231,7 @@ class _UpdateFoodViewState extends State<UpdateFoodView> {
             color: updateDateNI <= AppConstants.dateDanger
                 ? AppColors.primary
                 : AppColors.danger,
+            width: updateDateNI < 100 ? 32.w : 40.w,
           ),
           SizedBox(width: AppConstants.paddingNormalW),
           Text(

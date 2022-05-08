@@ -239,7 +239,7 @@ class _UpdateBMIViewState extends State<UpdateBMIView> {
                       'Last height:',
                       style: Theme.of(context).textTheme.headline1,
                     ),
-                    SizedBox(width: 19.w),
+                    SizedBox(width: 4.w),
                     Text(
                       args.height.value.toString() + 'cm',
                       style: Theme.of(context).textTheme.bodyText1,
@@ -256,7 +256,7 @@ class _UpdateBMIViewState extends State<UpdateBMIView> {
                       'Last weight:',
                       style: Theme.of(context).textTheme.headline1,
                     ),
-                    SizedBox(width: 16.w),
+                    SizedBox(width: 4.w),
                     Text(
                       args.weight.value.toString() + 'g',
                       style: Theme.of(context).textTheme.bodyText1,
@@ -277,11 +277,14 @@ class _UpdateBMIViewState extends State<UpdateBMIView> {
             color: updateDateBMI <= AppConstants.dateDanger
                 ? AppColors.primary
                 : AppColors.danger,
+            width: updateDateBMI < 100 ? 32.w : 40.w,
           ),
           SizedBox(width: AppConstants.paddingNormalW),
-          Text(
-            'days ago',
-            style: Theme.of(context).textTheme.bodyText1,
+          Expanded(
+            child: Text(
+              'days ago',
+              style: Theme.of(context).textTheme.bodyText1,
+            ),
           ),
         ],
       ),

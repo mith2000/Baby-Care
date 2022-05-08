@@ -101,8 +101,10 @@ class _MealSuggestionViewState extends State<MealSuggestionView> {
   }
 
   _buildTrackerView(MealSuggestionViewArguments args) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
+    return Wrap(
+      direction: Axis.horizontal,
+      alignment: WrapAlignment.center,
+      crossAxisAlignment: WrapCrossAlignment.center,
       children: [
         Text(
           'The last time you updated Nutrition Index was',

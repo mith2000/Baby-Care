@@ -181,13 +181,13 @@ class _MealPlanViewState extends State<MealPlanView> {
             width: 40.w,
             height: 40.w,
           ),
-          item.value < 1000
-              ? SizedBox(width: AppConstants.paddingNormalW)
-              : Container(),
-          Text(
-            item.value.toInt().toString() +
-                Converter.FoodTypeToUnitString(item.type),
-            style: Theme.of(context).textTheme.bodyText1,
+          SizedBox(width: AppConstants.paddingSlightW),
+          Expanded(
+            child: Text(
+              item.value.toInt().toString() +
+                  Converter.FoodTypeToUnitString(item.type),
+              style: Theme.of(context).textTheme.bodyText1,
+            ),
           ),
         ],
       ),
@@ -258,10 +258,10 @@ class _MealPlanViewState extends State<MealPlanView> {
                     Row(
                       children: [
                         Container(
-                          width: 85.w,
+                          width: 90.w,
                           child: Text(
                             'Breakfast',
-                            style: Theme.of(context).textTheme.headline1,
+                            style: Theme.of(context).textTheme.headline2,
                           ),
                         ),
                         SizedBox(width: AppConstants.paddingNormalW),
@@ -277,10 +277,10 @@ class _MealPlanViewState extends State<MealPlanView> {
                     Row(
                       children: [
                         Container(
-                          width: 85.w,
+                          width: 90.w,
                           child: Text(
                             'Noon',
-                            style: Theme.of(context).textTheme.headline1,
+                            style: Theme.of(context).textTheme.headline2,
                           ),
                         ),
                         SizedBox(width: AppConstants.paddingNormalW),
@@ -296,10 +296,10 @@ class _MealPlanViewState extends State<MealPlanView> {
                     Row(
                       children: [
                         Container(
-                          width: 85.w,
+                          width: 90.w,
                           child: Text(
                             'Dinner',
-                            style: Theme.of(context).textTheme.headline1,
+                            style: Theme.of(context).textTheme.headline2,
                           ),
                         ),
                         SizedBox(width: AppConstants.paddingNormalW),
@@ -346,7 +346,6 @@ class _MealPlanViewState extends State<MealPlanView> {
     final DateFormat formatter = DateFormat('dd/MM/yyyy');
 
     return Container(
-      height: 200.h,
       alignment: Alignment.center,
       child: Column(
         children: [
@@ -387,10 +386,10 @@ class _MealPlanViewState extends State<MealPlanView> {
                 Row(
                   children: [
                     Container(
-                      width: 85.w,
+                      width: 90.w,
                       child: Text(
                         'Breakfast',
-                        style: Theme.of(context).textTheme.headline1,
+                        style: Theme.of(context).textTheme.headline2,
                       ),
                     ),
                     SizedBox(width: AppConstants.paddingNormalW),
@@ -406,10 +405,10 @@ class _MealPlanViewState extends State<MealPlanView> {
                 Row(
                   children: [
                     Container(
-                      width: 85.w,
+                      width: 90.w,
                       child: Text(
                         'Noon',
-                        style: Theme.of(context).textTheme.headline1,
+                        style: Theme.of(context).textTheme.headline2,
                       ),
                     ),
                     SizedBox(width: AppConstants.paddingNormalW),
@@ -425,10 +424,10 @@ class _MealPlanViewState extends State<MealPlanView> {
                 Row(
                   children: [
                     Container(
-                      width: 85.w,
+                      width: 90.w,
                       child: Text(
                         'Dinner',
-                        style: Theme.of(context).textTheme.headline1,
+                        style: Theme.of(context).textTheme.headline2,
                       ),
                     ),
                     SizedBox(width: AppConstants.paddingNormalW),

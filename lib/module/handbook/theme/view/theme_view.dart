@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_babycare/utils/app_colors.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+
 import '../../../../constants/app_constants.dart';
+import '../../../../utils/UI_components/error_label.dart';
+import '../../../../utils/UI_components/loading_widget.dart';
 import '../../bloc/handbook_bloc.dart';
 import '../../bloc/handbook_event.dart';
 import '../../bloc/handbook_state.dart';
 import '../../list/view/list_article_view.dart';
-import '../../../../utils/UI_components/error_label.dart';
-import '../../../../utils/UI_components/loading_widget.dart';
-import 'package:flutter_babycare/utils/app_colors.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class HandbookThemeView extends StatefulWidget {
   static const routeName = '/handbook-theme';
@@ -113,8 +114,8 @@ class _HandbookThemeViewState extends State<HandbookThemeView> {
                       child: Text(
                         description,
                         style: TextStyle(
-                          fontWeight: FontWeight.w600,
-                          fontSize: 22.sp,
+                          fontWeight: FontWeight.w400,
+                          fontSize: 16.sp,
                           color: AppColors.whiteBackground,
                         ),
                         maxLines: 3,

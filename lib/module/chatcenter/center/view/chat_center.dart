@@ -81,8 +81,8 @@ class _ChatCenterViewState extends State<ChatCenterView> {
                       child: Text(
                         description,
                         style: TextStyle(
-                          fontWeight: FontWeight.w600,
-                          fontSize: 22.sp,
+                          fontWeight: FontWeight.w400,
+                          fontSize: 16.sp,
                           color: AppColors.whiteBackground,
                         ),
                         maxLines: 3,

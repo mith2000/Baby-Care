@@ -109,7 +109,7 @@ class _MyAppState extends State<MyApp> {
                 theme: ThemeData(
                   brightness: Brightness.light,
                   primaryColor: AppColors.primary,
-                  textTheme: GoogleFonts.dosisTextTheme(
+                  textTheme: GoogleFonts.montserratTextTheme(
                     TextTheme(
                       caption: TextStyle(
                         fontWeight: FontWeight.w700,
