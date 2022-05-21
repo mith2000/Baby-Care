@@ -33,6 +33,7 @@ import 'module/login/view/login_view.dart';
 import 'module/meal/history/view/history_view.dart';
 import 'module/meal/plan/view/plan_view.dart';
 import 'module/meal/suggestion/view/suggestion_view.dart';
+import 'module/recommender/view/recommender.dart';
 import 'module/register/bloc/register_bloc.dart';
 import 'module/register/view/register_view.dart';
 import 'utils/UI_components/loading_widget.dart';
@@ -204,6 +205,8 @@ class _MyAppState extends State<MyApp> {
                       ChatCenterView(),
                   ChatP2PView.routeName: (BuildContext context) =>
                       ChatP2PView(),
+                  RecommenderView.routeName: (BuildContext context) =>
+                      RecommenderView(),
                 },
               )),
     );

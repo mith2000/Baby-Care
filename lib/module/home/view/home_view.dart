@@ -21,6 +21,7 @@ import '../../authentication/authentication_bloc/authentication_event.dart';
 import '../../baby/create/view/create_gender_view.dart';
 import '../../baby/detail/view/detail_view.dart';
 import '../../handbook/theme/view/theme_view.dart';
+import '../../recommender/view/recommender.dart';
 import '../../sample/view/sample_view.dart';
 import '../bloc/baby_bloc.dart';
 import '../bloc/baby_event.dart';
@@ -45,6 +46,7 @@ class _HomeViewState extends State<HomeView> {
   List<Widget> screens;
   var _icons = {
     'home': 'assets/icon/home.svg',
+    'cart': 'assets/icon/cart.svg',
     'book': 'assets/icon/book.svg',
     'chat': 'assets/icon/chat.svg',
     'user': 'assets/icon/user.svg',
@@ -55,6 +57,7 @@ class _HomeViewState extends State<HomeView> {
     super.initState();
     screens = [
       HomeBodyView(widget._user),
+      RecommenderView(),
       HandbookThemeView(),
       ChatCenterView(),
       SampleView(),
@@ -108,6 +111,12 @@ class _HomeViewState extends State<HomeView> {
         Tab(
           icon: SvgPicture.asset(
             _icons['home'],
+            color: AppColors.text,
+          ),
+        ),
+        Tab(
+          icon: SvgPicture.asset(
+            _icons['cart'],
             color: AppColors.text,
           ),
         ),

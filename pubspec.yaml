@@ -109,6 +109,7 @@ flutter:
     - assets/icon/arrow_back.svg
     - assets/icon/send.svg
     - assets/icon/send_inactive.svg
+    - assets/icon/cart.svg
 
     - assets/image/default_baby.png
     - assets/image/EmojiLove_1.png

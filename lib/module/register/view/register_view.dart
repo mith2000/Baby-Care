@@ -1,21 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_babycare/utils/UI_components/fullscreen_loading_widget.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/svg.dart';
+
 import '../../../constants/app_constants.dart';
+import '../../../utils/UI_components/custom_dialog.dart';
+import '../../../utils/UI_components/icon_button.dart';
+import '../../../utils/UI_components/mini_line_button.dart';
+import '../../../utils/UI_components/mini_solid_button.dart';
+import '../../../utils/UI_components/title_label.dart';
+import '../../../utils/app_colors.dart';
 import '../../authentication/authentication_bloc/authentication_bloc.dart';
 import '../../authentication/authentication_bloc/authentication_event.dart';
 import '../bloc/register_bloc.dart';
 import '../bloc/register_event.dart';
 import '../bloc/register_state.dart';
-import '../../../utils/UI_components/custom_dialog.dart';
-import '../../../utils/UI_components/icon_button.dart';
-import '../../../utils/UI_components/loading_widget.dart';
-import '../../../utils/UI_components/mini_line_button.dart';
-import '../../../utils/UI_components/mini_solid_button.dart';
-import '../../../utils/UI_components/title_label.dart';
-import '../../../utils/app_colors.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/svg.dart';
 
 class RegisterView extends StatefulWidget {
   static const routeName = '/register';
@@ -93,7 +94,7 @@ class _RegisterViewState extends State<RegisterView> {
         child: BlocBuilder<RegisterBloc, RegisterState>(
           builder: (context, state) {
             if (state.isSubmitting) {
-              return CustomLoadingWidget();
+              return FullScreenLoadingWidget();
             }
 
             return SafeArea(

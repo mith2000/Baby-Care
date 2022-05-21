@@ -1,35 +1,20 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_babycare/utils/UI_components/fullscreen_loading_widget.dart';
-import 'package:flutter_babycare/utils/app_colors.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_babycare/module/chatcenter/p2p/view/chat_p2p.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../constants/app_constants.dart';
-import '../../../../utils/UI_components/error_label.dart';
-import '../../bloc/handbook_bloc.dart';
-import '../../bloc/handbook_event.dart';
-import '../../bloc/handbook_state.dart';
-import '../../list/view/list_article_view.dart';
+import '../../../../utils/app_colors.dart';
 
-class HandbookThemeView extends StatefulWidget {
-  static const routeName = '/handbook-theme';
+class RecommenderView extends StatefulWidget {
+  static const routeName = '/recommender';
 
-  const HandbookThemeView({Key key}) : super(key: key);
+  const RecommenderView({Key key}) : super(key: key);
 
   @override
-  _HandbookThemeViewState createState() => _HandbookThemeViewState();
+  _RecommenderViewState createState() => _RecommenderViewState();
 }
 
-class _HandbookThemeViewState extends State<HandbookThemeView> {
-  HandBookBloc handbookBloc;
-
-  @override
-  void initState() {
-    super.initState();
-    handbookBloc = BlocProvider.of<HandBookBloc>(context);
-    handbookBloc.add(LoadThemeHandBook());
-  }
-
+class _RecommenderViewState extends State<RecommenderView> {
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -38,53 +23,35 @@ class _HandbookThemeViewState extends State<HandbookThemeView> {
         vertical: AppConstants.paddingAppH,
       ),
       color: AppColors.background,
-      child: BlocBuilder<HandBookBloc, HandBookState>(
-        bloc: handbookBloc,
-        builder: (context, state) {
-          if (state is HandBookLoading) {
-            return FullScreenLoadingWidget();
-          }
-          if (state is LoadedTheme) {
-            if (state.list == null || state.list.length == 0) {
-              return ErrorLabel(label: 'No Handbook theme available now');
-            }
-            return ListView.builder(
-              shrinkWrap: true,
-              physics: ScrollPhysics(),
-              itemCount: state.list.length,
-              itemBuilder: (context, index) {
-                return _buildThemeButton(
-                  title: state.list[index].title,
-                  description: state.list[index].description,
-                  action: () {
-                    print(state.list[index].id);
-                    Navigator.pushNamed(
-                      context,
-                      ListArticleView.routeName,
-                      arguments: ListArticleViewArguments(
-                        state.list[index].id,
-                        state.list[index].title,
-                      ),
-                    );
-                  },
-                  imageUrl: state.list[index].urlImage,
-                  isRedFrame: index % 2 == 1 ? true : false,
-                );
-              },
-            );
-          } else {
-            return ErrorLabel();
-          }
+      height: double.infinity,
+      child: ListView.builder(
+        shrinkWrap: true,
+        physics: ScrollPhysics(),
+        itemCount: 1,
+        itemBuilder: (context, index) {
+          return _buildDirectButton(
+            title: 'Recommend',
+            description: 'Recommend',
+            action: () {
+              Navigator.pushNamed(
+                context,
+                ChatP2PView.routeName,
+                arguments: ChatP2PViewArguments('Caring center', null),
+              );
+            },
+            image: AssetImage('assets/image/logo_s150.png'),
+            isRedFrame: index % 2 == 1 ? true : false,
+          );
         },
       ),
     );
   }
 
-  Widget _buildThemeButton({
+  Widget _buildDirectButton({
     String title,
     String description,
     Function action,
-    String imageUrl,
+    ImageProvider image,
     bool isRedFrame = false,
   }) {
     return Container(
@@ -134,16 +101,11 @@ class _HandbookThemeViewState extends State<HandbookThemeView> {
                 child: ClipRRect(
                   borderRadius:
                       BorderRadius.circular(AppConstants.cornerRadiusFrame),
-                  child: imageUrl == null
-                      ? Container(
-                          width: 100.w,
-                        )
-                      : FadeInImage.assetNetwork(
-                          placeholder: 'assets/image/default_baby.png',
-                          width: 100.w,
-                          fit: BoxFit.cover,
-                          image: imageUrl,
-                        ),
+                  child: Image(
+                    width: 100.w,
+                    fit: BoxFit.cover,
+                    image: image,
+                  ),
                 ),
               ),
             ],

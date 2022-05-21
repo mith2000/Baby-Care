@@ -1,15 +1,4 @@
 import 'package:flutter/material.dart';
-import '../../../../constants/app_constants.dart';
-import '../../../../data/model/baby/baby_model.dart';
-import '../../../home/bloc/baby_bloc.dart';
-import '../../../home/bloc/baby_event.dart';
-import '../../../home/bloc/baby_state.dart';
-import '../../../../utils/UI_components/icon_button.dart';
-import '../../../../utils/UI_components/loading_widget.dart';
-import '../../../../utils/UI_components/mini_line_button.dart';
-import '../../../../utils/UI_components/title_label.dart';
-import '../../../../utils/app_colors.dart';
-import '../../../../utils/validators.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
@@ -18,6 +7,17 @@ import 'package:intl/intl.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 import 'package:uuid/uuid.dart';
 
+import '../../../../constants/app_constants.dart';
+import '../../../../data/model/baby/baby_model.dart';
+import '../../../../utils/UI_components/icon_button.dart';
+import '../../../../utils/UI_components/loading_widget.dart';
+import '../../../../utils/UI_components/mini_line_button.dart';
+import '../../../../utils/UI_components/title_label.dart';
+import '../../../../utils/app_colors.dart';
+import '../../../../utils/validators.dart';
+import '../../../home/bloc/baby_bloc.dart';
+import '../../../home/bloc/baby_event.dart';
+import '../../../home/bloc/baby_state.dart';
 import 'create_bmi_view.dart';
 
 class CreateBabyInfoViewArguments {
