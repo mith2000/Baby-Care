@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_babycare/module/chatcenter/p2p/view/chat_p2p.dart';
+import 'package:flutter_babycare/constants/app_constants.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '../../../../constants/app_constants.dart';
 import '../../../../utils/app_colors.dart';
 
 class RecommenderView extends StatefulWidget {
@@ -18,137 +17,90 @@ class _RecommenderViewState extends State<RecommenderView> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.symmetric(
-        horizontal: AppConstants.paddingAppW,
-        vertical: AppConstants.paddingAppH,
-      ),
       color: AppColors.background,
-      height: double.infinity,
       child: ListView.builder(
+        itemCount: 5,
         shrinkWrap: true,
-        physics: ScrollPhysics(),
-        itemCount: 1,
-        itemBuilder: (context, index) {
-          return _buildDirectButton(
-            title: 'Recommend',
-            description: 'Recommend',
-            action: () {
-              Navigator.pushNamed(
-                context,
-                ChatP2PView.routeName,
-                arguments: ChatP2PViewArguments('Caring center', null),
-              );
-            },
-            image: AssetImage('assets/image/logo_s150.png'),
-            isRedFrame: index % 2 == 1 ? true : false,
-          );
-        },
+        physics: ClampingScrollPhysics(),
+        itemBuilder: ((BuildContext context, int index) {
+          if (index == 0) {
+            return _buildFirstRecommend();
+          } else if (index == 4) {
+            return SizedBox(height: AppConstants.paddingSuperLargeH);
+          } else {
+            return _buildRecommendItems("On trend");
+          }
+        }),
       ),
     );
   }
 
-  Widget _buildDirectButton({
-    String title,
-    String description,
-    Function action,
-    ImageProvider image,
-    bool isRedFrame = false,
-  }) {
-    return Container(
-      height: 132.h,
-      margin: EdgeInsets.symmetric(vertical: AppConstants.paddingNormalH),
-      child: ElevatedButton(
-        onPressed: action,
-        child: Container(
-          child: Row(
-            children: [
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Container(
-                      child: Text(
-                        title,
-                        style: TextStyle(
-                          fontWeight: FontWeight.w700,
-                          fontSize: 24.sp,
-                          color: AppColors.whiteBackground,
-                        ),
-                      ),
-                    ),
-                    SizedBox(height: AppConstants.paddingNormalH),
-                    Container(
-                      child: Text(
-                        description,
-                        style: TextStyle(
-                          fontWeight: FontWeight.w400,
-                          fontSize: 16.sp,
-                          color: AppColors.whiteBackground,
-                        ),
-                        maxLines: 3,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              SizedBox(width: AppConstants.paddingNormalW),
-              Container(
-                height: double.infinity,
-                margin: EdgeInsets.only(
-                    top: AppConstants.paddingNormalH,
-                    bottom: AppConstants.paddingLargeH),
-                child: ClipRRect(
-                  borderRadius:
-                      BorderRadius.circular(AppConstants.cornerRadiusFrame),
-                  child: Image(
-                    width: 100.w,
-                    fit: BoxFit.cover,
-                    image: image,
-                  ),
-                ),
-              ),
-            ],
-          ),
-          padding: EdgeInsets.only(
-            top: AppConstants.paddingNormalH,
-            left: AppConstants.paddingLargeW,
-            right: AppConstants.paddingLargeW,
-          ),
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              colors: isRedFrame == false
-                  ? [
-                      AppColors.primary,
-                      AppColors.secondary,
-                    ]
-                  : [
-                      AppColors.danger,
-                      AppColors.highlighter,
-                    ],
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
-            ),
-            borderRadius: BorderRadius.circular(AppConstants.cornerRadiusFrame),
-            boxShadow: [
-              BoxShadow(
-                color: AppColors.shadow,
-                blurRadius: 4,
-                offset: Offset(0, 4), // changes position of shadow
-              ),
-            ],
-          ),
+  Widget _buildFirstRecommend() {
+    return Stack(
+      children: [
+        FadeInImage.assetNetwork(
+          placeholder: 'assets/image/default_baby.png',
+          height: ScreenUtil().screenWidth,
+          fit: BoxFit.cover,
+          image:
+              'https://vcdn1-giaitri.vnecdn.net/2022/05/12/doctor-strange-2.jpg?w=900&h=540&q=100&dpr=1&fit=crop&s=wrRoA7M4Vm1JL3UwNDZaDw',
         ),
-        style: ElevatedButton.styleFrom(
-          minimumSize: Size.zero,
-          padding: EdgeInsets.zero,
-          primary: AppColors.primary,
-          onPrimary: AppColors.solidButtonPress,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(AppConstants.cornerRadiusFrame),
+      ],
+    );
+  }
+
+  Widget _buildRecommendItems(String title) {
+    return Padding(
+      padding: EdgeInsets.only(
+          top: AppConstants.paddingLargeH, left: AppConstants.paddingNormalW),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            title,
+            style: Theme.of(context).textTheme.headline1,
           ),
+          Container(
+            height: 327.h,
+            child: ListView.builder(
+              scrollDirection: Axis.horizontal,
+              itemCount: 5,
+              shrinkWrap: true,
+              physics: ClampingScrollPhysics(),
+              itemBuilder: ((BuildContext context, int index) {
+                return _buildProductItem();
+              }),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildProductItem() {
+    return InkWell(
+      child: Container(
+        color: AppColors.whiteBackground,
+        width: 195.w,
+        height: 319.h,
+        margin: EdgeInsets.only(
+            right: AppConstants.paddingNormalW,
+            top: AppConstants.paddingNormalH),
+        child: Column(
+          children: [
+            FadeInImage.assetNetwork(
+              placeholder: 'assets/image/default_baby.png',
+              height: 195.w,
+              fit: BoxFit.fitHeight,
+              image:
+                  'https://vcdn1-giaitri.vnecdn.net/2022/05/12/doctor-strange-2.jpg?w=900&h=540&q=100&dpr=1&fit=crop&s=wrRoA7M4Vm1JL3UwNDZaDw',
+            ),
+          ],
         ),
       ),
+      onTap: () {
+        print("Navigate to Shop");
+      },
     );
   }
 }
