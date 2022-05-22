@@ -33,7 +33,7 @@ dependencies:
   shared_preferences: ^2.0.8
   flutter_svg: ^1.0.3
   rxdart: ^0.27.2
-  url_launcher: ^6.0.13
+  url_launcher: ^6.1.2
   flutter_screenutil: ^5.0.0+2
   google_fonts: ^2.1.0
   curved_navigation_bar: ^1.0.1
@@ -110,6 +110,9 @@ flutter:
     - assets/icon/send.svg
     - assets/icon/send_inactive.svg
     - assets/icon/cart.svg
+    - assets/icon/shopee.svg
+    - assets/icon/star_active.svg
+    - assets/icon/star_inactive.svg
 
     - assets/image/default_baby.png
     - assets/image/EmojiLove_1.png
