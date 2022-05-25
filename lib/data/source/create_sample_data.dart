@@ -1,5 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter_babycare/data/model/product/product_model.dart';
 import 'package:flutter_babycare/data/source/baby/food_repository.dart';
+import 'package:flutter_babycare/data/source/product/product_repository.dart';
 import 'package:uuid/uuid.dart';
 
 import '../../constants/app_constants.dart';
@@ -111,6 +113,150 @@ class CreateSampleData {
 
     await FoodRepository.createFood(foodList0);
     await FoodRepository.createFood(foodList1);
+
+    return "done";
+  }
+
+  static Future<String> createProduct() async {
+    List<ProductModel> list = [];
+    list.add(ProductModel(
+        id: "2",
+        url: "links",
+        primaryImage: "image",
+        basePrice: 20000,
+        name: "Ta 2",
+        salePercent: 20,
+        tagName: "diapers",
+        ratePoint: 3,
+        rateCount: 2,
+        totalBought: 3,
+        shopLocation: "Ha Noi",
+        type: "Giay"));
+    list.add(ProductModel(
+        id: "3",
+        url: "links",
+        primaryImage: "image",
+        basePrice: 20000,
+        name: "Ta 3",
+        salePercent: 20,
+        tagName: "diapers",
+        ratePoint: 5,
+        rateCount: 3,
+        totalBought: 3,
+        shopLocation: "TPHCM",
+        type: "Vai"));
+    list.add(ProductModel(
+        id: "4",
+        url: "links",
+        primaryImage: "image",
+        basePrice: 20000,
+        name: "Ta 4",
+        salePercent: 20,
+        tagName: "diapers",
+        ratePoint: 4,
+        rateCount: 6,
+        totalBought: 2,
+        shopLocation: "Ha Noi",
+        type: "Giay"));
+    list.add(ProductModel(
+        id: "5",
+        url: "links",
+        primaryImage: "image",
+        basePrice: 20000,
+        name: "Ta 5",
+        salePercent: 20,
+        tagName: "diapers",
+        ratePoint: 5,
+        rateCount: 2,
+        totalBought: 3,
+        shopLocation: "TPHCM",
+        type: "Vai"));
+    list.add(
+      ProductModel(
+          id: "6",
+          url: "links",
+          primaryImage: "image",
+          basePrice: 40000,
+          name: "Ta 6",
+          salePercent: 20,
+          tagName: "diapers",
+          ratePoint: 3,
+          rateCount: 2,
+          totalBought: 2,
+          shopLocation: "Ha Noi",
+          type: "Giay"),
+    );
+    list.add(ProductModel(
+        id: "7",
+        url: "links",
+        primaryImage: "image",
+        basePrice: 20000,
+        name: "Ta 7",
+        salePercent: 20,
+        tagName: "diapers",
+        ratePoint: 2,
+        rateCount: 4,
+        totalBought: 5,
+        shopLocation: "TPHCM",
+        type: "Giay"));
+    list.add(ProductModel(
+        id: "8",
+        url: "links",
+        primaryImage: "image",
+        basePrice: 40000,
+        name: "Ta 8",
+        salePercent: 30,
+        tagName: "diapers",
+        ratePoint: 5,
+        rateCount: 2,
+        totalBought: 5,
+        shopLocation: "Ha noi",
+        type: "Vai"));
+    list.add(ProductModel(
+        id: "9",
+        url: "links",
+        primaryImage: "image",
+        basePrice: 50000,
+        name: "Ta 9",
+        salePercent: 45,
+        tagName: "diapers",
+        ratePoint: 4,
+        rateCount: 6,
+        totalBought: 2,
+        shopLocation: "Ha Noi",
+        type: "Giay"));
+    list.add(ProductModel(
+        id: "10",
+        url: "links",
+        primaryImage: "image",
+        basePrice: 40000,
+        name: "Ta 10",
+        salePercent: 20,
+        tagName: "diapers",
+        ratePoint: 3,
+        rateCount: 5,
+        totalBought: 5,
+        shopLocation: "TPHCM",
+        type: "Vai"));
+    list.add(
+      ProductModel(
+          id: "11",
+          url: "links",
+          primaryImage: "image",
+          basePrice: 60000,
+          name: "Ta 1",
+          salePercent: 10,
+          tagName: "diapers",
+          ratePoint: 5,
+          rateCount: 6,
+          totalBought: 2,
+          shopLocation: "Ha Noi",
+          type: "Vai"),
+    );
+
+    for (var i = 0; i < list.length; i++) {
+      await ProductRepository.createProduct(list[i]);
+    }
 
     return "done";
   }
