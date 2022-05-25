@@ -29,11 +29,11 @@ class _RecommenderViewState extends State<RecommenderView> {
         itemBuilder: ((BuildContext context, int index) {
           if (index == 0) {
             return _buildFirstRecommend(
-                'https://www.google.com/',
+                'https://shopee.vn/-M%C3%A3-FMCGHOT-10-%C4%91%C6%A1n-400K-Mi%E1%BA%BFng-l%C3%B3t-s%C6%A1-sinh-Bobby-Newborn-1-108-mi%E1%BA%BFng-i.63521925.6816312877?sp_atk=e097e93d-e715-4ff5-b692-9383171c8f31&xptdk=e097e93d-e715-4ff5-b692-9383171c8f31',
+                'https://cf.shopee.vn/file/4d49b176c38969cc3260e7f95d89c224',
                 1086000,
                 50,
-                'Xe đẩy  •  4 - 18 '
-                    'tháng',
+                'Tã giấy',
                 4.0);
           } else if (index == 4) {
             return SizedBox(height: AppConstants.paddingSuperLargeH);
@@ -47,6 +47,7 @@ class _RecommenderViewState extends State<RecommenderView> {
 
   Widget _buildFirstRecommend(
     String url,
+    String image,
     int basePrice,
     int salePercent,
     String category,
@@ -60,8 +61,7 @@ class _RecommenderViewState extends State<RecommenderView> {
             placeholder: 'assets/image/default_baby.png',
             height: ScreenUtil().screenWidth,
             fit: BoxFit.cover,
-            image:
-                'https://vcdn1-giaitri.vnecdn.net/2022/05/12/doctor-strange-2.jpg?w=900&h=540&q=100&dpr=1&fit=crop&s=wrRoA7M4Vm1JL3UwNDZaDw',
+            image: image,
           ),
           Row(
             crossAxisAlignment: CrossAxisAlignment.end,
@@ -94,7 +94,14 @@ class _RecommenderViewState extends State<RecommenderView> {
               shrinkWrap: true,
               physics: ClampingScrollPhysics(),
               itemBuilder: ((BuildContext context, int index) {
-                return _buildProductItem();
+                return _buildProductItem(
+                    'https://shopee.vn/-M%C3%A3-FMCGHOT-10-%C4%91%C6%A1n-400K-Mi%E1%BA%BFng-l%C3%B3t-s%C6%A1-sinh-Bobby-Newborn-1-108-mi%E1%BA%BFng-i.63521925.6816312877?sp_atk=e097e93d-e715-4ff5-b692-9383171c8f31&xptdk=e097e93d-e715-4ff5-b692-9383171c8f31',
+                    'https://cf.shopee.vn/file/3445f34aabbb827251299a306b42fff9',
+                    'Miếng lót Bobby Newborn 1 - 108 miếng - Tặng thêm',
+                    219000,
+                    50,
+                    4.0,
+                    'Đã bán 1,6k');
               }),
             ),
           ),
@@ -103,7 +110,15 @@ class _RecommenderViewState extends State<RecommenderView> {
     );
   }
 
-  Widget _buildProductItem() {
+  Widget _buildProductItem(
+    String url,
+    String image,
+    String name,
+    int basePrice,
+    int salePercent,
+    double starRated,
+    String sold,
+  ) {
     return InkWell(
       child: Container(
         color: AppColors.whiteBackground,
@@ -116,16 +131,111 @@ class _RecommenderViewState extends State<RecommenderView> {
           children: [
             FadeInImage.assetNetwork(
               placeholder: 'assets/image/default_baby.png',
-              height: 195.w,
+              height: 195.h,
               fit: BoxFit.fitHeight,
-              image:
-                  'https://vcdn1-giaitri.vnecdn.net/2022/05/12/doctor-strange-2.jpg?w=900&h=540&q=100&dpr=1&fit=crop&s=wrRoA7M4Vm1JL3UwNDZaDw',
+              image: image,
+            ),
+            Container(
+              margin: EdgeInsets.only(
+                left: AppConstants.paddingSlightW,
+                right: AppConstants.paddingSlightW,
+                top: AppConstants.paddingNormalH,
+              ),
+              child: Text(
+                name,
+                style: TextStyle(
+                  fontWeight: FontWeight.w400,
+                  fontSize: 16.sp,
+                  color: AppColors.text,
+                  height: 1.5,
+                ),
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
+              ),
+            ),
+            Container(
+              margin: EdgeInsets.only(
+                left: AppConstants.paddingSlightW,
+                right: AppConstants.paddingSlightW,
+                top: AppConstants.paddingSlightH,
+              ),
+              child: Row(
+                children: [
+                  Text(
+                    Converter.priceToString(basePrice),
+                    style: TextStyle(
+                      fontWeight: FontWeight.w400,
+                      fontSize: 14.sp,
+                      color: AppColors.stroke,
+                      height: 1.57,
+                      decoration: TextDecoration.lineThrough,
+                    ),
+                  ),
+                  SizedBox(width: AppConstants.paddingSlightW),
+                  Text(
+                    Converter.priceToString(
+                        (basePrice * salePercent / 100).round()),
+                    style: TextStyle(
+                      fontWeight: FontWeight.w600,
+                      fontSize: 22.sp,
+                      color: AppColors.primary,
+                      height: 1.37,
+                      decoration: TextDecoration.lineThrough,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Container(
+              height: 22.h,
+              margin: EdgeInsets.only(
+                left: AppConstants.paddingSlightW,
+                right: AppConstants.paddingSlightW,
+                top: AppConstants.paddingSlightH,
+              ),
+              child: Row(
+                children: [
+                  Container(
+                    height: 16.h,
+                    width: 100.w,
+                    child: ListView.builder(
+                      itemCount: 5,
+                      scrollDirection: Axis.horizontal,
+                      itemBuilder: ((BuildContext context, int index) {
+                        if (index + 1 <= starRated) {
+                          return SvgPicture.asset(
+                            'assets/icon/star_active.svg',
+                            width: 16.w,
+                            height: 16.h,
+                          );
+                        } else {
+                          return SvgPicture.asset(
+                            'assets/icon/star_inactive.svg',
+                            width: 16.w,
+                            height: 16.h,
+                          );
+                        }
+                      }),
+                    ),
+                  ),
+                  Expanded(child: Container()),
+                  Text(
+                    sold,
+                    style: TextStyle(
+                      fontWeight: FontWeight.w400,
+                      fontSize: 14.sp,
+                      color: AppColors.text,
+                      height: 1.57,
+                    ),
+                  ),
+                ],
+              ),
             ),
           ],
         ),
       ),
       onTap: () {
-        print("Navigate to Shop");
+        _openUrl(url);
       },
     );
   }
