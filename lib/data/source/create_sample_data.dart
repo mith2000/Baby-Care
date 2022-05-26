@@ -1,7 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_babycare/data/model/product/product_model.dart';
+import 'package:flutter_babycare/data/model/product/rating_model.dart';
 import 'package:flutter_babycare/data/source/baby/food_repository.dart';
-import 'package:flutter_babycare/data/source/product/product_repository.dart';
+import 'package:flutter_babycare/data/source/recommender/product_repository.dart';
+import 'package:flutter_babycare/data/source/recommender/rating_repository.dart';
 import 'package:uuid/uuid.dart';
 
 import '../../constants/app_constants.dart';
@@ -256,6 +258,115 @@ class CreateSampleData {
 
     for (var i = 0; i < list.length; i++) {
       await ProductRepository.createProduct(list[i]);
+    }
+
+    return "done";
+  }
+
+  static Future<String> createRating() async {
+    var listModel = [
+      RatingModel(
+          id: "2",
+          content: "good",
+          idProduct: "1",
+          ratePoint: 4,
+          userId: "4GxRYoBYNDXo0nBt6VfUTJc5VXG3"),
+      RatingModel(
+          id: "3",
+          content: "hay",
+          idProduct: "1",
+          ratePoint: 5,
+          userId: "4GxRYoBYNDXo0nBt6VfUTJc5VXG3"),
+      RatingModel(
+          id: "4",
+          content: "OK",
+          idProduct: "1",
+          ratePoint: 3,
+          userId: "4GxRYoBYNDXo0nBt6VfUTJc5VXG3"),
+      RatingModel(
+          id: "5",
+          content: "hay",
+          idProduct: "1",
+          ratePoint: 5,
+          userId: "4GxRYoBYNDXo0nBt6VfUTJc5VXG3"),
+      RatingModel(
+          id: "6",
+          content: "good",
+          idProduct: "1",
+          ratePoint: 2,
+          userId: "4GxRYoBYNDXo0nBt6VfUTJc5VXG3"),
+      RatingModel(
+          id: "7",
+          content: "hay",
+          idProduct: "1",
+          ratePoint: 2,
+          userId: "4GxRYoBYNDXo0nBt6VfUTJc5VXG3"),
+      RatingModel(
+          id: "8",
+          content: "OK",
+          idProduct: "1",
+          ratePoint: 4,
+          userId: "4GxRYoBYNDXo0nBt6VfUTJc5VXG3"),
+      RatingModel(
+          id: "9",
+          content: "bad",
+          idProduct: "1",
+          ratePoint: 1,
+          userId: "4GxRYoBYNDXo0nBt6VfUTJc5VXG3"),
+      RatingModel(
+          id: "2",
+          content: "good",
+          idProduct: "1",
+          ratePoint: 4,
+          userId: "4GxRYoBYNDXo0nBt6VfUTJc5VXG3"),
+      RatingModel(
+          id: "10",
+          content: "hay",
+          idProduct: "2",
+          ratePoint: 1,
+          userId: "4GxRYoBYNDXo0nBt6VfUTJc5VXG3"),
+      RatingModel(
+          id: "11",
+          content: "OK",
+          idProduct: "2",
+          ratePoint: 3,
+          userId: "4GxRYoBYNDXo0nBt6VfUTJc5VXG3"),
+      RatingModel(
+          id: "12",
+          content: "hay",
+          idProduct: "2",
+          ratePoint: 5,
+          userId: "4GxRYoBYNDXo0nBt6VfUTJc5VXG3"),
+      RatingModel(
+          id: "13",
+          content: "good",
+          idProduct: "2",
+          ratePoint: 4,
+          userId: "4GxRYoBYNDXo0nBt6VfUTJc5VXG3"),
+      RatingModel(
+          id: "14",
+          content: "hay",
+          idProduct: "3",
+          ratePoint: 4,
+          userId: "4GxRYoBYNDXo0nBt6VfUTJc5VXG3"),
+      RatingModel(
+          id: "15",
+          content: "OK",
+          idProduct: "2",
+          ratePoint: 2,
+          userId: "4GxRYoBYNDXo0nBt6VfUTJc5VXG3"),
+      RatingModel(
+          id: "16",
+          content: "bad",
+          idProduct: "2",
+          ratePoint: 1,
+          userId: "4GxRYoBYNDXo0nBt6VfUTJc5VXG3"),
+    ];
+
+    List<RatingModel> list = [];
+    list.addAll(listModel);
+    for (var i = 0; i < list.length; i++) {
+      await RatingRepository.createRating(list[i]);
     }
 
     return "done";
