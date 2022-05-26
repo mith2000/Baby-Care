@@ -2,10 +2,11 @@ import 'dart:async';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_babycare/data/model/product/product_model.dart';
+import 'package:flutter_babycare/data/source/recommender/recommend_repository.dart';
 import 'package:uuid/uuid.dart';
 
 class ProductRepository {
-  static Future<List<ProductModel>> fetchProduct(String tagName) async {
+  static Future<List<ProductModel>> fetchFullProduct(String tagName) async {
     List<ProductModel> list;
     try {
       QuerySnapshot snapshot = await FirebaseFirestore.instance
@@ -20,6 +21,66 @@ class ProductRepository {
       return null;
     }
     return list;
+  }
+
+  static Future<List<ProductModel>> fetchListHotProduct(String tagName) async {
+    List listIdDynamic = await RecommendRepository.getOutstandingProducts();
+    List<String> listId = listIdDynamic.map((e) => e.toString()).toList();
+    List<ProductModel> listProduct = [];
+    try {
+      QuerySnapshot snapshot = await FirebaseFirestore.instance
+          .collection('product')
+          .where('tagName', isEqualTo: tagName)
+          .get()
+          .then((querySnapshot) {
+        querySnapshot.docs.forEach((doc) {
+          Map<String, dynamic> data = doc.data();
+          for (var item in listId) {
+            if (item == data['id'].toString()) {
+              listProduct.add(ProductModel.fromSnapshot(data));
+            }
+          }
+        });
+      }).catchError((error) {
+        print(error);
+      });
+    } catch (error) {
+      print(error);
+      return null;
+    }
+
+    return listProduct;
+  }
+
+  static Future<List<ProductModel>> fetchListRecommendProduct(
+      String idProduct, String tagName) async {
+    List listIdDynamic =
+        await RecommendRepository.getSimilarProducts(idProduct);
+    List<String> listId = listIdDynamic.map((e) => e.toString()).toList();
+    List<ProductModel> listProduct = [];
+    try {
+      QuerySnapshot snapshot = await FirebaseFirestore.instance
+          .collection('product')
+          .where('tagName', isEqualTo: tagName)
+          .get()
+          .then((querySnapshot) {
+        querySnapshot.docs.forEach((doc) {
+          Map<String, dynamic> data = doc.data();
+          for (var item in listId) {
+            if (item == data['id'].toString()) {
+              listProduct.add(ProductModel.fromSnapshot(data));
+            }
+          }
+        });
+      }).catchError((error) {
+        print(error);
+      });
+    } catch (error) {
+      print(error);
+      return null;
+    }
+
+    return listProduct;
   }
 
   static Future<String> createProduct(ProductModel productModel) async {
