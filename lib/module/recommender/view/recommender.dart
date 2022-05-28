@@ -1,12 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_babycare/constants/app_constants.dart';
+import 'package:flutter_babycare/data/model/product/product_model.dart';
+import 'package:flutter_babycare/module/recommender/bloc/recommender_bloc.dart';
 import 'package:flutter_babycare/utils/UI_components/highlight_wrap_box.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../../../utils/app_colors.dart';
+import '../../../utils/UI_components/error_label.dart';
+import '../../../utils/UI_components/fullscreen_loading_widget.dart';
 import '../../../utils/converter.dart';
+import '../bloc/recommender_event.dart';
+import '../bloc/recommender_state.dart';
 
 class RecommenderView extends StatefulWidget {
   static const routeName = '/recommender';
@@ -18,29 +25,71 @@ class RecommenderView extends StatefulWidget {
 }
 
 class _RecommenderViewState extends State<RecommenderView> {
+  RecommenderBloc recommenderBloc;
+
+  @override
+  void initState() {
+    super.initState();
+    recommenderBloc = BlocProvider.of<RecommenderBloc>(context);
+    recommenderBloc.add(LoadListHotProduct());
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
       color: AppColors.background,
-      child: ListView.builder(
-        itemCount: 5,
-        shrinkWrap: true,
-        physics: ClampingScrollPhysics(),
-        itemBuilder: ((BuildContext context, int index) {
-          if (index == 0) {
-            return _buildFirstRecommend(
-                'https://shopee.vn/-M%C3%A3-FMCGHOT-10-%C4%91%C6%A1n-400K-Mi%E1%BA%BFng-l%C3%B3t-s%C6%A1-sinh-Bobby-Newborn-1-108-mi%E1%BA%BFng-i.63521925.6816312877?sp_atk=e097e93d-e715-4ff5-b692-9383171c8f31&xptdk=e097e93d-e715-4ff5-b692-9383171c8f31',
-                'https://cf.shopee.vn/file/4d49b176c38969cc3260e7f95d89c224',
-                1086000,
-                50,
-                'Tã giấy',
-                4.0);
-          } else if (index == 4) {
-            return SizedBox(height: AppConstants.paddingSuperLargeH);
-          } else {
-            return _buildListProducts("On trend");
+      child: BlocBuilder<RecommenderBloc, RecommenderState>(
+        bloc: recommenderBloc,
+        builder: (context, state) {
+          if (state is RecommenderLoading) {
+            return FullScreenLoadingWidget();
           }
-        }),
+          if (state is LoadedListProduct) {
+            if (state.list == null || state.list.length == 0) {
+              return ErrorLabel(
+                  label: 'Something error with our server. Please try again.');
+            }
+            return ListView.builder(
+              itemCount: 3,
+              shrinkWrap: true,
+              physics: ClampingScrollPhysics(),
+              itemBuilder: ((BuildContext context, int index) {
+                if (index == 0) {
+                  return BlocBuilder<RecommenderBloc, RecommenderState>(
+                    bloc: recommenderBloc,
+                    builder: (context, state) {
+                      if (state is RecommenderLoading) {
+                        return FullScreenLoadingWidget();
+                      }
+                      if (state is LoadedListProduct) {
+                        if (state.list == null || state.list.length == 0) {
+                          return ErrorLabel(
+                              label:
+                                  'Something error with our server. Please try again.');
+                        }
+                        return _buildFirstRecommend(
+                            state.list[0].url,
+                            state.list[0].primaryImage,
+                            state.list[0].basePrice,
+                            state.list[0].salePercent,
+                            state.list[0].tagName,
+                            state.list[0].ratePoint);
+                      } else {
+                        return ErrorLabel();
+                      }
+                    },
+                  );
+                } else if (index == 2) {
+                  return SizedBox(height: AppConstants.paddingSuperLargeH);
+                } else {
+                  return _buildListProducts("On trend", state.list);
+                }
+              }),
+            );
+          } else {
+            return ErrorLabel();
+          }
+        },
       ),
     );
   }
@@ -62,6 +111,14 @@ class _RecommenderViewState extends State<RecommenderView> {
             height: ScreenUtil().screenWidth,
             fit: BoxFit.cover,
             image: image,
+            imageErrorBuilder: (BuildContext context, Object exception,
+                StackTrace stackTrace) {
+              return Image(
+                height: ScreenUtil().screenWidth,
+                fit: BoxFit.fitHeight,
+                image: AssetImage('assets/image/default_baby.png'),
+              );
+            },
           ),
           Row(
             crossAxisAlignment: CrossAxisAlignment.end,
@@ -75,7 +132,7 @@ class _RecommenderViewState extends State<RecommenderView> {
     );
   }
 
-  Widget _buildListProducts(String title) {
+  Widget _buildListProducts(String title, List<ProductModel> products) {
     return Padding(
       padding: EdgeInsets.only(
           top: AppConstants.paddingLargeH, left: AppConstants.paddingNormalW),
@@ -90,18 +147,18 @@ class _RecommenderViewState extends State<RecommenderView> {
             height: 327.h,
             child: ListView.builder(
               scrollDirection: Axis.horizontal,
-              itemCount: 5,
+              itemCount: products.length,
               shrinkWrap: true,
               physics: ClampingScrollPhysics(),
               itemBuilder: ((BuildContext context, int index) {
                 return _buildProductItem(
-                    'https://shopee.vn/-M%C3%A3-FMCGHOT-10-%C4%91%C6%A1n-400K-Mi%E1%BA%BFng-l%C3%B3t-s%C6%A1-sinh-Bobby-Newborn-1-108-mi%E1%BA%BFng-i.63521925.6816312877?sp_atk=e097e93d-e715-4ff5-b692-9383171c8f31&xptdk=e097e93d-e715-4ff5-b692-9383171c8f31',
-                    'https://cf.shopee.vn/file/3445f34aabbb827251299a306b42fff9',
-                    'Miếng lót Bobby Newborn 1 - 108 miếng - Tặng thêm',
-                    219000,
-                    50,
-                    4.0,
-                    'Đã bán 1,6k');
+                    products[index].url,
+                    products[index].primaryImage,
+                    products[index].name,
+                    products[index].basePrice,
+                    products[index].salePercent,
+                    products[index].ratePoint,
+                    'Đã bán ' + products[index].totalBought.toString() + 'k');
               }),
             ),
           ),
@@ -134,6 +191,14 @@ class _RecommenderViewState extends State<RecommenderView> {
               height: 195.h,
               fit: BoxFit.fitHeight,
               image: image,
+              imageErrorBuilder: (BuildContext context, Object exception,
+                  StackTrace stackTrace) {
+                return Image(
+                  height: 195.h,
+                  fit: BoxFit.fitHeight,
+                  image: AssetImage('assets/image/default_baby.png'),
+                );
+              },
             ),
             Container(
               margin: EdgeInsets.only(

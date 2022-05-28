@@ -33,6 +33,7 @@ import 'module/login/view/login_view.dart';
 import 'module/meal/history/view/history_view.dart';
 import 'module/meal/plan/view/plan_view.dart';
 import 'module/meal/suggestion/view/suggestion_view.dart';
+import 'module/recommender/bloc/recommender_bloc.dart';
 import 'module/recommender/view/recommender.dart';
 import 'module/register/bloc/register_bloc.dart';
 import 'module/register/view/register_view.dart';
@@ -100,6 +101,9 @@ class _MyAppState extends State<MyApp> {
         ),
         BlocProvider(
           create: (_) => HandBookBloc(),
+        ),
+        BlocProvider(
+          create: (_) => RecommenderBloc(),
         ),
       ],
       child: ScreenUtilInit(
