@@ -210,7 +210,8 @@ class _MyAppState extends State<MyApp> {
                   ChatP2PView.routeName: (BuildContext context) =>
                       ChatP2PView(),
                   RecommenderView.routeName: (BuildContext context) =>
-                      RecommenderView(),
+                      RecommenderView(
+                          widget._userRepository.firebaseAuth.currentUser),
                 },
               )),
     );
