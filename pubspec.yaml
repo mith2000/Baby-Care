@@ -49,6 +49,7 @@ dependencies:
   uuid: ^3.0.5
   date_util: ^0.1.4
   dialog_flowtter: ^0.3.3
+  flutter_rating_bar: ^4.0.1
 
 dev_dependencies:
   flutter_test:

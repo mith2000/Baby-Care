@@ -1,9 +1,12 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_babycare/constants/app_constants.dart';
 import 'package:flutter_babycare/data/model/product/product_model.dart';
 import 'package:flutter_babycare/module/recommender/bloc/recommender_bloc.dart';
 import 'package:flutter_babycare/utils/UI_components/highlight_wrap_box.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -12,6 +15,7 @@ import 'package:url_launcher/url_launcher.dart';
 import '../../../../utils/app_colors.dart';
 import '../../../utils/UI_components/error_label.dart';
 import '../../../utils/UI_components/fullscreen_loading_widget.dart';
+import '../../../utils/UI_components/solid_button.dart';
 import '../../../utils/converter.dart';
 import '../bloc/recommender_event.dart';
 import '../bloc/recommender_state.dart';
@@ -431,10 +435,10 @@ class _RecommenderViewState extends State<RecommenderView> {
 
   void _checkSavedProductId() async {
     final prefs = await SharedPreferences.getInstance();
-    print('SHARED PREF: Saved product id ' + prefs.getString('productId'));
     final productId = await prefs.getString('productId') ?? '';
     final productName = await prefs.getString('productName') ?? '';
     if (productId != '') {
+      print('SHARED PREF: Saved product id ' + productId);
       _openRateBottomSheet(productId, productName);
     } else {
       print('SHARED PREF: ' + 'No saved product yet');
@@ -443,6 +447,7 @@ class _RecommenderViewState extends State<RecommenderView> {
 
   void _openRateBottomSheet(String id, String name) async {
     final prefs = await SharedPreferences.getInstance();
+    var _ratingPoint = 0.0;
     prefs.remove('productId');
     showModalBottomSheet<void>(
       context: context,
@@ -453,19 +458,75 @@ class _RecommenderViewState extends State<RecommenderView> {
           children: [
             Padding(
               padding: EdgeInsets.all(AppConstants.paddingLargeW),
-              child: Text(
-                'You have open the product: ' +
-                    name +
-                    '\nYour rating point for'
-                        ' this product make us bring you good advice later.',
-                style: TextStyle(
-                  fontWeight: FontWeight.w400,
-                  fontSize: 16.sp,
-                  color: AppColors.text,
-                  height: 1.5,
+              child: RichText(
+                text: new TextSpan(
+                  style: TextStyle(
+                    fontWeight: FontWeight.w400,
+                    fontSize: 16.sp,
+                    color: AppColors.text,
+                    height: 1.5,
+                  ),
+                  children: [
+                    TextSpan(text: 'You have opened '),
+                    TextSpan(
+                      text: name,
+                      style: TextStyle(
+                        fontWeight: FontWeight.w600,
+                        fontSize: 18.sp,
+                        color: AppColors.primary,
+                        height: 1.5,
+                      ),
+                    ),
+                    TextSpan(
+                      text: '.\nYour rating point',
+                      style: TextStyle(
+                        fontWeight: FontWeight.w400,
+                        fontSize: 16.sp,
+                        color: AppColors.primary,
+                        height: 1.5,
+                      ),
+                    ),
+                    TextSpan(text: ' for this product make us '),
+                    TextSpan(
+                      text: 'bring you good advice',
+                      style: TextStyle(
+                        fontWeight: FontWeight.w400,
+                        fontSize: 16.sp,
+                        color: AppColors.primary,
+                        height: 1.5,
+                      ),
+                    ),
+                    TextSpan(text: ' later.'),
+                  ],
                 ),
                 textAlign: TextAlign.center,
               ),
+            ),
+            Padding(
+              padding:
+                  EdgeInsets.symmetric(horizontal: AppConstants.paddingLargeW),
+              child: RatingBar(
+                initialRating: 3,
+                itemCount: 5,
+                ratingWidget: RatingWidget(
+                  full: SvgPicture.asset('assets/icon/star_active.svg'),
+                  empty: SvgPicture.asset('assets/icon/star_inactive.svg'),
+                  half: SvgPicture.asset('assets/icon/star_inactive.svg'),
+                ),
+                itemPadding: EdgeInsets.symmetric(
+                    horizontal: AppConstants.paddingSlightW),
+                onRatingUpdate: (rating) {
+                  _ratingPoint = rating;
+                },
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.all(AppConstants.paddingLargeW),
+              child: SolidButton('Send your rating', () {
+                // todo Send rate to server
+                print('Rated value: ' + _ratingPoint.toString());
+                Navigator.pop(context);
+              }),
             ),
           ],
         );
