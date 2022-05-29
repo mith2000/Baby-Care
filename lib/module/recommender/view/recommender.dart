@@ -119,6 +119,7 @@ class _RecommenderViewState extends State<RecommenderView> {
               ),
               _buildPaymentInfo(
                 product.id,
+                product.name,
                 product.basePrice,
                 product.salePercent,
                 product.url,
@@ -284,7 +285,7 @@ class _RecommenderViewState extends State<RecommenderView> {
         ),
       ),
       onTap: () {
-        _saveOpenedProduct(product.id);
+        _saveOpenedProduct(product.id, product.name);
         _openUrl(product.url);
       },
     );
@@ -331,6 +332,7 @@ class _RecommenderViewState extends State<RecommenderView> {
 
   Widget _buildPaymentInfo(
     String id,
+    String name,
     int basePrice,
     int salePercent,
     String url,
@@ -368,13 +370,13 @@ class _RecommenderViewState extends State<RecommenderView> {
             ],
           ),
           SizedBox(height: AppConstants.paddingNormalH),
-          _buildShopNowButton(id, url),
+          _buildShopNowButton(id, name, url),
         ],
       ),
     );
   }
 
-  Widget _buildShopNowButton(String id, String url) {
+  Widget _buildShopNowButton(String id, String name, String url) {
     return InkWell(
       child: Container(
         padding: EdgeInsets.symmetric(horizontal: AppConstants.paddingNormalW),
@@ -396,7 +398,7 @@ class _RecommenderViewState extends State<RecommenderView> {
         ),
       ),
       onTap: () {
-        _saveOpenedProduct(id);
+        _saveOpenedProduct(id, name);
         _openUrl(url);
       },
     );
@@ -420,9 +422,10 @@ class _RecommenderViewState extends State<RecommenderView> {
     }
   }
 
-  void _saveOpenedProduct(String id) async {
+  void _saveOpenedProduct(String id, String name) async {
     final prefs = await SharedPreferences.getInstance();
     prefs.setString('productId', id);
+    prefs.setString('productName', name);
     print('SHARED PREF: ' + 'Save this product id: ' + id);
   }
 
@@ -430,35 +433,41 @@ class _RecommenderViewState extends State<RecommenderView> {
     final prefs = await SharedPreferences.getInstance();
     print('SHARED PREF: Saved product id ' + prefs.getString('productId'));
     final productId = await prefs.getString('productId') ?? '';
+    final productName = await prefs.getString('productName') ?? '';
     if (productId != '') {
-      _openRateBottomSheet();
+      _openRateBottomSheet(productId, productName);
     } else {
       print('SHARED PREF: ' + 'No saved product yet');
     }
   }
 
-  void _openRateBottomSheet() async {
+  void _openRateBottomSheet(String id, String name) async {
     final prefs = await SharedPreferences.getInstance();
     prefs.remove('productId');
     showModalBottomSheet<void>(
       context: context,
       builder: (BuildContext context) {
-        return Container(
-          height: 200,
-          color: Colors.amber,
-          child: Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              mainAxisSize: MainAxisSize.min,
-              children: <Widget>[
-                const Text('Modal BottomSheet'),
-                ElevatedButton(
-                  child: const Text('Close BottomSheet'),
-                  onPressed: () => Navigator.pop(context),
-                )
-              ],
+        return Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Padding(
+              padding: EdgeInsets.all(AppConstants.paddingLargeW),
+              child: Text(
+                'You have open the product: ' +
+                    name +
+                    '\nYour rating point for'
+                        ' this product make us bring you good advice later.',
+                style: TextStyle(
+                  fontWeight: FontWeight.w400,
+                  fontSize: 16.sp,
+                  color: AppColors.text,
+                  height: 1.5,
+                ),
+                textAlign: TextAlign.center,
+              ),
             ),
-          ),
+          ],
         );
       },
     );
