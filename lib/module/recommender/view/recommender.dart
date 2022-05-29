@@ -6,6 +6,7 @@ import 'package:flutter_babycare/utils/UI_components/highlight_wrap_box.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../../../utils/app_colors.dart';
@@ -30,6 +31,8 @@ class _RecommenderViewState extends State<RecommenderView> {
   @override
   void initState() {
     super.initState();
+    _checkSavedProductId();
+
     recommenderBloc = BlocProvider.of<RecommenderBloc>(context);
     recommenderBloc.add(LoadListHotProduct());
   }
@@ -67,13 +70,7 @@ class _RecommenderViewState extends State<RecommenderView> {
                               label:
                                   'Something error with our server. Please try again.');
                         }
-                        return _buildFirstRecommend(
-                            state.list[0].url,
-                            state.list[0].primaryImage,
-                            state.list[0].basePrice,
-                            state.list[0].salePercent,
-                            state.list[0].tagName,
-                            state.list[0].ratePoint);
+                        return _buildFirstRecommend(state.list[0]);
                       } else {
                         return ErrorLabel();
                       }
@@ -94,14 +91,7 @@ class _RecommenderViewState extends State<RecommenderView> {
     );
   }
 
-  Widget _buildFirstRecommend(
-    String url,
-    String image,
-    int basePrice,
-    int salePercent,
-    String category,
-    double starRated,
-  ) {
+  Widget _buildFirstRecommend(ProductModel product) {
     return Container(
       height: ScreenUtil().screenWidth,
       child: Stack(
@@ -110,7 +100,7 @@ class _RecommenderViewState extends State<RecommenderView> {
             placeholder: 'assets/image/default_baby.png',
             height: ScreenUtil().screenWidth,
             fit: BoxFit.cover,
-            image: image,
+            image: product.primaryImage,
             imageErrorBuilder: (BuildContext context, Object exception,
                 StackTrace stackTrace) {
               return Image(
@@ -123,8 +113,16 @@ class _RecommenderViewState extends State<RecommenderView> {
           Row(
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
-              _buildProductInfo(category, starRated),
-              _buildPaymentInfo(basePrice, salePercent, url),
+              _buildProductInfo(
+                product.tagName,
+                product.ratePoint,
+              ),
+              _buildPaymentInfo(
+                product.id,
+                product.basePrice,
+                product.salePercent,
+                product.url,
+              ),
             ],
           ),
         ],
@@ -151,14 +149,7 @@ class _RecommenderViewState extends State<RecommenderView> {
               shrinkWrap: true,
               physics: ClampingScrollPhysics(),
               itemBuilder: ((BuildContext context, int index) {
-                return _buildProductItem(
-                    products[index].url,
-                    products[index].primaryImage,
-                    products[index].name,
-                    products[index].basePrice,
-                    products[index].salePercent,
-                    products[index].ratePoint,
-                    'Đã bán ' + products[index].totalBought.toString() + 'k');
+                return _buildProductItem(products[index]);
               }),
             ),
           ),
@@ -167,15 +158,7 @@ class _RecommenderViewState extends State<RecommenderView> {
     );
   }
 
-  Widget _buildProductItem(
-    String url,
-    String image,
-    String name,
-    int basePrice,
-    int salePercent,
-    double starRated,
-    String sold,
-  ) {
+  Widget _buildProductItem(ProductModel product) {
     return InkWell(
       child: Container(
         color: AppColors.whiteBackground,
@@ -190,7 +173,7 @@ class _RecommenderViewState extends State<RecommenderView> {
               placeholder: 'assets/image/default_baby.png',
               height: 195.h,
               fit: BoxFit.fitHeight,
-              image: image,
+              image: product.primaryImage,
               imageErrorBuilder: (BuildContext context, Object exception,
                   StackTrace stackTrace) {
                 return Image(
@@ -207,7 +190,7 @@ class _RecommenderViewState extends State<RecommenderView> {
                 top: AppConstants.paddingNormalH,
               ),
               child: Text(
-                name,
+                product.name,
                 style: TextStyle(
                   fontWeight: FontWeight.w400,
                   fontSize: 16.sp,
@@ -227,7 +210,7 @@ class _RecommenderViewState extends State<RecommenderView> {
               child: Row(
                 children: [
                   Text(
-                    Converter.priceToString(basePrice),
+                    Converter.priceToString(product.basePrice),
                     style: TextStyle(
                       fontWeight: FontWeight.w400,
                       fontSize: 14.sp,
@@ -239,7 +222,8 @@ class _RecommenderViewState extends State<RecommenderView> {
                   SizedBox(width: AppConstants.paddingSlightW),
                   Text(
                     Converter.priceToString(
-                        (basePrice * salePercent / 100).round()),
+                        (product.basePrice * product.salePercent / 100)
+                            .round()),
                     style: TextStyle(
                       fontWeight: FontWeight.w600,
                       fontSize: 22.sp,
@@ -267,7 +251,7 @@ class _RecommenderViewState extends State<RecommenderView> {
                       itemCount: 5,
                       scrollDirection: Axis.horizontal,
                       itemBuilder: ((BuildContext context, int index) {
-                        if (index + 1 <= starRated) {
+                        if (index + 1 <= product.ratePoint) {
                           return SvgPicture.asset(
                             'assets/icon/star_active.svg',
                             width: 16.w,
@@ -285,7 +269,7 @@ class _RecommenderViewState extends State<RecommenderView> {
                   ),
                   Expanded(child: Container()),
                   Text(
-                    sold,
+                    "Đã bán " + product.totalBought.toString(),
                     style: TextStyle(
                       fontWeight: FontWeight.w400,
                       fontSize: 14.sp,
@@ -300,12 +284,57 @@ class _RecommenderViewState extends State<RecommenderView> {
         ),
       ),
       onTap: () {
-        _openUrl(url);
+        _saveOpenedProduct(product.id);
+        _openUrl(product.url);
       },
     );
   }
 
-  Widget _buildPaymentInfo(int basePrice, int salePercent, String url) {
+  Widget _buildProductInfo(
+    String category,
+    double starRated,
+  ) {
+    return Expanded(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+          Text(
+            category,
+            style: TextStyle(
+              fontWeight: FontWeight.w600,
+              fontSize: 18.sp,
+              color: AppColors.whiteBackground,
+            ),
+          ),
+          SizedBox(height: AppConstants.paddingNormalH),
+          Container(
+            height: 40.h,
+            margin: EdgeInsets.only(
+                left: AppConstants.paddingNormalW,
+                bottom: AppConstants.paddingLargeH),
+            child: ListView.builder(
+              itemCount: 5,
+              scrollDirection: Axis.horizontal,
+              itemBuilder: ((BuildContext context, int index) {
+                if (index + 1 <= starRated) {
+                  return SvgPicture.asset('assets/icon/star_active.svg');
+                } else {
+                  return SvgPicture.asset('assets/icon/star_inactive.svg');
+                }
+              }),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildPaymentInfo(
+    String id,
+    int basePrice,
+    int salePercent,
+    String url,
+  ) {
     return Container(
       margin: EdgeInsets.only(
           right: AppConstants.paddingLargeW,
@@ -339,13 +368,13 @@ class _RecommenderViewState extends State<RecommenderView> {
             ],
           ),
           SizedBox(height: AppConstants.paddingNormalH),
-          _buildShopNowButton(url),
+          _buildShopNowButton(id, url),
         ],
       ),
     );
   }
 
-  Widget _buildShopNowButton(String url) {
+  Widget _buildShopNowButton(String id, String url) {
     return InkWell(
       child: Container(
         padding: EdgeInsets.symmetric(horizontal: AppConstants.paddingNormalW),
@@ -367,6 +396,7 @@ class _RecommenderViewState extends State<RecommenderView> {
         ),
       ),
       onTap: () {
+        _saveOpenedProduct(id);
         _openUrl(url);
       },
     );
@@ -390,39 +420,47 @@ class _RecommenderViewState extends State<RecommenderView> {
     }
   }
 
-  Widget _buildProductInfo(String category, double starRated) {
-    return Expanded(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.end,
-        children: [
-          Text(
-            category,
-            style: TextStyle(
-              fontWeight: FontWeight.w600,
-              fontSize: 18.sp,
-              color: AppColors.whiteBackground,
+  void _saveOpenedProduct(String id) async {
+    final prefs = await SharedPreferences.getInstance();
+    prefs.setString('productId', id);
+    print('SHARED PREF: ' + 'Save this product id: ' + id);
+  }
+
+  void _checkSavedProductId() async {
+    final prefs = await SharedPreferences.getInstance();
+    print('SHARED PREF: Saved product id ' + prefs.getString('productId'));
+    final productId = await prefs.getString('productId') ?? '';
+    if (productId != '') {
+      _openRateBottomSheet();
+    } else {
+      print('SHARED PREF: ' + 'No saved product yet');
+    }
+  }
+
+  void _openRateBottomSheet() async {
+    final prefs = await SharedPreferences.getInstance();
+    prefs.remove('productId');
+    showModalBottomSheet<void>(
+      context: context,
+      builder: (BuildContext context) {
+        return Container(
+          height: 200,
+          color: Colors.amber,
+          child: Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                const Text('Modal BottomSheet'),
+                ElevatedButton(
+                  child: const Text('Close BottomSheet'),
+                  onPressed: () => Navigator.pop(context),
+                )
+              ],
             ),
           ),
-          SizedBox(height: AppConstants.paddingNormalH),
-          Container(
-            height: 40.h,
-            margin: EdgeInsets.only(
-                left: AppConstants.paddingNormalW,
-                bottom: AppConstants.paddingLargeH),
-            child: ListView.builder(
-              itemCount: 5,
-              scrollDirection: Axis.horizontal,
-              itemBuilder: ((BuildContext context, int index) {
-                if (index + 1 <= starRated) {
-                  return SvgPicture.asset('assets/icon/star_active.svg');
-                } else {
-                  return SvgPicture.asset('assets/icon/star_inactive.svg');
-                }
-              }),
-            ),
-          ),
-        ],
-      ),
+        );
+      },
     );
   }
 }
