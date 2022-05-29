@@ -1,5 +1,4 @@
-import 'dart:ui';
-
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_babycare/constants/app_constants.dart';
 import 'package:flutter_babycare/data/model/product/product_model.dart';
@@ -22,8 +21,11 @@ import '../bloc/recommender_state.dart';
 
 class RecommenderView extends StatefulWidget {
   static const routeName = '/recommender';
+  final User _user;
 
-  const RecommenderView({Key key}) : super(key: key);
+  const RecommenderView(User user, {Key key})
+      : _user = user,
+        super(key: key);
 
   @override
   _RecommenderViewState createState() => _RecommenderViewState();
@@ -525,6 +527,8 @@ class _RecommenderViewState extends State<RecommenderView> {
               child: SolidButton('Send your rating', () {
                 // todo Send rate to server
                 print('Rated value: ' + _ratingPoint.toString());
+                print('User id: ' + widget._user.uid);
+                print('Product id: ' + id);
                 Navigator.pop(context);
               }),
             ),
