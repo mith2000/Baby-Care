@@ -5,6 +5,8 @@ import 'package:flutter_babycare/data/model/product/product_model.dart';
 import 'package:flutter_babycare/data/source/recommender/recommend_repository.dart';
 import 'package:uuid/uuid.dart';
 
+import '../../model/product/listhotandsimilarproduct_model.dart';
+
 class ProductRepository {
   static Future<List<ProductModel>> fetchFullProduct(String tagName) async {
     List<ProductModel> list;
@@ -23,14 +25,13 @@ class ProductRepository {
     return list;
   }
 
-  static Future<List<ProductModel>> fetchListHotProduct(String tagName) async {
+  static Future<List<ProductModel>> fetchListHotProduct() async {
     List listIdDynamic = await RecommendRepository.getOutstandingProducts();
     List<String> listId = listIdDynamic.map((e) => e.toString()).toList();
     List<ProductModel> listProduct = [];
     try {
       QuerySnapshot snapshot = await FirebaseFirestore.instance
           .collection('product')
-          .where('tagName', isEqualTo: tagName)
           .get()
           .then((querySnapshot) {
         querySnapshot.docs.forEach((doc) {
@@ -106,5 +107,18 @@ class ProductRepository {
         .whenComplete(() => print("Product updated in the database"))
         .catchError((e) => print(e));
     return "Product updated in the database";
+  }
+
+  static Future<ListHotAndSimilarModel> getHotAndSimilarProduct(
+      String idProduct, String tagName) async {
+    ListHotAndSimilarModel listHotAndSimilarModel;
+
+    List<ProductModel> listProduct;
+    listProduct = await fetchListRecommendProduct(idProduct, tagName);
+    listHotAndSimilarModel.setListSimilarProduct(listProduct);
+    listProduct = await fetchListHotProduct();
+    listHotAndSimilarModel.setListHotProduct(listProduct);
+
+    return listHotAndSimilarModel;
   }
 }
