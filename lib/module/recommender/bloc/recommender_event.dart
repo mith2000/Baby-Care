@@ -1,6 +1,8 @@
 // ignore_for_file: must_be_immutable
 import 'package:equatable/equatable.dart';
+import 'package:flutter_babycare/data/model/product/listhotandsimilarproduct_model.dart';
 import 'package:flutter_babycare/data/model/product/product_model.dart';
+import 'package:flutter_babycare/data/model/product/rating_model.dart';
 
 abstract class RecommenderEvent extends Equatable {
   final String tagName;
@@ -45,6 +47,25 @@ class CreateProduct extends RecommenderEvent {
   final ProductModel productModel;
 
   CreateProduct({this.productModel});
+
+  @override
+  List<Object> get props => [];
+}
+
+class CreateRating extends RecommenderEvent {
+  final RatingModel ratingModel;
+
+  CreateRating({this.ratingModel});
+
+  @override
+  List<Object> get props => [];
+}
+
+class LoadHotAndSimilarProduct extends RecommenderEvent {
+  final String idProduct;
+  final String tagName;
+
+  LoadHotAndSimilarProduct({this.idProduct, this.tagName});
 
   @override
   List<Object> get props => [];

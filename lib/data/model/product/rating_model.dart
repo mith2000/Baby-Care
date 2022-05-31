@@ -39,7 +39,7 @@ class RatingModel extends Equatable {
   Map<String, Object> toJson() {
     return {
       "id": id ?? Uuid().v4(),
-      "content": content,
+      "content": content ?? '',
       "idProduct": idProduct,
       "ratePoint": ratePoint,
       "userId": userId
