@@ -1,6 +1,8 @@
 import 'dart:async';
 
 import 'package:flutter_babycare/data/model/baby/baby_model.dart';
+import 'package:flutter_babycare/data/model/product/listhotandsimilarproduct_model.dart';
+import 'package:flutter_babycare/data/source/recommender/product_repository.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../data/model/baby/baby_model.dart';

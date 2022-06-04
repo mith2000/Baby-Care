@@ -9,11 +9,11 @@ class ListHotAndSimilarModel extends Equatable {
 
   ListHotAndSimilarModel({this.listHotProduct, this.listSimilarProduct});
 
-  void setListHotProduct(List<ProductModel> _listHotProduct) {
+  set setListHotProduct(List<ProductModel> _listHotProduct) {
     this.listHotProduct = _listHotProduct;
   }
 
-  void setListSimilarProduct(List<ProductModel> _listSimilarProduct) {
+  set setListSimilarProduct(List<ProductModel> _listSimilarProduct) {
     this.listSimilarProduct = _listSimilarProduct;
   }
 

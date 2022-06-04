@@ -109,16 +109,38 @@ class ProductRepository {
     return "Product updated in the database";
   }
 
-  static Future<ListHotAndSimilarModel> getHotAndSimilarProduct(
-      String idProduct, String tagName) async {
-    ListHotAndSimilarModel listHotAndSimilarModel;
+  static Future<ListHotAndSimilarModel> fetchHotAndSimilarProduct(
+      {String idProduct = ''}) async {
+    List<ProductModel> listHotProduct;
+    List<ProductModel> listSimilarProduct;
+    listHotProduct = await fetchListHotProduct();
 
-    List<ProductModel> listProduct;
-    listProduct = await fetchListRecommendProduct(idProduct, tagName);
-    listHotAndSimilarModel.setListSimilarProduct(listProduct);
-    listProduct = await fetchListHotProduct();
-    listHotAndSimilarModel.setListHotProduct(listProduct);
+    if (idProduct == null || idProduct.isEmpty) {
+      print('idProduct invalid, then cannot fetchListRecommendProduct');
+    } else {
+      List<ProductModel> list = [];
+      try {
+        QuerySnapshot snapshot = await FirebaseFirestore.instance
+            .collection('product')
+            .where('id', isEqualTo: idProduct)
+            .get();
+        list = snapshot.docs
+            .map((doc) => ProductModel.fromSnapshot(doc.data()))
+            .toList();
+      } catch (error) {
+        print(error);
+      }
 
-    return listHotAndSimilarModel;
+      if (list.isEmpty) {
+        print(
+            'cannot find idProduct in DB, then cannot fetchListRecommendProduct');
+      } else {
+        listSimilarProduct =
+            await fetchListRecommendProduct(idProduct, list[0].tagName);
+      }
+    }
+
+    return ListHotAndSimilarModel(
+        listHotProduct: listHotProduct, listSimilarProduct: listSimilarProduct);
   }
 }

@@ -433,8 +433,7 @@ class _RecommenderViewState extends State<RecommenderView> {
 
   void _loadListProduct() async {
     String _savedId = await _getSavedProductId();
-    recommenderBloc
-        .add(LoadHotAndSimilarProduct(idProduct: '4', tagName: 'Giay'));
+    recommenderBloc.add(LoadHotAndSimilarProduct(idProduct: '4'));
   }
 
   Future<String> _getSavedProductId() async {
