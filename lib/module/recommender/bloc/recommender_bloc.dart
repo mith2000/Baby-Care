@@ -64,7 +64,7 @@ Stream<RecommenderState> mapLoadFullListProductToState(
 Stream<RecommenderState> mapLoadHotAndSimilarProductToState(
     LoadHotAndSimilarProduct event) async* {
   ListHotAndSimilarModel list;
-  list = await ProductRepository.getHotAndSimilarProduct(
-      event.idProduct, event.tagName);
+  list = await ProductRepository.fetchHotAndSimilarProduct(
+      idProduct: event.idProduct);
   yield LoadedListHotAndSimilarProduct(list: list);
 }

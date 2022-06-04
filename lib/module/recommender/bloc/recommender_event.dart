@@ -63,9 +63,8 @@ class CreateRating extends RecommenderEvent {
 
 class LoadHotAndSimilarProduct extends RecommenderEvent {
   final String idProduct;
-  final String tagName;
 
-  LoadHotAndSimilarProduct({this.idProduct, this.tagName});
+  LoadHotAndSimilarProduct({this.idProduct});
 
   @override
   List<Object> get props => [];
