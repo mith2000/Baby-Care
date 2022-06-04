@@ -37,10 +37,10 @@ class _RecommenderViewState extends State<RecommenderView> {
   @override
   void initState() {
     super.initState();
-    _checkSavedProductId();
+    _checkCanOpenRateSheet();
 
     recommenderBloc = BlocProvider.of<RecommenderBloc>(context);
-    recommenderBloc.add(LoadListHotProduct());
+    _loadListProduct();
   }
 
   @override
@@ -53,8 +53,8 @@ class _RecommenderViewState extends State<RecommenderView> {
           if (state is RecommenderLoading) {
             return FullScreenLoadingWidget();
           }
-          if (state is LoadedListProduct) {
-            if (state.list == null || state.list.length == 0) {
+          if (state is LoadedListHotAndSimilarProduct) {
+            if (state.list == null) {
               return ErrorLabel(
                   label: 'Something error with our server. Please try again.');
             }
@@ -64,28 +64,24 @@ class _RecommenderViewState extends State<RecommenderView> {
               physics: ClampingScrollPhysics(),
               itemBuilder: ((BuildContext context, int index) {
                 if (index == 0) {
-                  return BlocBuilder<RecommenderBloc, RecommenderState>(
-                    bloc: recommenderBloc,
-                    builder: (context, state) {
-                      if (state is RecommenderLoading) {
-                        return FullScreenLoadingWidget();
-                      }
-                      if (state is LoadedListProduct) {
-                        if (state.list == null || state.list.length == 0) {
-                          return ErrorLabel(
-                              label:
-                                  'Something error with our server. Please try again.');
-                        }
-                        return _buildFirstRecommend(state.list[0]);
-                      } else {
-                        return ErrorLabel();
-                      }
-                    },
-                  );
+                  if (state.list.listHotProduct == null ||
+                      state.list.listHotProduct.length == 0) {
+                    return ErrorLabel(
+                        label:
+                            'Something error with our server. Please try again.');
+                  }
+                  return _buildFirstRecommend(state.list.listHotProduct[0]);
                 } else if (index == 2) {
                   return SizedBox(height: AppConstants.paddingSuperLargeH);
                 } else {
-                  return _buildListProducts("On trend", state.list);
+                  if (state.list.listHotProduct == null ||
+                      state.list.listHotProduct.length == 0) {
+                    return ErrorLabel(
+                        label:
+                            'Something error with our server. Please try again.');
+                  }
+                  return _buildListProducts(
+                      "On trend", state.list.listHotProduct);
                 }
               }),
             );
@@ -435,7 +431,18 @@ class _RecommenderViewState extends State<RecommenderView> {
     print('SHARED PREF: ' + 'Save this product id: ' + id);
   }
 
-  void _checkSavedProductId() async {
+  void _loadListProduct() async {
+    String _savedId = await _getSavedProductId();
+    recommenderBloc
+        .add(LoadHotAndSimilarProduct(idProduct: '4', tagName: 'Giay'));
+  }
+
+  Future<String> _getSavedProductId() async {
+    final prefs = await SharedPreferences.getInstance();
+    return await prefs.getString('productId') ?? '';
+  }
+
+  void _checkCanOpenRateSheet() async {
     final prefs = await SharedPreferences.getInstance();
     final productId = await prefs.getString('productId') ?? '';
     final productName = await prefs.getString('productName') ?? '';
