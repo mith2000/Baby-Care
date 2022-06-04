@@ -59,29 +59,34 @@ class _RecommenderViewState extends State<RecommenderView> {
                   label: 'Something error with our server. Please try again.');
             }
             return ListView.builder(
-              itemCount: 3,
+              itemCount: 4,
               shrinkWrap: true,
               physics: ClampingScrollPhysics(),
               itemBuilder: ((BuildContext context, int index) {
                 if (index == 0) {
                   if (state.list.listHotProduct == null ||
                       state.list.listHotProduct.length == 0) {
-                    return ErrorLabel(
-                        label:
-                            'Something error with our server. Please try again.');
+                    return Container();
                   }
                   return _buildFirstRecommend(state.list.listHotProduct[0]);
-                } else if (index == 2) {
-                  return SizedBox(height: AppConstants.paddingSuperLargeH);
-                } else {
+                } else if (index == 1) {
                   if (state.list.listHotProduct == null ||
                       state.list.listHotProduct.length == 0) {
-                    return ErrorLabel(
-                        label:
-                            'Something error with our server. Please try again.');
+                    return Container();
                   }
                   return _buildListProducts(
                       "On trend", state.list.listHotProduct);
+                } else if (index == 2) {
+                  if (state.list.listSimilarProduct == null ||
+                      state.list.listSimilarProduct.length == 0) {
+                    return Container();
+                  }
+                  return _buildListProducts(
+                      "Because you love " +
+                          state.list.listSimilarProduct[0].tagName,
+                      state.list.listSimilarProduct);
+                } else {
+                  return SizedBox(height: AppConstants.paddingSuperLargeH);
                 }
               }),
             );
@@ -225,14 +230,13 @@ class _RecommenderViewState extends State<RecommenderView> {
                   SizedBox(width: AppConstants.paddingSlightW),
                   Text(
                     Converter.priceToString(
-                        (product.basePrice * product.salePercent / 100)
+                        (product.basePrice * (100 - product.salePercent) / 100)
                             .round()),
                     style: TextStyle(
                       fontWeight: FontWeight.w600,
                       fontSize: 22.sp,
                       color: AppColors.primary,
                       height: 1.37,
-                      decoration: TextDecoration.lineThrough,
                     ),
                   ),
                 ],
@@ -360,7 +364,7 @@ class _RecommenderViewState extends State<RecommenderView> {
             children: [
               Text(
                 Converter.priceToString(
-                    (basePrice * salePercent / 100).round()),
+                    (basePrice * (100 - salePercent) / 100).round()),
                 style: TextStyle(
                   fontWeight: FontWeight.w600,
                   fontSize: 22.sp,
@@ -428,17 +432,18 @@ class _RecommenderViewState extends State<RecommenderView> {
     final prefs = await SharedPreferences.getInstance();
     prefs.setString('productId', id);
     prefs.setString('productName', name);
+    prefs.setString('productIdForRecommend', id);
     print('SHARED PREF: ' + 'Save this product id: ' + id);
   }
 
   void _loadListProduct() async {
     String _savedId = await _getSavedProductId();
-    recommenderBloc.add(LoadHotAndSimilarProduct(idProduct: '4'));
+    recommenderBloc.add(LoadHotAndSimilarProduct(idProduct: _savedId));
   }
 
   Future<String> _getSavedProductId() async {
     final prefs = await SharedPreferences.getInstance();
-    return await prefs.getString('productId') ?? '';
+    return await prefs.getString('productIdForRecommend') ?? '';
   }
 
   void _checkCanOpenRateSheet() async {
