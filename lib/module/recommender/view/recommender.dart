@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_babycare/constants/app_constants.dart';
 import 'package:flutter_babycare/data/model/product/product_model.dart';
+import 'package:flutter_babycare/data/model/product/rating_model.dart';
 import 'package:flutter_babycare/module/recommender/bloc/recommender_bloc.dart';
 import 'package:flutter_babycare/utils/UI_components/highlight_wrap_box.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -540,6 +541,11 @@ class _RecommenderViewState extends State<RecommenderView> {
                 print('Rated value: ' + _ratingPoint.toString());
                 print('User id: ' + widget._user.uid);
                 print('Product id: ' + id);
+                recommenderBloc.add(CreateRating(
+                    ratingModel: RatingModel(
+                        idProduct: id,
+                        userId: widget._user.uid,
+                        ratePoint: _ratingPoint.round())));
                 Navigator.pop(context);
               }),
             ),
