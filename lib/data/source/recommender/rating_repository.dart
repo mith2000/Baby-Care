@@ -35,6 +35,53 @@ class RatingRepository {
         .set(ratingModel.toJson())
         .whenComplete(() => print("Rating added to the database"))
         .catchError((e) => print(e));
+
+    double sumRating = 0;
+    try {
+      QuerySnapshot snapshot = await FirebaseFirestore.instance
+          .collection('Rating')
+          .where('idProduct', isEqualTo: ratingModel.idProduct)
+          .get()
+          .then((querySnapshot) {
+        querySnapshot.docs.forEach((doc) {
+          Map<String, dynamic> data = doc.data();
+          sumRating += data['ratePoint'];
+        });
+      }).catchError((error) {
+        print(error);
+      });
+    } catch (error) {
+      print(error);
+      return null;
+    }
+
+    if (sumRating != 0) {
+      DocumentReference docRef;
+      var batch = FirebaseFirestore.instance.batch();
+      String idProduct = ratingModel.idProduct;
+      await FirebaseFirestore.instance
+          .collection('product')
+          .where('id', isEqualTo: ratingModel.idProduct)
+          .get()
+          .then((querySnapshot) {
+        querySnapshot.docs.forEach((doc) {
+          Timestamp myTimeStamp = Timestamp.fromDate(DateTime.now());
+          Map<String, dynamic> data = doc.data();
+          docRef = FirebaseFirestore.instance.collection('product').doc(doc.id);
+          batch.update(docRef, {'rateCount': data['rateCount'] + 1});
+          batch.update(
+              docRef, {'ratePoint': sumRating / (data['rateCount'] + 1)});
+          batch.commit().then((a) {
+            print('updated ratePoint in idProduct: $idProduct');
+          });
+        });
+      }).catchError((error) {
+        print(error);
+      });
+    } else {
+      print('cannot update rating in product, because sumRating = 0');
+    }
+
     return "Rating added to the database";
   }
 
