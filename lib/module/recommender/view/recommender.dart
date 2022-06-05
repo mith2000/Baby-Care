@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_babycare/constants/app_constants.dart';
 import 'package:flutter_babycare/data/model/product/rating_model.dart';
 import 'package:flutter_babycare/module/recommender/bloc/recommender_bloc.dart';
+import 'package:flutter_babycare/module/recommender/detail/view/ProductDetail.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -68,24 +69,33 @@ class _RecommenderViewState extends State<RecommenderView> {
                     return Container();
                   }
                   return RecommendFirstProduct(
-                      state.list.listHotProduct[0], context);
+                    state.list.listHotProduct[0],
+                    context,
+                    routeName: ProductDetailView.routeName,
+                  );
                 } else if (index == 1) {
                   if (state.list.listHotProduct == null ||
                       state.list.listHotProduct.length == 0) {
                     return Container();
                   }
                   return RecommendListProduct(
-                      "On trend", state.list.listHotProduct, context);
+                    "On trend",
+                    state.list.listHotProduct,
+                    context,
+                    routeName: ProductDetailView.routeName,
+                  );
                 } else if (index == 2) {
                   if (state.list.listSimilarProduct == null ||
                       state.list.listSimilarProduct.length == 0) {
                     return Container();
                   }
                   return RecommendListProduct(
-                      "Because you love " +
-                          state.list.listSimilarProduct[0].tagName,
-                      state.list.listSimilarProduct,
-                      context);
+                    "Because you love " +
+                        state.list.listSimilarProduct[0].tagName,
+                    state.list.listSimilarProduct,
+                    context,
+                    routeName: ProductDetailView.routeName,
+                  );
                 } else {
                   return SizedBox(height: AppConstants.paddingSuperLargeH);
                 }

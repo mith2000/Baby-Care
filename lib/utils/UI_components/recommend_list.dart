@@ -6,6 +6,7 @@ import 'package:url_launcher/url_launcher.dart';
 
 import '../../constants/app_constants.dart';
 import '../../data/model/product/product_model.dart';
+import '../../module/recommender/detail/view/ProductDetail.dart';
 import '../app_colors.dart';
 import '../converter.dart';
 
@@ -13,13 +14,15 @@ class RecommendListProduct extends StatelessWidget {
   final String title;
   final List<ProductModel> products;
   final BuildContext parentContext;
+  final String routeName;
 
   RecommendListProduct(
       String title, List<ProductModel> products, BuildContext context,
-      {Key key})
+      {Key key, String routeName})
       : this.title = title,
         this.products = products,
         this.parentContext = context,
+        this.routeName = routeName,
         super(key: key);
 
   @override
@@ -177,7 +180,12 @@ class RecommendListProduct extends StatelessWidget {
       ),
       onTap: () {
         _saveOpenedProduct(product.id, product.name);
-        _openUrl(product.url);
+        if (routeName == null) {
+          _openUrl(product.url);
+        } else {
+          Navigator.pushNamed(parentContext, routeName,
+              arguments: ProductDetailArguments(product));
+        }
       },
     );
   }

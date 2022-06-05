@@ -7,16 +7,20 @@ import 'package:url_launcher/url_launcher.dart';
 
 import '../../constants/app_constants.dart';
 import '../../data/model/product/product_model.dart';
+import '../../module/recommender/detail/view/ProductDetail.dart';
 import '../app_colors.dart';
 import '../converter.dart';
 
 class RecommendFirstProduct extends StatelessWidget {
   final ProductModel product;
   final BuildContext parentContext;
+  final String routeName;
 
-  RecommendFirstProduct(ProductModel product, BuildContext context, {Key key})
+  RecommendFirstProduct(ProductModel product, BuildContext context,
+      {Key key, String routeName})
       : this.product = product,
         this.parentContext = context,
+        this.routeName = routeName,
         super(key: key);
 
   @override
@@ -46,13 +50,7 @@ class RecommendFirstProduct extends StatelessWidget {
                 product.tagName,
                 product.ratePoint,
               ),
-              _buildPaymentInfo(
-                product.id,
-                product.name,
-                product.basePrice,
-                product.salePercent,
-                product.url,
-              ),
+              _buildPaymentInfo(product),
             ],
           ),
         ],
@@ -99,13 +97,8 @@ class RecommendFirstProduct extends StatelessWidget {
     );
   }
 
-  Widget _buildPaymentInfo(
-    String id,
-    String name,
-    int basePrice,
-    int salePercent,
-    String url,
-  ) {
+  Widget _buildPaymentInfo(ProductModel product) {
+    final salePercent = product.salePercent;
     return Container(
       margin: EdgeInsets.only(
           right: AppConstants.paddingLargeW,
@@ -114,7 +107,7 @@ class RecommendFirstProduct extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
           Text(
-            Converter.priceToString(basePrice),
+            Converter.priceToString(product.basePrice),
             style: TextStyle(
               fontWeight: FontWeight.w600,
               fontSize: 18.sp,
@@ -127,7 +120,8 @@ class RecommendFirstProduct extends StatelessWidget {
             children: [
               Text(
                 Converter.priceToString(
-                    (basePrice * (100 - salePercent) / 100).round()),
+                    (product.basePrice * (100 - product.salePercent) / 100)
+                        .round()),
                 style: TextStyle(
                   fontWeight: FontWeight.w600,
                   fontSize: 22.sp,
@@ -139,13 +133,13 @@ class RecommendFirstProduct extends StatelessWidget {
             ],
           ),
           SizedBox(height: AppConstants.paddingNormalH),
-          _buildShopNowButton(id, name, url),
+          _buildShopNowButton(product),
         ],
       ),
     );
   }
 
-  Widget _buildShopNowButton(String id, String name, String url) {
+  Widget _buildShopNowButton(ProductModel product) {
     return InkWell(
       child: Container(
         padding: EdgeInsets.symmetric(horizontal: AppConstants.paddingNormalW),
@@ -167,8 +161,13 @@ class RecommendFirstProduct extends StatelessWidget {
         ),
       ),
       onTap: () {
-        _saveOpenedProduct(id, name);
-        _openUrl(url);
+        _saveOpenedProduct(product.id, product.name);
+        if (routeName == null) {
+          _openUrl(product.url);
+        } else {
+          Navigator.pushNamed(parentContext, routeName,
+              arguments: ProductDetailArguments(product));
+        }
       },
     );
   }
