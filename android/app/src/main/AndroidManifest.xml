@@ -8,7 +8,7 @@
     <uses-permission android:name="android.permission.QUERY_ALL_PACKAGES"/>
     <application
         android:name="${applicationName}"
-        android:label="flutter_babycare"
+        android:label="Baby Care"
         android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"

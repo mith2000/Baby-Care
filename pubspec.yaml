@@ -50,10 +50,17 @@ dependencies:
   date_util: ^0.1.4
   dialog_flowtter: ^0.3.3
   flutter_rating_bar: ^4.0.1
+  flutter_launcher_icons: ^0.9.3
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
+
+flutter_icons:
+  image_path_android: "assets/image/logo_s150.png"
+  image_path_ios: "assets/image/logo_s150.png"
+  android: true
+  ios: true
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
@@ -114,6 +121,7 @@ flutter:
     - assets/icon/shopee.svg
     - assets/icon/star_active.svg
     - assets/icon/star_inactive.svg
+    - assets/logo/Logo.svg
 
     - assets/image/default_baby.png
     - assets/image/EmojiLove_1.png
