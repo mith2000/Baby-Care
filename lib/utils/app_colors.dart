@@ -13,4 +13,9 @@ class AppColors {
   static const Color embrace = Color(0xffFFFF64);
   static const Color solidButtonPress = Color(0xff5383C0);
   static const Color lineButtonPress = Color(0xffD5E7F2);
+  static const Color loveEmojiBackground = Color(0xff8FFC9A);
+  static const Color happyEmojiBackground = Color(0xffD3FF77);
+  static const Color smileEmojiBackground = Color(0xffFFFBA4);
+  static const Color sadEmojiBackground = Color(0xffFFBF84);
+  static const Color cryEmojiBackground = Color(0xffFC9495);
 }

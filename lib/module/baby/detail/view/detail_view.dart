@@ -530,7 +530,7 @@ class _BabyDetailViewState extends State<BabyDetailView> {
             vertical: AppConstants.paddingNormalH,
           ),
           decoration: BoxDecoration(
-            color: AppColors.secondary,
+            color: Converter.babyStatusToColor(status),
             borderRadius: BorderRadius.circular(AppConstants.cornerRadius),
           ),
         ),
@@ -757,7 +757,7 @@ class _BabyDetailViewState extends State<BabyDetailView> {
             bottom: AppConstants.paddingNormalH,
           ),
           decoration: BoxDecoration(
-            color: AppColors.secondary,
+            color: Converter.babyStatusToColor(status),
             borderRadius: BorderRadius.circular(AppConstants.cornerRadius),
           ),
         ),

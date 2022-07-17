@@ -1,3 +1,5 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_babycare/utils/app_colors.dart';
 import 'package:intl/intl.dart';
 
 import '../constants/app_constants.dart';
@@ -458,5 +460,22 @@ class Converter {
   static String priceToString(int price) {
     final format = NumberFormat("###,###,###đ", "en_US");
     return format.format(price.truncate());
+  }
+
+  static Color babyStatusToColor(BabyStatus status) {
+    switch (status) {
+      case BabyStatus.Love:
+        return AppColors.loveEmojiBackground;
+      case BabyStatus.Happy:
+        return AppColors.happyEmojiBackground;
+      case BabyStatus.Smile:
+        return AppColors.smileEmojiBackground;
+      case BabyStatus.Sad:
+        return AppColors.sadEmojiBackground;
+      case BabyStatus.Cry:
+        return AppColors.cryEmojiBackground;
+      default:
+        return AppColors.loveEmojiBackground;
+    }
   }
 }
