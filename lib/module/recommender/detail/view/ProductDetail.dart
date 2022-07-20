@@ -74,7 +74,7 @@ class _ProductDetailViewState extends State<ProductDetailView> {
                         if (state.list == null || state.list.length == 0) {
                           return Container();
                         }
-                        return RecommendFirstProduct(state.list[0], context);
+                        return RecommendFirstProduct(args.product, context);
                       } else if (index == 1) {
                         if (state.list == null || state.list.length == 0) {
                           return Container();
